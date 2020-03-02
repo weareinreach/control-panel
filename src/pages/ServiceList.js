@@ -1,24 +1,21 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button} from '@chakra-ui/core';
+import {Box, Button, Heading, Text} from '@chakra-ui/core';
 
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
-import {Container, Flex, Title} from '../components/styles';
+import {Container, Title} from '../components/styles';
 import {useFetch} from '../utils/hooks';
 
 const ServiceList = props => {
   const {data, loading} = useFetch(`/services`);
 
   return (
-    <Flex>
+    <Box padding={4}>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <Box float="right">
-            <Button>New Service</Button>
-          </Box>
           <Title>Services</Title>
           <Container>
             {data?.opportunities?.map((service, key) => {
@@ -27,14 +24,12 @@ const ServiceList = props => {
               return (
                 <div key={key}>
                   <Link to={servicePath}>
-                    <p>{service.name}</p>
+                    <Heading fontSize="l">{service.name}</Heading>
                   </Link>
-                  <Link to={`${servicePath}/edit`}>
-                    <p>edit</p>
-                  </Link>
-                  <Link to={`${servicePath}/delete`}>
-                    <p>delete</p>
-                  </Link>
+                  <Text>
+                    Offered by: {service?.organization?.name || 'N/A'}
+                  </Text>
+                  <Text>Last Updated {service.updated_at}</Text>
                 </div>
               );
             })}
@@ -42,7 +37,7 @@ const ServiceList = props => {
           <Pagination />
         </>
       )}
-    </Flex>
+    </Box>
   );
 };
 

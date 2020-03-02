@@ -11,13 +11,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import FormLogin from './components/FormLogin';
 import Header from './components/Header';
 import Loading from './components/Loading';
-import CreateOrganization from './pages/CreateOrganization';
-import CreateService from './pages/CreateService';
-import CreateUser from './pages/CreateUser';
-import EditOrganization from './pages/EditOrganization';
-import EditService from './pages/EditService';
-import EditUser from './pages/EditUser';
-import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Organization from './pages/Organization';
 import OrganizationList from './pages/OrganizationList';
@@ -59,42 +52,15 @@ const App = () => {
                   )}
                 />
                 {!hasUser && <Redirect to="login" />}
-                <Route exact path="/" component={Home} />
-                <Route
-                  exact
-                  path="/organizations"
-                  component={OrganizationList}
-                />
-                <Route
-                  exact
-                  path="/organizations/create"
-                  component={CreateOrganization}
-                />
+                <Route exact path="/" component={OrganizationList} />
                 <Route
                   exact
                   path="/organizations/:id"
                   component={Organization}
                 />
-                <Route
-                  exact
-                  path="/organizations/:id/edit"
-                  component={EditOrganization}
-                />
                 <Route exact path="/services" component={ServiceList} />
-                <Route
-                  exact
-                  path="/services/create"
-                  component={CreateService}
-                />
                 <Route exact path="/services/:id" component={Service} />
-                <Route
-                  exact
-                  path="/services/:id/edit"
-                  component={EditService}
-                />
                 <Route exact path="/users" component={UserList} />
-                <Route exact path="/users/create" component={CreateUser} />
-                <Route exact path="/users/:id/edit" component={EditUser} />
                 <Route component={NotFound} />
               </Switch>
             )}

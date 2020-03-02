@@ -1,24 +1,10 @@
 import React from 'react';
-import {
-  Box as ChakraBox,
-  Flex as ChakraFlex,
-  Heading as ChakraHeading
-} from '@chakra-ui/core';
+import {Box as ChakraBox, Heading as ChakraHeading} from '@chakra-ui/core';
 
-export const Container = ({children}) => (
-  <ChakraBox padding={5} rounded="md" borderWidth="1px">
+export const Container = ({children, ...rest}) => (
+  <ChakraBox padding={5} rounded="md" borderWidth="1px" {...rest}>
     {children}
   </ChakraBox>
-);
-
-export const Flex = ({children}) => (
-  <ChakraBox padding={4}>{children}</ChakraBox>
-);
-
-export const alt_Flex = ({children}) => (
-  <ChakraFlex align="center" justify="center" padding={4}>
-    {children}
-  </ChakraFlex>
 );
 
 export const Heading = ({children}) => (

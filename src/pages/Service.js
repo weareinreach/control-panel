@@ -1,23 +1,32 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button} from '@chakra-ui/core';
+import {Box, Button, Input, Text} from '@chakra-ui/core';
 
 import AlertDialog from '../components/AlertDialog';
+import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
-import {useFetch, useToggle} from '../utils/hooks';
+import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
 
 const Service = props => {
-  // TODO: use endpoint
-  // const {data, loading} = useFetch(servicePath);
-  const {data, loading} = {};
+  const serviceId = props?.match?.params?.id;
+  // TODO: use API endpoint
+  // const urlPath = `/services/${serviceId}`;
+  // const {data, loading} = useAPIGet(urlPath);
+  const {data = {}, loading} = {};
+  const {name = 'Service Name'} = data;
   const [isDeleteOpen, toggleDelete] = useToggle();
   const [isDuplicateOpen, toggleDuplicate] = useToggle();
-  const [isEditOpen, toggleEdit] = useToggle();
+  const [newServiceName, setNewServiceName] = useInputChange();
   const cancelRef = useRef();
-  const name = 'Service Name';
+  const duplicateService = () => {
+    // TODO: API logic for duplicating
+    // TODO: navigate to the new service page
+    window.location = `/services/${serviceId}`;
+  };
   const deleteService = () => {
-    console.log('deleteService');
+    // TODO: API logic for deleting
+    window.location = `/services`;
   };
 
   return (
@@ -31,15 +40,18 @@ const Service = props => {
               <Button onClick={toggleDuplicate} marginRight={2}>
                 Duplicate
               </Button>
-              <Button onClick={toggleEdit} marginRight={2}>
-                Edit
-              </Button>
               <Button onClick={toggleDelete} variantColor="red">
                 Delete
               </Button>
             </Box>
             <Title>{name}</Title>
-            <Container>{JSON.stringify(data)}</Container>
+            <Container>
+              {/* TODO: link to actual service's organization */}
+              <Link to="/organizations">
+                <Text>Organization Name</Text>
+              </Link>
+              {JSON.stringify(data)}
+            </Container>
           </>
         )}
       </Box>
@@ -49,6 +61,28 @@ const Service = props => {
         isOpen={isDeleteOpen}
         onClose={toggleDelete}
         onConfirm={deleteService}
+      />
+      <FormModal
+        isOpen={isDuplicateOpen}
+        onClose={toggleDuplicate}
+        header={`Duplicate Service - ${name}`}
+        renderBody={() => (
+          <Input
+            onChange={setNewServiceName}
+            placeholder="Enter the new service's name"
+            value={newServiceName}
+          />
+        )}
+        renderFooter={() => (
+          <>
+            <Button onClick={duplicateService} variantColor="blue" mr={3}>
+              Duplicate Service
+            </Button>
+            <Button onClick={toggleDuplicate} variant="ghost">
+              Cancel
+            </Button>
+          </>
+        )}
       />
     </>
   );

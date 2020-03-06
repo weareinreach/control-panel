@@ -1,14 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, Heading, Text} from '@chakra-ui/core';
+import {Box, Heading, Text} from '@chakra-ui/core';
 
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import {Container, Title} from '../components/styles';
-import {useFetch} from '../utils/hooks';
+import {useAPIGet} from '../utils/hooks';
 
-const ServiceList = props => {
-  const {data, loading} = useFetch(`/services`);
+const Services = props => {
+  const {data, loading} = useAPIGet(`/services`);
 
   return (
     <Box padding={4}>
@@ -41,4 +41,4 @@ const ServiceList = props => {
   );
 };
 
-export default ServiceList;
+export default Services;

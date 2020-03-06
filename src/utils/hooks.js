@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 import {getAPIUrl} from './index';
 
-export const useFetch = path => {
+export const useAPIGet = path => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const url = `${getAPIUrl()}${path}`;

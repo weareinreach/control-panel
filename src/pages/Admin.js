@@ -5,11 +5,11 @@ import {Box, Button} from '@chakra-ui/core';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import {Container, Title} from '../components/styles';
-import {useFetch} from '../utils/hooks';
+import {useAPIGet} from '../utils/hooks';
 
-const UserList = props => {
+const Admin = props => {
   // TODO: use endpoint
-  // const {data, loading} = useFetch(`/services`);
+  // const {data, loading} = useAPIGet(`/users`);
   const {data, loading} = {};
 
   return (
@@ -20,10 +20,10 @@ const UserList = props => {
         <>
           <Box float="right">
             <Link to="/users/create">
-              <Button>Create User</Button>
+              <Button>New Manager</Button>
             </Link>
           </Box>
-          <Title>Users</Title>
+          <Title>Data Managers</Title>
           <Container>
             {data?.opportunities?.map((service, key) => {
               const servicePath = `/services/${service.id}`;
@@ -50,4 +50,4 @@ const UserList = props => {
   );
 };
 
-export default UserList;
+export default Admin;

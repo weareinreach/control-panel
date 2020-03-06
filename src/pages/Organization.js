@@ -1,31 +1,44 @@
-import React, {useRef, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useRef} from 'react';
 import {
   Box,
   Button,
   Heading,
+  Input,
   Link as ChakraLink,
   Stack,
   Text
 } from '@chakra-ui/core';
 
 import AlertDialog from '../components/AlertDialog';
+import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
-import {useFetch, useToggle} from '../utils/hooks';
+import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
 
 const Organization = props => {
   const orgId = props?.match?.params?.id;
   const urlPath = `/organization/${orgId}`;
-  const {data, loading} = useFetch(urlPath);
+  const {data, loading} = useAPIGet(urlPath);
   const [isDeleteOpen, toggleDelete] = useToggle();
   const [isDuplicateOpen, toggleDuplicate] = useToggle();
-  const [isEditOpen, toggleEdit] = useToggle();
+  const [isNewServiceOpen, toggleNewService] = useToggle();
+  const [newServiceName, setNewServiceName] = useInputChange();
+  const [newOrgName, setNewOrgName] = useInputChange();
   const cancelRef = useRef();
-  const deleteService = () => {
-    console.log('deleteService');
+  const createNewService = () => {
+    // TODO: API logic for creating
+    // TODO: navigate to the new service page
+    window.location = `/organizations/${orgId}`;
   };
-
+  const duplicateOrganization = () => {
+    // TODO: API logic for duplicating
+    // TODO: navigate to the new organization page
+    window.location = `/organizations/${orgId}`;
+  };
+  const deleteOrganization = () => {
+    // TODO: API logic for deleting
+    window.location = `/organizations`;
+  };
   const {
     comment_count,
     comments,
@@ -38,17 +51,17 @@ const Organization = props => {
     location,
     lon,
     name,
-    opportunity_aggregate_ratings,
-    opportunity_communitiy_properties,
-    opportunity_count,
-    opportunity_tags,
+    // opportunity_aggregate_ratings,
+    // opportunity_communitiy_properties,
+    // opportunity_count,
+    // opportunity_tags,
     phones,
     properties,
-    rating,
+    // rating,
     region,
-    resource_type,
-    schedule,
-    tags,
+    // resource_type,
+    // schedule,
+    // tags,
     updated_at,
     website
   } = data?.organization || {};
@@ -64,11 +77,11 @@ const Organization = props => {
           <>
             <Box float="right">
               <Box float="right">
+                <Button onClick={toggleNewService} marginRight={2}>
+                  New Service
+                </Button>
                 <Button onClick={toggleDuplicate} marginRight={2}>
                   Duplicate
-                </Button>
-                <Button onClick={toggleEdit} marginRight={2}>
-                  Edit
                 </Button>
                 <Button onClick={toggleDelete} variantColor="red">
                   Delete
@@ -131,7 +144,51 @@ const Organization = props => {
         header={`Delete Organization - ${name}`}
         isOpen={isDeleteOpen}
         onClose={toggleDelete}
-        onConfirm={deleteService}
+        onConfirm={deleteOrganization}
+      />
+      <FormModal
+        isOpen={isDuplicateOpen}
+        onClose={toggleDuplicate}
+        header={`Duplicate Organization - ${name}`}
+        renderBody={() => (
+          <Input
+            onChange={setNewOrgName}
+            placeholder="Enter the new organization's name"
+            value={newOrgName}
+          />
+        )}
+        renderFooter={() => (
+          <>
+            <Button onClick={duplicateOrganization} variantColor="blue" mr={3}>
+              Duplicate Service
+            </Button>
+            <Button onClick={toggleDuplicate} variant="ghost">
+              Cancel
+            </Button>
+          </>
+        )}
+      />
+      <FormModal
+        isOpen={isNewServiceOpen}
+        onClose={toggleNewService}
+        header={`New Service for ${name}`}
+        renderBody={() => (
+          <Input
+            onChange={setNewServiceName}
+            placeholder="Enter the new service's name"
+            value={newServiceName}
+          />
+        )}
+        renderFooter={() => (
+          <>
+            <Button onClick={createNewService} variantColor="blue" mr={3}>
+              Create Organization
+            </Button>
+            <Button onClick={toggleNewService} variant="ghost">
+              Cancel
+            </Button>
+          </>
+        )}
       />
     </>
   );

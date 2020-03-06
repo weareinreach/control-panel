@@ -1,3 +1,4 @@
+import _isEmpty from 'lodash/isEmpty';
 import React, {createContext, useEffect, useState} from 'react';
 import {
   BrowserRouter as Router,
@@ -7,27 +8,31 @@ import {
 } from 'react-router-dom';
 import {CSSReset, ThemeProvider} from '@chakra-ui/core';
 
+import Admin from './pages/Admin';
 import ErrorBoundary from './components/ErrorBoundary';
 import FormLogin from './components/FormLogin';
 import Header from './components/Header';
 import Loading from './components/Loading';
 import NotFound from './pages/NotFound';
 import Organization from './pages/Organization';
-import OrganizationList from './pages/OrganizationList';
+import Organizations from './pages/Organizations';
 import Service from './pages/Service';
-import ServiceList from './pages/ServiceList';
-import UserList from './pages/UserList';
+import Services from './pages/Services';
+import User from './pages/User';
 
 export const AppContext = createContext('app');
 
 const App = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const hasUser = user || true;
+  const hasUser = user && !_isEmpty(user);
 
-  // TODO: API logic here
+  // TODO: Add API logic for checking/loading the user
   useEffect(() => {
-    // setLoading(false);
+    const fakeUser = {email: 'user@email.com', isAdmin: true};
+
+    setUser(fakeUser);
+    setLoading(false);
   }, []);
 
   return (
@@ -35,7 +40,7 @@ const App = () => {
       <CSSReset />
       <AppContext.Provider value={{hasUser, loading, setLoading}}>
         <Router>
-          <Header hasUser={hasUser} />
+          <Header user={user} />
           <ErrorBoundary>
             {loading ? (
               <Loading />
@@ -51,16 +56,18 @@ const App = () => {
                     </>
                   )}
                 />
-                {!hasUser && <Redirect to="login" />}
-                <Route exact path="/" component={OrganizationList} />
+                {!hasUser && <Redirect to="/login" />}
+                <Route exact path="/" component={Organizations} />
+                <Route exact path="/organizations" component={Organizations} />
                 <Route
                   exact
                   path="/organizations/:id"
                   component={Organization}
                 />
-                <Route exact path="/services" component={ServiceList} />
+                <Route exact path="/services" component={Services} />
                 <Route exact path="/services/:id" component={Service} />
-                <Route exact path="/users" component={UserList} />
+                <Route exact path="/admin" component={Admin} />
+                <Route exact path="/managers/:id" component={User} />
                 <Route component={NotFound} />
               </Switch>
             )}

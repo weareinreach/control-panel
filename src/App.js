@@ -8,17 +8,16 @@ import {
 } from 'react-router-dom';
 import {CSSReset, ThemeProvider} from '@chakra-ui/core';
 
-import Admin from './pages/Admin';
 import ErrorBoundary from './components/ErrorBoundary';
 import FormLogin from './components/FormLogin';
 import Header from './components/Header';
 import Loading from './components/Loading';
+import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 import Organization from './pages/Organization';
 import Organizations from './pages/Organizations';
 import Service from './pages/Service';
 import Services from './pages/Services';
-import User from './pages/User';
 
 export const AppContext = createContext('app');
 
@@ -36,12 +35,12 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <CSSReset />
-      <AppContext.Provider value={{hasUser, loading, setLoading}}>
-        <Router>
-          <Header user={user} />
-          <ErrorBoundary>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <CSSReset />
+        <AppContext.Provider value={{hasUser, loading, setLoading}}>
+          <Router>
+            <Header user={user} />
             {loading ? (
               <Loading />
             ) : (
@@ -67,14 +66,13 @@ const App = () => {
                 <Route exact path="/services" component={Services} />
                 <Route exact path="/services/:id" component={Service} />
                 <Route exact path="/admin" component={Admin} />
-                <Route exact path="/managers/:id" component={User} />
                 <Route component={NotFound} />
               </Switch>
             )}
-          </ErrorBoundary>
-        </Router>
-      </AppContext.Provider>
-    </ThemeProvider>
+          </Router>
+        </AppContext.Provider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

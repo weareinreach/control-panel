@@ -9,7 +9,7 @@ import {
   Text
 } from '@chakra-ui/core';
 
-import AlertDialog from '../components/AlertDialog';
+import AlertModal from '../components/AlertModal';
 import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
@@ -18,24 +18,23 @@ import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
 const Organization = props => {
   const orgId = props?.match?.params?.id;
   const urlPath = `/organization/${orgId}`;
+  const [newOrgName, setNewOrgName] = useInputChange();
+  const [newServiceName, setNewServiceName] = useInputChange();
   const {data, loading} = useAPIGet(urlPath);
   const [isDeleteOpen, toggleDelete] = useToggle();
   const [isDuplicateOpen, toggleDuplicate] = useToggle();
   const [isNewServiceOpen, toggleNewService] = useToggle();
-  const [newServiceName, setNewServiceName] = useInputChange();
-  const [newOrgName, setNewOrgName] = useInputChange();
-  const cancelRef = useRef();
-  const createNewService = () => {
+  const handleCreateService = () => {
     // TODO: API logic for creating
     // TODO: navigate to the new service page
     window.location = `/organizations/${orgId}`;
   };
-  const duplicateOrganization = () => {
+  const handleOrganizationDelete = () => {
     // TODO: API logic for duplicating
     // TODO: navigate to the new organization page
     window.location = `/organizations/${orgId}`;
   };
-  const deleteOrganization = () => {
+  const handleOrganizationDuplicate = () => {
     // TODO: API logic for deleting
     window.location = `/organizations`;
   };
@@ -139,57 +138,36 @@ const Organization = props => {
           </>
         )}
       </Box>
-      <AlertDialog
-        dialogRef={cancelRef}
-        header={`Delete Organization - ${name}`}
+      <AlertModal
+        header={`Delete ${name}`}
         isOpen={isDeleteOpen}
         onClose={toggleDelete}
-        onConfirm={deleteOrganization}
+        onConfirm={handleOrganizationDelete}
       />
       <FormModal
         isOpen={isDuplicateOpen}
         onClose={toggleDuplicate}
-        header={`Duplicate Organization - ${name}`}
-        renderBody={() => (
-          <Input
-            onChange={setNewOrgName}
-            placeholder="Enter the new organization's name"
-            value={newOrgName}
-          />
-        )}
-        renderFooter={() => (
-          <>
-            <Button onClick={duplicateOrganization} variantColor="blue" mr={3}>
-              Duplicate Service
-            </Button>
-            <Button onClick={toggleDuplicate} variant="ghost">
-              Cancel
-            </Button>
-          </>
-        )}
-      />
+        onConfirm={handleOrganizationDuplicate}
+        header={`Duplicate ${name}`}
+      >
+        <Input
+          onChange={setNewOrgName}
+          placeholder="Enter the new organization's name"
+          value={newOrgName}
+        />
+      </FormModal>
       <FormModal
         isOpen={isNewServiceOpen}
         onClose={toggleNewService}
+        onConfirm={handleCreateService}
         header={`New Service for ${name}`}
-        renderBody={() => (
-          <Input
-            onChange={setNewServiceName}
-            placeholder="Enter the new service's name"
-            value={newServiceName}
-          />
-        )}
-        renderFooter={() => (
-          <>
-            <Button onClick={createNewService} variantColor="blue" mr={3}>
-              Create Organization
-            </Button>
-            <Button onClick={toggleNewService} variant="ghost">
-              Cancel
-            </Button>
-          </>
-        )}
-      />
+      >
+        <Input
+          onChange={setNewServiceName}
+          placeholder="Enter the new service's name"
+          value={newServiceName}
+        />
+      </FormModal>
     </>
   );
 };

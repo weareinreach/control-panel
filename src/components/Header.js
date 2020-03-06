@@ -1,13 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link as RRLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {
   Box,
   Button,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Link,
+  Link as ChakraLink,
   Menu,
   MenuButton,
   MenuItem,
@@ -16,6 +13,8 @@ import {
 } from '@chakra-ui/core';
 
 import FormModal from '../components/FormModal';
+import PasswordInput from '../components/PasswordInput';
+
 import {useInputChange, useToggle} from '../utils/hooks';
 
 const logOutUser = () => {
@@ -24,9 +23,8 @@ const logOutUser = () => {
 
 const Header = props => {
   const {user} = props;
-  const [isPasswordModalOpen, togglePasswordModal] = useToggle();
-  const [showPassword, toggleShowPassword] = useToggle();
   const [password, setPassword] = useInputChange();
+  const [isPasswordModalOpen, togglePasswordModal] = useToggle();
   const changePassword = () => {
     // TODO: API logic for changing the password
     if (password) {
@@ -41,23 +39,23 @@ const Header = props => {
           {user ? (
             <>
               <Box display="inline-block" width="calc(100% - 172px)">
-                <Link as={RRLink} to="/" mr={2}>
+                <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
                   Organizations
-                </Link>
-                <Link as={RRLink} to="/services" mr={2}>
+                </ChakraLink>
+                <ChakraLink as={Link} fontSize="xl" to="/services" mr={3}>
                   Services
-                </Link>
+                </ChakraLink>
                 {user?.isAdmin && (
-                  <Link as={RRLink} to="/admin" mr={2}>
+                  <ChakraLink as={Link} fontSize="xl" to="/admin">
                     Admin
-                  </Link>
+                  </ChakraLink>
                 )}
               </Box>
               <Menu>
                 <MenuButton
                   as={Button}
-                  backgroundColor="blue.400"
-                  _hover={{bg: 'blue.500'}}
+                  backgroundColor="blue.500"
+                  _hover={{bg: 'blue.400'}}
                   rightIcon="chevron-down"
                 >
                   {user?.email}
@@ -79,35 +77,14 @@ const Header = props => {
         header="Change Password"
         isOpen={isPasswordModalOpen}
         onClose={togglePasswordModal}
-        renderBody={() => (
-          <>
-            <InputGroup size="md">
-              <Input
-                pr="4.5rem"
-                type={showPassword ? 'text' : 'password'}
-                onChange={setPassword}
-                placeholder="Enter password"
-                value={password}
-              />
-              <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={toggleShowPassword}>
-                  {showPassword ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </>
-        )}
-        renderFooter={() => (
-          <>
-            <Button onClick={changePassword} variantColor="blue" mr={3}>
-              Change Password
-            </Button>
-            <Button onClick={togglePasswordModal} variant="ghost">
-              Cancel
-            </Button>
-          </>
-        )}
-      />
+        onConfirm={changePassword}
+      >
+        <PasswordInput
+          placeholder="Password"
+          onChange={setPassword}
+          value={password}
+        />
+      </FormModal>
     </>
   );
 };

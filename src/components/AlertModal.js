@@ -1,29 +1,30 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useRef} from 'react';
 import {
-  AlertDialog as ChakraAlertDialog,
+  AlertDialog,
   AlertDialogOverlay,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  Button
+  Button,
+  ModalCloseButton
 } from '@chakra-ui/core';
 
-const AlertDialog = props => {
-  const {dialogRef, header, isOpen, onClose, onConfirm} = props;
+const AlertModal = props => {
+  const {header, isOpen, onClose, onConfirm} = props;
+  const dialogRef = useRef();
 
   return (
-    <ChakraAlertDialog
+    <AlertDialog
       isOpen={isOpen}
       leastDestructiveRef={dialogRef}
       onClose={onClose}
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-          {header}
-        </AlertDialogHeader>
+        <AlertDialogHeader>{header}</AlertDialogHeader>
+        <ModalCloseButton />
         <AlertDialogBody>
           Are you sure? You can't undo this action afterwards.
         </AlertDialogBody>
@@ -36,11 +37,11 @@ const AlertDialog = props => {
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </ChakraAlertDialog>
+    </AlertDialog>
   );
 };
 
-AlertDialog.propTypes = {
+AlertModal.propTypes = {
   dialogRef: PropTypes.object,
   header: PropTypes.string,
   isOpen: PropTypes.bool,
@@ -48,4 +49,4 @@ AlertDialog.propTypes = {
   onConfirm: PropTypes.func
 };
 
-export default AlertDialog;
+export default AlertModal;

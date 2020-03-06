@@ -1,7 +1,8 @@
 import React from 'react';
 
 import {
-  Modal as ChakraModal,
+  Button,
+  Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
@@ -10,20 +11,27 @@ import {
   ModalFooter
 } from '@chakra-ui/core';
 
-const Modal = props => {
-  const {header, isOpen, onClose, renderBody, renderFooter} = props;
+const FormModal = props => {
+  const {children, header, isOpen, onClose, onConfirm} = props;
 
   return (
-    <ChakraModal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{header}</ModalHeader>
         <ModalCloseButton />
-        {renderBody && <ModalBody>{renderBody()}</ModalBody>}
-        {renderFooter && <ModalFooter>{renderFooter()}</ModalFooter>}
+        <ModalBody>{children}</ModalBody>
+        <ModalFooter>
+          <Button onClick={onClose} variant="ghost" mr={2}>
+            Cancel
+          </Button>
+          <Button onClick={onConfirm} variantColor="blue">
+            Confirm
+          </Button>
+        </ModalFooter>
       </ModalContent>
-    </ChakraModal>
+    </Modal>
   );
 };
 
-export default Modal;
+export default FormModal;

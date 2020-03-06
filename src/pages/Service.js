@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Input, Text} from '@chakra-ui/core';
 
-import AlertDialog from '../components/AlertDialog';
+import AlertModal from '../components/AlertModal';
 import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
@@ -15,18 +15,17 @@ const Service = props => {
   // const {data, loading} = useAPIGet(urlPath);
   const {data = {}, loading} = {};
   const {name = 'Service Name'} = data;
+  const [newServiceName, setNewServiceName] = useInputChange();
   const [isDeleteOpen, toggleDelete] = useToggle();
   const [isDuplicateOpen, toggleDuplicate] = useToggle();
-  const [newServiceName, setNewServiceName] = useInputChange();
-  const cancelRef = useRef();
-  const duplicateService = () => {
+  const handleServiceDelete = () => {
+    // TODO: API logic for deleting
+    window.location = `/services`;
+  };
+  const handleServiceDuplicate = () => {
     // TODO: API logic for duplicating
     // TODO: navigate to the new service page
     window.location = `/services/${serviceId}`;
-  };
-  const deleteService = () => {
-    // TODO: API logic for deleting
-    window.location = `/services`;
   };
 
   return (
@@ -55,35 +54,24 @@ const Service = props => {
           </>
         )}
       </Box>
-      <AlertDialog
-        dialogRef={cancelRef}
+      <AlertModal
         header={`Delete Service - ${name}`}
         isOpen={isDeleteOpen}
         onClose={toggleDelete}
-        onConfirm={deleteService}
+        onConfirm={handleServiceDelete}
       />
       <FormModal
         isOpen={isDuplicateOpen}
         onClose={toggleDuplicate}
-        header={`Duplicate Service - ${name}`}
-        renderBody={() => (
-          <Input
-            onChange={setNewServiceName}
-            placeholder="Enter the new service's name"
-            value={newServiceName}
-          />
-        )}
-        renderFooter={() => (
-          <>
-            <Button onClick={duplicateService} variantColor="blue" mr={3}>
-              Duplicate Service
-            </Button>
-            <Button onClick={toggleDuplicate} variant="ghost">
-              Cancel
-            </Button>
-          </>
-        )}
-      />
+        onConfirm={handleServiceDuplicate}
+        header={`Duplicate ${name}`}
+      >
+        <Input
+          onChange={setNewServiceName}
+          placeholder="Enter the new service's name"
+          value={newServiceName}
+        />
+      </FormModal>
     </>
   );
 };

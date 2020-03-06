@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, Flex, Heading, Input, Stack} from '@chakra-ui/core';
 
 import Alert from './Alert';
+import PasswordInput from './PasswordInput';
 import {STATE_FAIL, STATE_SAVING, STATE_SUCCESS} from '../utils/consts';
 import {useInputChange} from '../utils/hooks';
 
@@ -38,7 +39,7 @@ const Login = () => {
             />
           )}
           <Input placeholder="Email" onChange={setEmail} value={email} />
-          <Input
+          <PasswordInput
             placeholder="Password"
             onChange={setPassword}
             value={password}

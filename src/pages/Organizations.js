@@ -10,9 +10,9 @@ import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
 
 const Organizations = props => {
   const {data, loading} = useAPIGet(`/organizations`);
-  const [isNewOrgOpen, toggleNewOrg] = useToggle();
   const [newOrgName, setNewOrgName] = useInputChange();
-  const createNewOrg = () => {
+  const [isNewOrgOpen, toggleNewOrg] = useToggle();
+  const handleCreateOrganization = () => {
     // TODO: API logic for creating
     // TODO: navigate to the new org page
     window.location = `/organizations`;
@@ -48,25 +48,15 @@ const Organizations = props => {
       <FormModal
         isOpen={isNewOrgOpen}
         onClose={toggleNewOrg}
+        onConfirm={handleCreateOrganization}
         header="New Organization"
-        renderBody={() => (
-          <Input
-            onChange={setNewOrgName}
-            placeholder="Enter the new organization's name"
-            value={newOrgName}
-          />
-        )}
-        renderFooter={() => (
-          <>
-            <Button onClick={createNewOrg} variantColor="blue" mr={3}>
-              Create Organization
-            </Button>
-            <Button onClick={toggleNewOrg} variant="ghost">
-              Cancel
-            </Button>
-          </>
-        )}
-      />
+      >
+        <Input
+          onChange={setNewOrgName}
+          placeholder="Enter the new organization's name"
+          value={newOrgName}
+        />
+      </FormModal>
     </>
   );
 };

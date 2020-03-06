@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Box, Button, Input, Text} from '@chakra-ui/core';
+import {Box, Button, Input, Stack, Text} from '@chakra-ui/core';
 
+import AlertModal from '../components/AlertModal';
 import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
@@ -12,11 +13,10 @@ const Admin = props => {
   // const {data, loading} = useAPIGet(`/users`);
   const {data = {users: [{name: 'manager A'}]}, loading} = {};
   const [managerIndex, setManagerIndex] = useState();
-  const [newOrgName, setNewOrgName] = useInputChange();
   const [newServiceName, setNewServiceName] = useInputChange();
   const [isDeleteOpen, toggleDelete] = useToggle();
   const [isEditOpen, toggleEdit] = useToggle();
-  const [isNewServiceOpen, toggleNewService] = useToggle();
+  const [isNewManagerOpen, toggleNewManager] = useToggle();
   const selectedManager = data?.users?.[managerIndex];
   const openDeleteModal = index => {
     setManagerIndex(index);
@@ -38,11 +38,11 @@ const Admin = props => {
   };
   const handleDeleteManager = () => {
     // TODO: API logic for deleting
-    toggleDelete();
+    window.location.reload();
   };
   const handleEditManager = () => {
     // TODO: API logic for editing
-    toggleEdit();
+    window.location.reload();
   };
 
   return (
@@ -53,7 +53,7 @@ const Admin = props => {
         ) : (
           <>
             <Box float="right">
-              <Button onClick={handleCreateManager}>New Manager</Button>
+              <Button onClick={toggleNewManager}>New Manager</Button>
             </Box>
             <Title>Data Managers</Title>
             <Container>
@@ -76,10 +76,34 @@ const Admin = props => {
         )}
       </Box>
       <FormModal
+        header="New Data Manager"
+        isOpen={isNewManagerOpen}
+        onClose={toggleNewManager}
+        onConfirm={handleCreateManager}
+      >
+        <Stack paddingTop={4} spacing={4}>
+          <Input
+            onChange={setNewServiceName}
+            placeholder="Name"
+            value={newServiceName}
+          />
+          <Input
+            onChange={setNewServiceName}
+            placeholder="Email"
+            value={newServiceName}
+          />
+          <Input
+            onChange={setNewServiceName}
+            placeholder="Is Admin (make checkbox)"
+            value={newServiceName}
+          />
+        </Stack>
+      </FormModal>
+      <FormModal
+        header={`Edit Data Manager ${selectedManager?.name}`}
         isOpen={isEditOpen}
         onClose={closeEditModal}
         onConfirm={handleEditManager}
-        header={`Edit Data Manager ${selectedManager?.name}`}
       >
         <Input
           onChange={setNewServiceName}
@@ -87,18 +111,18 @@ const Admin = props => {
           value={newServiceName}
         />
       </FormModal>
-      <FormModal
+      <AlertModal
+        header={`Duplicate Data Manager ${selectedManager?.name}`}
         isOpen={isDeleteOpen}
         onClose={closeDeleteModal}
         onConfirm={handleDeleteManager}
-        header={`Duplicate Data Manager ${selectedManager?.name}`}
       >
         <Input
           onChange={setNewServiceName}
           placeholder="Edit Manager"
           value={newServiceName}
         />
-      </FormModal>
+      </AlertModal>
     </>
   );
 };

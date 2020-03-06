@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Input, Text} from '@chakra-ui/core';
 
@@ -61,10 +61,10 @@ const Service = props => {
         onConfirm={handleServiceDelete}
       />
       <FormModal
+        header={`Duplicate ${name}`}
         isOpen={isDuplicateOpen}
         onClose={toggleDuplicate}
         onConfirm={handleServiceDuplicate}
-        header={`Duplicate ${name}`}
       >
         <Input
           onChange={setNewServiceName}

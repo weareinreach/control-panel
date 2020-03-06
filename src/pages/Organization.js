@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -145,10 +145,10 @@ const Organization = props => {
         onConfirm={handleOrganizationDelete}
       />
       <FormModal
+        header={`Duplicate ${name}`}
         isOpen={isDuplicateOpen}
         onClose={toggleDuplicate}
         onConfirm={handleOrganizationDuplicate}
-        header={`Duplicate ${name}`}
       >
         <Input
           onChange={setNewOrgName}
@@ -157,10 +157,10 @@ const Organization = props => {
         />
       </FormModal>
       <FormModal
+        header={`New Service for ${name}`}
         isOpen={isNewServiceOpen}
         onClose={toggleNewService}
         onConfirm={handleCreateService}
-        header={`New Service for ${name}`}
       >
         <Input
           onChange={setNewServiceName}

@@ -1,50 +1,130 @@
-import React, {useContext, useState} from 'react';
-import {Box, Button, Input, Stack, Text} from '@chakra-ui/core';
+import React, {useContext} from 'react';
+import {Box, Button, Text} from '@chakra-ui/core';
 
 import {ContextApp} from '../components/ContextApp';
-// import FormModal from '../components/FormModal';
+import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import MessagePage from '../components/MessagePage';
 import Pagination from '../components/Pagination';
 import {Container, Title} from '../components/styles';
-import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
+
+const createForm = {
+  name: {
+    placeholder: "Enter the manager's name",
+    type: 'text'
+  },
+  email: {
+    placeholder: "Enter the manager's email",
+    type: 'text'
+  },
+  isAdmin: {
+    label: 'Admin Data Manager',
+    type: 'checkbox'
+  }
+};
 
 const Admin = props => {
   const {user} = useContext(ContextApp);
+  const {closeModal, openModal} = useContext(ContextFormModal);
   // TODO: use endpoint
   // const {data, loading} = useAPIGet(`/users`);
-  const {data = {users: [{name: 'manager A'}]}, loading} = {};
-  const [managerIndex, setManagerIndex] = useState();
-  const [newServiceName, setNewServiceName] = useInputChange();
-  const [isDeleteOpen, toggleDelete] = useToggle();
-  const [isEditOpen, toggleEdit] = useToggle();
-  const [isNewManagerOpen, toggleNewManager] = useToggle();
-  const selectedManager = data?.users?.[managerIndex];
-  const openDeleteModal = index => {
-    setManagerIndex(index);
-    toggleDelete();
+  const {
+    data = {
+      users: [{email: 'hello@aol.com', name: 'manager A', isAdmin: true}]
+    },
+    loading
+  } = {};
+  const openCreateModal = () =>
+    openModal({
+      form: createForm,
+      header: 'New Data Manager',
+      onClose: closeModal,
+      onConfirm: handleCreateManager
+    });
+  const openDeleteModal = managerIndex => {
+    console.log('managerIndex', managerIndex);
+
+    return openModal({
+      header: 'Delete Data Manager',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: handleDeleteManager(managerIndex)
+    });
   };
-  const closeDeleteModal = () => {
-    toggleDelete();
+  const openEditModal = managerIndex => {
+    const selectedManager = data?.users?.[managerIndex];
+
+    console.log('selectedManager', selectedManager);
+
+    const form = {
+      name: {
+        ...createForm.name,
+        initialValue: selectedManager?.name
+      },
+      email: {
+        ...createForm.email,
+        initialValue: selectedManager?.email
+      },
+      isAdmin: {
+        ...createForm.isAdmin,
+        initialValue: selectedManager?.isAdmin
+      }
+    };
+
+    console.log('managerIndex', managerIndex);
+    console.log('selectedManager', selectedManager);
+
+    return openModal({
+      form,
+      header: 'Edit Data Manager',
+      onClose: closeModal,
+      onConfirm: handleEditManager(managerIndex)
+    });
   };
-  const openEditModal = index => {
-    setManagerIndex(index);
-    toggleEdit();
-  };
-  const closeEditModal = () => {
-    toggleEdit();
-  };
-  const handleCreateManager = () => {
+  const handleCreateManager = ({setLoading, setSuccess, setFail, values}) => {
+    setLoading();
+
     // TODO: API logic for creating
-    window.location.reload();
+    console.log('handleCreateManager', values);
+
+    setTimeout(() => {
+      window.location.reload();
+      setSuccess();
+    }, 3000);
   };
-  const handleDeleteManager = () => {
+  const handleDeleteManager = selectedManagerIndex => ({
+    setLoading,
+    setSuccess,
+    setFail,
+    values
+  }) => {
+    setLoading();
+
     // TODO: API logic for deleting
-    window.location.reload();
+    console.log('selectedManagerIndex', selectedManagerIndex);
+    console.log('handleDeleteManager', values);
+
+    setTimeout(() => {
+      window.location.reload();
+      setSuccess();
+    }, 3000);
   };
-  const handleEditManager = () => {
+  const handleEditManager = selectedManagerIndex => ({
+    setLoading,
+    setSuccess,
+    setFail,
+    values
+  }) => {
+    setLoading();
+
     // TODO: API logic for editing
-    window.location.reload();
+    console.log('selectedManagerIndex', selectedManagerIndex);
+    console.log('handleEditManager', values);
+
+    setTimeout(() => {
+      window.location.reload();
+      setSuccess();
+    }, 3000);
   };
 
   if (!user?.isAdmin) {
@@ -57,84 +137,34 @@ const Admin = props => {
   }
 
   return (
-    <>
-      <Box padding={4}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <Box float="right">
-              <Button onClick={toggleNewManager}>New Manager</Button>
-            </Box>
-            <Title>Data Managers</Title>
-            <Container>
-              {data?.users?.map((user, key) => {
-                return (
-                  <div key={key}>
-                    <Text display="inline" mr={4}>
-                      {user.name}
-                    </Text>
-                    <Button onClick={() => openEditModal(key)} mr={2}>
-                      Edit
-                    </Button>
-                    <Button onClick={() => openDeleteModal(key)}>Delete</Button>
-                  </div>
-                );
-              })}
-            </Container>
-            <Pagination />
-          </>
-        )}
-      </Box>
-      {/* <FormModal
-        header="New Data Manager"
-        isOpen={isNewManagerOpen}
-        onClose={toggleNewManager}
-        onConfirm={handleCreateManager}
-      >
-        <Stack paddingTop={4} spacing={4}>
-          <Input
-            onChange={setNewServiceName}
-            placeholder="Name"
-            value={newServiceName}
-          />
-          <Input
-            onChange={setNewServiceName}
-            placeholder="Email"
-            value={newServiceName}
-          />
-          <Input
-            onChange={setNewServiceName}
-            placeholder="Is Admin (make checkbox)"
-            value={newServiceName}
-          />
-        </Stack>
-      </FormModal> */}
-      {/* <FormModal
-        header={`Edit Data Manager ${selectedManager?.name}`}
-        isOpen={isEditOpen}
-        onClose={closeEditModal}
-        onConfirm={handleEditManager}
-      >
-        <Input
-          onChange={setNewServiceName}
-          placeholder="Edit Manager"
-          value={newServiceName}
-        />
-      </FormModal>
-      <AlertModal
-        header={`Duplicate Data Manager ${selectedManager?.name}`}
-        isOpen={isDeleteOpen}
-        onClose={closeDeleteModal}
-        onConfirm={handleDeleteManager}
-      >
-        <Input
-          onChange={setNewServiceName}
-          placeholder="Edit Manager"
-          value={newServiceName}
-        />
-      </AlertModal> */}
-    </>
+    <Box padding={4}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Box float="right">
+            <Button onClick={openCreateModal}>New Manager</Button>
+          </Box>
+          <Title>Data Managers</Title>
+          <Container>
+            {data?.users?.map((user, key) => {
+              return (
+                <div key={key}>
+                  <Text display="inline" mr={4}>
+                    {user.name}
+                  </Text>
+                  <Button onClick={() => openEditModal(key)} mr={2}>
+                    Edit
+                  </Button>
+                  <Button onClick={() => openDeleteModal(key)}>Delete</Button>
+                </div>
+              );
+            })}
+          </Container>
+          <Pagination />
+        </>
+      )}
+    </Box>
   );
 };
 

@@ -19,7 +19,7 @@ const Login = () => {
 
     setTimeout(() => {
       setLoginState(STATE_SUCCESS);
-    }, 5000);
+    }, 3000);
   };
 
   return (

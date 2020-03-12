@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, Input, Text} from '@chakra-ui/core';
+import {Box, Button, Text} from '@chakra-ui/core';
 
-import FormModal from '../components/FormModal';
+import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
-import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
+import {useAPIGet} from '../utils/hooks';
+
+const duplicateForm = {
+  name: {
+    placeholder: "Enter the new service's name",
+    type: 'text'
+  }
+};
 
 const Service = props => {
+  const {closeModal, openModal} = useContext(ContextFormModal);
   const serviceId = props?.match?.params?.id;
   const urlPath = `/services/${serviceId}`;
   const {data, loading} = useAPIGet(urlPath);
@@ -37,66 +45,76 @@ const Service = props => {
     // updated_at,
     // website
   } = data?.service || {};
-  const [newServiceName, setNewServiceName] = useInputChange();
-  const [isDeleteOpen, toggleDelete] = useToggle();
-  const [isDuplicateOpen, toggleDuplicate] = useToggle();
-  const handleServiceDelete = () => {
+  const openDeleteModal = () =>
+    openModal({
+      header: `Delete Service - ${name}`,
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: handleServiceDelete
+    });
+  const openDuplicateModal = () =>
+    openModal({
+      form: duplicateForm,
+      header: `Duplicate ${name}`,
+      onClose: closeModal,
+      onConfirm: handleServiceDuplicate
+    });
+  const handleServiceDelete = ({setLoading, setSuccess, setFail}) => {
+    setLoading();
+
     // TODO: API logic for deleting
-    window.location = `/services`;
+
+    setTimeout(() => {
+      // TODO: navigate to the home services page
+      // window.location = `/services/${serviceId}`;
+      setSuccess();
+      // window.location = `/services`;
+    }, 3000);
   };
-  const handleServiceDuplicate = () => {
+  const handleServiceDuplicate = ({
+    setLoading,
+    setSuccess,
+    setFail,
+    values
+  }) => {
+    setLoading();
+
     // TODO: API logic for duplicating
-    // TODO: navigate to the new service page
-    window.location = `/services/${serviceId}`;
+    console.log('handleServiceDuplicate', values);
+
+    setTimeout(() => {
+      // TODO: navigate to the new service page
+      // window.location = `/services/${serviceId}`;
+      setSuccess();
+    }, 3000);
   };
 
   return (
-    <>
-      <Box padding={4}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <Box float="right">
-              <Button onClick={toggleDuplicate} marginRight={2}>
-                Duplicate
-              </Button>
-              <Button onClick={toggleDelete} variantColor="red">
-                Delete
-              </Button>
-            </Box>
-            <Title>{name}</Title>
-            <Text>{description}</Text>
-            <Container>
-              {/* TODO: link to actual service's organization */}
-              <Link to="/organizations">
-                <Text>Organization Name</Text>
-              </Link>
-              {JSON.stringify(data)}
-            </Container>
-          </>
-        )}
-      </Box>
-      <FormModal
-        header={`Delete Service - ${name}`}
-        isAlert
-        isOpen={isDeleteOpen}
-        onClose={toggleDelete}
-        onConfirm={handleServiceDelete}
-      />
-      <FormModal
-        header={`Duplicate ${name}`}
-        isOpen={isDuplicateOpen}
-        onClose={toggleDuplicate}
-        onConfirm={handleServiceDuplicate}
-      >
-        <Input
-          onChange={setNewServiceName}
-          placeholder="Enter the new service's name"
-          value={newServiceName}
-        />
-      </FormModal>
-    </>
+    <Box padding={4}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Box float="right">
+            <Button onClick={openDuplicateModal} marginRight={2}>
+              Duplicate
+            </Button>
+            <Button onClick={openDeleteModal} variantColor="red">
+              Delete
+            </Button>
+          </Box>
+          <Title>{name}</Title>
+          <Text>{description}</Text>
+          <Container>
+            {/* TODO: link to actual service's organization */}
+            <Link to="/organizations">
+              <Text>Organization Name</Text>
+            </Link>
+            {JSON.stringify(data)}
+          </Container>
+        </>
+      )}
+    </Box>
   );
 };
 

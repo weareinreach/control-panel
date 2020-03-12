@@ -3,6 +3,7 @@ import _reduce from 'lodash/reduce';
 import React, {useState} from 'react';
 import {
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -14,10 +15,12 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Stack
+  Stack,
+  Text
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
+import PasswordInput from './PasswordInput';
 
 /**
  * TODO: move this code to utils.js
@@ -27,18 +30,25 @@ const STATE_IN_PROGRESS = 'IN_PROGRESS';
 const STATE_SUCCESS = 'SUCCESS';
 
 const initialValueDict = {
+  checkbox: false,
   password: '',
   text: ''
 };
 
-const buildForm = form => {
+const buildForm = (form = {}) => {
   return _reduce(
     form,
     (values, {initialValue, ...inputInfo}, key) => {
-      console.log('values', values);
+      values.initialValues[key] = initialValue || '';
 
-      values.initialValues[key] =
-        initialValue || initialValueDict?.[inputInfo?.type] || '';
+      // Apply the defaut if we still don't have a value
+      if (
+        typeof values.initialValues[key] === 'undefined' &&
+        typeof initialValueDict?.[inputInfo?.type] !== 'undefined'
+      ) {
+        values.initialValues[key] = initialValueDict?.[inputInfo?.type];
+      }
+
       values.inputs.push({...inputInfo, key});
 
       return values;
@@ -48,7 +58,7 @@ const buildForm = form => {
 };
 
 const FormModal = props => {
-  const {form, header, isOpen, onClose, onConfirm} = props;
+  const {form, header, isAlert, isOpen, onClose, onConfirm} = props;
   const [status, setStatus] = useState();
   const setFail = () => setStatus(STATE_ERROR);
   const setLoading = () => setStatus(STATE_IN_PROGRESS);
@@ -66,39 +76,69 @@ const FormModal = props => {
         <ModalHeader>{header}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack spacing={4}>
-            {status === STATE_SUCCESS && (
-              <Alert
-                description="Redirecting to the portal"
-                title="Success."
-                type="success"
-              />
-            )}
-            {status === STATE_ERROR && (
-              <Alert
-                description="Please try again."
-                title="Unable to login"
-                type="error"
-              />
-            )}
-            {inputs?.map(input => {
-              const key = input?.key;
+          {inputs && (
+            <Stack spacing={4}>
+              {status === STATE_SUCCESS && (
+                <Alert title="Success." type="success" />
+              )}
+              {status === STATE_ERROR && (
+                <Alert
+                  description="Please try again."
+                  title="Unable to login"
+                  type="error"
+                />
+              )}
+              {inputs?.map(input => {
+                const key = input?.key;
+                const label = input?.label;
+                let InputComponent = null;
+                let isCheckBox = false;
 
-              return (
-                <FormControl
-                  isInvalid={formik?.errors[key] && formik?.touched[key]}
-                >
-                  <FormLabel htmlFor={key}>{key}</FormLabel>
-                  <Input
-                    {...(formik?.getFieldProps(key) || {})}
-                    id={key}
-                    placeholder={input?.placeholder}
-                  />
-                  <FormErrorMessage>{formik?.errors[key]}</FormErrorMessage>
-                </FormControl>
-              );
-            })}
-          </Stack>
+                switch (input?.type) {
+                  case 'checkbox':
+                    isCheckBox = true;
+                    InputComponent = Checkbox;
+                    break;
+                  case 'password':
+                    InputComponent = PasswordInput;
+                    break;
+                  default:
+                    InputComponent = Input;
+                }
+
+                const inputProps = {
+                  ...(formik?.getFieldProps(key) || {}),
+                  id: key,
+                  placeholder: input?.placeholder
+                };
+
+                return (
+                  <FormControl
+                    key={key}
+                    isInvalid={formik?.errors[key] && formik?.touched[key]}
+                  >
+                    {isCheckBox ? (
+                      <InputComponent
+                        {...inputProps}
+                        isChecked={inputProps.value}
+                      >
+                        {label}
+                      </InputComponent>
+                    ) : (
+                      <>
+                        {label && <FormLabel htmlFor={key}>{label}</FormLabel>}
+                        <InputComponent {...inputProps} />
+                      </>
+                    )}
+                    <FormErrorMessage>{formik?.errors[key]}</FormErrorMessage>
+                  </FormControl>
+                );
+              })}
+            </Stack>
+          )}
+          {isAlert && (
+            <Text>Are you sure? You can't undo this action afterwards.</Text>
+          )}
         </ModalBody>
         <ModalFooter>
           <Button disabled={isLoading} onClick={onClose} variant="ghost" mr={2}>
@@ -108,7 +148,7 @@ const FormModal = props => {
             isLoading={isLoading}
             onClick={formik.handleSubmit}
             loadingText="Waiting..."
-            variantColor="blue"
+            variantColor={isAlert ? 'red' : 'blue'}
           >
             Confirm
           </Button>

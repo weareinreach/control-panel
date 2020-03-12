@@ -1,41 +1,102 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   Box,
   Button,
   Heading,
-  Input,
   Link as ChakraLink,
   Stack,
   Text
 } from '@chakra-ui/core';
 
-import FormModal from '../components/FormModal';
+import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
-import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
+import {useAPIGet} from '../utils/hooks';
+
+const createForm = {
+  name: {
+    placeholder: "Enter the new service's name",
+    type: 'text'
+  }
+};
+
+const duplicateForm = {
+  name: {
+    placeholder: "Enter the new organization's name",
+    type: 'text'
+  }
+};
 
 const Organization = props => {
+  const {closeModal, openModal} = useContext(ContextFormModal);
   const orgId = props?.match?.params?.id;
   const urlPath = `/organization/${orgId}`;
-  const [newOrgName, setNewOrgName] = useInputChange();
-  const [newServiceName, setNewServiceName] = useInputChange();
   const {data, loading} = useAPIGet(urlPath);
-  const [isDeleteOpen, toggleDelete] = useToggle();
-  const [isDuplicateOpen, toggleDuplicate] = useToggle();
-  const [isNewServiceOpen, toggleNewService] = useToggle();
-  const handleCreateService = () => {
+  const openCreateModal = () =>
+    openModal({
+      form: createForm,
+      header: `New Service for ${name}`,
+      onClose: closeModal,
+      onConfirm: handleCreateService
+    });
+  const openDeleteModal = () =>
+    openModal({
+      header: `Delete ${name}`,
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: handleOrganizationDelete
+    });
+  const openDuplicateModal = () =>
+    openModal({
+      form: duplicateForm,
+      header: `Duplicate ${name}`,
+      onClose: closeModal,
+      onConfirm: handleOrganizationDuplicate
+    });
+  const handleCreateService = ({setLoading, setSuccess, setFail, values}) => {
+    setLoading();
+
     // TODO: API logic for creating
-    // TODO: navigate to the new service page
-    window.location = `/organizations/${orgId}`;
+    console.log('handleCreateService', values);
+
+    setTimeout(() => {
+      // TODO: navigate to the new service page
+      window.location = `/organizations/${orgId}`;
+      setSuccess();
+    }, 3000);
   };
-  const handleOrganizationDelete = () => {
+  const handleOrganizationDelete = ({
+    setLoading,
+    setSuccess,
+    setFail,
+    values
+  }) => {
+    setLoading();
+
     // TODO: API logic for duplicating
-    // TODO: navigate to the new organization page
-    window.location = `/organizations/${orgId}`;
+    console.log('handleOrganizationDelete', values);
+
+    setTimeout(() => {
+      // TODO: navigate to the new organization page
+      window.location = `/organizations/${orgId}`;
+      setSuccess();
+    }, 3000);
   };
-  const handleOrganizationDuplicate = () => {
+  const handleOrganizationDuplicate = ({
+    setLoading,
+    setSuccess,
+    setFail,
+    values
+  }) => {
+    setLoading();
+
     // TODO: API logic for deleting
-    window.location = `/organizations`;
+    console.log('handleOrganizationDuplicate', values);
+
+    setTimeout(() => {
+      window.location = `/organizations`;
+      setSuccess();
+    }, 3000);
   };
   const {
     comment_count,
@@ -65,108 +126,75 @@ const Organization = props => {
   } = data?.organization || {};
 
   return (
-    <>
-      <Box padding={4}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
+    <Box padding={4}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Box float="right">
             <Box float="right">
-              <Box float="right">
-                <Button onClick={toggleNewService} marginRight={2}>
-                  New Service
-                </Button>
-                <Button onClick={toggleDuplicate} marginRight={2}>
-                  Duplicate
-                </Button>
-                <Button onClick={toggleDelete} variantColor="red">
-                  Delete
-                </Button>
-              </Box>
+              <Button onClick={openCreateModal} marginRight={2}>
+                New Service
+              </Button>
+              <Button onClick={openDuplicateModal} marginRight={2}>
+                Duplicate
+              </Button>
+              <Button onClick={openDeleteModal} variantColor="red">
+                Delete
+              </Button>
             </Box>
-            <Title>{name}</Title>
-            <Stack marginTop={6} spacing={4}>
-              <Container>
-                <Text>ID {id}</Text>
-                <Text>Region {region}</Text>
-                <Text>
-                  Website{' '}
-                  <ChakraLink isExternal href={website}>
-                    {website}
-                  </ChakraLink>
-                </Text>
-                <Text>Description {description}</Text>
-                <Text>Is Closed {is_closed}</Text>
-                <Text>Last Verified {last_verified}</Text>
-                <Text>Updated At {updated_at}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Opportunities</Heading>
-                <Text>tk</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Properties</Heading>
-                <Text>properties {JSON.stringify(properties)}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Locations</Heading>
-                <Text>Loc {JSON.stringify(location)}</Text>
-                <Text>Lat {lat}</Text>
-                <Text>Lon {lon}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Phones</Heading>
-                <Text>phones {JSON.stringify(phones)}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Emails</Heading>
-                <Text>emails {JSON.stringify(emails)}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Comments</Heading>
-                <Text>Comments {JSON.stringify(comments)}</Text>
-                <Text>Comment Count {comment_count}</Text>
-              </Container>
-              <Container>
-                <Heading fontSize="m">Translations</Heading>
-                <Text>tk</Text>
-              </Container>
-            </Stack>
-          </>
-        )}
-      </Box>
-      <FormModal
-        header={`Delete ${name}`}
-        isAlert
-        isOpen={isDeleteOpen}
-        onClose={toggleDelete}
-        onConfirm={handleOrganizationDelete}
-      />
-      <FormModal
-        header={`Duplicate ${name}`}
-        isOpen={isDuplicateOpen}
-        onClose={toggleDuplicate}
-        onConfirm={handleOrganizationDuplicate}
-      >
-        <Input
-          onChange={setNewOrgName}
-          placeholder="Enter the new organization's name"
-          value={newOrgName}
-        />
-      </FormModal>
-      <FormModal
-        header={`New Service for ${name}`}
-        isOpen={isNewServiceOpen}
-        onClose={toggleNewService}
-        onConfirm={handleCreateService}
-      >
-        <Input
-          onChange={setNewServiceName}
-          placeholder="Enter the new service's name"
-          value={newServiceName}
-        />
-      </FormModal>
-    </>
+          </Box>
+          <Title>{name}</Title>
+          <Stack marginTop={6} spacing={4}>
+            <Container>
+              <Text>ID {id}</Text>
+              <Text>Region {region}</Text>
+              <Text>
+                Website{' '}
+                <ChakraLink isExternal href={website}>
+                  {website}
+                </ChakraLink>
+              </Text>
+              <Text>Description {description}</Text>
+              <Text>Is Closed {is_closed}</Text>
+              <Text>Last Verified {last_verified}</Text>
+              <Text>Updated At {updated_at}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Opportunities</Heading>
+              <Text>tk</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Properties</Heading>
+              <Text>properties {JSON.stringify(properties)}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Locations</Heading>
+              <Text>Loc {JSON.stringify(location)}</Text>
+              <Text>Lat {lat}</Text>
+              <Text>Lon {lon}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Phones</Heading>
+              <Text>phones {JSON.stringify(phones)}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Emails</Heading>
+              <Text>emails {JSON.stringify(emails)}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Comments</Heading>
+              <Text>Comments {JSON.stringify(comments)}</Text>
+              <Text>Comment Count {comment_count}</Text>
+            </Container>
+            <Container>
+              <Heading fontSize="m">Translations</Heading>
+              <Text>tk</Text>
+            </Container>
+          </Stack>
+        </>
+      )}
+    </Box>
   );
 };
 

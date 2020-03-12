@@ -15,6 +15,7 @@ const PasswordInput = props => {
         onChange={onChange}
         placeholder={placeholder || 'Enter password'}
         value={value}
+        {...rest}
       />
       <InputRightElement width="4.5rem">
         <Button h="1.75rem" size="sm" onClick={toggleShowPassword}>

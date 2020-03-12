@@ -13,80 +13,82 @@ import {
 } from '@chakra-ui/core';
 
 import {ContextApp} from './ContextApp';
-import FormModal from './FormModal';
-import PasswordInput from './PasswordInput';
-
-import {useInputChange, useToggle} from '../utils/hooks';
+import {ContextFormModal} from './ContextFormModal';
 
 const logOutUser = () => {
   window.location = '/login';
 };
 
+const passwordForm = {
+  password: {
+    placeholder: 'Enter your new password',
+    type: 'password'
+  }
+};
+
 const Header = props => {
   const {hasUser, user} = useContext(ContextApp);
-  const [password, setPassword] = useInputChange();
-  const [isPasswordModalOpen, togglePasswordModal] = useToggle();
-  const changePassword = () => {
-    // TODO: API logic for changing the password
-    if (password) {
-      window.location.reload();
-    }
+  const {closeModal, openModal} = useContext(ContextFormModal);
+  const openPasswordModal = () =>
+    openModal({
+      form: passwordForm,
+      header: `Change Password`,
+      onClose: closeModal,
+      onConfirm: handlePasswordChange
+    });
+  const handlePasswordChange = ({setLoading, setSuccess, setFail, values}) => {
+    setLoading();
+
+    // TODO: API logic for duplicating
+    console.log('handlePasswordChange', values);
+
+    setTimeout(() => {
+      setSuccess();
+
+      if (values?.password) {
+        window.location.reload();
+      }
+    }, 3000);
   };
 
   return (
-    <>
-      <header>
-        <Box backgroundColor="blue.300" width="100%" padding={4} color="white">
-          {hasUser ? (
-            <>
-              <Box display="inline-block" width="calc(100% - 172px)">
-                <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
-                  Organizations
+    <header>
+      <Box backgroundColor="blue.300" width="100%" padding={4} color="white">
+        {hasUser ? (
+          <>
+            <Box display="inline-block" width="calc(100% - 172px)">
+              <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
+                Organizations
+              </ChakraLink>
+              <ChakraLink as={Link} fontSize="xl" to="/services" mr={3}>
+                Services
+              </ChakraLink>
+              {user?.isAdmin && (
+                <ChakraLink as={Link} fontSize="xl" to="/admin">
+                  Admin
                 </ChakraLink>
-                <ChakraLink as={Link} fontSize="xl" to="/services" mr={3}>
-                  Services
-                </ChakraLink>
-                {user?.isAdmin && (
-                  <ChakraLink as={Link} fontSize="xl" to="/admin">
-                    Admin
-                  </ChakraLink>
-                )}
-              </Box>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  backgroundColor="blue.500"
-                  _hover={{bg: 'blue.400'}}
-                  rightIcon="chevron-down"
-                >
-                  {user?.email}
-                </MenuButton>
-                <MenuList color="black">
-                  <MenuItem onClick={togglePasswordModal}>
-                    Change Password
-                  </MenuItem>
-                  <MenuItem onClick={logOutUser}>Log Out</MenuItem>
-                </MenuList>
-              </Menu>
-            </>
-          ) : (
-            <Text>Login</Text>
-          )}
-        </Box>
-      </header>
-      <FormModal
-        header="Change Password"
-        isOpen={isPasswordModalOpen}
-        onClose={togglePasswordModal}
-        onConfirm={changePassword}
-      >
-        <PasswordInput
-          placeholder="Password"
-          onChange={setPassword}
-          value={password}
-        />
-      </FormModal>
-    </>
+              )}
+            </Box>
+            <Menu>
+              <MenuButton
+                as={Button}
+                backgroundColor="blue.500"
+                _hover={{bg: 'blue.400'}}
+                rightIcon="chevron-down"
+              >
+                {user?.email}
+              </MenuButton>
+              <MenuList color="black">
+                <MenuItem onClick={openPasswordModal}>Change Password</MenuItem>
+                <MenuItem onClick={logOutUser}>Log Out</MenuItem>
+              </MenuList>
+            </Menu>
+          </>
+        ) : (
+          <Text>Login</Text>
+        )}
+      </Box>
+    </header>
   );
 };
 

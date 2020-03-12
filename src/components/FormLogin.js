@@ -3,8 +3,11 @@ import {Box, Button, Flex, Heading, Input, Stack} from '@chakra-ui/core';
 
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
-import {STATE_FAIL, STATE_SAVING, STATE_SUCCESS} from '../utils/consts';
 import {useInputChange} from '../utils/hooks';
+
+const STATE_ERROR = 'ERROR';
+const STATE_IN_PROGRESS = 'IN_PROGRESS';
+const STATE_SUCCESS = 'SUCCESS';
 
 const Login = () => {
   const [email, setEmail] = useInputChange('');
@@ -12,7 +15,7 @@ const Login = () => {
   const [loginState, setLoginState] = useState('');
   const loginUser = () => {
     // TODO: Logic for checking credentials and saving a cookie
-    setLoginState(STATE_SAVING);
+    setLoginState(STATE_IN_PROGRESS);
 
     setTimeout(() => {
       setLoginState(STATE_SUCCESS);
@@ -31,7 +34,7 @@ const Login = () => {
               type="success"
             />
           )}
-          {loginState === STATE_FAIL && (
+          {loginState === STATE_ERROR && (
             <Alert
               description="Please try again."
               title="Unable to login"
@@ -44,13 +47,14 @@ const Login = () => {
             onChange={setPassword}
             value={password}
           />
-          {loginState === STATE_SAVING ? (
-            <Button isLoading loadingText="Logging" variant="outline">
-              Submit
-            </Button>
-          ) : (
-            <Button onClick={loginUser}>Login</Button>
-          )}
+          <Button
+            isLoading={loginState === STATE_IN_PROGRESS}
+            onClick={loginUser}
+            loadingText="Logging..."
+            variantColor="blue"
+          >
+            Submit
+          </Button>
         </Stack>
       </Box>
     </Flex>

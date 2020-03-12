@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import MessagePage from './MessagePage';
+
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +20,7 @@ export default class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <MessagePage title="Uh Oh." message="Something went wrong." />;
     }
 
     return this.props.children;

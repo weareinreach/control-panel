@@ -9,7 +9,6 @@ import {
   Text
 } from '@chakra-ui/core';
 
-import AlertModal from '../components/AlertModal';
 import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
 import {Container, Title} from '../components/styles';
@@ -64,8 +63,6 @@ const Organization = props => {
     updated_at,
     website
   } = data?.organization || {};
-
-  console.log('data', JSON.stringify(data?.organization));
 
   return (
     <>
@@ -138,8 +135,9 @@ const Organization = props => {
           </>
         )}
       </Box>
-      <AlertModal
+      <FormModal
         header={`Delete ${name}`}
+        isAlert
         isOpen={isDeleteOpen}
         onClose={toggleDelete}
         onConfirm={handleOrganizationDelete}

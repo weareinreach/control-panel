@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Box, Button, Input, Stack, Text} from '@chakra-ui/core';
 
-import AlertModal from '../components/AlertModal';
-import FormModal from '../components/FormModal';
+import {ContextApp} from '../components/ContextApp';
+// import FormModal from '../components/FormModal';
 import Loading from '../components/Loading';
+import MessagePage from '../components/MessagePage';
 import Pagination from '../components/Pagination';
 import {Container, Title} from '../components/styles';
 import {useAPIGet, useInputChange, useToggle} from '../utils/hooks';
 
 const Admin = props => {
+  const {user} = useContext(ContextApp);
   // TODO: use endpoint
   // const {data, loading} = useAPIGet(`/users`);
   const {data = {users: [{name: 'manager A'}]}, loading} = {};
@@ -45,6 +47,15 @@ const Admin = props => {
     window.location.reload();
   };
 
+  if (!user?.isAdmin) {
+    return (
+      <MessagePage
+        title="Unauthorized"
+        message="You don't have permission to view this page."
+      />
+    );
+  }
+
   return (
     <>
       <Box padding={4}>
@@ -75,7 +86,7 @@ const Admin = props => {
           </>
         )}
       </Box>
-      <FormModal
+      {/* <FormModal
         header="New Data Manager"
         isOpen={isNewManagerOpen}
         onClose={toggleNewManager}
@@ -98,8 +109,8 @@ const Admin = props => {
             value={newServiceName}
           />
         </Stack>
-      </FormModal>
-      <FormModal
+      </FormModal> */}
+      {/* <FormModal
         header={`Edit Data Manager ${selectedManager?.name}`}
         isOpen={isEditOpen}
         onClose={closeEditModal}
@@ -122,7 +133,7 @@ const Admin = props => {
           placeholder="Edit Manager"
           value={newServiceName}
         />
-      </AlertModal>
+      </AlertModal> */}
     </>
   );
 };

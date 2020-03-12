@@ -30,7 +30,7 @@ const Organizations = props => {
             </Box>
             <Title>Organizations</Title>
             <Container>
-              {data?.organization?.map((org, key) => {
+              {data?.organizations?.map((org, key) => {
                 return (
                   <div key={key}>
                     <Link to={`/organizations/${org.id}`}>

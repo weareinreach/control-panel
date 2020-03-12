@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {
   Box,
@@ -12,8 +12,9 @@ import {
   Text
 } from '@chakra-ui/core';
 
-import FormModal from '../components/FormModal';
-import PasswordInput from '../components/PasswordInput';
+import {ContextApp} from './ContextApp';
+import FormModal from './FormModal';
+import PasswordInput from './PasswordInput';
 
 import {useInputChange, useToggle} from '../utils/hooks';
 
@@ -22,7 +23,7 @@ const logOutUser = () => {
 };
 
 const Header = props => {
-  const {user} = props;
+  const {hasUser, user} = useContext(ContextApp);
   const [password, setPassword] = useInputChange();
   const [isPasswordModalOpen, togglePasswordModal] = useToggle();
   const changePassword = () => {
@@ -36,7 +37,7 @@ const Header = props => {
     <>
       <header>
         <Box backgroundColor="blue.300" width="100%" padding={4} color="white">
-          {user ? (
+          {hasUser ? (
             <>
               <Box display="inline-block" width="calc(100% - 172px)">
                 <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>

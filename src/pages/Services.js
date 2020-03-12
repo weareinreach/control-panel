@@ -18,7 +18,7 @@ const Services = props => {
         <>
           <Title>Services</Title>
           <Container>
-            {data?.opportunities?.map((service, key) => {
+            {data?.services?.map((service, key) => {
               const servicePath = `/services/${service.id}`;
 
               return (

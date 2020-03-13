@@ -5,7 +5,6 @@ import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import MessagePage from '../components/MessagePage';
-import Pagination from '../components/Pagination';
 import {Container, Title} from '../components/styles';
 
 const createForm = {
@@ -146,6 +145,7 @@ const Admin = props => {
             <Button onClick={openCreateModal}>New Manager</Button>
           </Box>
           <Title>Data Managers</Title>
+          {/* Table headers: name, email, isAdmin, actions=[edit, delete] */}
           <Container>
             {data?.users?.map((user, key) => {
               return (
@@ -161,7 +161,6 @@ const Admin = props => {
               );
             })}
           </Container>
-          <Pagination />
         </>
       )}
     </Box>

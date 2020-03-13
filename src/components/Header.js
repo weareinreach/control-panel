@@ -1,19 +1,11 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Link as ChakraLink,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text
-} from '@chakra-ui/core';
+import {Box, Link as ChakraLink, Text} from '@chakra-ui/core';
 
 import {ContextApp} from './ContextApp';
 import {ContextFormModal} from './ContextFormModal';
+import DropdownButton from './DropdownButton';
 
 const logOutUser = () => {
   window.location = '/login';
@@ -69,20 +61,18 @@ const Header = props => {
                 </ChakraLink>
               )}
             </Box>
-            <Menu>
-              <MenuButton
-                as={Button}
-                backgroundColor="blue.500"
-                _hover={{bg: 'blue.400'}}
-                rightIcon="chevron-down"
-              >
-                {user?.email}
-              </MenuButton>
-              <MenuList color="black">
-                <MenuItem onClick={openPasswordModal}>Change Password</MenuItem>
-                <MenuItem onClick={logOutUser}>Log Out</MenuItem>
-              </MenuList>
-            </Menu>
+            <DropdownButton
+              buttonProps={{
+                color: 'white',
+                backgroundColor: 'blue.500',
+                _hover: {bg: 'blue.400'}
+              }}
+              buttonText={user?.email}
+              items={[
+                {onClick: openPasswordModal, text: 'Change Password'},
+                {onClick: logOutUser, text: 'Log Out'}
+              ]}
+            />
           </>
         ) : (
           <Text>Login</Text>

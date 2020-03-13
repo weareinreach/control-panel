@@ -1,12 +1,18 @@
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
-import {Box, Button, Heading, Text} from '@chakra-ui/core';
+import {Box, Button} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
-import Pagination from '../components/Pagination';
+import Table from '../components/Table';
 import {Container, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
+
+const headers = [
+  {key: 'name', label: 'Name'},
+  {key: 'region', label: 'Region'},
+  {key: 'opportunity_count', label: 'Services'},
+  {key: 'updated_at', label: 'Last Updated'}
+];
 
 const createForm = {
   name: {
@@ -36,6 +42,12 @@ const Organizations = props => {
     // TODO: API logic for creating
     console.log('handleCreateOrganization', values);
 
+    // TODO: default fields
+    // - client default to "asylum-connect-catalog"
+
+    // TODO: fields
+    // - name
+
     setTimeout(() => {
       // TODO: navigate to the new org page
       // window.location = `/organizations`;
@@ -54,18 +66,12 @@ const Organizations = props => {
           </Box>
           <Title>Organizations</Title>
           <Container>
-            {data?.organizations?.map((org, key) => {
-              return (
-                <div key={key}>
-                  <Link to={`/organizations/${org.id}`}>
-                    <Heading fontSize="l">{org.name}</Heading>
-                  </Link>
-                  <Text>Last Updated {org.updated_at}</Text>
-                </div>
-              );
-            })}
+            <Table
+              headers={headers}
+              rowLink={org => `/organizations/${org.id}`}
+              rows={data?.organizations}
+            />
           </Container>
-          <Pagination />
         </>
       )}
     </Box>

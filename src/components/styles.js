@@ -7,12 +7,14 @@ export const Container = ({children, ...rest}) => (
   </ChakraBox>
 );
 
-export const Heading = ({children}) => (
-  <ChakraHeading fontSize="xl">{children}</ChakraHeading>
+export const Heading = ({children, ...rest}) => (
+  <ChakraHeading fontSize="xl" {...rest}>
+    {children}
+  </ChakraHeading>
 );
 
-export const Title = ({children}) => (
-  <ChakraHeading fontSize="2xl" marginBottom={4}>
+export const Title = ({children, ...rest}) => (
+  <ChakraHeading fontSize="2xl" marginBottom={6} {...rest}>
     {children}
   </ChakraHeading>
 );

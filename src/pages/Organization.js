@@ -9,7 +9,9 @@ import {
 } from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
+import DropdownButton from '../components/DropdownButton';
 import Loading from '../components/Loading';
+import Table, {TableHeader} from '../components/Table';
 import {Container, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 
@@ -26,6 +28,15 @@ const duplicateForm = {
     type: 'text'
   }
 };
+
+const commentsHeaders = [
+  {key: 'comment', label: 'Comment'},
+  {
+    key: 'user_id',
+    label: 'User ID'
+  },
+  {key: 'date_updated', label: 'Last Updated'}
+];
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -98,24 +109,29 @@ const Organization = props => {
       setSuccess();
     }, 3000);
   };
+  const verifyInformation = () => {
+    // TODO: open up modal?
+    // TODO: update last_verified field to now
+    console.log('verifyInformation', verifyInformation);
+  };
   const {
     comment_count,
     comments,
     description,
-    emails,
+    // emails,
     id,
-    is_closed,
+    // is_closed,
     last_verified,
-    lat,
-    location,
-    lon,
+    // lat,
+    // location,
+    // lon,
     name,
     // opportunity_aggregate_ratings,
     // opportunity_communitiy_properties,
-    // opportunity_count,
+    opportunity_count,
     // opportunity_tags,
-    phones,
-    properties,
+    // phones,
+    // properties,
     // rating,
     region,
     // resource_type,
@@ -124,6 +140,10 @@ const Organization = props => {
     updated_at,
     website
   } = data?.organization || {};
+  const created_at = 'created_at';
+  const is_at_capacity = 'is_at_capacity';
+  const is_published = 'is_published';
+  const slug = 'slug';
 
   return (
     <Box padding={4}>
@@ -136,60 +156,45 @@ const Organization = props => {
               <Button onClick={openCreateModal} marginRight={2}>
                 New Service
               </Button>
-              <Button onClick={openDuplicateModal} marginRight={2}>
-                Duplicate
-              </Button>
-              <Button onClick={openDeleteModal} variantColor="red">
-                Delete
-              </Button>
+              <DropdownButton
+                buttonText="More"
+                items={[
+                  {
+                    onClick: verifyInformation,
+                    text: 'Mark Information Verified'
+                  },
+                  {onClick: openDuplicateModal, text: 'Duplicate'},
+                  {onClick: openDeleteModal, text: 'Delete'}
+                ]}
+              />
             </Box>
           </Box>
           <Title>{name}</Title>
           <Stack marginTop={6} spacing={4}>
             <Container>
-              <Text>ID {id}</Text>
-              <Text>Region {region}</Text>
-              <Text>
-                Website{' '}
-                <ChakraLink isExternal href={website}>
-                  {website}
-                </ChakraLink>
-              </Text>
-              <Text>Description {description}</Text>
-              <Text>Is Closed {is_closed}</Text>
-              <Text>Last Verified {last_verified}</Text>
-              <Text>Updated At {updated_at}</Text>
+              <TableHeader text="Organization Details" />
+              <Table
+                headers={[{key: 'key'}, {key: 'value'}]}
+                rows={[
+                  {key: 'ID', value: id},
+                  {key: 'Location of physical headquarters', value: region},
+                  {key: 'Website', value: website},
+                  {key: 'Description', value: description},
+                  {key: 'Slug', value: slug},
+                  {key: 'Is At Capacity', value: is_at_capacity},
+                  {key: 'Is Published', value: is_published},
+                  {key: 'Last Verified', value: last_verified},
+                  {key: 'Created At', value: created_at},
+                  {key: 'Updated At', value: updated_at}
+                ]}
+              />
             </Container>
             <Container>
-              <Heading fontSize="m">Opportunities</Heading>
-              <Text>tk</Text>
+              <TableHeader text={`Services (${opportunity_count})`} />
             </Container>
             <Container>
-              <Heading fontSize="m">Properties</Heading>
-              <Text>properties {JSON.stringify(properties)}</Text>
-            </Container>
-            <Container>
-              <Heading fontSize="m">Locations</Heading>
-              <Text>Loc {JSON.stringify(location)}</Text>
-              <Text>Lat {lat}</Text>
-              <Text>Lon {lon}</Text>
-            </Container>
-            <Container>
-              <Heading fontSize="m">Phones</Heading>
-              <Text>phones {JSON.stringify(phones)}</Text>
-            </Container>
-            <Container>
-              <Heading fontSize="m">Emails</Heading>
-              <Text>emails {JSON.stringify(emails)}</Text>
-            </Container>
-            <Container>
-              <Heading fontSize="m">Comments</Heading>
-              <Text>Comments {JSON.stringify(comments)}</Text>
-              <Text>Comment Count {comment_count}</Text>
-            </Container>
-            <Container>
-              <Heading fontSize="m">Translations</Heading>
-              <Text>tk</Text>
+              <TableHeader text={`Comments (${comment_count})`} />
+              <Table headers={commentsHeaders} rows={comments} />
             </Container>
           </Stack>
         </>

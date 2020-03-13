@@ -1,11 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Box, Heading, Text} from '@chakra-ui/core';
+import {Box} from '@chakra-ui/core';
 
 import Loading from '../components/Loading';
-import Pagination from '../components/Pagination';
+import Table from '../components/Table';
 import {Container, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
+
+const headers = [
+  {key: 'name', label: 'Name'},
+  {key: 'organizationName', label: 'Organization'},
+  {key: 'updated_at', label: 'Last Updated'}
+];
 
 const Services = props => {
   const {data, loading} = useAPIGet(`/services`);
@@ -18,23 +23,12 @@ const Services = props => {
         <>
           <Title>Services</Title>
           <Container>
-            {data?.services?.map((service, key) => {
-              const servicePath = `/services/${service.id}`;
-
-              return (
-                <div key={key}>
-                  <Link to={servicePath}>
-                    <Heading fontSize="l">{service.name}</Heading>
-                  </Link>
-                  <Text>
-                    Offered by: {service?.organization?.name || 'N/A'}
-                  </Text>
-                  <Text>Last Updated {service.updated_at}</Text>
-                </div>
-              );
-            })}
+            <Table
+              headers={headers}
+              rowLink={service => `/services/${service?.id}`}
+              rows={data?.services}
+            />
           </Container>
-          <Pagination />
         </>
       )}
     </Box>

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Link as ChakraLink, Text} from '@chakra-ui/core';
@@ -18,7 +17,7 @@ const passwordForm = {
   }
 };
 
-const Header = props => {
+const Header = () => {
   const {hasUser, user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const openPasswordModal = () =>
@@ -80,10 +79,6 @@ const Header = props => {
       </Box>
     </header>
   );
-};
-
-Header.propTypes = {
-  hasUser: PropTypes.bool
 };
 
 export default Header;

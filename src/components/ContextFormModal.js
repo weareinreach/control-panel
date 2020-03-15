@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {createContext, useState} from 'react';
 
 import FormModal from './FormModal';
@@ -23,4 +24,11 @@ export const ContextFormModalProvider = props => {
       {showModal && <FormModal {...formProps} isOpen />}
     </ContextFormModal.Provider>
   );
+};
+
+ContextFormModalProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
 };

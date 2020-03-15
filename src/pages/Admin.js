@@ -22,7 +22,7 @@ const createForm = {
   }
 };
 
-const Admin = props => {
+const Admin = () => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   // TODO: use endpoint

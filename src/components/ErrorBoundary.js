@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 import MessagePage from './MessagePage';
@@ -26,3 +27,10 @@ export default class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
+};

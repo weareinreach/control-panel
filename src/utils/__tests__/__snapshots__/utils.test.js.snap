@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getAPIUrl should return the api url 1`] = `"https://catalog-server-api-staging.herokuapp.com/asylum_connect/api/v1.0"`;

@@ -21,7 +21,7 @@ const createForm = {
   }
 };
 
-const Organizations = props => {
+const Organizations = () => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {data, loading} = useAPIGet(`/organizations`);
   const openCreateModal = () =>
@@ -41,9 +41,6 @@ const Organizations = props => {
 
     // TODO: API logic for creating
     console.log('handleCreateOrganization', values);
-
-    // TODO: default fields
-    // - client default to "asylum-connect-catalog"
 
     // TODO: fields
     // - name
@@ -67,8 +64,8 @@ const Organizations = props => {
           <Title>Organizations</Title>
           <Container>
             <Table
+              getRowLink={org => `/organizations/${org.id}`}
               headers={headers}
-              rowLink={org => `/organizations/${org.id}`}
               rows={data?.organizations}
             />
           </Container>

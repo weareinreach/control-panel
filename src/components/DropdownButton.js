@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Button, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/core';
 
@@ -25,6 +26,12 @@ const DropdownButton = props => {
       </MenuList>
     </Menu>
   );
+};
+
+DropdownButton.propTypes = {
+  buttonProps: PropTypes.shape(),
+  buttonText: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default DropdownButton;

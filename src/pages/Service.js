@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Text} from '@chakra-ui/core';
@@ -117,6 +118,10 @@ const Service = props => {
       )}
     </Box>
   );
+};
+
+Service.propTypes = {
+  match: PropTypes.shape()
 };
 
 export default Service;

@@ -1,12 +1,6 @@
+import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  Link as ChakraLink,
-  Stack,
-  Text
-} from '@chakra-ui/core';
+import {Box, Button, Stack} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
@@ -201,6 +195,10 @@ const Organization = props => {
       )}
     </Box>
   );
+};
+
+Organization.propTypes = {
+  match: PropTypes.shape()
 };
 
 export default Organization;

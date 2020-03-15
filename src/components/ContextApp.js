@@ -1,4 +1,5 @@
 import _isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 import React, {createContext, useEffect, useState} from 'react';
 
 export const ContextApp = createContext('app');
@@ -20,4 +21,11 @@ export const ContextAppProvider = props => {
   return (
     <ContextApp.Provider value={value}>{props.children}</ContextApp.Provider>
   );
+};
+
+ContextAppProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
 };

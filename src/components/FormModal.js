@@ -1,5 +1,6 @@
 import {useFormik} from 'formik';
 import _reduce from 'lodash/reduce';
+import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {
   Button,
@@ -35,7 +36,7 @@ const initialValueDict = {
   text: ''
 };
 
-const buildForm = (form = {}) => {
+export const buildForm = (form = {}) => {
   return _reduce(
     form,
     (values, {initialValue, ...inputInfo}, key) => {
@@ -156,6 +157,15 @@ const FormModal = props => {
       </ModalContent>
     </Modal>
   );
+};
+
+FormModal.propTypes = {
+  form: PropTypes.shape(),
+  header: PropTypes.string,
+  isAlert: PropTypes.bool,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  onConfirm: PropTypes.func
 };
 
 export default FormModal;

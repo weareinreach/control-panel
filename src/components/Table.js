@@ -3,6 +3,7 @@
  * This thread hints that one is coming: https://github.com/chakra-ui/chakra-ui/issues/135
  * In the mean time this file is an extension of an example posted in the thread
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Heading, Text} from '@chakra-ui/core';
@@ -51,8 +52,12 @@ export const TableHeader = props => {
   return <Heading fontSize="m">{text}</Heading>;
 };
 
+TableHeader.propTypes = {
+  text: PropTypes.string
+};
+
 const Table = props => {
-  const {headers, hideHeaders, rowLink, rows} = props;
+  const {getRowLink, headers, hideHeaders, rows} = props;
 
   return (
     <StyledTable>
@@ -79,8 +84,8 @@ const Table = props => {
 
                 return (
                   <td key={keyIndex}>
-                    {rowLink ? (
-                      <Link to={rowLink(row)}>{children}</Link>
+                    {getRowLink ? (
+                      <Link to={getRowLink(row)}>{children}</Link>
                     ) : (
                       children
                     )}
@@ -93,6 +98,13 @@ const Table = props => {
       </tbody>
     </StyledTable>
   );
+};
+
+Table.propTypes = {
+  getRowLink: PropTypes.func,
+  headers: PropTypes.arrayOf(PropTypes.shape()),
+  hideHeaders: PropTypes.bool,
+  rows: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default Table;

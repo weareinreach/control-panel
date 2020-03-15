@@ -12,7 +12,7 @@ const headers = [
   {key: 'updated_at', label: 'Last Updated'}
 ];
 
-const Services = props => {
+const Services = () => {
   const {data, loading} = useAPIGet(`/services`);
 
   return (
@@ -24,8 +24,8 @@ const Services = props => {
           <Title>Services</Title>
           <Container>
             <Table
+              getRowLink={service => `/services/${service?.id}`}
               headers={headers}
-              rowLink={service => `/services/${service?.id}`}
               rows={data?.services}
             />
           </Container>

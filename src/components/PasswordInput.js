@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Button, Input, InputGroup, InputRightElement} from '@chakra-ui/core';
 
@@ -24,6 +25,12 @@ const PasswordInput = props => {
       </InputRightElement>
     </InputGroup>
   );
+};
+
+PasswordInput.propTypes = {
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  value: PropTypes.string
 };
 
 export default PasswordInput;

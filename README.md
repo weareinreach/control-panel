@@ -31,5 +31,6 @@ Technologies
 - [create-react-app](https://create-react-app.dev/)
 - [React](https://reactjs.org/)
 - [React-Router](https://reacttraining.com/react-router/)
-- [Express](https://expressjs.com/)
 - [Chakra-UI](https://chakra-ui.com/)
+- [Formik](https://jaredpalmer.com/formik/)
+- [Express](https://expressjs.com/)

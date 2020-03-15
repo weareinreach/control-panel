@@ -1,4 +1,4 @@
-// Dev config is the base
+// Dev/Staging config is the base
 const base = {
   apiDomain: 'https://catalog-server-api-staging.herokuapp.com',
   apiBasePath: '/asylum_connect/api/v1.0'

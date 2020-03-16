@@ -1,9 +1,8 @@
 import React from 'react';
-import {Box} from '@chakra-ui/core';
 
 import Loading from '../components/Loading';
 import Table from '../components/Table';
-import {Container, Title} from '../components/styles';
+import {Container, Layout, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -16,7 +15,7 @@ const Services = () => {
   const {data, loading} = useAPIGet(`/services`);
 
   return (
-    <Box padding={4}>
+    <Layout>
       {loading ? (
         <Loading />
       ) : (
@@ -31,7 +30,7 @@ const Services = () => {
           </Container>
         </>
       )}
-    </Box>
+    </Layout>
   );
 };
 

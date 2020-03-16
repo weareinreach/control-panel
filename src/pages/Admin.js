@@ -5,7 +5,7 @@ import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import MessagePage from '../components/MessagePage';
-import {Container, Title} from '../components/styles';
+import {Container, Layout, Title} from '../components/styles';
 
 const createForm = {
   name: {
@@ -136,7 +136,7 @@ const Admin = () => {
   }
 
   return (
-    <Box padding={4}>
+    <Layout>
       {loading ? (
         <Loading />
       ) : (
@@ -163,7 +163,7 @@ const Admin = () => {
           </Container>
         </>
       )}
-    </Box>
+    </Layout>
   );
 };
 

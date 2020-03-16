@@ -1,13 +1,28 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Box, Button, Stack} from '@chakra-ui/core';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Stack
+} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Loading from '../components/Loading';
 import Table, {TableHeader} from '../components/Table';
-import {Container, Title} from '../components/styles';
+import {Container, Layout, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
+import {
+  commentHeaders,
+  emailHeaders,
+  locationHeaders,
+  phoneHeaders,
+  scheduleHeaders,
+  serviceHeaders
+} from '../utils/tableHeaders';
 
 const createForm = {
   name: {
@@ -22,15 +37,6 @@ const duplicateForm = {
     type: 'text'
   }
 };
-
-const commentsHeaders = [
-  {key: 'comment', label: 'Comment'},
-  {
-    key: 'user_id',
-    label: 'User ID'
-  },
-  {key: 'date_updated', label: 'Last Updated'}
-];
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -109,6 +115,7 @@ const Organization = props => {
     console.log('verifyInformation', verifyInformation);
   };
   const {
+    alert_message,
     comment_count,
     comments,
     description,
@@ -140,28 +147,31 @@ const Organization = props => {
   const slug = 'slug';
 
   return (
-    <Box padding={4}>
+    <Layout>
       {loading ? (
         <Loading />
       ) : (
         <>
+          <Breadcrumb addSeparator={false}>
+            <BreadcrumbItem>
+              <BreadcrumbLink isCurrentPage>Organization Name</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
           <Box float="right">
-            <Box float="right">
-              <Button onClick={openCreateModal} marginRight={2}>
-                New Service
-              </Button>
-              <DropdownButton
-                buttonText="More"
-                items={[
-                  {
-                    onClick: verifyInformation,
-                    text: 'Mark Information Verified'
-                  },
-                  {onClick: openDuplicateModal, text: 'Duplicate'},
-                  {onClick: openDeleteModal, text: 'Delete'}
-                ]}
-              />
-            </Box>
+            <Button onClick={openCreateModal} marginRight={2}>
+              New Service
+            </Button>
+            <DropdownButton
+              buttonText="More"
+              items={[
+                {
+                  onClick: verifyInformation,
+                  text: 'Mark Information Verified'
+                },
+                {onClick: openDuplicateModal, text: 'Duplicate'},
+                {onClick: openDeleteModal, text: 'Delete'}
+              ]}
+            />
           </Box>
           <Title>{name}</Title>
           <Stack marginTop={6} spacing={4}>
@@ -174,6 +184,7 @@ const Organization = props => {
                   {key: 'Location of physical headquarters', value: region},
                   {key: 'Website', value: website},
                   {key: 'Description', value: description},
+                  {key: 'Alert Message', value: alert_message},
                   {key: 'Slug', value: slug},
                   {key: 'Is At Capacity', value: is_at_capacity},
                   {key: 'Is Published', value: is_published},
@@ -185,15 +196,37 @@ const Organization = props => {
             </Container>
             <Container>
               <TableHeader text={`Services (${opportunity_count})`} />
+              <Table headers={serviceHeaders} rows={[]} />
+            </Container>
+            <Container>
+              <TableHeader text="Service Area Coverage" />
+              <p>searchable dropdown for all of the location posibilities</p>
+              <p>location-property = controls search</p>
+            </Container>
+            <Container>
+              <TableHeader text="Schedules" />
+              <Table headers={scheduleHeaders} rows={[]} />
+            </Container>
+            <Container>
+              <TableHeader text="Locations" />
+              <Table headers={locationHeaders} rows={[]} />
+            </Container>
+            <Container>
+              <TableHeader text="Emails" />
+              <Table headers={emailHeaders} rows={[]} />
+            </Container>
+            <Container>
+              <TableHeader text="Phones" />
+              <Table headers={phoneHeaders} rows={[]} />
             </Container>
             <Container>
               <TableHeader text={`Comments (${comment_count})`} />
-              <Table headers={commentsHeaders} rows={comments} />
+              <Table headers={commentHeaders} rows={comments} />
             </Container>
           </Stack>
         </>
       )}
-    </Box>
+    </Layout>
   );
 };
 

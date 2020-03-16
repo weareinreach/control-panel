@@ -4,6 +4,7 @@ import {Switch, Redirect, Route} from 'react-router-dom';
 import {ContextApp} from './ContextApp';
 import FormLogin from './FormLogin';
 import Loading from './Loading';
+import {Layout} from './styles';
 import Admin from '../pages/Admin';
 import NotFound from '../pages/NotFound';
 import Organization from '../pages/Organization';
@@ -19,26 +20,28 @@ const Routes = () => {
   }
 
   return (
-    <Switch>
-      <Route
-        exact
-        path="/login"
-        component={() => (
-          <>
-            {hasUser && <Redirect to="/" />}
-            <FormLogin />
-          </>
-        )}
-      />
-      {!hasUser && <Redirect to="/login" />}
-      <Route exact path="/" component={Organizations} />
-      <Route exact path="/organizations" component={Organizations} />
-      <Route exact path="/organizations/:id" component={Organization} />
-      <Route exact path="/services" component={Services} />
-      <Route exact path="/services/:id" component={Service} />
-      <Route exact path="/admin" component={Admin} />
-      <Route component={NotFound} />
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route
+          exact
+          path="/login"
+          component={() => (
+            <>
+              {hasUser && <Redirect to="/" />}
+              <FormLogin />
+            </>
+          )}
+        />
+        {!hasUser && <Redirect to="/login" />}
+        <Route exact path="/" component={Organizations} />
+        <Route exact path="/organizations" component={Organizations} />
+        <Route exact path="/organizations/:id" component={Organization} />
+        <Route exact path="/services" component={Services} />
+        <Route exact path="/services/:id" component={Service} />
+        <Route exact path="/admin" component={Admin} />
+        <Route component={NotFound} />
+      </Switch>
+    </Layout>
   );
 };
 

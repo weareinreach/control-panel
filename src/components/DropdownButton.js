@@ -3,7 +3,7 @@ import React from 'react';
 import {Button, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/core';
 
 const DropdownButton = props => {
-  const {buttonProps = {}, buttonText, items} = props;
+  const {buttonProps = {}, listProps = {}, buttonText, items} = props;
 
   return (
     <Menu>
@@ -17,7 +17,7 @@ const DropdownButton = props => {
       >
         {buttonText}
       </MenuButton>
-      <MenuList color="black">
+      <MenuList color="black" {...listProps}>
         {items?.map(({onClick, text}, key) => (
           <MenuItem key={key} onClick={onClick}>
             {text}
@@ -31,6 +31,7 @@ const DropdownButton = props => {
 DropdownButton.propTypes = {
   buttonProps: PropTypes.shape(),
   buttonText: PropTypes.string,
+  listProps: PropTypes.shape(),
   items: PropTypes.arrayOf(PropTypes.shape())
 };
 

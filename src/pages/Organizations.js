@@ -4,7 +4,7 @@ import {Box, Button} from '@chakra-ui/core';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import Table from '../components/Table';
-import {Container, Title} from '../components/styles';
+import {Container, Layout, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -53,7 +53,7 @@ const Organizations = () => {
   };
 
   return (
-    <Box padding={4}>
+    <Layout>
       {loading ? (
         <Loading />
       ) : (
@@ -71,7 +71,7 @@ const Organizations = () => {
           </Container>
         </>
       )}
-    </Box>
+    </Layout>
   );
 };
 

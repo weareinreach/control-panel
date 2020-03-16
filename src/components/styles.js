@@ -28,6 +28,19 @@ Heading.propTypes = {
   ])
 };
 
+export const Layout = ({children, ...rest}) => (
+  <ChakraBox maxWidth="1400px" margin="auto" padding={4} {...rest}>
+    {children}
+  </ChakraBox>
+);
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
+};
+
 export const Title = ({children, ...rest}) => (
   <ChakraHeading fontSize="2xl" marginBottom={6} {...rest}>
     {children}

@@ -5,6 +5,7 @@ import {Box, Link as ChakraLink, Text} from '@chakra-ui/core';
 import {ContextApp} from './ContextApp';
 import {ContextFormModal} from './ContextFormModal';
 import DropdownButton from './DropdownButton';
+import {Layout} from './styles';
 
 const logOutUser = () => {
   window.location = '/login';
@@ -44,38 +45,40 @@ const Header = () => {
 
   return (
     <header>
-      <Box backgroundColor="blue.300" width="100%" padding={4} color="white">
-        {hasUser ? (
-          <>
-            <Box display="inline-block" width="calc(100% - 172px)">
-              <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
-                Organizations
-              </ChakraLink>
-              <ChakraLink as={Link} fontSize="xl" to="/services" mr={3}>
-                Services
-              </ChakraLink>
-              {user?.isAdmin && (
-                <ChakraLink as={Link} fontSize="xl" to="/admin">
-                  Admin
+      <Box backgroundColor="blue.300" width="100%" color="white">
+        <Layout>
+          {hasUser ? (
+            <>
+              <Box display="inline-block" width="calc(100% - 172px)">
+                <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
+                  Organizations
                 </ChakraLink>
-              )}
-            </Box>
-            <DropdownButton
-              buttonProps={{
-                color: 'white',
-                backgroundColor: 'blue.500',
-                _hover: {bg: 'blue.400'}
-              }}
-              buttonText={user?.email}
-              items={[
-                {onClick: openPasswordModal, text: 'Change Password'},
-                {onClick: logOutUser, text: 'Log Out'}
-              ]}
-            />
-          </>
-        ) : (
-          <Text>Login</Text>
-        )}
+                <ChakraLink as={Link} fontSize="xl" to="/services" mr={3}>
+                  Services
+                </ChakraLink>
+                {user?.isAdmin && (
+                  <ChakraLink as={Link} fontSize="xl" to="/admin">
+                    Admin
+                  </ChakraLink>
+                )}
+              </Box>
+              <DropdownButton
+                buttonProps={{
+                  color: 'white',
+                  backgroundColor: 'blue.500',
+                  _hover: {bg: 'blue.400'}
+                }}
+                buttonText={user?.email}
+                items={[
+                  {onClick: openPasswordModal, text: 'Change Password'},
+                  {onClick: logOutUser, text: 'Log Out'}
+                ]}
+              />
+            </>
+          ) : (
+            <Text>Login</Text>
+          )}
+        </Layout>
       </Box>
     </header>
   );

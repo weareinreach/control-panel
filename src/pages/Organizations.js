@@ -4,7 +4,7 @@ import {Box, Button} from '@chakra-ui/core';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import Table from '../components/Table';
-import {Container, Layout, Title} from '../components/styles';
+import {Container, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -52,26 +52,24 @@ const Organizations = () => {
     }, 3000);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <Layout>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <Box float="right">
-            <Button onClick={openCreateModal}>New Organization</Button>
-          </Box>
-          <Title>Organizations</Title>
-          <Container>
-            <Table
-              getRowLink={org => `/organizations/${org.id}`}
-              headers={headers}
-              rows={data?.organizations}
-            />
-          </Container>
-        </>
-      )}
-    </Layout>
+    <>
+      <Box float="right">
+        <Button onClick={openCreateModal}>New Organization</Button>
+      </Box>
+      <Title>Organizations</Title>
+      <Container>
+        <Table
+          getRowLink={org => `/organizations/${org.id}`}
+          headers={headers}
+          rows={data?.organizations}
+        />
+      </Container>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
 import MessagePage from '../components/MessagePage';
-import {Container, Layout, Title} from '../components/styles';
+import {Container, Title} from '../components/styles';
 
 const createForm = {
   name: {
@@ -135,35 +135,33 @@ const Admin = () => {
     );
   }
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <Layout>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <Box float="right">
-            <Button onClick={openCreateModal}>New Manager</Button>
-          </Box>
-          <Title>Data Managers</Title>
-          {/* Table headers: name, email, isAdmin, actions=[edit, delete] */}
-          <Container>
-            {data?.users?.map((user, key) => {
-              return (
-                <div key={key}>
-                  <Text display="inline" mr={4}>
-                    {user.name}
-                  </Text>
-                  <Button onClick={() => openEditModal(key)} mr={2}>
-                    Edit
-                  </Button>
-                  <Button onClick={() => openDeleteModal(key)}>Delete</Button>
-                </div>
-              );
-            })}
-          </Container>
-        </>
-      )}
-    </Layout>
+    <>
+      <Box float="right">
+        <Button onClick={openCreateModal}>New Manager</Button>
+      </Box>
+      <Title>Data Managers</Title>
+      {/* Table headers: name, email, isAdmin, actions=[edit, delete] */}
+      <Container>
+        {data?.users?.map((user, key) => {
+          return (
+            <div key={key}>
+              <Text display="inline" mr={4}>
+                {user.name}
+              </Text>
+              <Button onClick={() => openEditModal(key)} mr={2}>
+                Edit
+              </Button>
+              <Button onClick={() => openDeleteModal(key)}>Delete</Button>
+            </div>
+          );
+        })}
+      </Container>
+    </>
   );
 };
 

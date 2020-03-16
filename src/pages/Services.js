@@ -2,7 +2,7 @@ import React from 'react';
 
 import Loading from '../components/Loading';
 import Table from '../components/Table';
-import {Container, Layout, Title} from '../components/styles';
+import {Container, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -14,23 +14,21 @@ const headers = [
 const Services = () => {
   const {data, loading} = useAPIGet(`/services`);
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <Layout>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <Title>Services</Title>
-          <Container>
-            <Table
-              getRowLink={service => `/services/${service?.id}`}
-              headers={headers}
-              rows={data?.services}
-            />
-          </Container>
-        </>
-      )}
-    </Layout>
+    <>
+      <Title>Services</Title>
+      <Container>
+        <Table
+          getRowLink={service => `/services/${service?.id}`}
+          headers={headers}
+          rows={data?.services}
+        />
+      </Container>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Heading, Text} from '@chakra-ui/core';
+import {Box, Button, Heading, Text} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 import styled from '@emotion/styled';
 
@@ -47,12 +47,24 @@ const StyledTable = styled('table')`
 `;
 
 export const TableHeader = props => {
-  const {text} = props;
+  const {editTable, text} = props;
 
-  return <Heading fontSize="m">{text}</Heading>;
+  return (
+    <>
+      {editTable && (
+        <Box float="right">
+          <Button onClick={editTable} variant="ghost">
+            Edit
+          </Button>
+        </Box>
+      )}
+      <Heading fontSize="m">{text}</Heading>
+    </>
+  );
 };
 
 TableHeader.propTypes = {
+  editTable: PropTypes.bool,
   text: PropTypes.string
 };
 

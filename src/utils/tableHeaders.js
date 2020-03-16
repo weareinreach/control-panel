@@ -1,12 +1,3 @@
-export const commentHeaders = [
-  {key: 'comment', label: 'Comment'},
-  {
-    key: 'user_id',
-    label: 'User ID'
-  },
-  {key: 'date_updated', label: 'Last Updated'}
-];
-
 export const emailHeaders = [
   {key: 'email', label: 'Email'},
   {key: 'title', label: 'Title'},

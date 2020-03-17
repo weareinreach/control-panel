@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Box, Button, Stack} from '@chakra-ui/core';
 
-import FormField from '../components/FormField';
 import {ContextFormModal} from '../components/ContextFormModal';
+import FormField from '../components/FormField';
 import {Container, SectionTitle, Title} from '../components/styles';
 
 const detailFields = [
-  {key: 'name', isRequired: true, label: 'Organization Name'},
-  {key: 'slug', label: 'Slug'},
+  {key: 'name', label: 'Name'},
+  // TODO: create on save/edit?
+  // {key: 'slug', label: 'Slug'},
   {key: 'website', label: 'Website'},
-  {key: 'description', label: 'Description'},
-  {key: 'alert_message', label: 'Alert Message'},
+  {key: 'description', label: 'Description', type: 'textarea'},
+  {key: 'alert_message', label: 'Alert Message', type: 'textarea'},
   {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
   {key: 'is_published', label: 'Is Published', type: 'checkbox'}
 ];

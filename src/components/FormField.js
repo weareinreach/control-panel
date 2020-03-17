@@ -6,13 +6,22 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input
+  Input,
+  Textarea
 } from '@chakra-ui/core';
 
 import PasswordInput from './PasswordInput';
 
 const FormField = props => {
-  const {fieldKey, formik, isRequired, placeholder, label, type} = props;
+  const {
+    fieldKey,
+    formik,
+    isRequired,
+    placeholder,
+    label,
+    type,
+    ...rest
+  } = props;
   let InputComponent = null;
   let isCheckBox = false;
 
@@ -23,6 +32,9 @@ const FormField = props => {
       break;
     case 'password':
       InputComponent = PasswordInput;
+      break;
+    case 'textarea':
+      InputComponent = Textarea;
       break;
     default:
       InputComponent = Input;
@@ -39,6 +51,7 @@ const FormField = props => {
       key={fieldKey}
       isInvalid={formik?.errors[fieldKey] && formik?.touched[fieldKey]}
       isRequired={isRequired}
+      {...rest}
     >
       {isCheckBox ? (
         <InputComponent {...inputProps} isChecked={inputProps.value}>

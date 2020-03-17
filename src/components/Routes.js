@@ -11,7 +11,6 @@ import Organization from '../pages/Organization';
 import OrganizationEdit from '../pages/OrganizationEdit';
 import OrganizationNew from '../pages/OrganizationNew';
 import Organizations from '../pages/Organizations';
-import Service from '../pages/Service';
 import ServiceEdit from '../pages/ServiceEdit';
 import ServiceNew from '../pages/ServiceNew';
 
@@ -50,11 +49,6 @@ const Routes = () => {
           exact
           path="/organizations/:orgId/services/new"
           component={ServiceNew}
-        />
-        <Route
-          exact
-          path="/organizations/:orgId/services/:serviceId"
-          component={Service}
         />
         <Route
           exact

@@ -51,7 +51,7 @@ const FormModal = props => {
             {status === STATE_ERROR && (
               <Alert
                 description="Please try again."
-                title="Unable to login"
+                title="Uh-Oh something went wrong."
                 type="error"
               />
             )}

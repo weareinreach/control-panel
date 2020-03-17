@@ -29,8 +29,8 @@ const duplicateForm = {
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId} = props?.match?.params;
-  const urlPath = `/organizations/${orgId}`;
-  const {data, loading} = useAPIGet(urlPath);
+  const orgPath = `/organizations/${orgId}`;
+  const {data, loading} = useAPIGet(orgPath);
   const {_id, ...orgData} = data || {};
   const {
     alert_message,
@@ -40,6 +40,7 @@ const Organization = props => {
     is_published,
     last_verified,
     name = 'Organization Name',
+    services,
     slug,
     updated_at,
     website
@@ -50,7 +51,7 @@ const Organization = props => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setFail}) => {
-        const url = `${getAPIUrl()}${urlPath}`;
+        const url = `${getAPIUrl()}${orgPath}`;
 
         console.log('DELETE:', url);
 
@@ -109,17 +110,15 @@ const Organization = props => {
     return <Loading />;
   }
 
-  const baseUrl = `/organizations/${orgId}`;
-
   return (
     <>
       <Box float="right">
-        <Link to={`${baseUrl}/edit`}>
+        <Link to={`${orgPath}/edit`}>
           <Button marginRight={2}>Edit Organization</Button>
         </Link>
-        <Button to={`${baseUrl}/services/new`} marginRight={2}>
-          New Service
-        </Button>
+        <Link to={`${orgPath}/services/new`}>
+          <Button marginRight={2}>New Service</Button>
+        </Link>
         <DropdownButton
           buttonText="More"
           items={[
@@ -167,7 +166,7 @@ const Organization = props => {
         </Container>
         <Container>
           <SectionTitle>Schedules</SectionTitle>
-          <Table headers={scheduleHeaders} rows={[]} />
+          <Table headers={scheduleHeaders} rows={services} />
         </Container>
         <Container>
           <SectionTitle>Emails</SectionTitle>

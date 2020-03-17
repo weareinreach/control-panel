@@ -6,7 +6,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, Heading, Text} from '@chakra-ui/core';
+import {Text} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 import styled from '@emotion/styled';
 
@@ -46,28 +46,6 @@ const StyledTable = styled('table')`
   }
 `;
 
-export const TableHeader = props => {
-  const {editTable, text} = props;
-
-  return (
-    <>
-      {editTable && (
-        <Box float="right">
-          <Button onClick={editTable} variant="ghost">
-            Edit
-          </Button>
-        </Box>
-      )}
-      <Heading fontSize="m">{text}</Heading>
-    </>
-  );
-};
-
-TableHeader.propTypes = {
-  editTable: PropTypes.bool,
-  text: PropTypes.string
-};
-
 const Table = props => {
   const {getRowLink, headers, hideHeaders, rows} = props;
 
@@ -91,7 +69,14 @@ const Table = props => {
           return (
             <tr key={rowIndex}>
               {headers?.map(({key, getValue}, keyIndex) => {
-                const value = getValue ? getValue(row) : row?.[key];
+                let value = getValue ? getValue(row) : row?.[key];
+
+                if (value === true) {
+                  value = 'YES';
+                } else if (value === false) {
+                  value = 'NO';
+                }
+
                 const children = <Text fontSize="md">{value}</Text>;
 
                 return (

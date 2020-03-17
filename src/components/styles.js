@@ -15,19 +15,6 @@ Container.propTypes = {
   ])
 };
 
-export const Heading = ({children, ...rest}) => (
-  <ChakraHeading fontSize="xl" {...rest}>
-    {children}
-  </ChakraHeading>
-);
-
-Heading.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
-};
-
 export const Layout = ({children, ...rest}) => (
   <ChakraBox maxWidth="1400px" margin="auto" padding={4} {...rest}>
     {children}
@@ -35,6 +22,19 @@ export const Layout = ({children, ...rest}) => (
 );
 
 Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
+};
+
+export const SectionTitle = ({children, ...rest}) => (
+  <ChakraHeading fontSize="xl" {...rest}>
+    {children}
+  </ChakraHeading>
+);
+
+SectionTitle.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node

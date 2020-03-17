@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Flex, Heading, Text} from '@chakra-ui/core';
+import {Box, Flex, Text} from '@chakra-ui/core';
+
+import {SectionTitle} from './styles';
 
 const MessagePage = props => {
   const {message, title} = props;
@@ -8,7 +10,7 @@ const MessagePage = props => {
   return (
     <Flex align="center" justify="center" padding={4}>
       <Box flex="1" padding={5} rounded="md" borderWidth="1px" maxWidth="400px">
-        <Heading fontSize="xl">{title}</Heading>
+        <SectionTitle>{title}</SectionTitle>
         <Text>{message}</Text>
       </Box>
     </Flex>

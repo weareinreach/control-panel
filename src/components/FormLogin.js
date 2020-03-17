@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Box, Button, Flex, Heading, Input, Stack} from '@chakra-ui/core';
+import {Box, Button, Flex, Input, Stack} from '@chakra-ui/core';
 
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
+import {SectionTitle} from './styles';
 import {useInputChange} from '../utils/hooks';
 
 const STATE_ERROR = 'ERROR';
@@ -25,7 +26,7 @@ const Login = () => {
   return (
     <Flex align="center" justify="center" padding={4}>
       <Box flex="1" padding={5} rounded="md" borderWidth="1px" maxWidth="400px">
-        <Heading fontSize="xl">Login</Heading>
+        <SectionTitle>Login</SectionTitle>
         <Stack paddingTop={4} spacing={4}>
           {loginState === STATE_SUCCESS && (
             <Alert

@@ -1,19 +1,15 @@
+import {delete as httpDelete, post} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
-  Stack
-} from '@chakra-ui/core';
+import {Link} from 'react-router-dom';
+import {Box, Button, Stack} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Loading from '../components/Loading';
-import Table, {TableHeader} from '../components/Table';
-import {Container, Title} from '../components/styles';
+import Table from '../components/Table';
+import {Container, SectionTitle, Title} from '../components/styles';
+import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 import {
   emailHeaders,
@@ -22,13 +18,6 @@ import {
   scheduleHeaders,
   serviceHeaders
 } from '../utils/tableHeaders';
-
-const createForm = {
-  name: {
-    placeholder: "Enter the new service's name",
-    type: 'text'
-  }
-};
 
 const duplicateForm = {
   name: {
@@ -39,176 +28,96 @@ const duplicateForm = {
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
-  const orgId = props?.match?.params?.id;
-  const urlPath = `/organization/${orgId}`;
+  const {orgId} = props?.match?.params;
+  const urlPath = `/organizations/${orgId}`;
   const {data, loading} = useAPIGet(urlPath);
+  const {_id, ...orgData} = data || {};
   const {
     alert_message,
+    created_at,
     description,
-    // emails,
-    id,
-    // is_closed,
+    is_at_capacity,
+    is_published,
     last_verified,
-    // lat,
-    // location,
-    // lon,
-    name,
-    // opportunity_aggregate_ratings,
-    // opportunity_communitiy_properties,
-    opportunity_count,
-    // opportunity_tags,
-    // phones,
-    // properties,
-    // rating,
-    region,
-    // resource_type,
-    // schedule,
-    // tags,
+    name = 'Organization Name',
+    slug,
     updated_at,
     website
-  } = data?.organization || {};
-  const created_at = 'created_at';
-  const is_at_capacity = 'is_at_capacity';
-  const is_published = 'is_published';
-  const slug = 'slug';
-  const handleCreateService = ({setLoading, setSuccess, setFail, values}) => {
-    setLoading();
-
-    // TODO: API logic for creating
-    console.log('handleCreateService', values);
-
-    setTimeout(() => {
-      // TODO: navigate to the new service page
-      window.location = `/organizations/${orgId}`;
-      setSuccess();
-    }, 3000);
-  };
-  const handleOrganizationDelete = ({
-    setLoading,
-    setSuccess,
-    setFail,
-    values
-  }) => {
-    setLoading();
-
-    // TODO: API logic for duplicating
-    console.log('handleOrganizationDelete', values);
-
-    setTimeout(() => {
-      // TODO: navigate to the new organization page
-      window.location = `/organizations/${orgId}`;
-      setSuccess();
-    }, 3000);
-  };
-  const handleOrganizationDuplicate = ({
-    setLoading,
-    setSuccess,
-    setFail,
-    values
-  }) => {
-    setLoading();
-
-    // TODO: API logic for deleting
-    console.log('handleOrganizationDuplicate', values);
-
-    setTimeout(() => {
-      window.location = `/organizations`;
-      setSuccess();
-    }, 3000);
-  };
-  const handleOrganizationVerification = ({
-    setLoading,
-    setSuccess,
-    setFail,
-    values
-  }) => {
-    setLoading();
-
-    // TODO: API logic for deleting
-    console.log('handleOrganizationVerification', values);
-
-    setTimeout(() => {
-      window.location = `/organizations`;
-      setSuccess();
-    }, 3000);
-  };
-  const openModalCreate = () =>
-    openModal({
-      form: createForm,
-      header: `New Service for ${name}`,
-      onClose: closeModal,
-      onConfirm: handleCreateService
-    });
+  } = orgData || {};
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: handleOrganizationDelete
+      onConfirm: ({setLoading, setSuccess, setFail}) => {
+        const url = `${getAPIUrl()}${urlPath}`;
+
+        console.log('DELETE:', url);
+
+        setLoading();
+        httpDelete(url)
+          .then(() => {
+            setSuccess();
+            window.location = '/organizations';
+          })
+          .catch(err => {
+            setFail();
+            console.error(err);
+          });
+      }
     });
   const openModalDuplicate = () =>
     openModal({
       form: duplicateForm,
       header: `Duplicate ${name}`,
       onClose: closeModal,
-      onConfirm: handleOrganizationDuplicate
+      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
+        const url = `${getAPIUrl()}/organizations`;
+
+        console.log('POST:', url);
+
+        setLoading();
+        post(url, orgData)
+          .then(org => {
+            setSuccess();
+            window.location = `/organizations/${org}`;
+          })
+          .catch(err => {
+            setFail();
+            console.error(err);
+          });
+      }
     });
   const openModalVerify = () =>
     openModal({
       header: `Verify Information for ${name}`,
       onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditDetails = () =>
-    openModal({
-      header: `Edit ${name}'s Details`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditSchedules = () =>
-    openModal({
-      header: `Edit ${name}'s Schedules`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditLocations = () =>
-    openModal({
-      header: `Edit ${name}'s Locations`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditLocationProperties = () =>
-    openModal({
-      header: `Edit ${name}'s Service Area Coverage`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditEmails = () =>
-    openModal({
-      header: `Edit ${name}'s Emails`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
-    });
-  const openModalEditPhones = () =>
-    openModal({
-      header: `Edit ${name}'s Phones`,
-      onClose: closeModal,
-      onConfirm: handleOrganizationVerification
+      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
+        setLoading();
+
+        // TODO: API logic for deleting
+        console.log('handleOrganizationVerification', values);
+
+        setTimeout(() => {
+          window.location = `/organizations`;
+          setSuccess();
+        }, 3000);
+      }
     });
 
   if (loading) {
     return <Loading />;
   }
 
+  const baseUrl = `/organizations/${orgId}`;
+
   return (
     <>
-      <Breadcrumb addSeparator={false}>
-        <BreadcrumbItem>
-          <BreadcrumbLink isCurrentPage>Organization Name</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
       <Box float="right">
-        <Button onClick={openModalCreate} marginRight={2}>
+        <Link to={`${baseUrl}/edit`}>
+          <Button marginRight={2}>Edit Organization</Button>
+        </Link>
+        <Button to={`${baseUrl}/services/new`} marginRight={2}>
           New Service
         </Button>
         <DropdownButton
@@ -226,15 +135,11 @@ const Organization = props => {
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
         <Container>
-          <TableHeader
-            editTable={openModalEditDetails}
-            text="Organization Details"
-          />
+          <SectionTitle>Organization Details</SectionTitle>
           <Table
             headers={[{key: 'key'}, {key: 'value'}]}
             rows={[
-              {key: 'ID', value: id},
-              {key: 'Location of physical headquarters', value: region},
+              {key: 'ID', value: _id},
               {key: 'Website', value: website},
               {key: 'Description', value: description},
               {key: 'Alert Message', value: alert_message},
@@ -248,31 +153,28 @@ const Organization = props => {
           />
         </Container>
         <Container>
-          <TableHeader text={`Services (${opportunity_count})`} />
+          <SectionTitle>Services</SectionTitle>
           <Table headers={serviceHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader
-            editTable={openModalEditLocationProperties}
-            text="Service Area Coverage"
-          />
+          <SectionTitle>Service Area Coverage</SectionTitle>
           <p>searchable dropdown for all of the location posibilities</p>
           <p>location-property = controls search</p>
         </Container>
         <Container>
-          <TableHeader editTable={openModalEditLocations} text="Locations" />
+          <SectionTitle>Addresses</SectionTitle>
           <Table headers={locationHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader editTable={openModalEditSchedules} text="Schedules" />
+          <SectionTitle>Schedules</SectionTitle>
           <Table headers={scheduleHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader editTable={openModalEditEmails} text="Emails" />
+          <SectionTitle>Emails</SectionTitle>
           <Table headers={emailHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader editTable={openModalEditPhones} text="Phones" />
+          <SectionTitle>Phones</SectionTitle>
           <Table headers={phoneHeaders} rows={[]} />
         </Container>
       </Stack>

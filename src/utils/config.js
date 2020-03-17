@@ -1,11 +1,11 @@
 // Dev/Staging config is the base
 const base = {
   apiDomain: 'https://catalog-server-api-staging.herokuapp.com',
-  apiBasePath: '/asylum_connect/api/v1.0'
+  apiBasePath: '/v1'
 };
 
 const local = {
-  apiDomain: 'http://localhost:5000'
+  apiDomain: 'http://localhost:8080'
 };
 
 const prod = {

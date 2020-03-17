@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  Stack
-} from '@chakra-ui/core';
+import {Box, Stack} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Loading from '../components/Loading';
-import Table, {TableHeader} from '../components/Table';
-import {Container, Title} from '../components/styles';
+import Table from '../components/Table';
+import {Container, SectionTitle, Title} from '../components/styles';
 import {useAPIGet} from '../utils/hooks';
 import {
   emailHeaders,
@@ -31,38 +24,29 @@ const duplicateForm = {
 
 const Service = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
-  const serviceId = props?.match?.params?.id;
-  const urlPath = `/services/${serviceId}`;
+  const {orgId, serviceId} = props?.match?.params;
+  const urlPath = `/organizations/${orgId}/services/${serviceId}`;
   const {data, loading} = useAPIGet(urlPath);
   const {
-    // access_instructions,
+    _id,
+    access_instructions,
+    created_at,
     description,
-    // emails,
-    id,
-    // is_appointment,
-    // is_closed,
-    // last_verified,
-    // lat,
-    // location,
-    // lon,
-    name
-    // organization,
-    // parent_organization_id,
-    // phones,
-    // properties
-    // rating,
-    // region,
-    // resource_type,
-    // schedule,
-    // tags,
-    // updated_at,
-    // website
+    emailId,
+    is_appointment,
+    is_at_capacity,
+    is_published,
+    locationId,
+    name,
+    organization,
+    phoneId,
+    properties,
+    resource_type,
+    schedule,
+    slug,
+    updated_at,
+    website
   } = data?.service || {};
-  const created_at = 'created_at';
-  const updated_at = 'updated_at';
-  const is_at_capacity = 'is_at_capacity';
-  const is_published = 'is_published';
-  const slug = 'slug';
   const handleServiceDelete = ({setLoading, setSuccess, setFail}) => {
     setLoading();
 
@@ -113,15 +97,6 @@ const Service = props => {
 
   return (
     <>
-      <Breadcrumb addSeparator={false}>
-        <BreadcrumbItem>
-          <BreadcrumbLink>Organization Name</BreadcrumbLink>
-          <BreadcrumbSeparator />
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink isCurrentPage>Service Name</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
       <Box float="right">
         <DropdownButton
           buttonText="More"
@@ -135,11 +110,11 @@ const Service = props => {
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
         <Container>
-          <TableHeader text="Organization Details" />
+          <SectionTitle>Organization Details</SectionTitle>
           <Table
             headers={[{key: 'key'}, {key: 'value'}]}
             rows={[
-              {key: 'ID', value: id},
+              {key: 'ID', value: _id},
               {key: 'Description', value: description},
               {key: 'Slug', value: slug},
               {key: 'Is At Capacity', value: is_at_capacity},
@@ -150,32 +125,34 @@ const Service = props => {
           />
         </Container>
         <Container>
-          <TableHeader text="Service Area Coverage" />
+          <SectionTitle>Service Area Coverage</SectionTitle>
           <p>searchable dropdown for all of the location posibilities</p>
           <p>location-property = controls search</p>
         </Container>
         <Container>
-          <TableHeader text="Location" />
+          <SectionTitle>Addresses</SectionTitle>
           <p>reference to a organization's location</p>
           <Table headers={locationHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader text="Schedule" />
+          <SectionTitle>Schedule</SectionTitle>
           <p>override organization's schedule</p>
+          {/* start time timezone */}
+          {/* end time timezone */}
           <Table headers={scheduleHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader text="Email" />
+          <SectionTitle>Email</SectionTitle>
           <p>reference to a organization's email</p>
           <Table headers={emailHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader text="Phone" />
+          <SectionTitle>Phone</SectionTitle>
           <p>reference to a organization's phone</p>
           <Table headers={phoneHeaders} rows={[]} />
         </Container>
         <Container>
-          <TableHeader text="Cost Properties" />
+          <SectionTitle>Cost Properties</SectionTitle>
           <p>tk</p>
           {/* cost-free (value = true)
                 - Description: Enter on all services that are free of cost
@@ -186,7 +163,7 @@ const Service = props => {
                 - Description: Enter a # or brief written short description of fees (e.g. "costs offered on a sliding scale") */}
         </Container>
         <Container>
-          <TableHeader text="Community Properties" />
+          <SectionTitle>Community Properties</SectionTitle>
           <p>tk</p>
           {/* The list is really long. See google doc “Community Properties” for the list of properties
                 - Description: The “ADD DESCRIPTIVE RELEVANT COMMUNITY PROPERTIES TO TO ALL OPPORTUNITIES PAGES” column
@@ -198,7 +175,7 @@ const Service = props => {
                 - In new custom data portal, all organizations under “Client” = “AsylumConnect” should appear. (Can add new “Clients” later if introduce new products, etc.) */}
         </Container>
         <Container>
-          <TableHeader text="Eligibility / Requirement Properties" />
+          <SectionTitle>Eligibility / Requirement Properties</SectionTitle>
           <p>tk</p>
           {/* elig-description
                 - Description: tk
@@ -246,7 +223,7 @@ const Service = props => {
                 - DB field: req-referral */}
         </Container>
         <Container>
-          <TableHeader text="Additional Information Properties" />
+          <SectionTitle>Additional Information Properties</SectionTitle>
           <p>tk</p>
           {/* Has A Confidentiality Policy
                 - Description: If the organization has a confidentiality policy
@@ -270,16 +247,16 @@ const Service = props => {
                 - DB field: geo-public-transit-description */}
         </Container>
         <Container>
-          <TableHeader text="Language Properties" />
+          <SectionTitle>Language Properties</SectionTitle>
           <p>tk</p>
           {/* - Change the “lang-all-languages-by-interpreter” property from value = “true” (and front-end produces uniform default text) to custom free text value that will show up word for word on the front-end under the service page’s “Non-English Services” section (to better handle responses from direct service providers during the verification process) */}
         </Container>
         <Container>
-          <TableHeader text="Language Properties" />
+          <SectionTitle>Language Properties</SectionTitle>
           <p>tk</p>
         </Container>
         <Container>
-          <TableHeader text="Service Area Properties" />
+          <SectionTitle>Service Area Properties</SectionTitle>
           <p>tk</p>
           {/* NOTE: Ask Katie about this: Every city, state (province), country for our 3 nations
 
@@ -290,7 +267,7 @@ const Service = props => {
                 - New countries/locations ORAM might need: Turkey, Pakistan, Nigeria, etc. */}
         </Container>
         <Container>
-          <TableHeader text="Tags" />
+          <SectionTitle>Tags</SectionTitle>
           <p>multiple tables tk</p>
         </Container>
       </Stack>

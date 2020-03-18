@@ -5,6 +5,7 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Stack} from '@chakra-ui/core';
 
+import NotFound from './NotFound';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Loading from '../components/Loading';
@@ -143,8 +144,14 @@ const Organization = props => {
       }
     });
 
+  //
+
   if (loading) {
     return <Loading />;
+  }
+
+  if (!data) {
+    return <NotFound />;
   }
 
   const scheduleRows = _map(schedule, ({start_time, end_time}, day) => {
@@ -190,6 +197,16 @@ const Organization = props => {
         </Container>
         <Container>
           <SectionTitle>Services</SectionTitle>
+          {_map(services, service => {
+            return (
+              <Link
+                key={service._id}
+                to={`${orgPath}/services/${service._id}/edit`}
+              >
+                <p>edit</p>
+              </Link>
+            );
+          })}
           <Table headers={serviceHeaders} rows={services} />
         </Container>
         <Container>

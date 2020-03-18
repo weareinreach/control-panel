@@ -17,6 +17,15 @@ import {ContextFormModal} from '../components/ContextFormModal';
 import FormField from '../components/FormField';
 import {Container, SectionTitle, Title} from '../components/styles';
 
+/**
+ * TODO: Maybe for website
+  <InputGroup size="sm">
+    <InputLeftAddon children="https://" />
+    <Input rounded="0" placeholder="mysite" />
+    <InputRightAddon children=".com" />
+  </InputGroup>
+*/
+
 const generalDetailsFields = [
   {key: 'name', label: 'Name'},
   {key: 'website', label: 'Website'},
@@ -131,14 +140,14 @@ const OrganizationForm = props => {
   return (
     <>
       {isEdit ? (
-        <Title>Edit Organization {props?.initialValues?.name}</Title>
+        <Title>Edit {props?.initialValues?.name || 'Organization'}</Title>
       ) : (
         <Title>New Organization</Title>
       )}
       <Tabs>
         <TabList>
           <Tab>Organization Details</Tab>
-          <Tab>Services</Tab>
+          {/* <Tab>Services</Tab> */}
           <Tab>Addresses</Tab>
           <Tab>Schedule</Tab>
           <Tab>Emails</Tab>
@@ -166,7 +175,7 @@ const OrganizationForm = props => {
               </Container>
             </Stack>
           </TabPanel>
-          <TabPanel marginTop={2}>
+          {/* <TabPanel marginTop={2}>
             <Button
               onClick={() => createFieldItem('services')}
               marginBottom={2}
@@ -192,15 +201,15 @@ const OrganizationForm = props => {
                         />
                       );
                     })}
+                    <SectionTitle>Properties</SectionTitle>
                     <Tabs>
                       <TabList>
-                        <Tab>Cost Properties</Tab>
-                        <Tab>Community Properties</Tab>
-                        <Tab>Eligibility / Requirement Properties</Tab>
-                        <Tab>Additional Information Properties</Tab>
-                        <Tab>Language Properties</Tab>
-                        <Tab>Language Properties</Tab>
-                        <Tab>Service Area Properties</Tab>
+                        <Tab>Cost</Tab>
+                        <Tab>Community</Tab>
+                        <Tab>Eligibility / Requirement</Tab>
+                        <Tab>Language</Tab>
+                        <Tab>Service Area</Tab>
+                        <Tab>Additional Information</Tab>
                       </TabList>
                       <TabPanels>
                         <TabPanel>
@@ -213,16 +222,72 @@ const OrganizationForm = props => {
                           <p>Eligibility / Requirement Properties</p>
                         </TabPanel>
                         <TabPanel>
-                          <p>Additional Information Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Language Properties</p>
-                        </TabPanel>
-                        <TabPanel>
                           <p>Language Properties</p>
                         </TabPanel>
                         <TabPanel>
                           <p>Service Area Properties</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Additional Information Properties</p>
+                        </TabPanel>
+                      </TabPanels>
+                    </Tabs>
+                    <SectionTitle>Tags</SectionTitle>
+                    <Tabs>
+                      <TabList>
+                        <Tab>Community Support</Tab>
+                        <Tab>Computers and Internet</Tab>
+                        <Tab>Education and Employment</Tab>
+                        <Tab>Food</Tab>
+                        <Tab>Housing</Tab>
+                        <Tab>Hygiene and Clothing</Tab>
+                        <Tab>Legal</Tab>
+                        <Tab>Mail</Tab>
+                        <Tab>Medical</Tab>
+                        <Tab>Mental Health</Tab>
+                        <Tab>Sports and Entertainment</Tab>
+                        <Tab>Translation and Interpretation</Tab>
+                        <Tab>Transportation</Tab>
+                      </TabList>
+                      <TabPanels>
+                        <TabPanel>
+                          <p>Community Support</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Computers and Internet</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Education and Employment</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Food</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Housing</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Hygiene and Clothing</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Legal</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Mail</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Medical</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Mental Health</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Sports and Entertainment</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Translation and Interpretation</p>
+                        </TabPanel>
+                        <TabPanel>
+                          <p>Transportation</p>
                         </TabPanel>
                       </TabPanels>
                     </Tabs>
@@ -242,7 +307,7 @@ const OrganizationForm = props => {
                 </Container>
               );
             })}
-          </TabPanel>
+          </TabPanel> */}
           <TabPanel marginTop={2}>
             <Button
               onClick={() => createFieldItem('locations')}

@@ -4,19 +4,20 @@ import React from 'react';
 
 import NotFound from './NotFound';
 import Loading from '../components/Loading';
-import OrganizationForm from '../components/OrganizationForm';
+import ServiceForm from '../components/ServiceForm';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-const OrganizationEdit = props => {
-  const {orgId} = props?.match?.params;
+const ServiceEdit = props => {
+  const {orgId, serviceId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
-  const {data, loading} = useAPIGet(orgPath);
+  const servicePath = `${orgPath}/services/${serviceId}`;
+  const {data, loading} = useAPIGet(servicePath);
   const onCancel = () => {
     window.location = orgPath;
   };
   const onConfirm = ({setLoading, setSuccess, setFail, values}) => {
-    const url = `${getAPIUrl()}${orgPath}`;
+    const url = `${getAPIUrl()}${servicePath}`;
 
     setLoading();
     patch(url, values)
@@ -39,7 +40,7 @@ const OrganizationEdit = props => {
   }
 
   return (
-    <OrganizationForm
+    <ServiceForm
       initialValues={data}
       isEdit
       onCancel={onCancel}
@@ -48,8 +49,8 @@ const OrganizationEdit = props => {
   );
 };
 
-OrganizationEdit.propTypes = {
+ServiceEdit.propTypes = {
   match: PropTypes.shape()
 };
 
-export default OrganizationEdit;
+export default ServiceEdit;

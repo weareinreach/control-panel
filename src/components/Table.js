@@ -69,7 +69,7 @@ const Table = props => {
           return (
             <tr key={rowIndex}>
               {headers?.map(({key, getValue}, keyIndex) => {
-                let value = getValue ? getValue(row) : row?.[key];
+                let value = row?.[key];
 
                 if (value === true) {
                   value = 'YES';
@@ -105,3 +105,11 @@ Table.propTypes = {
 };
 
 export default Table;
+
+export const KeyValueTable = ({rows}) => (
+  <Table headers={[{key: 'key'}, {key: 'value'}]} rows={rows} />
+);
+
+KeyValueTable.propTypes = {
+  rows: Table.propTypes.rows
+};

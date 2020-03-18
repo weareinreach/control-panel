@@ -1,6 +1,6 @@
 // Dev/Staging config is the base
 const base = {
-  apiDomain: 'https://catalog-server-api-staging.herokuapp.com',
+  apiDomain: 'https://asylumconnect-api-staging.herokuapp.com',
   apiBasePath: '/v1'
 };
 
@@ -9,7 +9,7 @@ const local = {
 };
 
 const prod = {
-  apiDomain: 'https://catalog-server-api.herokuapp.com'
+  apiDomain: 'https://asylumconnect-api.herokuapp.com'
 };
 
 const env = process.env.REACT_APP_APP_ENV;

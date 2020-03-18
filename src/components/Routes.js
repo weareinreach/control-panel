@@ -11,8 +11,6 @@ import Organization from '../pages/Organization';
 import OrganizationEdit from '../pages/OrganizationEdit';
 import OrganizationNew from '../pages/OrganizationNew';
 import Organizations from '../pages/Organizations';
-import ServiceEdit from '../pages/ServiceEdit';
-import ServiceNew from '../pages/ServiceNew';
 
 const Routes = () => {
   const {loading, hasUser} = useContext(ContextApp);
@@ -38,22 +36,11 @@ const Routes = () => {
         <Route exact path="/" component={Organizations} />
         <Route exact path="/organizations" component={Organizations} />
         <Route exact path="/organizations/new" component={OrganizationNew} />
-        <Route exact path="/organizations" component={Organizations} />
         <Route exact path="/organizations/:orgId" component={Organization} />
         <Route
           exact
           path="/organizations/:orgId/edit"
           component={OrganizationEdit}
-        />
-        <Route
-          exact
-          path="/organizations/:orgId/services/new"
-          component={ServiceNew}
-        />
-        <Route
-          exact
-          path="/organizations/:orgId/services/:serviceId/edit"
-          component={ServiceEdit}
         />
         <Route exact path="/admin" component={Admin} />
         <Route component={NotFound} />

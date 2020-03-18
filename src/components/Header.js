@@ -51,7 +51,7 @@ const Header = () => {
             <>
               <Box display="inline-block" width="calc(100% - 172px)">
                 <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
-                  Organizations
+                  Home
                 </ChakraLink>
                 {user?.isAdmin && (
                   <ChakraLink as={Link} fontSize="xl" to="/admin">

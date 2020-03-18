@@ -5,7 +5,7 @@ import {getAPIUrl} from './index';
 
 export const useAPIGet = path => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const url = `${getAPIUrl()}${path}`;
 
   useEffect(() => {
@@ -15,8 +15,8 @@ export const useAPIGet = path => {
 
     get(url)
       .then(({data}) => {
-        setLoading(false);
         setData(data);
+        setLoading(false);
       })
       .catch(err => {
         throw new Error(err);

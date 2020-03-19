@@ -17,61 +17,13 @@ import {ContextFormModal} from '../components/ContextFormModal';
 import FormField from '../components/FormField';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {getOrgInitialValues} from '../utils/forms';
-
-/**
- * TODO: Maybe for website
-  <InputGroup size="sm">
-    <InputLeftAddon children="https://" />
-    <Input rounded="0" placeholder="mysite" />
-    <InputRightAddon children=".com" />
-  </InputGroup>
-*/
-
-const generalDetailsFields = [
-  {key: 'name', label: 'Name'},
-  {key: 'website', label: 'Website'},
-  {key: 'description', label: 'Description', type: 'textarea'},
-  {key: 'alert_message', label: 'Alert Message', type: 'textarea'},
-  {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
-  {key: 'is_published', label: 'Is Published', type: 'checkbox'}
-];
-
-const emailFields = [
-  {key: 'email', label: 'Email'},
-  {key: 'title', label: 'Title'},
-  {key: 'first_name', label: 'First Name'},
-  {key: 'last_name', label: 'Last Name'},
-  {key: 'show_on_org', label: 'Show on Org', type: 'checkbox'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
-];
-
-const locationFields = [
-  {key: 'name', label: 'Name'},
-  {key: 'address', label: 'Address'},
-  {key: 'city', label: 'City'},
-  {key: 'state', label: 'State'},
-  {key: 'country', label: 'Country'},
-  {key: 'zip', label: 'Zipcode'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
-];
-
-const phonesFields = [
-  {key: 'digits', label: 'Digits'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
-];
-
-const scheduleFields = [
-  {key: 'start_time', label: 'Start Time'},
-  {key: 'end_time', label: 'End Time'}
-];
-
-const serviceFields = [
-  {key: 'name', label: 'Name'},
-  {key: 'description', label: 'Description', type: 'textarea'},
-  {key: 'access_instructions', label: 'Access Instructions', type: 'textarea'},
-  {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
-  {key: 'is_published', label: 'Is Published', type: 'checkbox'}
-];
+import {
+  generalDetailsFields,
+  emailFields,
+  locationFields,
+  phoneFields,
+  scheduleFields
+} from '../utils/formsHeaders';
 
 const OrganizationForm = props => {
   const {isEdit, onCancel, onConfirm, organization} = props;
@@ -253,7 +205,7 @@ const OrganizationForm = props => {
               return (
                 <Container key={itemIndex} marginBottom={4}>
                   <Stack spacing={4}>
-                    {phonesFields?.map(({key, ...rest}) => (
+                    {phoneFields?.map(({key, ...rest}) => (
                       <FormField
                         key={`phones[${itemIndex}][${key}]`}
                         fieldKey={`phones[${itemIndex}][${key}]`}

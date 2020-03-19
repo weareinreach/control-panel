@@ -1,3 +1,47 @@
+export const generalDetailsFields = [
+  {key: 'name', label: 'Name'},
+  {key: 'website', label: 'Website'},
+  {key: 'description', label: 'Description', type: 'textarea'},
+  {key: 'alert_message', label: 'Alert Message', type: 'textarea'},
+  {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
+  {key: 'is_published', label: 'Is Published', type: 'checkbox'}
+];
+
+export const emailFields = [
+  {key: 'email', label: 'Email'},
+  {key: 'title', label: 'Title'},
+  {key: 'first_name', label: 'First Name'},
+  {key: 'last_name', label: 'Last Name'},
+  {key: 'show_on_org', label: 'Show on Org', type: 'checkbox'},
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+];
+
+export const locationFields = [
+  {key: 'name', label: 'Name'},
+  {key: 'address', label: 'Address'},
+  {key: 'city', label: 'City'},
+  {key: 'state', label: 'State'},
+  {key: 'country', label: 'Country'},
+  {key: 'zip_code', label: 'Zipcode'},
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+];
+
+export const phoneFields = [
+  {key: 'digits', label: 'Digits'},
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+];
+
+export const scheduleFields = [
+  {key: 'day', label: 'Day'},
+  {key: 'start_time', label: 'Start Time'},
+  {key: 'end_time', label: 'End Time'}
+];
+
+export const serviceFields = [
+  {key: 'name', label: 'Name'},
+  {key: 'updated_at', label: 'Last Updated'}
+];
+
 export const communityProperties = [
   {
     key: 'cost-free',
@@ -165,9 +209,6 @@ export const costProperties = [
   }
 ];
 
-/*
-
-*/
 export const eligibilityRequirementProperties = [
   {
     key: 'has-confidentiality-policy',
@@ -247,6 +288,7 @@ export const eligibilityRequirementProperties = [
 /**
  * TODO: Ask Katie
  */
+// List of langs and a catch-all note
 export const languageProperties = [];
 
 /*

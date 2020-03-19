@@ -4,8 +4,7 @@ import {
   Alert as ChakraAlert,
   AlertDescription,
   AlertIcon,
-  AlertTitle,
-  CloseButton
+  AlertTitle
 } from '@chakra-ui/core';
 
 const Alert = props => {
@@ -16,7 +15,7 @@ const Alert = props => {
       <AlertIcon />
       {title && <AlertTitle mr={2}>{title}</AlertTitle>}
       {description && <AlertDescription>{description}</AlertDescription>}
-      <CloseButton position="absolute" right="8px" top="8px" />
+      {/* <CloseButton position="absolute" right="8px" top="8px" /> */}
     </ChakraAlert>
   );
 };

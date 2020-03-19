@@ -1,4 +1,4 @@
-const newSchedule = {
+export const newSchedule = {
   sunday: {start_time: '', end_time: '', timezone: ''},
   monday: {start_time: '', end_time: '', timezone: ''},
   tuesday: {start_time: '', end_time: '', timezone: ''},
@@ -35,7 +35,7 @@ export const getServiceInitialValues = initialValues => {
     locations: initialValues?.locations || [],
     name: initialValues?.name || '',
     phones: initialValues?.phones || [],
-    schedule: initialValues?.schedule || newSchedule,
+    schedule: initialValues?.schedule || null,
     services: initialValues?.services || [],
     slug: initialValues?.slug || '',
     website: initialValues?.website || ''

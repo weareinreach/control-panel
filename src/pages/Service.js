@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import {Box, Button, Stack} from '@chakra-ui/core';
 
 import NotFound from './NotFound';
+import Alert from '../components/Alert';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
@@ -13,6 +14,12 @@ import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {getAPIUrl} from '../utils';
+import {
+  emailFields,
+  locationFields,
+  phoneFields,
+  scheduleFields
+} from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
 
 const duplicateForm = {
@@ -21,43 +28,6 @@ const duplicateForm = {
     type: 'text'
   }
 };
-
-const emailHeaders = [
-  {key: 'email', label: 'Email'},
-  {key: 'title', label: 'Title'},
-  {key: 'first_name', label: 'First Name'},
-  {key: 'last_name', label: 'Last Name'},
-  {key: 'show_on_org', label: 'Show on Org'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
-
-const locationHeaders = [
-  {key: 'name', label: 'Name'},
-  {key: 'address', label: 'Address'},
-  {key: 'city', label: 'City'},
-  {key: 'state', label: 'State'},
-  {key: 'country', label: 'Country'},
-  {key: 'zip', label: 'Zipcode'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
-
-const phoneHeaders = [
-  {key: 'digits', label: 'Digits'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
-
-const scheduleHeaders = [
-  {key: 'day', label: 'Day'},
-  {key: 'start_time', label: 'Start Time'},
-  {key: 'end_time', label: 'End Time'}
-];
-
-const serviceHeaders = [
-  {key: 'name', label: 'Name'},
-  {key: 'location', label: 'Location'},
-  {key: 'type', label: 'Type'},
-  {key: 'updated_at', label: 'Last Updated'}
-];
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -143,6 +113,9 @@ const Organization = props => {
   return (
     <>
       <Helmet title={name} />
+      {!is_published && (
+        <Alert title="This service is unpublished" type="warning" />
+      )}
       <Box float="right">
         <Link to={`${servicePath}/edit`}>
           <Button marginRight={2}>Edit Service</Button>
@@ -176,23 +149,25 @@ const Organization = props => {
         </Container>
         <Container>
           <SectionTitle>Service Area Coverage</SectionTitle>
-          <p>searchable dropdown for all of the location posibilities</p>
+          <p>country</p>
+          <p>states or providences</p>
+          <p>cities</p>
         </Container>
         <Container>
-          <SectionTitle>Addresses</SectionTitle>
-          <Table headers={locationHeaders} rows={locations} />
+          <SectionTitle>Address</SectionTitle>
+          <Table headers={locationFields} rows={locations} />
         </Container>
         <Container>
-          <SectionTitle>Schedules</SectionTitle>
-          <Table headers={scheduleHeaders} rows={scheduleRows} />
+          <SectionTitle>Schedule</SectionTitle>
+          <Table headers={scheduleFields} rows={scheduleRows} />
         </Container>
         <Container>
-          <SectionTitle>Emails</SectionTitle>
-          <Table headers={emailHeaders} rows={emails} />
+          <SectionTitle>Email</SectionTitle>
+          <Table headers={emailFields} rows={emails} />
         </Container>
         <Container>
-          <SectionTitle>Phones</SectionTitle>
-          <Table headers={phoneHeaders} rows={phones} />
+          <SectionTitle>Phone</SectionTitle>
+          <Table headers={phoneFields} rows={phones} />
         </Container>
       </Stack>
     </>

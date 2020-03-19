@@ -1,4 +1,5 @@
 import {delete as httpDelete, post} from 'axios';
+import _map from 'lodash/map';
 import {useFormik} from 'formik';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
@@ -16,6 +17,7 @@ import {
 import {ContextFormModal} from './ContextFormModal';
 import DropdownButton from './DropdownButton';
 import FormField from './FormField';
+import ServiceAreaCoverage from './ServiceAreaCoverage';
 import {Container, SectionTitle, Title} from './styles';
 import {getAPIUrl} from '../utils';
 import {
@@ -27,13 +29,18 @@ import {
   serviceAreaProperties,
   tags
 } from '../utils/formsHeaders';
-import {getServiceInitialValues} from '../utils/forms';
+import {getServiceInitialValues, newSchedule} from '../utils/forms';
 
 const generalDetailsFields = [
   {key: 'name', label: 'Name'},
   {key: 'description', label: 'Description', type: 'textarea'},
   {key: 'access_instructions', label: 'Access Instructions', type: 'textarea'},
   {key: 'is_published', label: 'Is Published', type: 'checkbox'}
+];
+
+const scheduleFields = [
+  {key: 'start_time', label: 'Start Time'},
+  {key: 'end_time', label: 'End Time'}
 ];
 
 const ServiceForm = props => {
@@ -44,6 +51,12 @@ const ServiceForm = props => {
   const formik = useFormik({initialValues});
   const name = props?.service?.name;
   const orgPath = `/organizations/${orgId}`;
+  const addSchedule = () => {
+    formik.setFieldValue('schedule', newSchedule);
+  };
+  const removeScedule = () => {
+    formik.setFieldValue('schedule', null);
+  };
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
@@ -122,11 +135,12 @@ const ServiceForm = props => {
       ) : (
         <Title>New Service</Title>
       )}
-      <Tabs defaultIndex={2}>
+      <Tabs>
         <TabList>
           <Tab>Service Details</Tab>
           <Tab>Properties</Tab>
           <Tab>Tags</Tab>
+          <Tab>Schedules</Tab>
         </TabList>
         <TabPanels>
           <TabPanel marginTop={2}>
@@ -149,11 +163,6 @@ const ServiceForm = props => {
                 {/* List, edit, add them */}
                 {/* Use a toggle like system to hide them */}
               </Container>
-              {/* <Container> */}
-              {/* <SectionTitle>Schedules</SectionTitle> */}
-              {/* List, edit, add them */}
-              {/* Use a toggle like system to hide them */}
-              {/* </Container> */}
               <Container>
                 <SectionTitle>Emails</SectionTitle>
                 {/* List, edit, add them */}
@@ -225,6 +234,7 @@ const ServiceForm = props => {
               <Container>
                 <SectionTitle>Service Area Properties</SectionTitle>
                 <Stack space={4}>
+                  <ServiceAreaCoverage />
                   {serviceAreaProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
@@ -278,6 +288,32 @@ const ServiceForm = props => {
                 </Container>
               ))}
             </Stack>
+          </TabPanel>
+          <TabPanel marginTop={2}>
+            <Box marginBottom={2} textAlign="right">
+              {formik?.values?.schedule ? (
+                <Button onClick={removeScedule}>Remove Custom Schedule</Button>
+              ) : (
+                <Button onClick={addSchedule}>Add Custom Schedule</Button>
+              )}
+            </Box>
+            {_map(formik?.values?.schedule || [], (value, day) => {
+              return (
+                <Container key={day} marginBottom={4}>
+                  <SectionTitle>{day}</SectionTitle>
+                  <Stack spacing={4}>
+                    {scheduleFields?.map(({key, ...rest}) => (
+                      <FormField
+                        key={`schedule[${day}][${key}]`}
+                        fieldKey={`schedule[${day}][${key}]`}
+                        formik={formik}
+                        {...rest}
+                      />
+                    ))}
+                  </Stack>
+                </Container>
+              );
+            })}
           </TabPanel>
         </TabPanels>
       </Tabs>

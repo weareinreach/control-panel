@@ -1,11 +1,11 @@
 import {delete as httpDelete, post} from 'axios';
-import _map from 'lodash/map';
 import PropTypes from 'prop-types';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, IconButton, Stack} from '@chakra-ui/core';
+import {Box, Button, Stack} from '@chakra-ui/core';
 
 import NotFound from './NotFound';
+import Alert from '../components/Alert';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
@@ -13,6 +13,13 @@ import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {getAPIUrl} from '../utils';
+import {
+  emailFields,
+  locationFields,
+  phoneFields,
+  scheduleFields,
+  serviceFields
+} from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
 
 const duplicateForm = {
@@ -22,42 +29,47 @@ const duplicateForm = {
   }
 };
 
-const emailHeaders = [
-  {key: 'email', label: 'Email'},
-  {key: 'title', label: 'Title'},
-  {key: 'first_name', label: 'First Name'},
-  {key: 'last_name', label: 'Last Name'},
-  {key: 'show_on_org', label: 'Show on Org'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
+const getScheduleRows = schedule => {
+  console.log('schedule', schedule);
 
-const locationHeaders = [
-  {key: 'name', label: 'Name'},
-  {key: 'address', label: 'Address'},
-  {key: 'city', label: 'City'},
-  {key: 'state', label: 'State'},
-  {key: 'country', label: 'Country'},
-  {key: 'zip', label: 'Zipcode'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
-
-const phoneHeaders = [
-  {key: 'digits', label: 'Digits'},
-  {key: 'is_primary', label: 'Is Primary'}
-];
-
-const scheduleHeaders = [
-  {key: 'day', label: 'Day'},
-  {key: 'start_time', label: 'Start Time'},
-  {key: 'end_time', label: 'End Time'}
-];
-
-const serviceHeaders = [
-  {key: 'name', label: 'Name'},
-  {key: 'location', label: 'Location'},
-  {key: 'type', label: 'Type'},
-  {key: 'updated_at', label: 'Last Updated'}
-];
+  return [
+    {
+      day: 'monday',
+      start_time: schedule?.monday_start,
+      end_time: schedule?.monday_end
+    },
+    {
+      day: 'tuesday',
+      start_time: schedule?.tuesday_start,
+      end_time: schedule?.tuesday_end
+    },
+    {
+      day: 'wednesday',
+      start_time: schedule?.wednesday_start,
+      end_time: schedule?.wednesday_end
+    },
+    {
+      day: 'thursday',
+      start_time: schedule?.thursday_start,
+      end_time: schedule?.thursday_end
+    },
+    {
+      day: 'friday',
+      start_time: schedule?.friday_start,
+      end_time: schedule?.friday_end
+    },
+    {
+      day: 'saturday',
+      start_time: schedule?.saturday_start,
+      end_time: schedule?.saturday_end
+    },
+    {
+      day: 'sunday',
+      start_time: schedule?.sunday_start,
+      end_time: schedule?.sunday_end
+    }
+  ];
+};
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -70,7 +82,6 @@ const Organization = props => {
     created_at,
     description,
     emails,
-    is_at_capacity,
     is_published,
     last_verified,
     locations,
@@ -153,13 +164,14 @@ const Organization = props => {
     return <NotFound />;
   }
 
-  const scheduleRows = _map(schedule, ({start_time, end_time}, day) => {
-    return {day, start_time, end_time};
-  });
+  const scheduleRows = getScheduleRows(schedule);
 
   return (
     <>
       <Helmet title={name} />
+      {!is_published && (
+        <Alert title="This organization is unpublished" type="warning" />
+      )}
       <Box float="right">
         <Link to={`${orgPath}/edit`}>
           <Button marginRight={2}>Edit Organization</Button>
@@ -187,7 +199,6 @@ const Organization = props => {
               {key: 'Description', value: description},
               {key: 'Alert Message', value: alert_message},
               {key: 'Slug', value: slug},
-              {key: 'Is At Capacity', value: is_at_capacity},
               {key: 'Is Published', value: is_published},
               {key: 'Last Verified', value: last_verified},
               {key: 'Created At', value: created_at},
@@ -204,29 +215,31 @@ const Organization = props => {
           <SectionTitle>Services</SectionTitle>
           <Table
             getRowLink={service => `${orgPath}/services/${service._id}`}
-            headers={serviceHeaders}
+            headers={serviceFields}
             rows={services}
           />
         </Container>
         <Container>
           <SectionTitle>Service Area Coverage</SectionTitle>
-          <p>searchable dropdown for all of the location posibilities</p>
+          <p>country</p>
+          <p>states or providences</p>
+          <p>cities</p>
         </Container>
         <Container>
           <SectionTitle>Addresses</SectionTitle>
-          <Table headers={locationHeaders} rows={locations} />
+          <Table headers={locationFields} rows={locations} />
         </Container>
         <Container>
           <SectionTitle>Schedules</SectionTitle>
-          <Table headers={scheduleHeaders} rows={scheduleRows} />
+          <Table headers={scheduleFields} rows={scheduleRows} />
         </Container>
         <Container>
           <SectionTitle>Emails</SectionTitle>
-          <Table headers={emailHeaders} rows={emails} />
+          <Table headers={emailFields} rows={emails} />
         </Container>
         <Container>
           <SectionTitle>Phones</SectionTitle>
-          <Table headers={phoneHeaders} rows={phones} />
+          <Table headers={phoneFields} rows={phones} />
         </Container>
       </Stack>
     </>

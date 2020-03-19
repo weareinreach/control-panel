@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import NotFound from './NotFound';
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import ServiceForm from '../components/ServiceForm';
 import {getAPIUrl} from '../utils';
@@ -40,13 +41,16 @@ const ServiceEdit = props => {
   }
 
   return (
-    <ServiceForm
-      isEdit
-      onCancel={onCancel}
-      onConfirm={onConfirm}
-      orgId={orgId}
-      service={data}
-    />
+    <>
+      <Helmet title="Edit Service" />
+      <ServiceForm
+        isEdit
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        orgId={orgId}
+        service={data}
+      />
+    </>
   );
 };
 

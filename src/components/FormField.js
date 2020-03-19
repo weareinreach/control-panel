@@ -6,14 +6,18 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Icon,
   Input,
-  Textarea
+  Text,
+  Textarea,
+  Tooltip
 } from '@chakra-ui/core';
 
 import PasswordInput from './PasswordInput';
 
 const FormField = props => {
   const {
+    description,
     fieldKey,
     formik,
     isRequired,
@@ -45,6 +49,11 @@ const FormField = props => {
     id: fieldKey,
     placeholder
   };
+  const toolTipIcon = description && (
+    <Tooltip hasArrow label={description} placement="top">
+      <Icon name="info-outline" />
+    </Tooltip>
+  );
 
   return (
     <FormControl
@@ -55,11 +64,15 @@ const FormField = props => {
     >
       {isCheckBox ? (
         <InputComponent {...inputProps} isChecked={inputProps.value}>
-          {label}
+          <Text display="inline">{label}</Text> {toolTipIcon}
         </InputComponent>
       ) : (
         <>
-          {label && <FormLabel htmlFor={fieldKey}>{label}</FormLabel>}
+          {label && (
+            <>
+              <FormLabel htmlFor={fieldKey}>{label}</FormLabel> {toolTipIcon}
+            </>
+          )}
           <InputComponent {...inputProps} />
         </>
       )}

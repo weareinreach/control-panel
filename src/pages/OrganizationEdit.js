@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import NotFound from './NotFound';
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import OrganizationForm from '../components/OrganizationForm';
 import {getAPIUrl} from '../utils';
@@ -39,12 +40,15 @@ const OrganizationEdit = props => {
   }
 
   return (
-    <OrganizationForm
-      isEdit
-      onCancel={onCancel}
-      onConfirm={onConfirm}
-      organization={data}
-    />
+    <>
+      <Helmet title="Edit Organization" />
+      <OrganizationForm
+        isEdit
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        organization={data}
+      />
+    </>
   );
 };
 

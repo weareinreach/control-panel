@@ -2,6 +2,7 @@ import {post} from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Helmet from '../components/Helmet';
 import ServiceForm from '../components/ServiceForm';
 import {getAPIUrl} from '../utils';
 
@@ -27,7 +28,10 @@ const ServiceNew = props => {
   };
 
   return (
-    <ServiceForm onCancel={onCancel} onConfirm={onConfirm} orgId={orgId} />
+    <>
+      <Helmet title="New Service" />
+      <ServiceForm onCancel={onCancel} onConfirm={onConfirm} orgId={orgId} />
+    </>
   );
 };
 

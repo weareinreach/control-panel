@@ -29,7 +29,7 @@ Layout.propTypes = {
 };
 
 export const SectionTitle = ({children, ...rest}) => (
-  <ChakraHeading fontSize="xl" {...rest}>
+  <ChakraHeading fontSize="xl" marginBottom={2} {...rest}>
     {children}
   </ChakraHeading>
 );

@@ -1,6 +1,7 @@
 import {post} from 'axios';
 import React from 'react';
 
+import Helmet from '../components/Helmet';
 import OrganizationForm from '../components/OrganizationForm';
 import {getAPIUrl} from '../utils';
 
@@ -26,7 +27,12 @@ const OrganizationNew = () => {
       });
   };
 
-  return <OrganizationForm onCancel={onCancel} onConfirm={onConfirm} />;
+  return (
+    <>
+      <Helmet title="New Organization" />
+      <OrganizationForm onCancel={onCancel} onConfirm={onConfirm} />
+    </>
+  );
 };
 
 export default OrganizationNew;

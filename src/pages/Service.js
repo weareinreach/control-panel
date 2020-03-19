@@ -8,6 +8,7 @@ import {Box, Button, Stack} from '@chakra-ui/core';
 import NotFound from './NotFound';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
@@ -73,10 +74,9 @@ const Organization = props => {
     is_published,
     last_verified,
     locations,
-    name = 'Organization Name',
+    name = 'Service Name',
     phones,
     schedule,
-    services,
     slug,
     updated_at,
     website
@@ -127,24 +127,6 @@ const Organization = props => {
           });
       }
     });
-  const openModalVerify = () =>
-    openModal({
-      header: `Verify Information for ${name}`,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
-        setLoading();
-
-        // TODO: API logic for deleting
-        console.log('handleOrganizationVerification', values);
-
-        setTimeout(() => {
-          window.location = `/organizations`;
-          setSuccess();
-        }, 3000);
-      }
-    });
-
-  //
 
   if (loading) {
     return <Loading />;
@@ -160,17 +142,14 @@ const Organization = props => {
 
   return (
     <>
+      <Helmet title={name} />
       <Box float="right">
         <Link to={`${servicePath}/edit`}>
-          <Button marginRight={2}>Edit Organization</Button>
+          <Button marginRight={2}>Edit Service</Button>
         </Link>
         <DropdownButton
           buttonText="More"
           items={[
-            {
-              onClick: openModalVerify,
-              text: 'Mark Information Verified'
-            },
             {onClick: openModalDuplicate, text: 'Duplicate'},
             {onClick: openModalDelete, text: 'Delete'}
           ]}
@@ -178,9 +157,8 @@ const Organization = props => {
       </Box>
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
-        <p>hello world</p>
-        {/* <Container>
-          <SectionTitle>Organization Details</SectionTitle>
+        <Container>
+          <SectionTitle>Service Details</SectionTitle>
           <KeyValueTable
             rows={[
               {key: 'ID', value: _id},
@@ -195,23 +173,6 @@ const Organization = props => {
               {key: 'Updated At', value: updated_at}
             ]}
           />
-        </Container>
-        <Container>
-          <SectionTitle>Services</SectionTitle>
-          {_map(services, service => {
-            return (
-              <Link
-                key={service._id}
-                to={`${servicePath}/edit`}
-              >
-                <p>edit {service.name}</p>
-              </Link>
-            );
-          })}
-          <Link to={`${servicePath}/services/new`}>
-            <p>new service</p>
-          </Link>
-          <Table headers={serviceHeaders} rows={services} />
         </Container>
         <Container>
           <SectionTitle>Service Area Coverage</SectionTitle>
@@ -232,7 +193,7 @@ const Organization = props => {
         <Container>
           <SectionTitle>Phones</SectionTitle>
           <Table headers={phoneHeaders} rows={phones} />
-        </Container> */}
+        </Container>
       </Stack>
     </>
   );

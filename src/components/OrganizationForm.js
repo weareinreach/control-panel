@@ -69,7 +69,6 @@ const serviceFields = [
   {key: 'name', label: 'Name'},
   {key: 'description', label: 'Description', type: 'textarea'},
   {key: 'access_instructions', label: 'Access Instructions', type: 'textarea'},
-  {key: 'is_appointment', label: 'Is Appointment', type: 'checkbox'},
   {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
   {key: 'is_published', label: 'Is Published', type: 'checkbox'}
 ];

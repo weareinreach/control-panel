@@ -8,6 +8,7 @@ import {Box, Button, IconButton, Stack} from '@chakra-ui/core';
 import NotFound from './NotFound';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
@@ -158,6 +159,7 @@ const Organization = props => {
 
   return (
     <>
+      <Helmet title={name} />
       <Box float="right">
         <Link to={`${orgPath}/edit`}>
           <Button marginRight={2}>Edit Organization</Button>

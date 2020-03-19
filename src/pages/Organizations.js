@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button} from '@chakra-ui/core';
 
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
@@ -34,6 +35,7 @@ const Organizations = () => {
 
   return (
     <>
+      <Helmet title="Organizations" />
       <Box float="right">
         <Link to="/organizations/new">
           <Button>New Organization</Button>

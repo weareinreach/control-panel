@@ -3,6 +3,7 @@ import {Box, Button, Text} from '@chakra-ui/core';
 
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
+import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import MessagePage from '../components/MessagePage';
 import {Container, Title} from '../components/styles';
@@ -141,6 +142,7 @@ const Admin = () => {
 
   return (
     <>
+      <Helmet title="Admin" />
       <Box float="right">
         <Button onClick={openCreateModal}>New Manager</Button>
       </Box>

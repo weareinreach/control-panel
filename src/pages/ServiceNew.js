@@ -26,7 +26,9 @@ const ServiceNew = props => {
       });
   };
 
-  return <ServiceForm onCancel={onCancel} onConfirm={onConfirm} />;
+  return (
+    <ServiceForm onCancel={onCancel} onConfirm={onConfirm} orgId={orgId} />
+  );
 };
 
 ServiceNew.propTypes = {

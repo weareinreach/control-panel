@@ -41,10 +41,11 @@ const ServiceEdit = props => {
 
   return (
     <ServiceForm
-      initialValues={data}
       isEdit
       onCancel={onCancel}
       onConfirm={onConfirm}
+      orgId={orgId}
+      service={data}
     />
   );
 };

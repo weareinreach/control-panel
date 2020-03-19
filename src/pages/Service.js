@@ -1,9 +1,9 @@
 import {delete as httpDelete, post} from 'axios';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, IconButton, Stack} from '@chakra-ui/core';
+import {Box, Button, Stack} from '@chakra-ui/core';
 
 import NotFound from './NotFound';
 import {ContextFormModal} from '../components/ContextFormModal';
@@ -60,9 +60,9 @@ const serviceHeaders = [
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
-  const {orgId} = props?.match?.params;
-  const orgPath = `/organizations/${orgId}`;
-  const {data, loading} = useAPIGet(orgPath);
+  const {orgId, serviceId} = props?.match?.params;
+  const servicePath = `/organizations/${orgId}/services/${serviceId}`;
+  const {data, loading} = useAPIGet(servicePath);
   const {_id, ...orgData} = data || {};
   const {
     alert_message,
@@ -87,7 +87,7 @@ const Organization = props => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setFail}) => {
-        const url = `${getAPIUrl()}${orgPath}`;
+        const url = `${getAPIUrl()}${servicePath}`;
 
         console.log('DELETE:', url);
 
@@ -144,6 +144,8 @@ const Organization = props => {
       }
     });
 
+  //
+
   if (loading) {
     return <Loading />;
   }
@@ -159,7 +161,7 @@ const Organization = props => {
   return (
     <>
       <Box float="right">
-        <Link to={`${orgPath}/edit`}>
+        <Link to={`${servicePath}/edit`}>
           <Button marginRight={2}>Edit Organization</Button>
         </Link>
         <DropdownButton
@@ -176,7 +178,8 @@ const Organization = props => {
       </Box>
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
-        <Container>
+        <p>hello world</p>
+        {/* <Container>
           <SectionTitle>Organization Details</SectionTitle>
           <KeyValueTable
             rows={[
@@ -194,17 +197,21 @@ const Organization = props => {
           />
         </Container>
         <Container>
-          <Box float="right">
-            <Link to={`${orgPath}/services/new`}>
-              <Button marginRight={2}>New Service</Button>
-            </Link>
-          </Box>
           <SectionTitle>Services</SectionTitle>
-          <Table
-            getRowLink={service => `${orgPath}/services/${service._id}`}
-            headers={serviceHeaders}
-            rows={services}
-          />
+          {_map(services, service => {
+            return (
+              <Link
+                key={service._id}
+                to={`${servicePath}/edit`}
+              >
+                <p>edit {service.name}</p>
+              </Link>
+            );
+          })}
+          <Link to={`${servicePath}/services/new`}>
+            <p>new service</p>
+          </Link>
+          <Table headers={serviceHeaders} rows={services} />
         </Container>
         <Container>
           <SectionTitle>Service Area Coverage</SectionTitle>
@@ -225,7 +232,7 @@ const Organization = props => {
         <Container>
           <SectionTitle>Phones</SectionTitle>
           <Table headers={phoneHeaders} rows={phones} />
-        </Container>
+        </Container> */}
       </Stack>
     </>
   );

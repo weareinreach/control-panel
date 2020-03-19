@@ -1,22 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button} from '@chakra-ui/core';
 
 import Loading from '../components/Loading';
+import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import {Container, Title} from '../components/styles';
+import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const headers = [
   {key: 'name', label: 'Name'},
-  {key: 'opportunity_count', label: 'Services'},
   {key: 'updated_at', label: 'Last Updated'}
 ];
 
 const Organizations = () => {
-  const {data, loading} = useAPIGet(`/organizations`);
+  const {data, loading, fetchMore} = useAPIGet(`/organizations`);
+  const [page, setPage] = useState(1);
+  const lastUrl = `${getAPIUrl()}/organizations?page=${page - 1}`;
+  const nextUrl = `${getAPIUrl()}/organizations?page=${page + 1}`;
+  const getLastPage = () => {
+    fetchMore(lastUrl);
+    setPage(page - 1);
+  };
+  const getNextPage = () => {
+    fetchMore(nextUrl);
+    setPage(page + 1);
+  };
 
-  if (loading) {
+  if (!data && loading) {
     return <Loading />;
   }
 
@@ -28,13 +40,20 @@ const Organizations = () => {
         </Link>
       </Box>
       <Title>Organizations</Title>
-      <Container>
-        <Table
-          getRowLink={org => `/organizations/${org._id}`}
-          headers={headers}
-          rows={data?.organizations}
-        />
-      </Container>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Container>
+            <Table
+              getRowLink={org => `/organizations/${org._id}`}
+              headers={headers}
+              rows={data?.organizations}
+            />
+          </Container>
+          <Pagination getLastPage={getLastPage} getNextPage={getNextPage} />
+        </>
+      )}
     </>
   );
 };

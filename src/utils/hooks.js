@@ -7,13 +7,12 @@ export const useAPIGet = path => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const url = `${getAPIUrl()}${path}`;
-
-  useEffect(() => {
+  const fetchMore = fetchUrl => {
     setLoading(true);
 
-    console.log('GET:', url);
+    console.log('GET:', fetchUrl);
 
-    get(url)
+    get(fetchUrl)
       .then(({data}) => {
         setData(data);
         setLoading(false);
@@ -21,9 +20,13 @@ export const useAPIGet = path => {
       .catch(err => {
         throw new Error(err);
       });
+  };
+
+  useEffect(() => {
+    fetchMore(url);
   }, [url]);
 
-  return {data, loading};
+  return {data, loading, fetchMore};
 };
 
 export const useInputChange = (initalState = '') => {

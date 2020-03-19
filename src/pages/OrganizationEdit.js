@@ -40,10 +40,10 @@ const OrganizationEdit = props => {
 
   return (
     <OrganizationForm
-      initialValues={data}
       isEdit
       onCancel={onCancel}
       onConfirm={onConfirm}
+      organization={data}
     />
   );
 };

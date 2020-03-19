@@ -16,6 +16,7 @@ import {
 import {ContextFormModal} from '../components/ContextFormModal';
 import FormField from '../components/FormField';
 import {Container, SectionTitle, Title} from '../components/styles';
+import {getOrgInitialValues} from '../utils/forms';
 
 /**
  * TODO: Maybe for website
@@ -73,37 +74,10 @@ const serviceFields = [
   {key: 'is_published', label: 'Is Published', type: 'checkbox'}
 ];
 
-const newSchedule = {
-  sunday: {start_time: 'a', end_time: 'b'},
-  monday: {start_time: 'a', end_time: 'b'},
-  tuesday: {start_time: 'a', end_time: 'b'},
-  wednesday: {start_time: 'a', end_time: 'b'},
-  thursday: {start_time: 'a', end_time: 'b'},
-  friday: {start_time: 'a', end_time: 'b'},
-  saturday: {start_time: 'a', end_time: 'b'}
-};
-
-const getInitialValues = initialValues => {
-  return {
-    alert_message: initialValues?.alert_message || '',
-    description: initialValues?.description || '',
-    emails: initialValues?.emails || [],
-    is_at_capacity: initialValues?.is_at_capacity || false,
-    is_published: initialValues?.is_published || false,
-    locations: initialValues?.locations || [],
-    name: initialValues?.name || '',
-    phones: initialValues?.phones || [],
-    schedule: initialValues?.schedule || newSchedule,
-    services: initialValues?.services || [],
-    slug: initialValues?.slug || '',
-    website: initialValues?.website || ''
-  };
-};
-
 const OrganizationForm = props => {
-  const {isEdit, onCancel, onConfirm} = props;
+  const {isEdit, onCancel, onConfirm, organization} = props;
   const {closeModal, openModal} = useContext(ContextFormModal);
-  const initialValues = getInitialValues(props?.initialValues);
+  const initialValues = getOrgInitialValues(organization);
   const formik = useFormik({initialValues});
   const openSaveModal = () =>
     // TODO: a summary of changes for the log if edit
@@ -140,14 +114,13 @@ const OrganizationForm = props => {
   return (
     <>
       {isEdit ? (
-        <Title>Edit {props?.initialValues?.name || 'Organization'}</Title>
+        <Title>Edit Organization - {organization?.name}</Title>
       ) : (
         <Title>New Organization</Title>
       )}
       <Tabs>
         <TabList>
           <Tab>Organization Details</Tab>
-          {/* <Tab>Services</Tab> */}
           <Tab>Addresses</Tab>
           <Tab>Schedule</Tab>
           <Tab>Emails</Tab>
@@ -175,139 +148,6 @@ const OrganizationForm = props => {
               </Container>
             </Stack>
           </TabPanel>
-          {/* <TabPanel marginTop={2}>
-            <Button
-              onClick={() => createFieldItem('services')}
-              marginBottom={2}
-            >
-              New Service
-            </Button>
-            {formik?.values?.services?.map((service, serviceIndex) => {
-              const handleDelete = () =>
-                deleteFieldItem('services', serviceIndex);
-              const handleDuplicate = () =>
-                duplicateFieldItem('services', serviceIndex);
-
-              return (
-                <Container key={serviceIndex} marginBottom={4}>
-                  <Stack spacing={4}>
-                    {serviceFields.map(({key, ...rest}) => {
-                      return (
-                        <FormField
-                          key={`services[${serviceIndex}][${key}]`}
-                          fieldKey={`services[${serviceIndex}][${key}]`}
-                          formik={formik}
-                          {...rest}
-                        />
-                      );
-                    })}
-                    <SectionTitle>Properties</SectionTitle>
-                    <Tabs>
-                      <TabList>
-                        <Tab>Cost</Tab>
-                        <Tab>Community</Tab>
-                        <Tab>Eligibility / Requirement</Tab>
-                        <Tab>Language</Tab>
-                        <Tab>Service Area</Tab>
-                        <Tab>Additional Information</Tab>
-                      </TabList>
-                      <TabPanels>
-                        <TabPanel>
-                          <p>Cost Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Community Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Eligibility / Requirement Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Language Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Service Area Properties</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Additional Information Properties</p>
-                        </TabPanel>
-                      </TabPanels>
-                    </Tabs>
-                    <SectionTitle>Tags</SectionTitle>
-                    <Tabs>
-                      <TabList>
-                        <Tab>Community Support</Tab>
-                        <Tab>Computers and Internet</Tab>
-                        <Tab>Education and Employment</Tab>
-                        <Tab>Food</Tab>
-                        <Tab>Housing</Tab>
-                        <Tab>Hygiene and Clothing</Tab>
-                        <Tab>Legal</Tab>
-                        <Tab>Mail</Tab>
-                        <Tab>Medical</Tab>
-                        <Tab>Mental Health</Tab>
-                        <Tab>Sports and Entertainment</Tab>
-                        <Tab>Translation and Interpretation</Tab>
-                        <Tab>Transportation</Tab>
-                      </TabList>
-                      <TabPanels>
-                        <TabPanel>
-                          <p>Community Support</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Computers and Internet</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Education and Employment</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Food</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Housing</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Hygiene and Clothing</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Legal</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Mail</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Medical</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Mental Health</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Sports and Entertainment</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Translation and Interpretation</p>
-                        </TabPanel>
-                        <TabPanel>
-                          <p>Transportation</p>
-                        </TabPanel>
-                      </TabPanels>
-                    </Tabs>
-                    <Box>
-                      <Button onClick={handleDuplicate} mr={2} size="xs">
-                        Duplicate
-                      </Button>
-                      <Button
-                        onClick={handleDelete}
-                        size="xs"
-                        variantColor="red"
-                      >
-                        Delete
-                      </Button>
-                    </Box>
-                  </Stack>
-                </Container>
-              );
-            })}
-          </TabPanel> */}
           <TabPanel marginTop={2}>
             <Button
               onClick={() => createFieldItem('locations')}
@@ -458,10 +298,10 @@ const OrganizationForm = props => {
 };
 
 OrganizationForm.propTypes = {
-  initialValues: PropTypes.shape(),
   isEdit: PropTypes.bool,
   onCancel: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
+  organization: PropTypes.shape()
 };
 
 export default OrganizationForm;

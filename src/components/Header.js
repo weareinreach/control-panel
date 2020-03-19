@@ -53,11 +53,11 @@ const Header = () => {
                 <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
                   Home
                 </ChakraLink>
-                {user?.isAdmin && (
+                {/* {user?.isAdmin && (
                   <ChakraLink as={Link} fontSize="xl" to="/admin">
                     Admin
                   </ChakraLink>
-                )}
+                )} */}
               </Box>
               <DropdownButton
                 buttonProps={{

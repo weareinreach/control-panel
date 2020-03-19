@@ -81,7 +81,7 @@ const Admin = () => {
       onConfirm: handleEditManager(managerIndex)
     });
   };
-  const handleCreateManager = ({setLoading, setSuccess, setFail, values}) => {
+  const handleCreateManager = ({setLoading, setSuccess, setError, values}) => {
     setLoading();
 
     // TODO: API logic for creating
@@ -95,7 +95,7 @@ const Admin = () => {
   const handleDeleteManager = selectedManagerIndex => ({
     setLoading,
     setSuccess,
-    setFail,
+    setError,
     values
   }) => {
     setLoading();
@@ -112,7 +112,7 @@ const Admin = () => {
   const handleEditManager = selectedManagerIndex => ({
     setLoading,
     setSuccess,
-    setFail,
+    setError,
     values
   }) => {
     setLoading();

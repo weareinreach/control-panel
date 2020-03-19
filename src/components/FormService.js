@@ -1,8 +1,7 @@
-import {delete as httpDelete, post} from 'axios';
 import _map from 'lodash/map';
 import {useFormik} from 'formik';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -14,12 +13,11 @@ import {
   Tabs
 } from '@chakra-ui/core';
 
-import {ContextFormModal} from './ContextFormModal';
-import DropdownButton from './DropdownButton';
+import Alert from './Alert';
 import FormField from './FormField';
+import {LoadingModal} from './Loading';
 import ServiceAreaCoverage from './ServiceAreaCoverage';
 import {Container, SectionTitle, Title} from './styles';
-import {getAPIUrl} from '../utils';
 import {
   additionalInformationProperties,
   communityProperties,
@@ -30,6 +28,7 @@ import {
   tags
 } from '../utils/formsHeaders';
 import {getServiceInitialValues, newSchedule} from '../utils/forms';
+import {useStatus} from '../utils/hooks';
 
 const generalDetailsFields = [
   {key: 'name', label: 'Name'},
@@ -43,98 +42,45 @@ const scheduleFields = [
   {key: 'end_time', label: 'End Time'}
 ];
 
+// TODO: On save, a summary of changes for the log if edit
+// TODO: On save, warning about fields such as is_closed, is_published, etc
+/**
+ * NOTE: By default add the properties “community-asylum-seeker” (value = true)
+ * and “community-lgbt” on every service
+ * Remove the need for Data Managers to enter “community-asylum-seeker” (value = true)
+ * and “community-lgbt” on every organization + service page in order to appear in the live AC Catalog
+ */
+
 const ServiceForm = props => {
-  const {isEdit, onCancel, onConfirm, orgId, service} = props;
-  const {closeModal, openModal} = useContext(ContextFormModal);
-  const initialValues = getServiceInitialValues(props?.service);
-  const {_id, ...serviceData} = service || {};
+  const {isEdit, onCancel, onConfirm, service, title} = props;
+  const initialValues = getServiceInitialValues(service);
   const formik = useFormik({initialValues});
+  const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
   const name = props?.service?.name;
-  const orgPath = `/organizations/${orgId}`;
+  const onSave = () =>
+    onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
   const addSchedule = () => {
     formik.setFieldValue('schedule', newSchedule);
   };
   const removeScedule = () => {
     formik.setFieldValue('schedule', null);
   };
-  const openModalDelete = () =>
-    openModal({
-      header: `Delete ${name}`,
-      isAlert: true,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail}) => {
-        const url = `${getAPIUrl()}${orgPath}`;
-
-        console.log('DELETE:', url);
-
-        setLoading();
-        httpDelete(url)
-          .then(() => {
-            setSuccess();
-            window.location = '/organizations';
-          })
-          .catch(err => {
-            setFail();
-            console.error(err);
-          });
-      }
-    });
-  const openModalDuplicate = () =>
-    openModal({
-      form: {},
-      header: `Duplicate ${name}`,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
-        const url = `${getAPIUrl()}${orgPath}/services`;
-
-        console.log('POST:', url);
-
-        setLoading();
-        post(url, serviceData)
-          .then(({data}) => {
-            setSuccess();
-            window.location = orgPath;
-          })
-          .catch(err => {
-            setFail();
-            console.error(err);
-          });
-      }
-    });
-  const openSaveModal = () =>
-    // TODO: a summary of changes for the log if edit
-    // TODO: warning about fields such as is_at_capacity, is_closed, is_published
-    /**
-     * NOTE: By default add the properties “community-asylum-seeker” (value = true)
-     * and “community-lgbt” on every service
-     * Remove the need for Data Managers to enter “community-asylum-seeker” (value = true)
-     * and “community-lgbt” on every organization + service page in order to appear in the live AC Catalog
-     */
-    openModal({
-      header: `Save organization`,
-      onClose: closeModal,
-      onConfirm,
-      values: formik?.values || {}
-    });
-
-  console.log('fValues', formik?.values);
 
   return (
     <>
-      <Box float="right">
-        <DropdownButton
-          buttonText="More"
-          items={[
-            {onClick: openModalDuplicate, text: 'Duplicate'},
-            {onClick: openModalDelete, text: 'Delete'}
-          ]}
+      <LoadingModal isOpen={isLoading} />
+      {isError && (
+        <Alert
+          description="Please try again."
+          title="An error occured"
+          type="error"
         />
-      </Box>
-      {isEdit ? (
-        <Title>Edit Service - {name}</Title>
-      ) : (
-        <Title>New Service</Title>
       )}
+      <Title>
+        {title}
+        {name && ' - '}
+        {name}
+      </Title>
       <Tabs>
         <TabList>
           <Tab>Service Details</Tab>
@@ -318,10 +264,10 @@ const ServiceForm = props => {
         </TabPanels>
       </Tabs>
       <Box marginTop={4}>
-        <Button onClick={openSaveModal} mr={2}>
+        <Button isLoading={isLoading} onClick={onSave} mr={2}>
           {isEdit ? 'Update Service' : 'Save Service'}
         </Button>
-        <Button onClick={onCancel} variant="ghost">
+        <Button disabled={isLoading} onClick={onCancel} variant="ghost">
           Cancel
         </Button>
       </Box>
@@ -330,11 +276,12 @@ const ServiceForm = props => {
 };
 
 ServiceForm.propTypes = {
+  isDuplicate: PropTypes.bool,
   isEdit: PropTypes.bool,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  orgId: PropTypes.string,
-  service: PropTypes.shape()
+  service: PropTypes.shape(),
+  title: PropTypes.string
 };
 
 export default ServiceForm;

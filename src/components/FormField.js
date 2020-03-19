@@ -82,6 +82,7 @@ const FormField = props => {
 };
 
 FormField.propTypes = {
+  description: PropTypes.string,
   fieldKey: PropTypes.string,
   formik: PropTypes.shape(),
   isRequired: PropTypes.bool,

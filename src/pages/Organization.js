@@ -1,4 +1,4 @@
-import {delete as httpDelete, post} from 'axios';
+import {delete as httpDelete} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
@@ -21,13 +21,6 @@ import {
   serviceFields
 } from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
-
-const duplicateForm = {
-  name: {
-    placeholder: "Enter the new organization's name",
-    type: 'text'
-  }
-};
 
 const getScheduleRows = schedule => {
   console.log('schedule', schedule);
@@ -76,8 +69,8 @@ const Organization = props => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data, loading} = useAPIGet(orgPath);
-  const {_id, ...orgData} = data || {};
   const {
+    _id,
     alert_message,
     created_at,
     description,
@@ -92,13 +85,14 @@ const Organization = props => {
     slug,
     updated_at,
     website
-  } = orgData || {};
+  } = data || {};
+
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail}) => {
+      onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${getAPIUrl()}${orgPath}`;
 
         console.log('DELETE:', url);
@@ -110,31 +104,7 @@ const Organization = props => {
             window.location = '/organizations';
           })
           .catch(err => {
-            setFail();
-            console.error(err);
-          });
-      }
-    });
-  const openModalDuplicate = () =>
-    openModal({
-      form: duplicateForm,
-      header: `Duplicate ${name}`,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
-        const url = `${getAPIUrl()}/organizations`;
-
-        console.log('POST:', url);
-
-        setLoading();
-        post(url, orgData)
-          .then(({data}) => {
-            const {organization} = data;
-
-            setSuccess();
-            window.location = `/organizations/${organization._id}`;
-          })
-          .catch(err => {
-            setFail();
+            setError();
             console.error(err);
           });
       }
@@ -143,7 +113,7 @@ const Organization = props => {
     openModal({
       header: `Verify Information for ${name}`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
         setLoading();
 
         // TODO: API logic for deleting
@@ -183,7 +153,7 @@ const Organization = props => {
               onClick: openModalVerify,
               text: 'Mark Information Verified'
             },
-            {onClick: openModalDuplicate, text: 'Duplicate'},
+            {href: `${orgPath}/duplicate`, text: 'Duplicate'},
             {onClick: openModalDelete, text: 'Delete'}
           ]}
         />

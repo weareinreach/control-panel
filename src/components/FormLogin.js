@@ -1,25 +1,32 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Button, Flex, Input, Stack} from '@chakra-ui/core';
 
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
 import {SectionTitle} from './styles';
-import {useInputChange} from '../utils/hooks';
-
-const STATE_ERROR = 'ERROR';
-const STATE_IN_PROGRESS = 'IN_PROGRESS';
-const STATE_SUCCESS = 'SUCCESS';
+import {useStatus, useInputChange} from '../utils/hooks';
 
 const Login = () => {
   const [email, setEmail] = useInputChange('');
+  const {
+    isError,
+    isLoading,
+    isSuccess,
+    setError,
+    setLoading,
+    setSuccess
+  } = useStatus();
   const [password, setPassword] = useInputChange('');
-  const [loginState, setLoginState] = useState('');
   const loginUser = () => {
     // TODO: Logic for checking credentials and saving a cookie
-    setLoginState(STATE_IN_PROGRESS);
+    setLoading();
 
     setTimeout(() => {
-      setLoginState(STATE_SUCCESS);
+      setError();
+    }, 1500);
+
+    setTimeout(() => {
+      setSuccess();
     }, 3000);
   };
 
@@ -28,14 +35,14 @@ const Login = () => {
       <Box flex="1" padding={5} rounded="md" borderWidth="1px" maxWidth="400px">
         <SectionTitle>Login</SectionTitle>
         <Stack paddingTop={4} spacing={4}>
-          {loginState === STATE_SUCCESS && (
+          {isSuccess && (
             <Alert
               description="Redirecting to the portal"
               title="Success."
               type="success"
             />
           )}
-          {loginState === STATE_ERROR && (
+          {isError && (
             <Alert
               description="Please try again."
               title="Unable to login"
@@ -49,7 +56,7 @@ const Login = () => {
             value={password}
           />
           <Button
-            isLoading={loginState === STATE_IN_PROGRESS}
+            isLoading={isLoading}
             onClick={loginUser}
             loadingText="Logging..."
             variantColor="blue"

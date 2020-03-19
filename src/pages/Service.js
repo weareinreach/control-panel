@@ -1,4 +1,4 @@
-import {delete as httpDelete, post} from 'axios';
+import {delete as httpDelete} from 'axios';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
@@ -21,13 +21,6 @@ import {
   scheduleFields
 } from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
-
-const duplicateForm = {
-  name: {
-    placeholder: "Enter the new organization's name",
-    type: 'text'
-  }
-};
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -56,7 +49,7 @@ const Organization = props => {
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail}) => {
+      onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${getAPIUrl()}${servicePath}`;
 
         console.log('DELETE:', url);
@@ -68,31 +61,7 @@ const Organization = props => {
             window.location = '/organizations';
           })
           .catch(err => {
-            setFail();
-            console.error(err);
-          });
-      }
-    });
-  const openModalDuplicate = () =>
-    openModal({
-      form: duplicateForm,
-      header: `Duplicate ${name}`,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setFail, values}) => {
-        const url = `${getAPIUrl()}/organizations`;
-
-        console.log('POST:', url);
-
-        setLoading();
-        post(url, orgData)
-          .then(({data}) => {
-            const {organization} = data;
-
-            setSuccess();
-            window.location = `/organizations/${organization._id}`;
-          })
-          .catch(err => {
-            setFail();
+            setError();
             console.error(err);
           });
       }
@@ -123,7 +92,7 @@ const Organization = props => {
         <DropdownButton
           buttonText="More"
           items={[
-            {onClick: openModalDuplicate, text: 'Duplicate'},
+            {href: `${servicePath}/duplicate`, text: 'Duplicate'},
             {onClick: openModalDelete, text: 'Delete'}
           ]}
         />

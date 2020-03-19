@@ -8,12 +8,10 @@ import {Layout} from './styles';
 import Admin from '../pages/Admin';
 import NotFound from '../pages/NotFound';
 import Organization from '../pages/Organization';
-import OrganizationEdit from '../pages/OrganizationEdit';
-import OrganizationNew from '../pages/OrganizationNew';
+import OrganizationFormPage from '../pages/OrganizationFormPage';
 import Organizations from '../pages/Organizations';
+import ServiceFormPage from '../pages/ServiceFormPage';
 import Service from '../pages/Service';
-import ServiceEdit from '../pages/ServiceEdit';
-import ServiceNew from '../pages/ServiceNew';
 
 const Routes = () => {
   const {loading, hasUser} = useContext(ContextApp);
@@ -38,17 +36,26 @@ const Routes = () => {
         {!hasUser && <Redirect to="/login" />}
         <Route exact path="/" component={Organizations} />
         <Route exact path="/organizations" component={Organizations} />
-        <Route exact path="/organizations/new" component={OrganizationNew} />
+        <Route
+          exact
+          path="/organizations/new"
+          component={props => <OrganizationFormPage {...props} />}
+        />
         <Route exact path="/organizations/:orgId" component={Organization} />
         <Route
           exact
+          path="/organizations/:orgId/duplicate"
+          component={props => <OrganizationFormPage isDuplicate {...props} />}
+        />
+        <Route
+          exact
           path="/organizations/:orgId/edit"
-          component={OrganizationEdit}
+          component={props => <OrganizationFormPage isEdit {...props} />}
         />
         <Route
           exact
           path="/organizations/:orgId/services/new"
-          component={ServiceNew}
+          component={props => <ServiceFormPage {...props} />}
         />
         <Route
           exact
@@ -57,8 +64,13 @@ const Routes = () => {
         />
         <Route
           exact
+          path="/organizations/:orgId/services/:serviceId/duplicate"
+          component={props => <ServiceFormPage isDuplicate {...props} />}
+        />
+        <Route
+          exact
           path="/organizations/:orgId/services/:serviceId/edit"
-          component={ServiceEdit}
+          component={props => <ServiceFormPage isEdit {...props} />}
         />
         <Route exact path="/admin" component={Admin} />
         <Route component={NotFound} />

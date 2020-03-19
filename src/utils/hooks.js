@@ -23,8 +23,12 @@ export const useAPIGet = path => {
   };
 
   useEffect(() => {
-    fetchMore(url);
-  }, [url]);
+    if (path) {
+      fetchMore(url);
+    } else {
+      setLoading(false);
+    }
+  }, [path, url]);
 
   return {data, loading, fetchMore};
 };
@@ -36,6 +40,29 @@ export const useInputChange = (initalState = '') => {
   };
 
   return [value, setInputValue];
+};
+
+const STATE_ERROR = 'ERROR';
+const STATE_IN_PROGRESS = 'IN_PROGRESS';
+const STATE_SUCCESS = 'SUCCESS';
+
+export const useStatus = initalStatus => {
+  const [status, setStatus] = useState(initalStatus);
+  const isError = status === STATE_ERROR;
+  const isLoading = status === STATE_IN_PROGRESS;
+  const isSuccess = status === STATE_SUCCESS;
+  const setError = () => setStatus(STATE_ERROR);
+  const setLoading = () => setStatus(STATE_IN_PROGRESS);
+  const setSuccess = () => setStatus(STATE_SUCCESS);
+
+  return {
+    isError,
+    isLoading,
+    isSuccess,
+    setError,
+    setLoading,
+    setSuccess
+  };
 };
 
 export const useToggle = (initalState = false) => {

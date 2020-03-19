@@ -18,11 +18,15 @@ const DropdownButton = props => {
         {buttonText}
       </MenuButton>
       <MenuList color="black" {...listProps}>
-        {items?.map(({onClick, text}, key) => (
-          <MenuItem key={key} onClick={onClick}>
-            {text}
-          </MenuItem>
-        ))}
+        {items?.map(({onClick, href, text}, key) => {
+          const itemProps = href ? {as: 'a', href} : {onClick};
+
+          return (
+            <MenuItem key={key} {...itemProps}>
+              {text}
+            </MenuItem>
+          );
+        })}
       </MenuList>
     </Menu>
   );

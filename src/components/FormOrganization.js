@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -13,9 +13,11 @@ import {
   Tabs
 } from '@chakra-ui/core';
 
-import {ContextFormModal} from '../components/ContextFormModal';
-import FormField from '../components/FormField';
-import {Container, SectionTitle, Title} from '../components/styles';
+import Alert from './Alert';
+import FormField from './FormField';
+import {LoadingModal} from './Loading';
+import ServiceAreaCoverage from './ServiceAreaCoverage';
+import {Container, SectionTitle, Title} from './styles';
 import {getOrgInitialValues} from '../utils/forms';
 import {
   generalDetailsFields,
@@ -24,21 +26,19 @@ import {
   phoneFields,
   scheduleFields
 } from '../utils/formsHeaders';
+import {useStatus} from '../utils/hooks';
+
+// TODO: On save, a summary of changes for the log if edit
+// TODO: On save, warning about fields such as is_closed, is_published, etc
 
 const OrganizationForm = props => {
-  const {isEdit, onCancel, onConfirm, organization} = props;
-  const {closeModal, openModal} = useContext(ContextFormModal);
+  const {isEdit, onCancel, onConfirm, organization, title} = props;
   const initialValues = getOrgInitialValues(organization);
   const formik = useFormik({initialValues});
-  const openSaveModal = () =>
-    // TODO: a summary of changes for the log if edit
-    // TODO: warning about fields such as is_at_capacity, is_closed, is_published
-    openModal({
-      header: `Save organization`,
-      onClose: closeModal,
-      onConfirm,
-      values: formik?.values || {}
-    });
+  const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
+  const name = props?.organization?.name;
+  const onSave = () =>
+    onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
   const createFieldItem = field => {
     const list = formik?.values?.[field] || [];
 
@@ -64,11 +64,19 @@ const OrganizationForm = props => {
 
   return (
     <>
-      {isEdit ? (
-        <Title>Edit Organization - {organization?.name}</Title>
-      ) : (
-        <Title>New Organization</Title>
+      <LoadingModal isOpen={isLoading} />
+      {isError && (
+        <Alert
+          description="Please try again."
+          title="An error occured"
+          type="error"
+        />
       )}
+      <Title>
+        {title}
+        {name && ' - '}
+        {name}
+      </Title>
       <Tabs>
         <TabList>
           <Tab>Organization Details</Tab>
@@ -95,7 +103,7 @@ const OrganizationForm = props => {
               </Container>
               <Container>
                 <SectionTitle>Service Area Coverage</SectionTitle>
-                {/* Dropdown */}
+                <ServiceAreaCoverage />
               </Container>
             </Stack>
           </TabPanel>
@@ -237,10 +245,10 @@ const OrganizationForm = props => {
         </TabPanels>
       </Tabs>
       <Box marginTop={4}>
-        <Button onClick={openSaveModal}>
+        <Button isLoading={isLoading} onClick={onSave} mr={2}>
           {isEdit ? 'Update Organization' : 'Save Organization'}
         </Button>
-        <Button ml={2} onClick={onCancel} variant="ghost">
+        <Button disabled={isLoading} onClick={onCancel} variant="ghost">
           Cancel
         </Button>
       </Box>
@@ -249,10 +257,12 @@ const OrganizationForm = props => {
 };
 
 OrganizationForm.propTypes = {
+  isDuplicate: PropTypes.bool,
   isEdit: PropTypes.bool,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  organization: PropTypes.shape()
+  organization: PropTypes.shape(),
+  title: PropTypes.string
 };
 
 export default OrganizationForm;

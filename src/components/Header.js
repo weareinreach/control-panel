@@ -28,7 +28,7 @@ const Header = () => {
       onClose: closeModal,
       onConfirm: handlePasswordChange
     });
-  const handlePasswordChange = ({setLoading, setSuccess, setFail, values}) => {
+  const handlePasswordChange = ({setLoading, setSuccess, setError, values}) => {
     setLoading();
 
     // TODO: API logic for duplicating

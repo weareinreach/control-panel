@@ -3,7 +3,15 @@ import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, Stack} from '@chakra-ui/core';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Icon,
+  Stack
+} from '@chakra-ui/core';
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -27,9 +35,8 @@ const Organization = props => {
   const {orgId, serviceId} = props?.match?.params;
   const servicePath = `/organizations/${orgId}/services/${serviceId}`;
   const {data, loading} = useAPIGet(servicePath);
-  const {_id, ...orgData} = data || {};
   const {
-    alert_message,
+    _id,
     created_at,
     description,
     emails,
@@ -38,12 +45,14 @@ const Organization = props => {
     last_verified,
     locations,
     name = 'Service Name',
+    organization,
     phones,
     schedule,
     slug,
     updated_at,
     website
-  } = orgData || {};
+  } = data || {};
+
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
@@ -97,6 +106,23 @@ const Organization = props => {
           ]}
         />
       </Box>
+      <Breadcrumb
+        marginBottom={4}
+        spacing="8px"
+        separator={<Icon color="gray.300" name="chevron-right" />}
+      >
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Organizations</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink href={`/organizations/${orgId}`}>
+            {organization?.name || 'Organization Name'}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href="#">{name}</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
         <Container>
@@ -106,7 +132,6 @@ const Organization = props => {
               {key: 'ID', value: _id},
               {key: 'Website', value: website},
               {key: 'Description', value: description},
-              {key: 'Alert Message', value: alert_message},
               {key: 'Slug', value: slug},
               {key: 'Is At Capacity', value: is_at_capacity},
               {key: 'Is Published', value: is_published},

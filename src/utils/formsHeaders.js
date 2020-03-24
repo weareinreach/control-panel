@@ -1,4 +1,4 @@
-export const generalDetailsFields = [
+export const generalOrgDetailsFields = [
   {key: 'name', label: 'Name'},
   {key: 'website', label: 'Website'},
   {key: 'description', label: 'Description', type: 'textarea'},
@@ -32,9 +32,39 @@ export const phoneFields = [
 ];
 
 export const scheduleFields = [
-  {key: 'day', label: 'Day'},
-  {key: 'start_time', label: 'Start Time'},
-  {key: 'end_time', label: 'End Time'}
+  {key: 'monday_start', label: 'Monday Start'},
+  {key: 'monday_end', label: 'Monday End'},
+  {key: 'tuesday_start', label: 'Tuesday Start'},
+  {key: 'tuesday_end', label: 'Tuesday End'},
+  {key: 'wednesday_start', label: 'Wednesday Start'},
+  {key: 'wednesday_end', label: 'Wednesday End'},
+  {key: 'thursday_start', label: 'Thursday Start'},
+  {key: 'thursday_end', label: 'Thursday End'},
+  {key: 'friday_start', label: 'Friday Start'},
+  {key: 'friday_end', label: 'Friday End'},
+  {key: 'saturday_start', label: 'Saturday Start'},
+  {key: 'saturday_end', label: 'Saturday End'},
+  {key: 'sunday_start', label: 'Sunday Start'},
+  {key: 'sunday_end', label: 'Sunday End'},
+  {key: 'note', label: 'Note', type: 'textarea'},
+  {
+    key: 'timezone',
+    label: 'Timezone',
+    type: 'select',
+    placeholder: 'Select a timezone',
+    options: [
+      {label: 'AKST', value: 'AKST'},
+      {label: 'AST', value: 'AST'},
+      {label: 'CST', value: 'CST'},
+      {label: 'EST', value: 'EST'},
+      {label: 'HST', value: 'HST'},
+      {label: 'MDT', value: 'MDT'},
+      {label: 'MST', value: 'MST'},
+      {label: 'NST', value: 'NST'},
+      {label: 'PDT', value: 'PDT'},
+      {label: 'PST', value: 'PST'}
+    ]
+  }
 ];
 
 export const serviceFields = [

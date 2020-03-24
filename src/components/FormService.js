@@ -30,7 +30,7 @@ import {
 import {getServiceInitialValues, newSchedule} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const generalDetailsFields = [
+const generalServiceDetailsFields = [
   {key: 'name', label: 'Name'},
   {key: 'description', label: 'Description', type: 'textarea'},
   {key: 'access_instructions', label: 'Access Instructions', type: 'textarea'},
@@ -94,7 +94,7 @@ const ServiceForm = props => {
               <Container>
                 <SectionTitle>General Details</SectionTitle>
                 <Stack spacing={4}>
-                  {generalDetailsFields.map(({key, ...rest}) => (
+                  {generalServiceDetailsFields.map(({key, ...rest}) => (
                     <FormField
                       key={key}
                       fieldKey={key}

@@ -2,7 +2,15 @@ import {delete as httpDelete} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Button, Stack} from '@chakra-ui/core';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Icon,
+  Stack
+} from '@chakra-ui/core';
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -158,6 +166,18 @@ const Organization = props => {
           ]}
         />
       </Box>
+      <Breadcrumb
+        marginBottom={4}
+        spacing="8px"
+        separator={<Icon color="gray.300" name="chevron-right" />}
+      >
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Organizations</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href="#">{name}</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <Title>{name}</Title>
       <Stack marginTop={6} spacing={4}>
         <Container>

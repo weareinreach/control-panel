@@ -1,5 +1,4 @@
 import {useFormik} from 'formik';
-import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -20,7 +19,7 @@ import ServiceAreaCoverage from './ServiceAreaCoverage';
 import {Container, SectionTitle, Title} from './styles';
 import {getOrgInitialValues} from '../utils/forms';
 import {
-  generalDetailsFields,
+  generalOrgDetailsFields,
   emailFields,
   locationFields,
   phoneFields,
@@ -91,7 +90,7 @@ const OrganizationForm = props => {
               <Container>
                 <SectionTitle>General Details</SectionTitle>
                 <Stack spacing={4}>
-                  {generalDetailsFields.map(({key, ...rest}) => (
+                  {generalOrgDetailsFields.map(({key, ...rest}) => (
                     <FormField
                       key={key}
                       fieldKey={key}
@@ -150,23 +149,19 @@ const OrganizationForm = props => {
             })}
           </TabPanel>
           <TabPanel marginTop={2}>
-            {_map(formik?.values?.schedule || [], (value, day) => {
-              return (
-                <Container key={day} marginBottom={4}>
-                  <SectionTitle>{day}</SectionTitle>
-                  <Stack spacing={4}>
-                    {scheduleFields?.map(({key, ...rest}) => (
-                      <FormField
-                        key={`schedule[${day}][${key}]`}
-                        fieldKey={`schedule[${day}][${key}]`}
-                        formik={formik}
-                        {...rest}
-                      />
-                    ))}
-                  </Stack>
-                </Container>
-              );
-            })}
+            <Container>
+              <SectionTitle>Schedule</SectionTitle>
+              <Stack spacing={4}>
+                {scheduleFields?.map(({key, ...rest}) => (
+                  <FormField
+                    key={`schedule[${key}]`}
+                    fieldKey={`schedule[${key}]`}
+                    formik={formik}
+                    {...rest}
+                  />
+                ))}
+              </Stack>
+            </Container>
           </TabPanel>
           <TabPanel marginTop={2}>
             <Button onClick={() => createFieldItem('emails')} marginBottom={2}>

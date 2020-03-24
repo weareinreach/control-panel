@@ -8,6 +8,7 @@ import {
   FormLabel,
   Icon,
   Input,
+  Select,
   Text,
   Textarea,
   Tooltip
@@ -21,13 +22,15 @@ const FormField = props => {
     fieldKey,
     formik,
     isRequired,
-    placeholder,
     label,
+    options,
+    placeholder,
     type,
     ...rest
   } = props;
   let InputComponent = null;
   let isCheckBox = false;
+  let isSelect = false;
 
   switch (type) {
     case 'checkbox':
@@ -36,6 +39,10 @@ const FormField = props => {
       break;
     case 'password':
       InputComponent = PasswordInput;
+      break;
+    case 'select':
+      isSelect = true;
+      InputComponent = Select;
       break;
     case 'textarea':
       InputComponent = Textarea;
@@ -73,7 +80,15 @@ const FormField = props => {
               <FormLabel htmlFor={fieldKey}>{label}</FormLabel> {toolTipIcon}
             </>
           )}
-          <InputComponent {...inputProps} />
+          {isSelect ? (
+            <InputComponent {...inputProps}>
+              {options.map(({label, value}) => (
+                <option value={value}>{label}</option>
+              ))}
+            </InputComponent>
+          ) : (
+            <InputComponent {...inputProps} />
+          )}
         </>
       )}
       <FormErrorMessage>{formik?.errors[fieldKey]}</FormErrorMessage>
@@ -86,8 +101,9 @@ FormField.propTypes = {
   fieldKey: PropTypes.string,
   formik: PropTypes.shape(),
   isRequired: PropTypes.bool,
-  placeholder: PropTypes.string,
   label: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape()),
+  placeholder: PropTypes.string,
   type: PropTypes.string
 };
 

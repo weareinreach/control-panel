@@ -7,7 +7,7 @@ export const useAPIGet = path => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const url = `${getAPIUrl()}${path}`;
-  const fetchMore = fetchUrl => {
+  const fetchUrl = fetchUrl => {
     setLoading(true);
 
     console.log('GET:', fetchUrl);
@@ -24,13 +24,53 @@ export const useAPIGet = path => {
 
   useEffect(() => {
     if (path) {
-      fetchMore(url);
+      fetchUrl(url);
     } else {
       setLoading(false);
     }
   }, [path, url]);
 
-  return {data, loading, fetchMore};
+  return {data, loading, fetchUrl};
+};
+
+export const useMultipleAPIGet = paths => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const fetchUrls = paths => {
+    const queryData = {};
+    const requests = Object.keys(paths).map(key => {
+      const url = `${getAPIUrl()}${paths[key]}`;
+
+      console.log('GET:', url);
+
+      return get(url)
+        .then(({data}) => {
+          queryData[key] = data;
+
+          return;
+        })
+        .catch(err => {
+          throw new Error(err);
+        });
+    });
+
+    Promise.all(requests).then(() => {
+      setData(queryData);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    if (paths) {
+      fetchUrls(paths);
+    } else {
+      setLoading(false);
+    }
+    // TODO: remove for something that actually works
+    // eslint-disable-next-line
+  }, [JSON.stringify(paths)]);
+
+  return {data, loading, fetchUrls};
 };
 
 export const useInputChange = (initalState = '') => {

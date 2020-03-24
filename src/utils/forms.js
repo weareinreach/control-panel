@@ -27,7 +27,6 @@ export const getOrgInitialValues = initialValues => {
 
 export const getServiceInitialValues = initialValues => {
   return {
-    alert_message: initialValues?.alert_message || '',
     description: initialValues?.description || '',
     emails: initialValues?.emails || [],
     is_at_capacity: initialValues?.is_at_capacity || false,

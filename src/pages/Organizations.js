@@ -57,9 +57,6 @@ const Organizations = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
-  console.log('data', data);
-  console.log('loading', loading);
-
   if (!data && loading) {
     return <Loading />;
   }

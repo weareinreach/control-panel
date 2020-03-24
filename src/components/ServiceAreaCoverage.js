@@ -35,7 +35,7 @@ const ServiceAreaCoverage = props => {
       <Select
         onChange={value => value}
         variant="filled"
-        placeholder="Select a state or providence"
+        placeholder="Select a state, province or territory"
       >
         {isCanada && renderOptions(canadaProvidenceOptions)}
         {isMexico && renderOptions(mexicoStateOptions)}

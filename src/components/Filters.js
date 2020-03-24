@@ -47,7 +47,7 @@ const Filters = props => {
 };
 
 Filters.propTypes = {
-  query: PropTypes.string,
+  query: PropTypes.object,
   updateQuery: PropTypes.func
 };
 

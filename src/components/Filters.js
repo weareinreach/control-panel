@@ -1,50 +1,54 @@
-// import {get} from 'axios';
-// import _debounce from 'lodash/debounce';
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Input, Select} from '@chakra-ui/core';
+import React, {useState} from 'react';
+import {Box, Button, Input, Select, Stack, Text} from '@chakra-ui/core';
+import PropTypes from 'prop-types';
 
-import {getAPIUrl} from '../utils';
+import {SectionTitle} from '../components/styles';
 import {useInputChange} from '../utils/hooks';
 
 const Filters = props => {
   const {query, updateQuery} = props;
-  // const {handleQuery} = props;
-  const [search, handleSearchChange] = useInputChange();
+  const [name, handleNameChange] = useInputChange(query?.name);
+  const [properties, setProperties] = useState(query?.properties);
 
   const handleSearch = ev => {
     ev.preventDefault();
 
-    console.log('handleSearch', query);
-
-    updateQuery({...query, name: search});
+    updateQuery({name, properties});
   };
 
   return (
-    <Box>
-      <form onSubmit={handleSearch}>
+    <form onSubmit={handleSearch}>
+      <SectionTitle>Filter Organizations</SectionTitle>
+      <Stack>
+        <Text>Name Contains:</Text>
         <Input
-          onChange={handleSearchChange}
+          onChange={handleNameChange}
           display="inline-block"
-          width="25%"
           variant="filled"
-          placeholder="Filled"
-          value={search}
+          placeholder="Search on name"
+          value={name}
         />
+        <Text>Properties:</Text>
         <Select
-          rootProps={{display: 'inline-block', width: '25%', color: 'red'}}
+          rootProps={{display: 'inline-block', color: 'red'}}
           variant="filled"
-          placeholder="Filled"
+          placeholder="Select a property"
         >
-          <option>hello</option>
-          <option>hello</option>
-          <option>hello</option>
+          {/* <option>hello</option> */}
         </Select>
-        <Button display="inline-block" onClick={handleSearch} width="25%">
-          Search
-        </Button>
-      </form>
-    </Box>
+        <Box textAlign="right">
+          <Button display="inline-block" onClick={handleSearch}>
+            Search
+          </Button>
+        </Box>
+      </Stack>
+    </form>
   );
+};
+
+Filters.propTypes = {
+  query: PropTypes.string,
+  updateQuery: PropTypes.func
 };
 
 export default Filters;

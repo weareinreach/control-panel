@@ -3,10 +3,10 @@ import {useEffect, useState} from 'react';
 
 import {getAPIUrl} from './index';
 
-export const useAPIGet = path => {
+export const useAPIGet = endpoint => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const url = `${getAPIUrl()}${path}`;
+  const url = `${getAPIUrl()}${endpoint}`;
   const fetchUrl = fetchUrl => {
     setLoading(true);
 
@@ -23,23 +23,23 @@ export const useAPIGet = path => {
   };
 
   useEffect(() => {
-    if (path) {
+    if (endpoint) {
       fetchUrl(url);
     } else {
       setLoading(false);
     }
-  }, [path, url]);
+  }, [endpoint, url]);
 
   return {data, loading, fetchUrl};
 };
 
-export const useMultipleAPIGet = paths => {
+export const useMultipleAPIGet = endpoints => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const fetchUrls = paths => {
+  const fetchUrls = endpoints => {
     const queryData = {};
-    const requests = Object.keys(paths).map(key => {
-      const url = `${getAPIUrl()}${paths[key]}`;
+    const requests = Object.keys(endpoints).map(key => {
+      const url = `${getAPIUrl()}${endpoints[key]}`;
 
       console.log('GET:', url);
 
@@ -61,14 +61,14 @@ export const useMultipleAPIGet = paths => {
   };
 
   useEffect(() => {
-    if (paths) {
-      fetchUrls(paths);
+    if (endpoints) {
+      fetchUrls(endpoints);
     } else {
       setLoading(false);
     }
     // TODO: remove for something that actually works
     // eslint-disable-next-line
-  }, [JSON.stringify(paths)]);
+  }, [JSON.stringify(endpoints)]);
 
   return {data, loading, fetchUrls};
 };

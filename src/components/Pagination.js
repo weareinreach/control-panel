@@ -7,8 +7,17 @@ const Pagination = props => {
 
   return (
     <Box marginTop={4}>
-      <IconButton onClick={getLastPage} icon="chevron-left" marginRight={2} />
-      <IconButton onClick={getNextPage} icon="chevron-right" />
+      <IconButton
+        disabled={!getLastPage}
+        onClick={getLastPage}
+        icon="chevron-left"
+        marginRight={2}
+      />
+      <IconButton
+        disabled={!getNextPage}
+        onClick={getNextPage}
+        icon="chevron-right"
+      />
     </Box>
   );
 };

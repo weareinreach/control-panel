@@ -10,7 +10,8 @@ import {
   BreadcrumbLink,
   Button,
   Icon,
-  Stack
+  Stack,
+  Text
 } from '@chakra-ui/core';
 
 import NotFound from './NotFound';
@@ -42,7 +43,6 @@ const Organization = props => {
     emails,
     is_at_capacity,
     is_published,
-    last_verified,
     locations,
     name = 'Service Name',
     organization,
@@ -120,7 +120,11 @@ const Organization = props => {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">{name}</BreadcrumbLink>
+          <BreadcrumbLink href="#">
+            <Text isTruncated maxWidth="200px">
+              {name}
+            </Text>
+          </BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
       <Title>{name}</Title>
@@ -135,9 +139,8 @@ const Organization = props => {
               {key: 'Slug', value: slug},
               {key: 'Is At Capacity', value: is_at_capacity},
               {key: 'Is Published', value: is_published},
-              {key: 'Last Verified', value: last_verified},
-              {key: 'Created At', value: created_at},
-              {key: 'Updated At', value: updated_at}
+              {key: 'Updated At', value: updated_at},
+              {key: 'Created At', value: created_at}
             ]}
           />
         </Container>

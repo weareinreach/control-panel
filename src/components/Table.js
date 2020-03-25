@@ -47,10 +47,11 @@ const StyledTable = styled('table')`
 `;
 
 const Table = props => {
-  const {getRowLink, headers, hideHeaders, rows} = props;
+  const {getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
 
   return (
     <StyledTable>
+      {isKeyValue && <col width="150" />}
       {!hideHeaders && (
         <thead>
           <tr>
@@ -101,13 +102,14 @@ Table.propTypes = {
   getRowLink: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.shape()),
   hideHeaders: PropTypes.bool,
+  isKeyValue: PropTypes.bool,
   rows: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default Table;
 
 export const KeyValueTable = ({rows}) => (
-  <Table headers={[{key: 'key'}, {key: 'value'}]} rows={rows} />
+  <Table headers={[{key: 'key'}, {key: 'value'}]} rows={rows} isKeyValue />
 );
 
 KeyValueTable.propTypes = {

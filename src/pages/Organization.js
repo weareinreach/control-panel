@@ -1,4 +1,4 @@
-import {delete as httpDelete} from 'axios';
+import {delete as httpDelete, patch} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
@@ -84,7 +84,6 @@ const Organization = props => {
     description,
     emails,
     is_published,
-    last_verified,
     locations,
     name = 'Organization Name',
     phones,
@@ -92,6 +91,7 @@ const Organization = props => {
     services,
     slug,
     updated_at,
+    verified_at,
     website
   } = data || {};
 
@@ -121,16 +121,20 @@ const Organization = props => {
     openModal({
       header: `Verify Information for ${name}`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${getAPIUrl()}${orgPath}`;
+
+        console.log('PATCH:', url);
+
         setLoading();
-
-        // TODO: API logic for deleting
-        console.log('handleOrganizationVerification', values);
-
-        setTimeout(() => {
-          window.location = `/organizations`;
-          setSuccess();
-        }, 3000);
+        patch(url, {verified_at: Date.now()})
+          .then(result => {
+            setSuccess();
+            window.location = `/organizations`;
+          })
+          .catch(err => {
+            setError();
+          });
       }
     });
 
@@ -190,9 +194,9 @@ const Organization = props => {
               {key: 'Alert Message', value: alert_message},
               {key: 'Slug', value: slug},
               {key: 'Is Published', value: is_published},
-              {key: 'Last Verified', value: last_verified},
-              {key: 'Created At', value: created_at},
-              {key: 'Updated At', value: updated_at}
+              {key: 'Last Verified', value: verified_at},
+              {key: 'Updated At', value: updated_at},
+              {key: 'Created At', value: created_at}
             ]}
           />
         </Container>

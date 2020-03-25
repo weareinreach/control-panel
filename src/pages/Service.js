@@ -1,5 +1,4 @@
 import {delete as httpDelete} from 'axios';
-import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
@@ -24,7 +23,10 @@ import Alert from '../components/Alert';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
-import ListProperties, {ListServiceArea} from '../components/ListProperties';
+import ListProperties, {
+  ListServiceArea,
+  ListTags
+} from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
@@ -35,12 +37,10 @@ import {
   costProperties,
   eligibilityRequirementProperties,
   emailFields,
-  generalServiceDetailsFields,
   languageProperties,
   locationFields,
   phoneFields,
-  scheduleFields,
-  tags
+  scheduleFields
 } from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
 
@@ -245,7 +245,22 @@ const Service = props => {
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
               <Container>
-                <p>{JSON.stringify(serviceTags)}</p>
+                <SectionTitle>United States</SectionTitle>
+                {serviceTags?.united_states?.length > 0 ? (
+                  <ListTags tags={serviceTags?.united_states} />
+                ) : null}
+              </Container>
+              <Container>
+                <SectionTitle>Canada</SectionTitle>
+                {serviceTags?.canada?.length > 0 ? (
+                  <ListTags tags={serviceTags?.canada} />
+                ) : null}
+              </Container>
+              <Container>
+                <SectionTitle>Mexico</SectionTitle>
+                {serviceTags?.mexico?.length > 0 ? (
+                  <ListTags tags={serviceTags?.mexico} />
+                ) : null}
               </Container>
             </Stack>
           </TabPanel>

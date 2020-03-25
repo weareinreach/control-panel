@@ -4,6 +4,7 @@ import React from 'react';
 import {
   Box,
   Button,
+  Select,
   Stack,
   Tab,
   TabList,
@@ -16,21 +17,27 @@ import Alert from './Alert';
 import FormField from './FormField';
 import {LoadingModal} from './Loading';
 import ServiceAreaCoverage from './ServiceAreaCoverage';
+import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
 import {
   additionalInformationProperties,
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
+  emailFields,
   generalServiceDetailsFields,
   languageProperties,
+  locationFields,
+  phoneFields,
   scheduleFields,
   tags
 } from '../utils/formsHeaders';
 import {getServiceInitialValues, newSchedule} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const ServiceForm = props => {
+const findItem = (list, _id) => list.find(item => item._id === _id);
+
+const FormService = props => {
   const {isEdit, onCancel, onConfirm, service, title} = props;
   const initialValues = getServiceInitialValues(service);
   const formik = useFormik({initialValues});
@@ -38,12 +45,6 @@ const ServiceForm = props => {
   const name = props?.service?.name;
   const onSave = () =>
     onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
-  const addSchedule = () => {
-    formik.setFieldValue('schedule', newSchedule);
-  };
-  const removeScedule = () => {
-    formik.setFieldValue('schedule', null);
-  };
 
   return (
     <>
@@ -66,7 +67,6 @@ const ServiceForm = props => {
           <Tab>Access Instructions</Tab>
           <Tab>Properties</Tab>
           <Tab>Tags</Tab>
-          <Tab>Schedules</Tab>
         </TabList>
         <TabPanels>
           <TabPanel marginTop={2}>
@@ -86,15 +86,91 @@ const ServiceForm = props => {
               </Container>
               <Container>
                 <SectionTitle>Locations</SectionTitle>
-                <p>{JSON.stringify(service?.organization?.locations)}</p>
+                <Select
+                  {...(formik?.getFieldProps('location_id') || {})}
+                  placeholder="Select a location from the organization"
+                >
+                  {service?.organization?.locations.map(({_id}) => (
+                    <option key={_id}>{_id}</option>
+                  ))}
+                </Select>
+                {formik?.values?.location_id && (
+                  <Table
+                    headers={locationFields}
+                    rows={[
+                      findItem(
+                        service?.organization?.locations,
+                        formik?.values?.location_id
+                      )
+                    ]}
+                  />
+                )}
+              </Container>
+              <Container>
+                <SectionTitle>Schedules</SectionTitle>
+                <Select
+                  {...(formik?.getFieldProps('schedule_id') || {})}
+                  placeholder="Select a schedule from the organization"
+                >
+                  {service?.organization?.schedules.map(({_id}) => (
+                    <option key={_id}>{_id}</option>
+                  ))}
+                </Select>
+                {formik?.values?.schedule_id && (
+                  <Table
+                    headers={scheduleFields}
+                    rows={[
+                      findItem(
+                        service?.organization?.schedules,
+                        formik?.values?.schedule_id
+                      )
+                    ]}
+                  />
+                )}
               </Container>
               <Container>
                 <SectionTitle>Emails</SectionTitle>
-                <p>{JSON.stringify(service?.organization?.emails)}</p>
+                <Select
+                  {...(formik?.getFieldProps('email_id') || {})}
+                  placeholder="Select an email from the organization"
+                >
+                  {service?.organization?.emails.map(({_id}) => (
+                    <option key={_id}>{_id}</option>
+                  ))}
+                </Select>
+                {formik?.values?.email_id && (
+                  <Table
+                    headers={emailFields}
+                    rows={[
+                      findItem(
+                        service?.organization?.emails,
+                        formik?.values?.email_id
+                      )
+                    ]}
+                  />
+                )}
               </Container>
               <Container>
                 <SectionTitle>Phones</SectionTitle>
-                <p>{JSON.stringify(service?.organization?.phones)}</p>
+                <Select
+                  {...(formik?.getFieldProps('phone_id') || {})}
+                  placeholder="Select a phone from the organization"
+                >
+                  {service?.organization?.phones.map(({_id}) => (
+                    <option key={_id}>{_id}</option>
+                  ))}
+                </Select>
+                {formik?.values?.phone_id && (
+                  <Table
+                    headers={phoneFields}
+                    rows={[
+                      findItem(
+                        service?.organization?.phones,
+                        formik?.values?.phone_id
+                      )
+                    ]}
+                  />
+                )}
               </Container>
             </Stack>
           </TabPanel>
@@ -220,27 +296,6 @@ const ServiceForm = props => {
               ))}
             </Stack>
           </TabPanel>
-          <TabPanel marginTop={2}>
-            <Box marginBottom={2} textAlign="right">
-              {formik?.values?.schedule ? (
-                <Button onClick={removeScedule}>Remove Custom Schedule</Button>
-              ) : (
-                <Button onClick={addSchedule}>Add Custom Schedule</Button>
-              )}
-            </Box>
-            <Container marginBottom={4}>
-              <Stack spacing={4}>
-                {scheduleFields?.map(({key, ...rest}) => (
-                  <FormField
-                    key={`schedule[${key}]`}
-                    fieldKey={`schedule[${key}]`}
-                    formik={formik}
-                    {...rest}
-                  />
-                ))}
-              </Stack>
-            </Container>
-          </TabPanel>
         </TabPanels>
       </Tabs>
       <Box marginTop={4}>
@@ -255,7 +310,7 @@ const ServiceForm = props => {
   );
 };
 
-ServiceForm.propTypes = {
+FormService.propTypes = {
   isDuplicate: PropTypes.bool,
   isEdit: PropTypes.bool,
   onCancel: PropTypes.func,
@@ -264,4 +319,4 @@ ServiceForm.propTypes = {
   title: PropTypes.string
 };
 
-export default ServiceForm;
+export default FormService;

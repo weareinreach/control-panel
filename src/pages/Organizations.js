@@ -1,3 +1,4 @@
+import _reduce from 'lodash/reduce';
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Box, Button, Grid, Text} from '@chakra-ui/core';
@@ -28,7 +29,17 @@ const getQueryUrls = query => {
   }
 
   if (properties) {
-    queryParam += `&properties=${properties}`;
+    const propString = _reduce(
+      properties,
+      (result, value, key) => {
+        result += `${key}=${value},`;
+
+        return result;
+      },
+      ''
+    );
+
+    queryParam += `&properties=${propString}`;
   }
 
   return {

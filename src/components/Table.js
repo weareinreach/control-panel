@@ -51,7 +51,11 @@ const Table = props => {
 
   return (
     <StyledTable>
-      {isKeyValue && <col width="150" />}
+      {isKeyValue && (
+        <colgroup>
+          <col width="150" />
+        </colgroup>
+      )}
       {!hideHeaders && (
         <thead>
           <tr>

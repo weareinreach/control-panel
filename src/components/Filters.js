@@ -1,3 +1,4 @@
+import _map from 'lodash/map';
 import React, {useState} from 'react';
 import {Box, Button, Input, Select, Stack, Text} from '@chakra-ui/core';
 import PropTypes from 'prop-types';
@@ -5,11 +6,28 @@ import PropTypes from 'prop-types';
 import {SectionTitle} from '../components/styles';
 import {useInputChange} from '../utils/hooks';
 
+const propertyList = ['community-asylum-seeker', 'community-lgbt'];
+
 const Filters = props => {
   const {query, updateQuery} = props;
   const [name, handleNameChange] = useInputChange(query?.name);
   const [properties, setProperties] = useState(query?.properties);
+  const handlePropValueChange = prop => ev => {
+    const value = ev.target.value;
 
+    setProperties({
+      ...properties,
+      [prop]: value
+    });
+  };
+  const handleSelect = ev => {
+    const prop = ev.target.value;
+
+    setProperties({
+      ...properties,
+      [prop]: properties?.[prop] || ''
+    });
+  };
   const handleSearch = ev => {
     ev.preventDefault();
 
@@ -23,19 +41,34 @@ const Filters = props => {
         <Text>Name Contains:</Text>
         <Input
           onChange={handleNameChange}
-          display="inline-block"
           variant="filled"
           placeholder="Search on name"
           value={name}
         />
         <Text>Properties:</Text>
         <Select
-          rootProps={{display: 'inline-block', color: 'red'}}
+          onChange={handleSelect}
           variant="filled"
           placeholder="Select a property"
         >
-          {/* <option>hello</option> */}
+          {propertyList.map(prop => (
+            <option key={prop}>{prop}</option>
+          ))}
         </Select>
+        {_map(properties, (value, key) => {
+          return (
+            <>
+              <Text>{key}</Text>
+              <Input
+                key={key}
+                onChange={handlePropValueChange(key)}
+                variant="filled"
+                placeholder="Enter a value"
+                value={value}
+              />
+            </>
+          );
+        })}
         <Box textAlign="right">
           <Button display="inline-block" onClick={handleSearch}>
             Search

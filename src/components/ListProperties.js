@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Checkbox, Stack, Text} from '@chakra-ui/core';
 
+const noChange = () => null;
+
 const ListProperties = props => {
   const {list, properties} = props;
 
@@ -13,14 +15,11 @@ const ListProperties = props => {
 
         if (value) {
           if (type === 'checkbox') {
-            console.log('check box', value === true || value === 'true');
-            console.log('check box check 1', value === true);
-            console.log('check box check 2', value === 'true');
-
             return (
               <Checkbox
                 key={key}
                 isChecked={value === true || value === 'true'}
+                onChange={noChange}
               >
                 {key}
               </Checkbox>
@@ -52,7 +51,9 @@ export const ListServiceArea = props => {
     if (key.includes('service-')) {
       return (
         <div key={key}>
-          <Checkbox isChecked={true}>{key}</Checkbox>
+          <Checkbox isChecked onChange={noChange}>
+            {key}
+          </Checkbox>
         </div>
       );
     }
@@ -62,4 +63,22 @@ export const ListServiceArea = props => {
 
 ListServiceArea.propTypes = {
   properties: PropTypes.shape({})
+};
+
+export const ListTags = props => {
+  const {tags} = props;
+
+  return _map(tags, tag => {
+    return (
+      <div key={tag}>
+        <Checkbox isChecked onChange={noChange}>
+          {tag}
+        </Checkbox>
+      </div>
+    );
+  });
+};
+
+ListTags.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.string)
 };

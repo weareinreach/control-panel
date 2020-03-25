@@ -15,7 +15,6 @@ const Alert = props => {
       <AlertIcon />
       {title && <AlertTitle mr={2}>{title}</AlertTitle>}
       {description && <AlertDescription>{description}</AlertDescription>}
-      {/* <CloseButton position="absolute" right="8px" top="8px" /> */}
     </ChakraAlert>
   );
 };

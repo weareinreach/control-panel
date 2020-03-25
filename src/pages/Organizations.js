@@ -28,20 +28,22 @@ const getQueryUrls = query => {
     queryParam += `&page=${page}`;
   }
 
-  if (properties) {
-    console.log('properties', properties);
-
+  if (properties && Object.keys(properties).length > 0) {
     const propString = _reduce(
       properties,
       (result, value, key) => {
-        result += `${key}=${value},`;
+        if (key && value) {
+          result += `${key}=${value},`;
+        }
 
         return result;
       },
       ''
     );
 
-    queryParam += `&properties=${propString}`;
+    if (propString) {
+      queryParam += `&properties=${propString}`;
+    }
   }
 
   return {

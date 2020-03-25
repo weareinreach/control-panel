@@ -2,6 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Select, Stack} from '@chakra-ui/core';
 
+// import coverage from './coverage.json';
+//
+// console.log('coverage', coverage);
+
 const canadaProvidenceOptions = [{label: 'city', value: ''}];
 const mexicoCityOptions = [{label: 'city', value: ''}];
 

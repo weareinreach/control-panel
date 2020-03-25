@@ -80,7 +80,7 @@ const OrganizationForm = props => {
         <TabList>
           <Tab>Organization Details</Tab>
           <Tab>Addresses</Tab>
-          <Tab>Schedule</Tab>
+          <Tab>Schedules</Tab>
           <Tab>Emails</Tab>
           <Tab>Phones</Tab>
         </TabList>
@@ -149,19 +149,46 @@ const OrganizationForm = props => {
             })}
           </TabPanel>
           <TabPanel marginTop={2}>
-            <Container>
-              <SectionTitle>Schedule</SectionTitle>
-              <Stack spacing={4}>
-                {scheduleFields?.map(({key, ...rest}) => (
-                  <FormField
-                    key={`schedule[${key}]`}
-                    fieldKey={`schedule[${key}]`}
-                    formik={formik}
-                    {...rest}
-                  />
-                ))}
-              </Stack>
-            </Container>
+            <Button
+              onClick={() => createFieldItem('schedules')}
+              marginBottom={2}
+            >
+              New Schedule
+            </Button>
+            {formik?.values?.schedules?.map((item, itemIndex) => {
+              return (
+                <Container key={itemIndex} marginBottom={4}>
+                  <Stack spacing={4}>
+                    {scheduleFields?.map(({key, ...rest}) => (
+                      <FormField
+                        key={`schedules[${itemIndex}][${key}]`}
+                        fieldKey={`schedules[${itemIndex}][${key}]`}
+                        formik={formik}
+                        {...rest}
+                      />
+                    ))}
+                    <Box>
+                      <Button
+                        onClick={() =>
+                          duplicateFieldItem('schedules', itemIndex)
+                        }
+                        mr={2}
+                        size="xs"
+                      >
+                        Duplicate
+                      </Button>
+                      <Button
+                        onClick={() => deleteFieldItem('schedules', itemIndex)}
+                        size="xs"
+                        variantColor="red"
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </Stack>
+                </Container>
+              );
+            })}
           </TabPanel>
           <TabPanel marginTop={2}>
             <Button onClick={() => createFieldItem('emails')} marginBottom={2}>

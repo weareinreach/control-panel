@@ -17,6 +17,7 @@ import Alert from '../components/Alert';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
+import {ListServiceArea} from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
@@ -25,52 +26,9 @@ import {
   emailFields,
   locationFields,
   phoneFields,
-  scheduleFields,
-  serviceFields
+  scheduleFields
 } from '../utils/formsHeaders';
 import {useAPIGet} from '../utils/hooks';
-
-const getScheduleRows = schedule => {
-  console.log('schedule', schedule);
-
-  return [
-    {
-      day: 'monday',
-      start_time: schedule?.monday_start,
-      end_time: schedule?.monday_end
-    },
-    {
-      day: 'tuesday',
-      start_time: schedule?.tuesday_start,
-      end_time: schedule?.tuesday_end
-    },
-    {
-      day: 'wednesday',
-      start_time: schedule?.wednesday_start,
-      end_time: schedule?.wednesday_end
-    },
-    {
-      day: 'thursday',
-      start_time: schedule?.thursday_start,
-      end_time: schedule?.thursday_end
-    },
-    {
-      day: 'friday',
-      start_time: schedule?.friday_start,
-      end_time: schedule?.friday_end
-    },
-    {
-      day: 'saturday',
-      start_time: schedule?.saturday_start,
-      end_time: schedule?.saturday_end
-    },
-    {
-      day: 'sunday',
-      start_time: schedule?.sunday_start,
-      end_time: schedule?.sunday_end
-    }
-  ];
-};
 
 const Organization = props => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -87,14 +45,14 @@ const Organization = props => {
     locations,
     name = 'Organization Name',
     phones,
-    schedule,
+    properties,
+    schedules,
     services,
     slug,
     updated_at,
     verified_at,
     website
   } = data || {};
-
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
@@ -145,8 +103,6 @@ const Organization = props => {
   if (!data) {
     return <NotFound />;
   }
-
-  const scheduleRows = getScheduleRows(schedule);
 
   return (
     <>
@@ -209,15 +165,12 @@ const Organization = props => {
           <SectionTitle>Services</SectionTitle>
           <Table
             getRowLink={service => `${orgPath}/services/${service._id}`}
-            headers={serviceFields}
+            headers={[
+              {key: 'name', label: 'Name'},
+              {key: 'updated_at', label: 'Last Updated'}
+            ]}
             rows={services}
           />
-        </Container>
-        <Container>
-          <SectionTitle>Service Area Coverage</SectionTitle>
-          <p>country</p>
-          <p>states or providences</p>
-          <p>cities</p>
         </Container>
         <Container>
           <SectionTitle>Addresses</SectionTitle>
@@ -225,7 +178,7 @@ const Organization = props => {
         </Container>
         <Container>
           <SectionTitle>Schedules</SectionTitle>
-          <Table headers={scheduleFields} rows={scheduleRows} />
+          <Table headers={scheduleFields} rows={schedules} />
         </Container>
         <Container>
           <SectionTitle>Emails</SectionTitle>
@@ -234,6 +187,10 @@ const Organization = props => {
         <Container>
           <SectionTitle>Phones</SectionTitle>
           <Table headers={phoneFields} rows={phones} />
+        </Container>
+        <Container>
+          <SectionTitle>Service Area Coverage</SectionTitle>
+          <ListServiceArea properties={properties} />
         </Container>
       </Stack>
     </>

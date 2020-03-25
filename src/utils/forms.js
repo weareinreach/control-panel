@@ -1,11 +1,20 @@
 export const newSchedule = {
-  sunday: {start_time: '', end_time: '', timezone: ''},
-  monday: {start_time: '', end_time: '', timezone: ''},
-  tuesday: {start_time: '', end_time: '', timezone: ''},
-  wednesday: {start_time: '', end_time: '', timezone: ''},
-  thursday: {start_time: '', end_time: '', timezone: ''},
-  friday: {start_time: '', end_time: '', timezone: ''},
-  saturday: {start_time: '', end_time: '', timezone: ''}
+  monday_start: '',
+  monday_end: '',
+  tuesday_start: '',
+  tuesday_end: '',
+  wednesday_start: '',
+  wednesday_end: '',
+  thursday_start: '',
+  thursday_end: '',
+  friday_start: '',
+  friday_end: '',
+  saturday_start: '',
+  saturday_end: '',
+  sunday_start: '',
+  sunday_end: '',
+  note: '',
+  timezone: ''
 };
 
 export const getOrgInitialValues = initialValues => {
@@ -13,12 +22,12 @@ export const getOrgInitialValues = initialValues => {
     alert_message: initialValues?.alert_message || '',
     description: initialValues?.description || '',
     emails: initialValues?.emails || [],
-    is_at_capacity: initialValues?.is_at_capacity || false,
     is_published: initialValues?.is_published || false,
     locations: initialValues?.locations || [],
     name: initialValues?.name || '',
     phones: initialValues?.phones || [],
-    schedule: initialValues?.schedule || newSchedule,
+    properties: initialValues?.properties || {},
+    schedules: initialValues?.schedules || [],
     services: initialValues?.services || [],
     slug: initialValues?.slug || '',
     website: initialValues?.website || ''
@@ -27,16 +36,17 @@ export const getOrgInitialValues = initialValues => {
 
 export const getServiceInitialValues = initialValues => {
   return {
+    access_instructions: initialValues?.access_instructions || [],
     description: initialValues?.description || '',
-    emails: initialValues?.emails || [],
-    is_at_capacity: initialValues?.is_at_capacity || false,
+    email_id: initialValues?.email_id || [],
     is_published: initialValues?.is_published || false,
-    locations: initialValues?.locations || [],
+    location_id: initialValues?.location_id || [],
     name: initialValues?.name || '',
-    phones: initialValues?.phones || [],
-    schedule: initialValues?.schedule || null,
+    phone_id: initialValues?.phone_id || [],
+    properties: initialValues?.properties || {},
+    schedule_id: initialValues?.schedule_id || null,
     services: initialValues?.services || [],
     slug: initialValues?.slug || '',
-    website: initialValues?.website || ''
+    tags: initialValues?.tags || []
   };
 };

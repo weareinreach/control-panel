@@ -1,4 +1,3 @@
-import _map from 'lodash/map';
 import {useFormik} from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -23,33 +22,13 @@ import {
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
+  generalServiceDetailsFields,
   languageProperties,
-  serviceAreaProperties,
+  scheduleFields,
   tags
 } from '../utils/formsHeaders';
 import {getServiceInitialValues, newSchedule} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
-
-const generalServiceDetailsFields = [
-  {key: 'name', label: 'Name'},
-  {key: 'description', label: 'Description', type: 'textarea'},
-  {key: 'access_instructions', label: 'Access Instructions', type: 'textarea'},
-  {key: 'is_published', label: 'Is Published', type: 'checkbox'}
-];
-
-const scheduleFields = [
-  {key: 'start_time', label: 'Start Time'},
-  {key: 'end_time', label: 'End Time'}
-];
-
-// TODO: On save, a summary of changes for the log if edit
-// TODO: On save, warning about fields such as is_closed, is_published, etc
-/**
- * NOTE: By default add the properties “community-asylum-seeker” (value = true)
- * and “community-lgbt” on every service
- * Remove the need for Data Managers to enter “community-asylum-seeker” (value = true)
- * and “community-lgbt” on every organization + service page in order to appear in the live AC Catalog
- */
 
 const ServiceForm = props => {
   const {isEdit, onCancel, onConfirm, service, title} = props;
@@ -84,6 +63,7 @@ const ServiceForm = props => {
       <Tabs>
         <TabList>
           <Tab>Service Details</Tab>
+          <Tab>Access Instructions</Tab>
           <Tab>Properties</Tab>
           <Tab>Tags</Tab>
           <Tab>Schedules</Tab>
@@ -106,18 +86,31 @@ const ServiceForm = props => {
               </Container>
               <Container>
                 <SectionTitle>Locations</SectionTitle>
-                {/* List, edit, add them */}
-                {/* Use a toggle like system to hide them */}
+                <p>{JSON.stringify(service?.organization?.locations)}</p>
               </Container>
               <Container>
                 <SectionTitle>Emails</SectionTitle>
-                {/* List, edit, add them */}
-                {/* Use a toggle like system to hide them */}
+                <p>{JSON.stringify(service?.organization?.emails)}</p>
               </Container>
               <Container>
                 <SectionTitle>Phones</SectionTitle>
-                {/* List, edit, add them */}
-                {/* Use a toggle like system to hide them */}
+                <p>{JSON.stringify(service?.organization?.phones)}</p>
+              </Container>
+            </Stack>
+          </TabPanel>
+          <TabPanel marginTop={2}>
+            <Stack spacing={4}>
+              <Container>
+                <Stack spacing={4}>
+                  {generalServiceDetailsFields.map(({key, ...rest}) => (
+                    <FormField
+                      key={key}
+                      fieldKey={key}
+                      formik={formik}
+                      {...rest}
+                    />
+                  ))}
+                </Stack>
               </Container>
             </Stack>
           </TabPanel>
@@ -181,14 +174,6 @@ const ServiceForm = props => {
                 <SectionTitle>Service Area Properties</SectionTitle>
                 <Stack space={4}>
                   <ServiceAreaCoverage />
-                  {serviceAreaProperties.map(({key, ...rest}) => (
-                    <FormField
-                      key={key}
-                      fieldKey={key}
-                      formik={formik}
-                      {...rest}
-                    />
-                  ))}
                 </Stack>
               </Container>
               <Container>
@@ -243,23 +228,18 @@ const ServiceForm = props => {
                 <Button onClick={addSchedule}>Add Custom Schedule</Button>
               )}
             </Box>
-            {_map(formik?.values?.schedule || [], (value, day) => {
-              return (
-                <Container key={day} marginBottom={4}>
-                  <SectionTitle>{day}</SectionTitle>
-                  <Stack spacing={4}>
-                    {scheduleFields?.map(({key, ...rest}) => (
-                      <FormField
-                        key={`schedule[${day}][${key}]`}
-                        fieldKey={`schedule[${day}][${key}]`}
-                        formik={formik}
-                        {...rest}
-                      />
-                    ))}
-                  </Stack>
-                </Container>
-              );
-            })}
+            <Container marginBottom={4}>
+              <Stack spacing={4}>
+                {scheduleFields?.map(({key, ...rest}) => (
+                  <FormField
+                    key={`schedule[${key}]`}
+                    fieldKey={`schedule[${key}]`}
+                    formik={formik}
+                    {...rest}
+                  />
+                ))}
+              </Stack>
+            </Container>
           </TabPanel>
         </TabPanels>
       </Tabs>

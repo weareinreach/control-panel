@@ -3,7 +3,12 @@ export const generalOrgDetailsFields = [
   {key: 'website', label: 'Website'},
   {key: 'description', label: 'Description', type: 'textarea'},
   {key: 'alert_message', label: 'Alert Message', type: 'textarea'},
-  {key: 'is_at_capacity', label: 'Is At Capacity', type: 'checkbox'},
+  {key: 'is_published', label: 'Is Published', type: 'checkbox'}
+];
+
+export const generalServiceDetailsFields = [
+  {key: 'name', label: 'Name'},
+  {key: 'description', label: 'Description', type: 'textarea'},
   {key: 'is_published', label: 'Is Published', type: 'checkbox'}
 ];
 
@@ -12,23 +17,33 @@ export const emailFields = [
   {key: 'title', label: 'Title'},
   {key: 'first_name', label: 'First Name'},
   {key: 'last_name', label: 'Last Name'},
-  {key: 'show_on_org', label: 'Show on Org', type: 'checkbox'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'},
+  {key: 'show_on_organization', label: 'Show on Org', type: 'checkbox'}
 ];
 
 export const locationFields = [
   {key: 'name', label: 'Name'},
+  {key: 'unit', label: 'Unit'},
   {key: 'address', label: 'Address'},
   {key: 'city', label: 'City'},
   {key: 'state', label: 'State'},
   {key: 'country', label: 'Country'},
   {key: 'zip_code', label: 'Zipcode'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+  {key: 'lat', label: 'Lat'},
+  {key: 'long', label: 'Long'},
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'},
+  {key: 'show_on_organization', label: 'Show on Org', type: 'checkbox'}
 ];
 
 export const phoneFields = [
+  {
+    key: 'phone_type',
+    label: 'Phone Type',
+    placeholder: 'For example is it a mobile, fax, office phone?'
+  },
   {key: 'digits', label: 'Digits'},
-  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'}
+  {key: 'is_primary', label: 'Is Primary', type: 'checkbox'},
+  {key: 'show_on_organization', label: 'Show on Org', type: 'checkbox'}
 ];
 
 export const scheduleFields = [
@@ -46,7 +61,6 @@ export const scheduleFields = [
   {key: 'saturday_end', label: 'Saturday End'},
   {key: 'sunday_start', label: 'Sunday Start'},
   {key: 'sunday_end', label: 'Sunday End'},
-  {key: 'note', label: 'Note', type: 'textarea'},
   {
     key: 'timezone',
     label: 'Timezone',
@@ -64,22 +78,16 @@ export const scheduleFields = [
       {label: 'PDT', value: 'PDT'},
       {label: 'PST', value: 'PST'}
     ]
-  }
-];
-
-export const serviceFields = [
-  {key: 'name', label: 'Name'},
-  {key: 'updated_at', label: 'Last Updated'}
-];
-
-export const communityProperties = [
-  {
-    key: 'cost-free',
-    label: 'Cost Free',
-    description: 'Enter on all services that are free of cost',
-    type: 'checkbox'
   },
+  {key: 'note', label: 'Note', type: 'textarea'}
+];
 
+/**
+ ************************************************************
+ * Properties
+ ************************************************************
+ */
+export const communityProperties = [
   {
     key: 'community-transgender',
     label: 'community-transgender',
@@ -315,21 +323,102 @@ export const eligibilityRequirementProperties = [
   }
 ];
 
-/**
- * TODO: Ask Katie
- */
-// List of langs and a catch-all note
-export const languageProperties = [];
-
-/*
-  TODO: Ask Katie about this: Every city, state (province), country for our 3 nations
-  Add new service area properties for new international locations
-    - Currently have: “service-state-pennsylvania” + “service-county-washington-adams” “service-national-canada”, etc.
-    - Canada: change “service-state-alberta” to “service-canada-province-alberta” + add Canadian cities (service-canada-city-toronto), etc.
-    - Mexico: add Mexican states + cities (e.g. “service-mexico-state-baja-california”, “service-mexico-state-sonora” “service-mexico-city-tijuana”)
-    - New countries/locations ORAM might need: Turkey, Pakistan, Nigeria, etc.
-*/
-export const serviceAreaProperties = [];
+export const languageProperties = [
+  {key: 'lang-Albanian', label: 'lang-Albanian', type: 'checkbox'},
+  {
+    key: 'lang-all-languages-by-interpreter',
+    label: 'lang-all-languages-by-interpreter',
+    type: 'checkbox'
+  },
+  {
+    key: 'lang-american-sign-language',
+    label: 'lang-american-sign-language',
+    type: 'checkbox'
+  },
+  {key: 'lang-amharic', label: 'lang-amharic', type: 'checkbox'},
+  {key: 'lang-arabic', label: 'lang-arabic', type: 'checkbox'},
+  {key: 'lang-armenian', label: 'lang-armenian', type: 'checkbox'},
+  {key: 'lang-bengali', label: 'lang-bengali', type: 'checkbox'},
+  {key: 'lang-berber', label: 'lang-berber', type: 'checkbox'},
+  {key: 'lang-bhutanese', label: 'lang-bhutanese', type: 'checkbox'},
+  {key: 'lang-bosnian', label: 'lang-bosnian', type: 'checkbox'},
+  {key: 'lang-Bulgarian', label: 'lang-Bulgarian', type: 'checkbox'},
+  {key: 'lang-burmese', label: 'lang-burmese', type: 'checkbox'},
+  {key: 'lang-cambodian', label: 'lang-cambodian', type: 'checkbox'},
+  {key: 'lang-cantonese', label: 'lang-cantonese', type: 'checkbox'},
+  {key: 'lang-cebuano', label: 'lang-cebuano', type: 'checkbox'},
+  {key: 'lang-Chin', label: 'lang-Chin', type: 'checkbox'},
+  {key: 'lang-chiu-chow', label: 'lang-chiu-chow', type: 'checkbox'},
+  {key: 'lang-Creole', label: 'lang-Creole', type: 'checkbox'},
+  {key: 'lang-croatian', label: 'lang-croatian', type: 'checkbox'},
+  {key: 'lang-dari', label: 'lang-dari', type: 'checkbox'},
+  {key: 'lang-Dinka', label: 'lang-Dinka', type: 'checkbox'},
+  {key: 'lang-eritrean', label: 'lang-eritrean', type: 'checkbox'},
+  {key: 'lang-farsi', label: 'lang-farsi', type: 'checkbox'},
+  {key: 'lang-fiji', label: 'lang-fiji', type: 'checkbox'},
+  {key: 'lang-french', label: 'lang-french', type: 'checkbox'},
+  {key: 'lang-fukienese', label: 'lang-fukienese', type: 'checkbox'},
+  {key: 'lang-german', label: 'lang-german', type: 'checkbox'},
+  {key: 'lang-greek', label: 'lang-greek', type: 'checkbox'},
+  {key: 'lang-Gujarati', label: 'lang-Gujarati', type: 'checkbox'},
+  {key: 'lang-Hebrew', label: 'lang-Hebrew', type: 'checkbox'},
+  {key: 'lang-hindi', label: 'lang-hindi', type: 'checkbox'},
+  {key: 'lang-hmong', label: 'lang-hmong', type: 'checkbox'},
+  {key: 'lang-Hunan', label: 'lang-Hunan', type: 'checkbox'},
+  {key: 'lang-Hungarian', label: 'lang-Hungarian', type: 'checkbox'},
+  {key: 'lang-ilocano', label: 'lang-ilocano', type: 'checkbox'},
+  {key: 'lang-indonesian', label: 'lang-indonesian', type: 'checkbox'},
+  {key: 'lang-italian', label: 'lang-italian', type: 'checkbox'},
+  {key: 'lang-japanese', label: 'lang-japanese', type: 'checkbox'},
+  {key: 'lang-karen', label: 'lang-karen', type: 'checkbox'},
+  {key: 'lang-karenni', label: 'lang-karenni', type: 'checkbox'},
+  {key: 'lang-Katchi', label: 'lang-Katchi', type: 'checkbox'},
+  {key: 'lang-khmer', label: 'lang-khmer', type: 'checkbox'},
+  {key: 'lang-kiche', label: 'lang-kiche', type: 'checkbox'},
+  {key: 'lang-Kirundi', label: 'lang-Kirundi', type: 'checkbox'},
+  {key: 'lang-kiswahili', label: 'lang-kiswahili', type: 'checkbox'},
+  {key: 'lang-korean', label: 'lang-korean', type: 'checkbox'},
+  {key: 'lang-Kurdish', label: 'lang-Kurdish', type: 'checkbox'},
+  {key: 'lang-Kurmanji', label: 'lang-Kurmanji', type: 'checkbox'},
+  {key: 'lang-laotian', label: 'lang-laotian', type: 'checkbox'},
+  {key: 'lang-Lingala', label: 'lang-Lingala', type: 'checkbox'},
+  {key: 'lang-mam', label: 'lang-mam', type: 'checkbox'},
+  {key: 'lang-mandarin', label: 'lang-mandarin', type: 'checkbox'},
+  {key: 'lang-mandingo', label: 'lang-mandingo', type: 'checkbox'},
+  {key: 'lang-Marathi', label: 'lang-Marathi', type: 'checkbox'},
+  {key: 'lang-mien', label: 'lang-mien', type: 'checkbox'},
+  {key: 'lang-mongolian', label: 'lang-mongolian', type: 'checkbox'},
+  {key: 'lang-nepali', label: 'lang-nepali', type: 'checkbox'},
+  {key: 'lang-pashto', label: 'lang-pashto', type: 'checkbox'},
+  {key: 'lang-Polish', label: 'lang-Polish', type: 'checkbox'},
+  {key: 'lang-portuguese', label: 'lang-portuguese', type: 'checkbox'},
+  {key: 'lang-punjabi', label: 'lang-punjabi', type: 'checkbox'},
+  {key: 'lang-Quechua', label: 'lang-Quechua', type: 'checkbox'},
+  {key: 'lang-romanian', label: 'lang-romanian', type: 'checkbox'},
+  {key: 'lang-russian', label: 'lang-russian', type: 'checkbox'},
+  {key: 'lang-samoan', label: 'lang-samoan', type: 'checkbox'},
+  {key: 'lang-senufo', label: 'lang-senufo', type: 'checkbox'},
+  {key: 'lang-serbian', label: 'lang-serbian', type: 'checkbox'},
+  {key: 'lang-Sinhala', label: 'lang-Sinhala', type: 'checkbox'},
+  {key: 'lang-somali', label: 'lang-somali', type: 'checkbox'},
+  {key: 'lang-spanish', label: 'lang-spanish', type: 'checkbox'},
+  {key: 'lang-tagalog', label: 'lang-tagalog', type: 'checkbox'},
+  {key: 'lang-taiwanese', label: 'lang-taiwanese', type: 'checkbox'},
+  {key: 'lang-Tamil', label: 'lang-Tamil', type: 'checkbox'},
+  {key: 'lang-telugu', label: 'lang-telugu', type: 'checkbox'},
+  {key: 'lang-thai', label: 'lang-thai', type: 'checkbox'},
+  {key: 'lang-tibetan', label: 'lang-tibetan', type: 'checkbox'},
+  {key: 'lang-tigrigna', label: 'lang-tigrigna', type: 'checkbox'},
+  {key: 'lang-tigrinya', label: 'lang-tigrinya', type: 'checkbox'},
+  {key: 'lang-toisanese', label: 'lang-toisanese', type: 'checkbox'},
+  {key: 'lang-tongan', label: 'lang-tongan', type: 'checkbox'},
+  {key: 'lang-Turkish', label: 'lang-Turkish', type: 'checkbox'},
+  {key: 'lang-Twi', label: 'lang-Twi', type: 'checkbox'},
+  {key: 'lang-ukrainian', label: 'lang-ukrainian', type: 'checkbox'},
+  {key: 'lang-urdu', label: 'lang-urdu', type: 'checkbox'},
+  {key: 'lang-vietnamese', label: 'lang-vietnamese', type: 'checkbox'},
+  {key: 'lang-wolof', label: 'lang-wolof', type: 'checkbox'}
+];
 
 export const additionalInformationProperties = [
   {

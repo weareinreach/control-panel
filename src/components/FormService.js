@@ -32,7 +32,7 @@ import {
   scheduleFields,
   tags
 } from '../utils/formsHeaders';
-import {getServiceInitialValues, newSchedule} from '../utils/forms';
+import {getServiceInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
 const findItem = (list, _id) => list.find(item => item._id === _id);

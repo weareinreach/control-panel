@@ -29,6 +29,8 @@ const getQueryUrls = query => {
   }
 
   if (properties) {
+    console.log('properties', properties);
+
     const propString = _reduce(
       properties,
       (result, value, key) => {

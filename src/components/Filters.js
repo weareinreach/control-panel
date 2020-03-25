@@ -1,5 +1,4 @@
-import _map from 'lodash/map';
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Button, Input, Select, Stack, Text} from '@chakra-ui/core';
 import PropTypes from 'prop-types';
 
@@ -9,29 +8,14 @@ import {useInputChange} from '../utils/hooks';
 const propertyList = ['community-asylum-seeker', 'community-lgbt'];
 
 const Filters = props => {
-  const {query, updateQuery} = props;
-  const [name, handleNameChange] = useInputChange(query?.name);
-  const [properties, setProperties] = useState(query?.properties);
-  const handlePropValueChange = prop => ev => {
-    const value = ev.target.value;
-
-    setProperties({
-      ...properties,
-      [prop]: value
-    });
-  };
-  const handleSelect = ev => {
-    const prop = ev.target.value;
-
-    setProperties({
-      ...properties,
-      [prop]: properties?.[prop] || ''
-    });
-  };
+  const {updateQuery} = props;
+  const [name, handleNameChange] = useInputChange();
+  const [propValue, handlePropValueChange] = useInputChange('');
+  const [propKey, handlePropKeyChange] = useInputChange('');
   const handleSearch = ev => {
     ev.preventDefault();
 
-    updateQuery({name, properties});
+    updateQuery({name, properties: {[propKey]: propValue}});
   };
 
   return (
@@ -47,7 +31,7 @@ const Filters = props => {
         />
         <Text>Properties:</Text>
         <Select
-          onChange={handleSelect}
+          onChange={handlePropKeyChange}
           variant="filled"
           placeholder="Select a property"
         >
@@ -55,20 +39,14 @@ const Filters = props => {
             <option key={prop}>{prop}</option>
           ))}
         </Select>
-        {_map(properties, (value, key) => {
-          return (
-            <>
-              <Text>{key}</Text>
-              <Input
-                key={key}
-                onChange={handlePropValueChange(key)}
-                variant="filled"
-                placeholder="Enter a value"
-                value={value}
-              />
-            </>
-          );
-        })}
+        {propKey && (
+          <Input
+            onChange={handlePropValueChange}
+            variant="filled"
+            placeholder="Enter a value"
+            value={propValue}
+          />
+        )}
         <Box textAlign="right">
           <Button display="inline-block" onClick={handleSearch}>
             Search

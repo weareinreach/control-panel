@@ -61,7 +61,6 @@ const Organization = props => {
   const goToServiceEditPage = service => {
     window.location = `${orgPath}/services/${service._id}/edit`;
   };
-
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,

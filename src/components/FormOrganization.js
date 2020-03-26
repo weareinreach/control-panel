@@ -24,17 +24,21 @@ import {
   phoneFields,
   scheduleFields
 } from '../data/fields.json';
-import {getOrgInitialValues} from '../utils/forms';
+import {formatOrgInput, getOrgInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
 const OrganizationForm = props => {
   const {isEdit, onCancel, onConfirm, organization, title} = props;
-  const initialValues = getOrgInitialValues(organization);
+  const initialValues = getOrgInitialValues(organization || {});
   const formik = useFormik({initialValues});
   const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
-  const name = organization?.name;
   const onSave = () =>
-    onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
+    onConfirm({
+      setLoading,
+      setSuccess,
+      setError,
+      values: formatOrgInput(formik?.values || {})
+    });
   const createFieldItem = field => {
     const list = formik?.values?.[field] || [];
 
@@ -57,9 +61,9 @@ const OrganizationForm = props => {
     list.splice(index, 1);
     formik.setFieldValue(field, list);
   };
-
-  console.log('organization', organization);
-  console.log('organization?.properties', organization?.properties);
+  const updateField = field => value => {
+    formik.setFieldValue(field, value);
+  };
 
   return (
     <>
@@ -73,8 +77,8 @@ const OrganizationForm = props => {
       )}
       <Title>
         {title}
-        {name && ' - '}
-        {name}
+        {organization?.name && ' - '}
+        {organization?.name}
       </Title>
       <Tabs>
         <TabList>
@@ -102,7 +106,10 @@ const OrganizationForm = props => {
               </Container>
               <Container>
                 <SectionTitle>Service Area Coverage</SectionTitle>
-                <ServiceAreaCoverage properties={organization?.properties} />
+                <ServiceAreaCoverage
+                  handleUpdate={updateField('properties')}
+                  properties={formik?.values?.properties}
+                />
               </Container>
             </Stack>
           </TabPanel>

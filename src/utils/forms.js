@@ -7,6 +7,62 @@ const initialValueDict = {
 };
 
 /**
+ * Clean the properties and convert all values to string
+ * @param  {Object} properties
+ * @return {Object} Cleaned object with string values
+ */
+export const cleanProperties = properties => {
+  return _reduce(
+    properties,
+    (result, value, key) => {
+      const valueType = typeof value;
+
+      switch (valueType) {
+        case 'string':
+          break;
+        case 'boolean':
+        case 'number':
+          value.toString();
+          break;
+        default:
+          value = '';
+      }
+
+      result[key] = value;
+
+      return result;
+    },
+    {}
+  );
+};
+
+/**
+ * Format Organization for submission
+ * @param  {Object} organizationInput
+ * @return {Object} Formatted input
+ */
+export const formatOrgInput = orgInput => {
+  if (orgInput.properties) {
+    orgInput.properties = cleanProperties(orgInput.properties);
+  }
+
+  return orgInput;
+};
+
+/**
+ * Format Service for submission
+ * @param  {Object} serviceInput
+ * @return {Object} Formatted input
+ */
+export const formatServiceInput = serviceInput => {
+  if (serviceInput.properties) {
+    serviceInput.properties = cleanProperties(serviceInput.properties);
+  }
+
+  return serviceInput;
+};
+
+/**
  * For simpler forms this creates the initial values and form inputs
  * @param  {Object} form The form  config
  * @return {Object} The initial values and a list of input configs
@@ -44,7 +100,6 @@ export const getOrgInitialValues = initialValues => {
     phones: initialValues?.phones || [],
     properties: initialValues?.properties || {},
     schedules: initialValues?.schedules || [],
-    services: initialValues?.services || [],
     slug: initialValues?.slug || '',
     website: initialValues?.website || ''
   };

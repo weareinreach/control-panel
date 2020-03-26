@@ -1,16 +1,20 @@
 import {useFormik} from 'formik';
+import _map from 'lodash/map';
+import _memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   Box,
   Button,
+  Divider,
   Select,
   Stack,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
+  Text
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
@@ -34,22 +38,33 @@ import {
   languageProperties
 } from '../data/properties.json';
 import tags from '../data/tags.json';
-import {getServiceInitialValues} from '../utils/forms';
+import {formatServiceInput, getServiceInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const findItem = (list, _id) => list.find(item => item._id === _id);
+const findItem = _memoize((list, _id) => list.find(item => item._id === _id));
+const countryLabels = {
+  canada: 'Canada',
+  mexico: 'Mexico',
+  united_states: 'United States'
+};
 
 const FormService = props => {
   const {isEdit, onCancel, onConfirm, service, title} = props;
-  const initialValues = getServiceInitialValues(service);
-  const formik = useFormik({initialValues});
   const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
-  const name = service?.name;
+  const initialValues = getServiceInitialValues(service || {});
+  const formik = useFormik({initialValues});
   const onSave = () =>
-    onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
+    onConfirm({
+      setLoading,
+      setSuccess,
+      setError,
+      values: formatServiceInput(formik?.values)
+    });
   const updateField = field => value => {
     formik.setFieldValue(field, value);
   };
+
+  console.log('render', initialValues, formik?.values);
 
   return (
     <>
@@ -63,13 +78,12 @@ const FormService = props => {
       )}
       <Title>
         {title}
-        {name && ' - '}
-        {name}
+        {service?.name && ' - '}
+        {service?.name}
       </Title>
       <Tabs>
         <TabList>
           <Tab>Service Details</Tab>
-          <Tab>Access Instructions</Tab>
           <Tab>Properties</Tab>
           <Tab>Tags</Tab>
         </TabList>
@@ -180,22 +194,6 @@ const FormService = props => {
             </Stack>
           </TabPanel>
           <TabPanel marginTop={2}>
-            <Stack spacing={4}>
-              <Container>
-                <Stack spacing={4}>
-                  {serviceDetailsFields.map(({key, ...rest}) => (
-                    <FormField
-                      key={key}
-                      fieldKey={key}
-                      formik={formik}
-                      {...rest}
-                    />
-                  ))}
-                </Stack>
-              </Container>
-            </Stack>
-          </TabPanel>
-          <TabPanel marginTop={2}>
             <Stack space={4}>
               <Container>
                 <SectionTitle>Cost Properties</SectionTitle>
@@ -203,7 +201,7 @@ const FormService = props => {
                   {costProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
-                      fieldKey={key}
+                      fieldKey={`properties.${key}`}
                       formik={formik}
                       {...rest}
                     />
@@ -216,7 +214,7 @@ const FormService = props => {
                   {communityProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
-                      fieldKey={key}
+                      fieldKey={`properties.${key}`}
                       formik={formik}
                       {...rest}
                     />
@@ -231,7 +229,7 @@ const FormService = props => {
                   {eligibilityRequirementProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
-                      fieldKey={key}
+                      fieldKey={`properties.${key}`}
                       formik={formik}
                       {...rest}
                     />
@@ -244,7 +242,7 @@ const FormService = props => {
                   {languageProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
-                      fieldKey={key}
+                      fieldKey={`properties.${key}`}
                       formik={formik}
                       {...rest}
                     />
@@ -256,7 +254,7 @@ const FormService = props => {
                 <Stack space={4}>
                   <ServiceAreaCoverage
                     handleUpdate={updateField('properties')}
-                    properties={service?.properties}
+                    properties={formik?.values?.properties}
                   />
                 </Stack>
               </Container>
@@ -266,7 +264,7 @@ const FormService = props => {
                   {additionalInformationProperties.map(({key, ...rest}) => (
                     <FormField
                       key={key}
-                      fieldKey={key}
+                      fieldKey={`properties.${key}`}
                       formik={formik}
                       {...rest}
                     />
@@ -277,29 +275,37 @@ const FormService = props => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack space={4}>
-              {tags.map(({key: tagKey, ...restTag}, tagIndex) => (
-                <Container key={tagIndex}>
-                  <SectionTitle>{restTag.label}</SectionTitle>
-                  <Stack space={4}>
-                    {restTag.subcategories ? (
-                      restTag.subcategories.map(({key, ...rest}) => (
-                        <FormField
-                          key={key}
-                          fieldKey={key}
-                          formik={formik}
-                          type="checkbox"
-                          {...rest}
-                        />
-                      ))
-                    ) : (
-                      <FormField
-                        fieldKey={tagKey}
-                        formik={formik}
-                        type="checkbox"
-                        {...restTag}
-                      />
-                    )}
-                  </Stack>
+              {_map(tags, (categories, tagCountry) => (
+                <Container key={tagCountry}>
+                  <SectionTitle>{countryLabels[tagCountry]}</SectionTitle>
+                  {_map(categories, (subcategories, category, tagIndex) => (
+                    <Fragment key={category}>
+                      <Text marginTop={4}>
+                        <strong>{category}</strong>
+                      </Text>
+                      <Divider marginBottom={4} />
+                      <Stack space={4}>
+                        {subcategories.length > 0 ? (
+                          subcategories.map(subCatgory => (
+                            <FormField
+                              key={subCatgory}
+                              fieldKey={`tags.${category}.${subCatgory}`}
+                              formik={formik}
+                              label={subCatgory}
+                              type="checkbox"
+                            />
+                          ))
+                        ) : (
+                          <FormField
+                            fieldKey={`tags.${category}`}
+                            formik={formik}
+                            label={category}
+                            type="checkbox"
+                          />
+                        )}
+                      </Stack>
+                    </Fragment>
+                  ))}
                 </Container>
               ))}
             </Stack>

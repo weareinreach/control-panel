@@ -39,7 +39,7 @@ const Admin = () => {
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
         const url = `${getAPIUrl()}/users`;
-        const user = {...values, password: 'ac123'};
+        const user = {...values, isDataManager: true, password: 'ac123'};
 
         setLoading();
         post(url, user)

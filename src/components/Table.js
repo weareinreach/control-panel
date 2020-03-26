@@ -46,8 +46,18 @@ const StyledTable = styled('table')`
   }
 `;
 
+const ActioSpan = styled(Text)`
+  margin-right: ${({theme}) => theme.space[4]};
+  color: ${({theme}) => theme.colors.blue[500]};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Table = props => {
-  const {getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
+  const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
 
   return (
     <StyledTable>
@@ -66,6 +76,7 @@ const Table = props => {
                 </Text>
               </th>
             ))}
+            {actions && <th />}
           </tr>
         </thead>
       )}
@@ -94,6 +105,19 @@ const Table = props => {
                   </td>
                 );
               })}
+              {actions && (
+                <td>
+                  {actions?.map(({label, onClick}, index) => (
+                    <ActioSpan
+                      key={index}
+                      as="span"
+                      onClick={() => onClick(row)}
+                    >
+                      {label}
+                    </ActioSpan>
+                  ))}
+                </td>
+              )}
             </tr>
           );
         })}
@@ -103,6 +127,7 @@ const Table = props => {
 };
 
 Table.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.shape()),
   getRowLink: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.shape()),
   hideHeaders: PropTypes.bool,

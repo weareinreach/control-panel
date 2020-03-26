@@ -15,7 +15,7 @@ export const buildForm = (form = {}) => {
   return _reduce(
     form,
     (values, {initialValue, ...inputInfo}, key) => {
-      values.initialValues[key] = initialValue || '';
+      values.initialValues[key] = initialValue;
 
       // Apply the defaut if we still don't have a value
       if (

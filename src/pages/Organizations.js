@@ -60,6 +60,12 @@ const Organizations = () => {
   );
   const {count, organizations} = data || {};
   const [query, setQuery] = useState(initialQuery);
+  const goToOrgPage = org => {
+    window.location = `/organizations/${org._id}`;
+  };
+  const goToOrgEditPage = org => {
+    window.location = `/organizations/${org._id}/edit`;
+  };
   const getLastPage = () => {
     setQuery({...query, page: (query.page || 1) - 1});
   };
@@ -95,6 +101,10 @@ const Organizations = () => {
                 <Box>
                   {organizations?.organizations?.length > 0 ? (
                     <Table
+                      actions={[
+                        {label: 'View', onClick: goToOrgPage},
+                        {label: 'Edit', onClick: goToOrgEditPage}
+                      ]}
                       getRowLink={org => `/organizations/${org._id}`}
                       headers={headers}
                       rows={organizations?.organizations}

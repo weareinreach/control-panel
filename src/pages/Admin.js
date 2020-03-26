@@ -1,13 +1,14 @@
 import {patch, post} from 'axios';
 import React, {useContext} from 'react';
-import {Box, Button, Text} from '@chakra-ui/core';
+import {Box, Button} from '@chakra-ui/core';
 
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
+import Table from '../components/Table';
 import UnauthorizedPage from '../components/UnauthorizedPage';
-import {Container, Title} from '../components/styles';
+import {Container, SectionTitle, Title} from '../components/styles';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
@@ -54,31 +55,9 @@ const Admin = () => {
           });
       }
     });
-  const openRemoveModal = managerIndex => {
-    return openModal({
-      header: 'Remove Data Manager',
-      isAlert: true,
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
-        const selectedManager = data?.users?.[managerIndex];
-        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+  const openEditModal = selectedManager => {
+    console.log('openEditModal selectedManager', selectedManager);
 
-        setLoading();
-        patch(url, {isDataManager: false, isAdminDataManager: false})
-          .then(() => {
-            window.location.reload();
-            setSuccess();
-          })
-          .catch(err => {
-            console.error('An error occured while updating the users');
-            console.error(err);
-            setError();
-          });
-      }
-    });
-  };
-  const openEditModal = managerIndex => {
-    const selectedManager = data?.users?.[managerIndex];
     const form = {
       name: {
         ...createAdminForm.name,
@@ -115,6 +94,30 @@ const Admin = () => {
       }
     });
   };
+  const openRemoveModal = selectedManager => {
+    console.log('openRemoveModal selectedManager', selectedManager);
+
+    return openModal({
+      header: 'Remove Data Manager',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+
+        setLoading();
+        patch(url, {isDataManager: false, isAdminDataManager: false})
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch(err => {
+            console.error('An error occured while updating the users');
+            console.error(err);
+            setError();
+          });
+      }
+    });
+  };
 
   if (loading) {
     return <Loading />;
@@ -130,22 +133,25 @@ const Admin = () => {
       <Box float="right">
         <Button onClick={openCreateModal}>New Manager</Button>
       </Box>
-      <Title>Data Managers</Title>
-      {/* Table headers: name, email, isAdminDataManager, actions=[edit, delete] */}
+      <Title>Admin</Title>
       <Container>
-        {data?.users?.map((user, key) => {
-          return (
-            <div key={key}>
-              <Text display="inline" mr={4}>
-                {user?.email}
-              </Text>
-              <Button onClick={() => openEditModal(key)} mr={2}>
-                Edit
-              </Button>
-              <Button onClick={() => openRemoveModal(key)}>Remove</Button>
-            </div>
-          );
-        })}
+        <SectionTitle>Data Managers</SectionTitle>
+        <Table
+          actions={[
+            {label: 'Edit', onClick: openEditModal},
+            {label: 'Remove', onClick: openRemoveModal}
+          ]}
+          headers={[
+            {key: 'email', label: 'Email'},
+            {key: 'name', label: 'Name'},
+            {
+              key: 'isAdminDataManager',
+              label: 'Is Admin',
+              type: 'boolean'
+            }
+          ]}
+          rows={data?.users}
+        />
       </Container>
     </>
   );

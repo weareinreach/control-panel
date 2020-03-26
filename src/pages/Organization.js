@@ -55,6 +55,13 @@ const Organization = props => {
     verified_at,
     website
   } = data || {};
+  const goToServicePage = service => {
+    window.location = `${orgPath}/services/${service._id}`;
+  };
+  const goToServiceEditPage = service => {
+    window.location = `${orgPath}/services/${service._id}/edit`;
+  };
+
   const openModalDelete = () =>
     openModal({
       header: `Delete ${name}`,
@@ -168,6 +175,10 @@ const Organization = props => {
           </Box>
           <SectionTitle>Services</SectionTitle>
           <Table
+            actions={[
+              {label: 'View', onClick: goToServicePage},
+              {label: 'Edit', onClick: goToServiceEditPage}
+            ]}
             getRowLink={service => `${orgPath}/services/${service._id}`}
             headers={[
               {key: 'name', label: 'Name'},

@@ -1,32 +1,71 @@
-import React from 'react';
-import {Box, Button, Input, Select, Stack, Text} from '@chakra-ui/core';
+import _omit from 'lodash/omit';
+import React, {useState} from 'react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Input,
+  Select,
+  Stack,
+  Text
+} from '@chakra-ui/core';
 import PropTypes from 'prop-types';
 
 import {SectionTitle} from '../components/styles';
+import {
+  additionalInformationProperties,
+  communityProperties,
+  costProperties,
+  eligibilityRequirementProperties,
+  languageProperties
+} from '../data/properties.json';
 import {useInputChange} from '../utils/hooks';
 
-const propertyList = ['community-asylum-seeker', 'community-lgbt'];
+const propertyList = [
+  additionalInformationProperties,
+  communityProperties,
+  costProperties,
+  eligibilityRequirementProperties,
+  languageProperties
+]
+  .reduce((result, propertyCategory) => {
+    result = result.concat(
+      propertyCategory
+        .filter(({type}) => type === 'checkbox')
+        .map(({key}) => key)
+    );
+
+    return result;
+  }, [])
+  .sort();
 
 const Filters = props => {
   const {updateQuery} = props;
   const [name, handleNameChange] = useInputChange();
   const [serviceArea, handleServiceAreaChange] = useInputChange();
-  const [propValue, handlePropValueChange] = useInputChange('');
-  const [propKey, handlePropKeyChange] = useInputChange('');
+  const [properties, setProperties] = useState({});
+  const handleSelect = ev => {
+    const value = ev.target.value;
+
+    setProperties({
+      ...properties,
+      [value]: 'true'
+    });
+  };
+  const propertyKeys = Object.keys(properties);
+  const removeProperty = property => {
+    setProperties(_omit(properties, [property]));
+  };
   const handleSearch = ev => {
     ev.preventDefault();
 
-    const properties = {};
-
-    if (propKey && propValue) {
-      properties[propKey] = propValue;
-    }
+    const searchProperties = {...properties};
 
     if (serviceArea) {
-      properties[serviceArea] = 'true';
+      searchProperties[serviceArea] = 'true';
     }
 
-    updateQuery({name, properties});
+    updateQuery({name, properties: searchProperties});
   };
 
   return (
@@ -49,24 +88,30 @@ const Filters = props => {
         />
         <Text>Properties:</Text>
         <Select
-          onChange={handlePropKeyChange}
+          onChange={handleSelect}
           variant="filled"
           placeholder="Select a property"
+          value=""
         >
           {propertyList.map(prop => (
             <option key={prop}>{prop}</option>
           ))}
         </Select>
-        {propKey && (
-          <Input
-            onChange={handlePropValueChange}
-            variant="filled"
-            placeholder="Enter a value"
-            value={propValue}
-          />
-        )}
+        {propertyKeys?.map(key => (
+          <Checkbox
+            key={key}
+            defaultIsChecked
+            onChange={() => removeProperty(key)}
+          >
+            {key}
+          </Checkbox>
+        ))}
         <Box textAlign="right">
-          <Button display="inline-block" onClick={handleSearch}>
+          <Button
+            display="inline-block"
+            onClick={handleSearch}
+            variantColor="blue"
+          >
             Search
           </Button>
         </Box>

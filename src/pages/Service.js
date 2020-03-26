@@ -26,23 +26,25 @@ import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
 import ListProperties, {
   ListServiceArea,
-  ListTags
+  ListItems
 } from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
-import {getAPIUrl} from '../utils';
+import {
+  emailFields,
+  locationFields,
+  phoneFields,
+  scheduleFields
+} from '../data/fields.json';
 import {
   additionalInformationProperties,
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  emailFields,
-  languageProperties,
-  locationFields,
-  phoneFields,
-  scheduleFields
-} from '../utils/fields';
+  languageProperties
+} from '../data/properties.json';
+import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const Service = props => {
@@ -251,19 +253,19 @@ const Service = props => {
               <Container>
                 <SectionTitle>United States</SectionTitle>
                 {serviceTags?.united_states?.length > 0 ? (
-                  <ListTags tags={serviceTags?.united_states} />
+                  <ListItems items={serviceTags?.united_states} />
                 ) : null}
               </Container>
               <Container>
                 <SectionTitle>Canada</SectionTitle>
                 {serviceTags?.canada?.length > 0 ? (
-                  <ListTags tags={serviceTags?.canada} />
+                  <ListItems items={serviceTags?.canada} />
                 ) : null}
               </Container>
               <Container>
                 <SectionTitle>Mexico</SectionTitle>
                 {serviceTags?.mexico?.length > 0 ? (
-                  <ListTags tags={serviceTags?.mexico} />
+                  <ListItems items={serviceTags?.mexico} />
                 ) : null}
               </Container>
             </Stack>

@@ -20,18 +20,20 @@ import ServiceAreaCoverage from './ServiceAreaCoverage';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
 import {
+  emailFields,
+  locationFields,
+  phoneFields,
+  scheduleFields,
+  serviceDetailsFields
+} from '../data/fields.json';
+import {
   additionalInformationProperties,
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  emailFields,
-  generalServiceDetailsFields,
-  languageProperties,
-  locationFields,
-  phoneFields,
-  scheduleFields,
-  tags
-} from '../utils/fields';
+  languageProperties
+} from '../data/properties.json';
+import tags from '../data/tags.json';
 import {getServiceInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
@@ -42,9 +44,12 @@ const FormService = props => {
   const initialValues = getServiceInitialValues(service);
   const formik = useFormik({initialValues});
   const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
-  const name = props?.service?.name;
+  const name = service?.name;
   const onSave = () =>
     onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
+  const updateField = field => value => {
+    formik.setFieldValue(field, value);
+  };
 
   return (
     <>
@@ -74,7 +79,7 @@ const FormService = props => {
               <Container>
                 <SectionTitle>General Details</SectionTitle>
                 <Stack spacing={4}>
-                  {generalServiceDetailsFields.map(({key, ...rest}) => (
+                  {serviceDetailsFields.map(({key, ...rest}) => (
                     <FormField
                       key={key}
                       fieldKey={key}
@@ -178,7 +183,7 @@ const FormService = props => {
             <Stack spacing={4}>
               <Container>
                 <Stack spacing={4}>
-                  {generalServiceDetailsFields.map(({key, ...rest}) => (
+                  {serviceDetailsFields.map(({key, ...rest}) => (
                     <FormField
                       key={key}
                       fieldKey={key}
@@ -249,7 +254,10 @@ const FormService = props => {
               <Container>
                 <SectionTitle>Service Area Properties</SectionTitle>
                 <Stack space={4}>
-                  <ServiceAreaCoverage />
+                  <ServiceAreaCoverage
+                    handleUpdate={updateField('properties')}
+                    properties={service?.properties}
+                  />
                 </Stack>
               </Container>
               <Container>

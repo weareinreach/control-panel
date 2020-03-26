@@ -1,0 +1,80 @@
+{
+  "emailFields": [
+    {"key": "email", "label": "Email"},
+    {"key": "title", "label": "Title"},
+    {"key": "first_name", "label": "First Name"},
+    {"key": "last_name", "label": "Last Name"},
+    {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
+    {"key": "show_on_organization", "label": "Show on Org", "type": "checkbox"}
+  ],
+  "locationFields": [
+    {"key": "name", "label": "Name"},
+    {"key": "unit", "label": "Unit"},
+    {"key": "address", "label": "Address"},
+    {"key": "city", "label": "City"},
+    {"key": "state", "label": "State"},
+    {"key": "country", "label": "Country"},
+    {"key": "zip_code", "label": "Zipcode"},
+    {"key": "lat", "label": "Lat"},
+    {"key": "long", "label": "Long"},
+    {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
+    {"key": "show_on_organization", "label": "Show on Org", "type": "checkbox"}
+  ],
+  "organizationDetailsFields": [
+    {"key": "name", "label": "Name"},
+    {"key": "website", "label": "Website"},
+    {"key": "description", "label": "Description", "type": "textarea"},
+    {"key": "alert_message", "label": "Alert Message", "type": "textarea"},
+    {"key": "is_published", "label": "Is Published", "type": "checkbox"}
+  ],
+  "phoneFields": [
+    {
+      "key": "phone_type",
+      "label": "Phone Type",
+      "placeholder": "For example is it a mobile, fax, office phone?"
+    },
+    {"key": "digits", "label": "Digits"},
+    {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
+    {"key": "show_on_organization", "label": "Show on Org", "type": "checkbox"}
+  ],
+  "scheduleFields": [
+    {"key": "monday_start", "label": "Monday Start"},
+    {"key": "monday_end", "label": "Monday End"},
+    {"key": "tuesday_start", "label": "Tuesday Start"},
+    {"key": "tuesday_end", "label": "Tuesday End"},
+    {"key": "wednesday_start", "label": "Wednesday Start"},
+    {"key": "wednesday_end", "label": "Wednesday End"},
+    {"key": "thursday_start", "label": "Thursday Start"},
+    {"key": "thursday_end", "label": "Thursday End"},
+    {"key": "friday_start", "label": "Friday Start"},
+    {"key": "friday_end", "label": "Friday End"},
+    {"key": "saturday_start", "label": "Saturday Start"},
+    {"key": "saturday_end", "label": "Saturday End"},
+    {"key": "sunday_start", "label": "Sunday Start"},
+    {"key": "sunday_end", "label": "Sunday End"},
+    {
+      "key": "timezone",
+      "label": "Timezone",
+      "type": "select",
+      "placeholder": "Select a timezone",
+      "options": [
+        {"label": "AKST", "value": "AKST"},
+        {"label": "AST", "value": "AST"},
+        {"label": "CST", "value": "CST"},
+        {"label": "EST", "value": "EST"},
+        {"label": "HST", "value": "HST"},
+        {"label": "MDT", "value": "MDT"},
+        {"label": "MST", "value": "MST"},
+        {"label": "NST", "value": "NST"},
+        {"label": "PDT", "value": "PDT"},
+        {"label": "PST", "value": "PST"}
+      ]
+    },
+    {"key": "note", "label": "Note", "type": "textarea"}
+  ],
+  "serviceDetailsFields": [
+    {"key": "name", "label": "Name"},
+    {"key": "description", "label": "Description", "type": "textarea"},
+    {"key": "is_published", "label": "Is Published", "type": "checkbox"}
+  ]
+}

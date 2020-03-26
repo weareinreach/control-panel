@@ -1,0 +1,166 @@
+{
+  "canada": {
+    "Community Support": ["Cultural centres", "LGBTQ centres"],
+    "Computers and Internet": [],
+    "Education and Employment": [
+      "Career counselling",
+      "Scholarships",
+      "Language classes",
+      "Libraries",
+      "Educational support for LGBTQ youth"
+    ],
+    "Food": [],
+    "Housing": [
+      "Short-term housing",
+      "Housing information and referrals",
+      "Emergency housing",
+      "Drop-in centres for LGBTQ youth"
+    ],
+    "Hygiene and Clothing": [
+      "Gender-neutral washrooms",
+      "Gender-affirming items",
+      "Clothes",
+      "Hygiene"
+    ],
+    "Legal": [
+      "Refugee claim",
+      "Deportation or removal",
+      "Name and gender change",
+      "Immigration detention",
+      "Crime and discrimination",
+      "Legal hotlines"
+    ],
+    "Medical": [
+      "Medical clinics",
+      "Women's health",
+      "HIV and sexual health",
+      "Trans health",
+      "Physical evaluations for refugee claim",
+      "Dental care"
+    ],
+    "Mental Health": [
+      "Hotlines",
+      "Support groups",
+      "Trans support groups",
+      "Private therapy and counselling",
+      "Psychological evaluations for refugee claim",
+      "Substance use"
+    ],
+    "Sports and Entertainment": [],
+    "Translation and Interpretation": [],
+    "Transportation": [
+      "Transit passes and discounts",
+      "Transportation assistance"
+    ]
+  },
+  "mexico": {
+    "Community Support": ["Cultural centers", "LGBTQ centers"],
+    "Computers and Internet": [],
+    "Education and Employment": [
+      "Career counseling",
+      "Scholarships",
+      "Language Classes",
+      "Libraries",
+      "Educational support for LGBTQ youth"
+    ],
+    "Food": [],
+    "Housing": [
+      "Housing information and referrals",
+      "Emergency housing",
+      "Drop-in centers for LGBTQ youth"
+    ],
+    "Hygiene and Clothing": [
+      "Gender-neutral restrooms",
+      "Gender-affirming items",
+      "Clothes",
+      "Hygiene"
+    ],
+    "Legal": [
+      "Asylum application in the US from Mexico",
+      "Asylum application in Mexico",
+      "Deportation or removal",
+      "Name and gender change",
+      "Immigration detention",
+      "Crime and discrimination"
+    ],
+    "Medical": [
+      "Medical clinics",
+      "Women's health",
+      "HIV and sexual health",
+      "Trans health",
+      "Physical evaluations for asylum claim",
+      "Dental care"
+    ],
+    "Mental Health": [
+      "Hotlines",
+      "Support groups",
+      "Trans support groups",
+      "Private therapy and counseling",
+      "Psychological evaluations for asylum claim",
+      "Substance use"
+    ],
+    "Sports and Entertainment": [],
+    "Translation and Interpretation": [],
+    "Transportation": [
+      "Transit passes and discounts",
+      "Transportation assistance"
+    ]
+  },
+  "unitedStates": {
+    "Community Support": ["Cultural centers", "LGBTQ centers"],
+    "Computers and Internet": [],
+    "Education and Employment": [
+      "Career counseling",
+      "Educational support for LGBTQ youth",
+      "English classes",
+      "Libraries",
+      "Scholarships"
+    ],
+    "Food": [],
+    "Housing": [
+      "Short-term housing",
+      "Drop-in centers for LGBTQ youth",
+      "Emergency housing",
+      "Housing information and referrals"
+    ],
+    "Hygiene and Clothing": [
+      "Clothes",
+      "Gender-affirming items",
+      "Gender-neutral bathrooms",
+      "Hygienee"
+    ],
+    "Legal": [
+      "Asylum application",
+      "Crime and discrimination",
+      "Deferred Action for Childhood Arrivals (DACA)",
+      "Deportation or removal",
+      "Immigration detention",
+      "Legal hotlines",
+      "Name and gender change",
+      "Special Immigrant Juvenile Status (SIJS)"
+    ],
+    "Mail": [],
+    "Medical": [
+      "Dental care",
+      "HIV and sexual health",
+      "Medical clinics",
+      "Physical evaluations for asylum claim",
+      "Trans health",
+      "Women's health"
+    ],
+    "Mental Health": [
+      "Hotlines",
+      "Private therapy and counseling",
+      "Psychological evaluations for asylum claim",
+      "Substance use",
+      "Support groups",
+      "Trans support groups"
+    ],
+    "Sports and Entertainment": [],
+    "Translation and Interpretation": [],
+    "Transportation": [
+      "Transit passes and discounts",
+      "Transportation assistance"
+    ]
+  }
+}

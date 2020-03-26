@@ -22,13 +22,13 @@ import {ListServiceArea} from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
-import {getAPIUrl} from '../utils';
 import {
   emailFields,
   locationFields,
   phoneFields,
   scheduleFields
-} from '../utils/fields';
+} from '../data/fields.json';
+import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const Organization = props => {

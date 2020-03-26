@@ -65,20 +65,20 @@ ListServiceArea.propTypes = {
   properties: PropTypes.shape({})
 };
 
-export const ListTags = props => {
-  const {tags} = props;
+export const ListItems = props => {
+  const {items} = props;
 
-  return _map(tags, tag => {
+  return _map(items, item => {
     return (
-      <div key={tag}>
+      <div key={item}>
         <Checkbox isChecked onChange={noChange}>
-          {tag}
+          {item}
         </Checkbox>
       </div>
     );
   });
 };
 
-ListTags.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string)
+ListItems.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.string)
 };

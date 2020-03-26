@@ -18,12 +18,12 @@ import {LoadingModal} from './Loading';
 import ServiceAreaCoverage from './ServiceAreaCoverage';
 import {Container, SectionTitle, Title} from './styles';
 import {
-  generalOrgDetailsFields,
   emailFields,
   locationFields,
+  organizationDetailsFields,
   phoneFields,
   scheduleFields
-} from '../utils/fields';
+} from '../data/fields.json';
 import {getOrgInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
@@ -32,7 +32,7 @@ const OrganizationForm = props => {
   const initialValues = getOrgInitialValues(organization);
   const formik = useFormik({initialValues});
   const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
-  const name = props?.organization?.name;
+  const name = organization?.name;
   const onSave = () =>
     onConfirm({setLoading, setSuccess, setError, values: formik?.values || {}});
   const createFieldItem = field => {
@@ -43,11 +43,11 @@ const OrganizationForm = props => {
   };
   const duplicateFieldItem = (field, index) => {
     const list = formik?.values?.[field] || [];
-    const listItem = {
+    const ListItems = {
       ...list?.[index],
       name: `Duplicate of ${list?.[index]?.name}`
     };
-    const newList = [...list, listItem];
+    const newList = [...list, ListItems];
 
     formik.setFieldValue(field, newList);
   };
@@ -57,6 +57,9 @@ const OrganizationForm = props => {
     list.splice(index, 1);
     formik.setFieldValue(field, list);
   };
+
+  console.log('organization', organization);
+  console.log('organization?.properties', organization?.properties);
 
   return (
     <>
@@ -87,7 +90,7 @@ const OrganizationForm = props => {
               <Container>
                 <SectionTitle>General Details</SectionTitle>
                 <Stack spacing={4}>
-                  {generalOrgDetailsFields.map(({key, ...rest}) => (
+                  {organizationDetailsFields.map(({key, ...rest}) => (
                     <FormField
                       key={key}
                       fieldKey={key}
@@ -99,7 +102,7 @@ const OrganizationForm = props => {
               </Container>
               <Container>
                 <SectionTitle>Service Area Coverage</SectionTitle>
-                <ServiceAreaCoverage />
+                <ServiceAreaCoverage properties={organization?.properties} />
               </Container>
             </Stack>
           </TabPanel>

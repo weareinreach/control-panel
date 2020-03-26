@@ -4,6 +4,7 @@ import {Switch, Redirect, Route} from 'react-router-dom';
 import {ContextApp} from './ContextApp';
 import FormLogin from './FormLogin';
 import Loading from './Loading';
+import UnauthorizedPage from './UnauthorizedPage';
 import {Layout} from './styles';
 import Admin from '../pages/Admin';
 import NotFound from '../pages/NotFound';
@@ -14,12 +15,15 @@ import ServiceFormPage from '../pages/ServiceFormPage';
 import Service from '../pages/Service';
 
 const Routes = () => {
-  const {loading, hasUser} = useContext(ContextApp);
+  const {loading, hasUser, user} = useContext(ContextApp);
 
   if (loading) {
     return <Loading />;
   }
 
+  if (hasUser && !user.isAdminDataManager && !user.isDataManager) {
+    return <UnauthorizedPage />;
+  }
   return (
     <Layout>
       <Switch>

@@ -1,3 +1,8 @@
+/**
+ ************************************************************
+ * Fields for headers and forms
+ ************************************************************
+ */
 export const generalOrgDetailsFields = [
   {key: 'name', label: 'Name'},
   {key: 'website', label: 'Website'},
@@ -454,137 +459,174 @@ export const additionalInformationProperties = [
   }
 ];
 
-export const tags = [
-  {
-    key: 'Community Support',
-    label: 'Community Support',
-    subcategories: [
-      {key: 'Cultural centers', label: 'Cultural centers'},
-      {key: 'LGBTQ centers', label: 'LGBTQ centers'}
+/**
+ ************************************************************
+ * Tags
+ ************************************************************
+ */
+export const tags = {
+  canada: {
+    'Community Support': ['Cultural centres', 'LGBTQ centres'],
+    'Computers and Internet': [],
+    'Education and Employment': [
+      'Career counselling',
+      'Scholarships',
+      'Language classes',
+      'Libraries',
+      'Educational support for LGBTQ youth'
+    ],
+    Food: [],
+    Housing: [
+      'Short-term housing',
+      'Housing information and referrals',
+      'Emergency housing',
+      'Drop-in centres for LGBTQ youth'
+    ],
+    'Hygiene and Clothing': [
+      'Gender-neutral washrooms',
+      'Gender-affirming items',
+      'Clothes',
+      'Hygiene'
+    ],
+    Legal: [
+      'Refugee claim',
+      'Deportation or removal',
+      'Name and gender change',
+      'Immigration detention',
+      'Crime and discrimination',
+      'Legal hotlines'
+    ],
+    Medical: [
+      'Medical clinics',
+      "Women's health",
+      'HIV and sexual health',
+      'Trans health',
+      'Physical evaluations for refugee claim',
+      'Dental care'
+    ],
+    'Mental Health': [
+      'Hotlines',
+      'Support groups',
+      'Trans support groups',
+      'Private therapy and counselling',
+      'Psychological evaluations for refugee claim',
+      'Substance use'
+    ],
+    'Sports and Entertainment': [],
+    'Translation and Interpretation': [],
+    Transportation: [
+      'Transit passes and discounts',
+      'Transportation assistance'
     ]
   },
-  {
-    key: 'Computers and Internet',
-    label: 'Computers and Internet'
-  },
-  {
-    key: 'Education and Employment',
-    label: 'Education and Employment',
-    subcategories: [
-      {key: 'Career counseling', label: 'Career counseling'},
-      {key: 'Scholarships', label: 'Scholarships'},
-      {key: 'English classes', label: 'English classes'},
-      {key: 'Libraries', label: 'Libraries'},
-      {
-        key: 'Educational support for LGBTQ youth',
-        label: 'Educational support for LGBTQ youth'
-      }
+  mexico: {
+    'Community Support': ['Cultural centers', 'LGBTQ centers'],
+    'Computers and Internet': [],
+    'Education and Employment': [
+      'Career counseling',
+      'Scholarships',
+      'Language Classes',
+      'Libraries',
+      'Educational support for LGBTQ youth'
+    ],
+    Food: [],
+    Housing: [
+      'Housing information and referrals',
+      'Emergency housing',
+      'Drop-in centers for LGBTQ youth'
+    ],
+    'Hygiene and Clothing': [
+      'Gender-neutral restrooms',
+      'Gender-affirming items',
+      'Clothes',
+      'Hygiene'
+    ],
+    Legal: [
+      'Asylum application in the US from Mexico',
+      'Asylum application in Mexico',
+      'Deportation or removal',
+      'Name and gender change',
+      'Immigration detention',
+      'Crime and discrimination'
+    ],
+    Medical: [
+      'Medical clinics',
+      "Women's health",
+      'HIV and sexual health',
+      'Trans health',
+      'Physical evaluations for asylum claim',
+      'Dental care'
+    ],
+    'Mental Health': [
+      'Hotlines',
+      'Support groups',
+      'Trans support groups',
+      'Private therapy and counseling',
+      'Psychological evaluations for asylum claim',
+      'Substance use'
+    ],
+    'Sports and Entertainment': [],
+    'Translation and Interpretation': [],
+    Transportation: [
+      'Transit passes and discounts',
+      'Transportation assistance'
     ]
   },
-  {
-    key: 'Food',
-    label: 'Food'
-  },
-  {
-    key: 'Housing',
-    label: 'Housing',
-    subcategories: [
-      {key: 'Short-term housing', label: 'Short-term housing'},
-      {
-        key: 'Housing information and referrals',
-        label: 'Housing information and referrals'
-      },
-      {key: 'Emergency housing', label: 'Emergency housing'},
-      {
-        key: 'Drop-in centers for LGBTQ youth',
-        label: 'Drop-in centers for LGBTQ youth'
-      }
+  unitedStates: {
+    'Community Support': ['Cultural centers', 'LGBTQ centers'],
+    'Computers and Internet': [],
+    'Education and Employment': [
+      'Career counseling',
+      'Educational support for LGBTQ youth',
+      'English classes',
+      'Libraries',
+      'Scholarships'
+    ],
+    Food: [],
+    Housing: [
+      'Short-term housing',
+      'Drop-in centers for LGBTQ youth',
+      'Emergency housing',
+      'Housing information and referrals'
+    ],
+    'Hygiene and Clothing': [
+      'Clothes',
+      'Gender-affirming items',
+      'Gender-neutral bathrooms',
+      'Hygienee'
+    ],
+    Legal: [
+      'Asylum application',
+      'Crime and discrimination',
+      'Deferred Action for Childhood Arrivals (DACA)',
+      'Deportation or removal',
+      'Immigration detention',
+      'Legal hotlines',
+      'Name and gender change',
+      'Special Immigrant Juvenile Status (SIJS)'
+    ],
+    Mail: [],
+    Medical: [
+      'Dental care',
+      'HIV and sexual health',
+      'Medical clinics',
+      'Physical evaluations for asylum claim',
+      'Trans health',
+      "Women's health"
+    ],
+    'Mental Health': [
+      'Hotlines',
+      'Private therapy and counseling',
+      'Psychological evaluations for asylum claim',
+      'Substance use',
+      'Support groups',
+      'Trans support groups'
+    ],
+    'Sports and Entertainment': [],
+    'Translation and Interpretation': [],
+    Transportation: [
+      'Transit passes and discounts',
+      'Transportation assistance'
     ]
-  },
-  {
-    key: 'Hygiene and Clothing',
-    label: 'Hygiene and Clothing',
-    subcategories: [
-      {key: 'Gender-neutral bathrooms', label: 'Gender-neutral bathrooms'},
-      {key: 'Gender-affirming items', label: 'Gender-affirming items'},
-      {key: 'Clothes', label: 'Clothes'},
-      {key: 'Hygiene', label: 'Hygiene'}
-    ]
-  },
-  {
-    key: 'Legal',
-    label: 'Legal',
-    subcategories: [
-      {key: 'Asylum application', label: 'Asylum application'},
-      {key: 'Deportation or removal', label: 'Deportation or removal'},
-      {key: 'Name and gender change', label: 'Name and gender change'},
-      {
-        key: 'Deferred Action for Childhood Arrivals (DACA)',
-        label: 'Deferred Action for Childhood Arrivals (DACA)'
-      },
-      {key: 'Immigration detention', label: 'Immigration detention'},
-      {key: 'Crime and discrimination', label: 'Crime and discrimination'},
-      {key: 'Legal hotlines', label: 'Legal hotlines'},
-      {
-        key: 'Special Immigrant Juvenile Status (SIJS)',
-        label: 'Special Immigrant Juvenile Status (SIJS)'
-      }
-    ]
-  },
-  {
-    key: 'Mail',
-    label: 'Mail'
-  },
-  {
-    key: 'Medical',
-    label: 'Medical',
-    subcategories: [
-      {key: 'Medical clinics', label: 'Medical clinics'},
-      {key: "Women's health", label: "Women's health"},
-      {key: 'HIV and sexual health', label: 'HIV and sexual health'},
-      {key: 'Trans health', label: 'Trans health'},
-      {
-        key: 'Physical evaluations for asylum claim',
-        label: 'Physical evaluations for asylum claim'
-      },
-      {key: 'Dental care', label: 'Dental care'}
-    ]
-  },
-  {
-    key: 'Mental Health',
-    label: 'Mental Health',
-    subcategories: [
-      {key: 'Hotlines', label: 'Hotlines'},
-      {key: 'Support groups', label: 'Support groups'},
-      {key: 'Trans support groups', label: 'Trans support groups'},
-      {
-        key: 'Private therapy and counseling',
-        label: 'Private therapy and counseling'
-      },
-      {
-        key: 'Psychological evaluations for asylum claim',
-        label: 'Psychological evaluations for asylum claim'
-      },
-      {key: 'Substance use', label: 'Substance use'}
-    ]
-  },
-  {
-    key: 'Sports and Entertainment',
-    label: 'Sports and Entertainment'
-  },
-  {
-    key: 'Translation and Interpretation',
-    label: 'Translation and Interpretation',
-    subcategories: [
-      {
-        key: 'Transit passes and discounts',
-        label: 'Transit passes and discounts'
-      },
-      {key: 'Transportation assistance', label: 'Transportation assistance'}
-    ]
-  },
-  {
-    key: 'Transportation',
-    label: 'Transportation'
   }
-];
+};

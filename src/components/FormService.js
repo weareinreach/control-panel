@@ -31,7 +31,7 @@ import {
   phoneFields,
   scheduleFields,
   tags
-} from '../utils/formsHeaders';
+} from '../utils/fields';
 import {getServiceInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 

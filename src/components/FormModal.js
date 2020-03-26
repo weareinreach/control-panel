@@ -1,5 +1,4 @@
 import {useFormik} from 'formik';
-import _reduce from 'lodash/reduce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -17,38 +16,8 @@ import {
 
 import Alert from './Alert';
 import FormField from './FormField';
+import {buildForm} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
-
-/**
- * TODO: move this code to utils.js
- */
-const initialValueDict = {
-  checkbox: false,
-  password: '',
-  text: ''
-};
-
-const buildForm = (form = {}) => {
-  return _reduce(
-    form,
-    (values, {initialValue, ...inputInfo}, key) => {
-      values.initialValues[key] = initialValue || '';
-
-      // Apply the defaut if we still don't have a value
-      if (
-        typeof values.initialValues[key] === 'undefined' &&
-        typeof initialValueDict?.[inputInfo?.type] !== 'undefined'
-      ) {
-        values.initialValues[key] = initialValueDict?.[inputInfo?.type];
-      }
-
-      values.inputs.push({...inputInfo, key});
-
-      return values;
-    },
-    {initialValues: {}, inputs: []}
-  );
-};
 
 const FormModal = props => {
   const {children, form, header, isAlert, isOpen, onClose, onConfirm} = props;
@@ -81,16 +50,16 @@ const FormModal = props => {
                 type="error"
               />
             )}
+            {isAlert && (
+              <Text>Are you sure? You can't undo this action afterwards.</Text>
+            )}
             {children}
+            {inputs?.map(({key, ...rest}) => {
+              return (
+                <FormField key={key} fieldKey={key} formik={formik} {...rest} />
+              );
+            })}
           </Stack>
-          {isAlert && (
-            <Text>Are you sure? You can't undo this action afterwards.</Text>
-          )}
-          {inputs?.map(({key, ...rest}) => {
-            return (
-              <FormField key={key} fieldKey={key} formik={formik} {...rest} />
-            );
-          })}
         </ModalBody>
         <ModalFooter>
           <Button disabled={isLoading} mr={2} onClick={onClose} variant="ghost">

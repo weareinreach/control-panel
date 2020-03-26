@@ -3,6 +3,11 @@ import {useEffect, useState} from 'react';
 
 import {getAPIUrl} from './index';
 
+/**
+ * Fetch the catalog api for a single endpoint
+ * @param  {Object} endpoint The endpoint to query
+ * @return {Object} An object of data, loading status, etc
+ */
 export const useAPIGet = endpoint => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +38,11 @@ export const useAPIGet = endpoint => {
   return {data, loading, fetchUrl};
 };
 
+/**
+ * Fetch the catalog api for multiple endpoints
+ * @param  {Object} endpoints The endpoints to query
+ * @return {Object} An object of data, loading status, etc
+ */
 export const useMultipleAPIGet = endpoints => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,13 +76,17 @@ export const useMultipleAPIGet = endpoints => {
     } else {
       setLoading(false);
     }
-    // TODO: remove for something that actually works
     // eslint-disable-next-line
   }, [JSON.stringify(endpoints)]);
 
   return {data, loading, fetchUrls};
 };
 
+/**
+ * Handle change for an input element
+ * @param  {Object} initalState The initial value
+ * @return {Object} Hook value and updater
+ */
 export const useInputChange = (initalState = '') => {
   const [value, setValue] = useState(initalState);
   const setInputValue = event => {
@@ -86,6 +100,11 @@ const STATE_ERROR = 'ERROR';
 const STATE_IN_PROGRESS = 'IN_PROGRESS';
 const STATE_SUCCESS = 'SUCCESS';
 
+/**
+ * Reliably maintain the status of an operation
+ * @param  {Object} initalState The initial value
+ * @return {Object} Hook values and updaters
+ */
 export const useStatus = initalStatus => {
   const [status, setStatus] = useState(initalStatus);
   const isError = status === STATE_ERROR;
@@ -105,6 +124,11 @@ export const useStatus = initalStatus => {
   };
 };
 
+/**
+ * Reliably toggle between true and false values
+ * @param  {Object} initalState The initial value
+ * @return {Object} Hook value and updaters
+ */
 export const useToggle = (initalState = false) => {
   const [value, setValue] = useState(initalState);
   const toggleValue = () => setValue(!value);

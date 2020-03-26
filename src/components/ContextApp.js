@@ -1,6 +1,10 @@
+import {get, post} from 'axios';
+import Cookies from 'js-cookie';
 import _isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, {createContext, useEffect, useState} from 'react';
+
+import {COOKIE_LOGIN, getAPIUrl} from '../utils';
 
 export const ContextApp = createContext('app');
 
@@ -10,12 +14,33 @@ export const ContextAppProvider = props => {
   const hasUser = user && !_isEmpty(user);
   const value = {hasUser, loading, user};
 
-  // TODO: Add API logic for checking/loading the user
   useEffect(() => {
-    const fakeUser = {email: 'user@email.com', isAdmin: true};
+    const token = Cookies.get(COOKIE_LOGIN);
+    const handleUserErr = err => {
+      console.error('An error occured while logging in users');
+      console.error(err);
+      setLoading(false);
+    };
 
-    setUser(fakeUser);
-    setLoading(false);
+    if (!token) {
+      return setLoading(false);
+    }
+
+    const url = `${getAPIUrl()}/auth/check`;
+    const body = {token};
+
+    post(url, body)
+      .then(({data}) => {
+        const userUrl = `${getAPIUrl()}/users/${data._id}`;
+
+        get(userUrl)
+          .then(({data}) => {
+            setUser(data);
+            setLoading(false);
+          })
+          .catch(handleUserErr);
+      })
+      .catch(handleUserErr);
   }, []);
 
   return (

@@ -1,3 +1,4 @@
+import {patch, post} from 'axios';
 import React, {useContext} from 'react';
 import {Box, Button, Text} from '@chakra-ui/core';
 
@@ -5,19 +6,23 @@ import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
-import MessagePage from '../components/MessagePage';
+import UnauthorizedPage from '../components/UnauthorizedPage';
 import {Container, Title} from '../components/styles';
+import {getAPIUrl} from '../utils';
+import {useAPIGet} from '../utils/hooks';
 
-const createForm = {
+const createAdminForm = {
   name: {
+    label: 'Name',
     placeholder: "Enter the manager's name",
     type: 'text'
   },
   email: {
+    label: 'Email',
     placeholder: "Enter the manager's email",
     type: 'text'
   },
-  isAdmin: {
+  isAdminDataManager: {
     label: 'Admin Data Manager',
     type: 'checkbox'
   }
@@ -26,118 +31,97 @@ const createForm = {
 const Admin = () => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
-  // TODO: use endpoint
-  // const {data, loading} = useAPIGet(`/users`);
-  const {
-    data = {
-      users: [{email: 'hello@aol.com', name: 'manager A', isAdmin: true}]
-    },
-    loading
-  } = {};
+  const {data, loading} = useAPIGet(`/users?isDataManager=true`);
   const openCreateModal = () =>
     openModal({
-      form: createForm,
+      form: createAdminForm,
       header: 'New Data Manager',
       onClose: closeModal,
-      onConfirm: handleCreateManager
-    });
-  const openDeleteModal = managerIndex => {
-    console.log('managerIndex', managerIndex);
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const url = `${getAPIUrl()}/users`;
+        const user = {...values, password: 'ac123'};
 
+        setLoading();
+        post(url, user)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch(err => {
+            console.error('An error occured while creating users');
+            console.error(err);
+            setError();
+          });
+      }
+    });
+  const openRemoveModal = managerIndex => {
     return openModal({
-      header: 'Delete Data Manager',
+      header: 'Remove Data Manager',
       isAlert: true,
       onClose: closeModal,
-      onConfirm: handleDeleteManager(managerIndex)
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const selectedManager = data?.users?.[managerIndex];
+        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+
+        setLoading();
+        patch(url, {isDataManager: false, isAdminDataManager: false})
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch(err => {
+            console.error('An error occured while updating the users');
+            console.error(err);
+            setError();
+          });
+      }
     });
   };
   const openEditModal = managerIndex => {
     const selectedManager = data?.users?.[managerIndex];
-
-    console.log('selectedManager', selectedManager);
-
     const form = {
       name: {
-        ...createForm.name,
+        ...createAdminForm.name,
         initialValue: selectedManager?.name
       },
       email: {
-        ...createForm.email,
+        ...createAdminForm.email,
         initialValue: selectedManager?.email
       },
-      isAdmin: {
-        ...createForm.isAdmin,
-        initialValue: selectedManager?.isAdmin
+      isAdminDataManager: {
+        ...createAdminForm.isAdminDataManager,
+        initialValue: selectedManager?.isAdminDataManager
       }
     };
-
-    console.log('managerIndex', managerIndex);
-    console.log('selectedManager', selectedManager);
 
     return openModal({
       form,
       header: 'Edit Data Manager',
       onClose: closeModal,
-      onConfirm: handleEditManager(managerIndex)
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+
+        setLoading();
+        patch(url, values)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch(err => {
+            console.error('An error occured while editing users');
+            console.error(err);
+            setError();
+          });
+      }
     });
   };
-  const handleCreateManager = ({setLoading, setSuccess, setError, values}) => {
-    setLoading();
-
-    // TODO: API logic for creating
-    console.log('handleCreateManager', values);
-
-    setTimeout(() => {
-      window.location.reload();
-      setSuccess();
-    }, 3000);
-  };
-  const handleDeleteManager = selectedManagerIndex => ({
-    setLoading,
-    setSuccess,
-    setError,
-    values
-  }) => {
-    setLoading();
-
-    // TODO: API logic for deleting
-    console.log('selectedManagerIndex', selectedManagerIndex);
-    console.log('handleDeleteManager', values);
-
-    setTimeout(() => {
-      window.location.reload();
-      setSuccess();
-    }, 3000);
-  };
-  const handleEditManager = selectedManagerIndex => ({
-    setLoading,
-    setSuccess,
-    setError,
-    values
-  }) => {
-    setLoading();
-
-    // TODO: API logic for editing
-    console.log('selectedManagerIndex', selectedManagerIndex);
-    console.log('handleEditManager', values);
-
-    setTimeout(() => {
-      window.location.reload();
-      setSuccess();
-    }, 3000);
-  };
-
-  if (!user?.isAdmin) {
-    return (
-      <MessagePage
-        title="Unauthorized"
-        message="You don't have permission to view this page."
-      />
-    );
-  }
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (!user?.isAdminDataManager) {
+    return <UnauthorizedPage />;
   }
 
   return (
@@ -147,18 +131,18 @@ const Admin = () => {
         <Button onClick={openCreateModal}>New Manager</Button>
       </Box>
       <Title>Data Managers</Title>
-      {/* Table headers: name, email, isAdmin, actions=[edit, delete] */}
+      {/* Table headers: name, email, isAdminDataManager, actions=[edit, delete] */}
       <Container>
         {data?.users?.map((user, key) => {
           return (
             <div key={key}>
               <Text display="inline" mr={4}>
-                {user.name}
+                {user?.email}
               </Text>
               <Button onClick={() => openEditModal(key)} mr={2}>
                 Edit
               </Button>
-              <Button onClick={() => openDeleteModal(key)}>Delete</Button>
+              <Button onClick={() => openRemoveModal(key)}>Remove</Button>
             </div>
           );
         })}

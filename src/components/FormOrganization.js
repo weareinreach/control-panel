@@ -17,18 +17,15 @@ import FormField from './FormField';
 import {LoadingModal} from './Loading';
 import ServiceAreaCoverage from './ServiceAreaCoverage';
 import {Container, SectionTitle, Title} from './styles';
-import {getOrgInitialValues} from '../utils/forms';
 import {
   generalOrgDetailsFields,
   emailFields,
   locationFields,
   phoneFields,
   scheduleFields
-} from '../utils/formsHeaders';
+} from '../utils/fields';
+import {getOrgInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
-
-// TODO: On save, a summary of changes for the log if edit
-// TODO: On save, warning about fields such as is_closed, is_published, etc
 
 const OrganizationForm = props => {
   const {isEdit, onCancel, onConfirm, organization, title} = props;

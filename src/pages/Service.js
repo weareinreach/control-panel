@@ -20,6 +20,7 @@ import {
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
+import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
@@ -41,10 +42,11 @@ import {
   locationFields,
   phoneFields,
   scheduleFields
-} from '../utils/formsHeaders';
+} from '../utils/fields';
 import {useAPIGet} from '../utils/hooks';
 
 const Service = props => {
+  const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId, serviceId} = props?.match?.params;
   const servicePath = `/organizations/${orgId}/services/${serviceId}`;
@@ -115,7 +117,9 @@ const Service = props => {
           buttonText="More"
           items={[
             {href: `${servicePath}/duplicate`, text: 'Duplicate'},
-            {onClick: openModalDelete, text: 'Delete'}
+            ...(user.isAdminDataManager
+              ? [{onClick: openModalDelete, text: 'Delete'}]
+              : [])
           ]}
         />
       </Box>

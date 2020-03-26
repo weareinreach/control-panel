@@ -1,9 +1,12 @@
+import {post} from 'axios';
+import Cookies from 'js-cookie';
 import React from 'react';
 import {Box, Button, Flex, Input, Stack} from '@chakra-ui/core';
 
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
 import {SectionTitle} from './styles';
+import {COOKIE_LOGIN, getAPIUrl} from '../utils';
 import {useStatus, useInputChange} from '../utils/hooks';
 
 const Login = () => {
@@ -18,16 +21,30 @@ const Login = () => {
   } = useStatus();
   const [password, setPassword] = useInputChange('');
   const loginUser = () => {
-    // TODO: Logic for checking credentials and saving a cookie
+    const url = `${getAPIUrl()}/auth`;
+    const body = {email, password};
+
     setLoading();
 
-    setTimeout(() => {
-      setError();
-    }, 1500);
+    post(url, body)
+      .then(({data}) => {
+        if (!data.token || !data.valid) {
+          return setError();
+        }
 
-    setTimeout(() => {
-      setSuccess();
-    }, 3000);
+        Cookies.set(COOKIE_LOGIN, data.token);
+        setSuccess();
+        // Add a timeout to avoid a race condition with the cookie
+        setTimeout(() => {
+          window.location.reload();
+        }, 250);
+      })
+      .catch(err => {
+        console.error('An error occured while logging in users');
+        console.error(err);
+
+        setError();
+      });
   };
 
   return (

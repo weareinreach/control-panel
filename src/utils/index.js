@@ -2,6 +2,8 @@ import _reduce from 'lodash/reduce';
 
 import config from './config';
 
+export const COOKIE_LOGIN = 'ac-cookie';
+
 export const getAPIUrl = () => {
   return `${config.apiDomain}${config.apiBasePath}`;
 };

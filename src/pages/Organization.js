@@ -14,6 +14,7 @@ import {
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
+import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
@@ -27,10 +28,11 @@ import {
   locationFields,
   phoneFields,
   scheduleFields
-} from '../utils/formsHeaders';
+} from '../utils/fields';
 import {useAPIGet} from '../utils/hooks';
 
 const Organization = props => {
+  const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
@@ -122,7 +124,9 @@ const Organization = props => {
               text: 'Mark Information Verified'
             },
             {href: `${orgPath}/duplicate`, text: 'Duplicate'},
-            {onClick: openModalDelete, text: 'Delete'}
+            ...(user.isAdminDataManager
+              ? [{onClick: openModalDelete, text: 'Delete'}]
+              : [])
           ]}
         />
       </Box>

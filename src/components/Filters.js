@@ -10,12 +10,23 @@ const propertyList = ['community-asylum-seeker', 'community-lgbt'];
 const Filters = props => {
   const {updateQuery} = props;
   const [name, handleNameChange] = useInputChange();
+  const [serviceArea, handleServiceAreaChange] = useInputChange();
   const [propValue, handlePropValueChange] = useInputChange('');
   const [propKey, handlePropKeyChange] = useInputChange('');
   const handleSearch = ev => {
     ev.preventDefault();
 
-    updateQuery({name, properties: {[propKey]: propValue}});
+    const properties = {};
+
+    if (propKey && propValue) {
+      properties[propKey] = propValue;
+    }
+
+    if (serviceArea) {
+      properties[serviceArea] = 'true';
+    }
+
+    updateQuery({name, properties});
   };
 
   return (
@@ -28,6 +39,13 @@ const Filters = props => {
           variant="filled"
           placeholder="Search on name"
           value={name}
+        />
+        <Text>Service Area Coverage:</Text>
+        <Input
+          onChange={handleServiceAreaChange}
+          variant="filled"
+          placeholder="Search on a service area"
+          value={serviceArea}
         />
         <Text>Properties:</Text>
         <Select

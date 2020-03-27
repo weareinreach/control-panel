@@ -21,6 +21,7 @@ admin-control-panel/
 ├── public          # Static assets
 ├── src             # All of the source code for the app
 ├── src/components  # React components used throughout the app
+├── src/data        # Config like JSON data for properties, fields, etc
 ├── src/pages       # App's pages
 ├── src/utils       # Shared utilities
 └── src/server.js   # Express server used to serve the app in production

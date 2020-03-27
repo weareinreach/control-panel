@@ -11,8 +11,8 @@ export const Container = ({children, ...rest}) => (
 Container.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+    PropTypes.node,
+  ]),
 };
 
 export const Layout = ({children, ...rest}) => (
@@ -24,8 +24,8 @@ export const Layout = ({children, ...rest}) => (
 Layout.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+    PropTypes.node,
+  ]),
 };
 
 export const SectionTitle = ({children, ...rest}) => (
@@ -37,8 +37,8 @@ export const SectionTitle = ({children, ...rest}) => (
 SectionTitle.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+    PropTypes.node,
+  ]),
 };
 
 export const Title = ({children, ...rest}) => (
@@ -50,6 +50,6 @@ export const Title = ({children, ...rest}) => (
 Title.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+    PropTypes.node,
+  ]),
 };

@@ -16,17 +16,17 @@ const createAdminForm = {
   name: {
     label: 'Name',
     placeholder: "Enter the manager's name",
-    type: 'text'
+    type: 'text',
   },
   email: {
     label: 'Email',
     placeholder: "Enter the manager's email",
-    type: 'text'
+    type: 'text',
   },
   isAdminDataManager: {
     label: 'Admin Data Manager',
-    type: 'checkbox'
-  }
+    type: 'checkbox',
+  },
 };
 
 const Admin = () => {
@@ -48,29 +48,29 @@ const Admin = () => {
             window.location.reload();
             setSuccess();
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('An error occured while creating users');
             console.error(err);
             setError();
           });
-      }
+      },
     });
-  const openEditModal = selectedManager => {
+  const openEditModal = (selectedManager) => {
     console.log('openEditModal selectedManager', selectedManager);
 
     const form = {
       name: {
         ...createAdminForm.name,
-        initialValue: selectedManager?.name
+        initialValue: selectedManager?.name,
       },
       email: {
         ...createAdminForm.email,
-        initialValue: selectedManager?.email
+        initialValue: selectedManager?.email,
       },
       isAdminDataManager: {
         ...createAdminForm.isAdminDataManager,
-        initialValue: selectedManager?.isAdminDataManager
-      }
+        initialValue: selectedManager?.isAdminDataManager,
+      },
     };
 
     return openModal({
@@ -86,15 +86,15 @@ const Admin = () => {
             window.location.reload();
             setSuccess();
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('An error occured while editing users');
             console.error(err);
             setError();
           });
-      }
+      },
     });
   };
-  const openRemoveModal = selectedManager => {
+  const openRemoveModal = (selectedManager) => {
     console.log('openRemoveModal selectedManager', selectedManager);
 
     return openModal({
@@ -110,12 +110,12 @@ const Admin = () => {
             window.location.reload();
             setSuccess();
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('An error occured while updating the users');
             console.error(err);
             setError();
           });
-      }
+      },
     });
   };
 
@@ -139,7 +139,7 @@ const Admin = () => {
         <Table
           actions={[
             {label: 'Edit', onClick: openEditModal},
-            {label: 'Remove', onClick: openRemoveModal}
+            {label: 'Remove', onClick: openRemoveModal},
           ]}
           headers={[
             {key: 'email', label: 'Email'},
@@ -147,8 +147,8 @@ const Admin = () => {
             {
               key: 'isAdminDataManager',
               label: 'Is Admin',
-              type: 'boolean'
-            }
+              type: 'boolean',
+            },
           ]}
           rows={data?.users}
         />

@@ -4,7 +4,7 @@ import {Box, Flex, Text} from '@chakra-ui/core';
 
 import {SectionTitle} from './styles';
 
-const MessagePage = props => {
+const MessagePage = (props) => {
   const {message, title} = props;
 
   return (
@@ -19,7 +19,7 @@ const MessagePage = props => {
 
 MessagePage.propTypes = {
   message: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default MessagePage;

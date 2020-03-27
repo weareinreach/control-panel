@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Button, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/core';
 
-const DropdownButton = props => {
+const DropdownButton = (props) => {
   const {buttonProps = {}, listProps = {}, buttonText, items} = props;
 
   return (
@@ -36,7 +36,7 @@ DropdownButton.propTypes = {
   buttonProps: PropTypes.shape(),
   buttonText: PropTypes.string,
   listProps: PropTypes.shape(),
-  items: PropTypes.arrayOf(PropTypes.shape())
+  items: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 export default DropdownButton;

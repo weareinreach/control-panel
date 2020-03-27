@@ -9,7 +9,7 @@ import Loading from '../components/Loading';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-const ServiceFormPage = props => {
+const ServiceFormPage = (props) => {
   const {isDuplicate, isEdit, match} = props;
   const {orgId, serviceId} = match?.params;
   const apiUrl = orgId ? `/organizations/${orgId}/services/${serviceId}` : '';
@@ -31,7 +31,7 @@ const ServiceFormPage = props => {
         setSuccess();
         window.location = `/organizations/${orgId}/services/${serviceId}`;
       })
-      .catch(err => {
+      .catch((err) => {
         setError();
         console.error(err);
       });
@@ -40,7 +40,7 @@ const ServiceFormPage = props => {
     setLoading,
     setSuccess,
     setError,
-    values
+    values,
   }) => {
     const url = `${getAPIUrl()}/organizations/${orgId}/services`;
 
@@ -50,7 +50,7 @@ const ServiceFormPage = props => {
         setSuccess();
         window.location = `/organizations/${orgId}`;
       })
-      .catch(err => {
+      .catch((err) => {
         setError();
         console.error(err);
       });
@@ -92,7 +92,7 @@ const ServiceFormPage = props => {
 ServiceFormPage.propTypes = {
   isDuplicate: PropTypes.bool,
   isEdit: PropTypes.bool,
-  match: PropTypes.shape()
+  match: PropTypes.shape(),
 };
 
 export default ServiceFormPage;

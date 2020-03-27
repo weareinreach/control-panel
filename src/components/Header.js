@@ -22,8 +22,8 @@ const logOutUser = () => {
 const passwordForm = {
   password: {
     placeholder: 'Enter your new password',
-    type: 'password'
-  }
+    type: 'password',
+  },
 };
 
 const Header = () => {
@@ -47,12 +47,12 @@ const Header = () => {
             window.location.reload();
             setSuccess();
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('An error occured while editing users');
             console.error(err);
             setError();
           });
-      }
+      },
     });
 
   return (
@@ -76,12 +76,12 @@ const Header = () => {
                   buttonProps={{
                     color: 'white',
                     backgroundColor: 'blue.500',
-                    _hover: {bg: 'blue.400'}
+                    _hover: {bg: 'blue.400'},
                   }}
                   buttonText={user?.name || user?.email}
                   items={[
                     {onClick: openPasswordModal, text: 'Change Password'},
-                    {onClick: logOutUser, text: 'Log Out'}
+                    {onClick: logOutUser, text: 'Log Out'},
                   ]}
                 />
               </Box>

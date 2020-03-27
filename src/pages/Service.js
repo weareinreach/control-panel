@@ -15,7 +15,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text
+  Text,
 } from '@chakra-ui/core';
 
 import NotFound from './NotFound';
@@ -26,7 +26,7 @@ import DropdownButton from '../components/DropdownButton';
 import Helmet from '../components/Helmet';
 import ListProperties, {
   ListServiceArea,
-  ListItems
+  ListItems,
 } from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
@@ -35,19 +35,19 @@ import {
   emailFields,
   locationFields,
   phoneFields,
-  scheduleFields
+  scheduleFields,
 } from '../data/fields.json';
 import {
   additionalInformationProperties,
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  languageProperties
+  languageProperties,
 } from '../data/properties.json';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-const Service = props => {
+const Service = (props) => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId, serviceId} = props?.match?.params;
@@ -68,7 +68,7 @@ const Service = props => {
     schedule_id,
     slug,
     tags: serviceTags,
-    updated_at
+    updated_at,
   } = data || {};
   const email = email_id && organization?.phones?.[email_id];
   const location = location_id && organization?.emails?.[location_id];
@@ -90,11 +90,11 @@ const Service = props => {
             setSuccess();
             window.location = '/organizations';
           })
-          .catch(err => {
+          .catch((err) => {
             setError();
             console.error(err);
           });
-      }
+      },
     });
 
   if (loading) {
@@ -121,7 +121,7 @@ const Service = props => {
             {href: `${servicePath}/duplicate`, text: 'Duplicate'},
             ...(user.isAdminDataManager
               ? [{onClick: openModalDelete, text: 'Delete'}]
-              : [])
+              : []),
           ]}
         />
       </Box>
@@ -165,7 +165,7 @@ const Service = props => {
                     {key: 'Slug', value: slug},
                     {key: 'Is Published', value: is_published},
                     {key: 'Updated At', value: updated_at},
-                    {key: 'Created At', value: created_at}
+                    {key: 'Created At', value: created_at},
                   ]}
                 />
               </Container>
@@ -175,7 +175,7 @@ const Service = props => {
                   headers={[
                     {key: 'access_type', label: 'Type'},
                     {key: 'access_value', label: ' '},
-                    {key: 'instructions', label: 'Instructions'}
+                    {key: 'instructions', label: 'Instructions'},
                   ]}
                   rows={access_instructions}
                 />
@@ -277,7 +277,7 @@ const Service = props => {
 };
 
 Service.propTypes = {
-  match: PropTypes.shape()
+  match: PropTypes.shape(),
 };
 
 export default Service;

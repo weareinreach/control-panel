@@ -4,7 +4,7 @@ import {Button, Input, InputGroup, InputRightElement} from '@chakra-ui/core';
 
 import {useToggle} from '../utils/hooks';
 
-const PasswordInput = props => {
+const PasswordInput = (props) => {
   const {onChange, placeholder, value, ...rest} = props;
   const [showPassword, toggleShowPassword] = useToggle();
 
@@ -30,7 +30,7 @@ const PasswordInput = props => {
 PasswordInput.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 
 export default PasswordInput;

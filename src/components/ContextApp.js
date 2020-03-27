@@ -8,7 +8,7 @@ import {COOKIE_LOGIN, getAPIUrl} from '../utils';
 
 export const ContextApp = createContext('app');
 
-export const ContextAppProvider = props => {
+export const ContextAppProvider = (props) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const hasUser = user && !_isEmpty(user);
@@ -16,7 +16,7 @@ export const ContextAppProvider = props => {
 
   useEffect(() => {
     const token = Cookies.get(COOKIE_LOGIN);
-    const handleUserErr = err => {
+    const handleUserErr = (err) => {
       console.error('An error occured while logging in users');
       console.error(err);
       setLoading(false);
@@ -51,6 +51,6 @@ export const ContextAppProvider = props => {
 ContextAppProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired
+    PropTypes.node,
+  ]).isRequired,
 };

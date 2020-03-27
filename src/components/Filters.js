@@ -7,7 +7,7 @@ import {
   Input,
   Select,
   Stack,
-  Text
+  Text,
 } from '@chakra-ui/core';
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,7 @@ import {
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  languageProperties
+  languageProperties,
 } from '../data/properties.json';
 import {useInputChange} from '../utils/hooks';
 
@@ -26,7 +26,7 @@ const propertyList = [
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  languageProperties
+  languageProperties,
 ]
   .reduce((result, propertyCategory) => {
     result = result.concat(
@@ -39,24 +39,24 @@ const propertyList = [
   }, [])
   .sort();
 
-const Filters = props => {
+const Filters = (props) => {
   const {updateQuery} = props;
   const [name, handleNameChange] = useInputChange();
   const [serviceArea, handleServiceAreaChange] = useInputChange();
   const [properties, setProperties] = useState({});
-  const handleSelect = ev => {
+  const handleSelect = (ev) => {
     const value = ev.target.value;
 
     setProperties({
       ...properties,
-      [value]: 'true'
+      [value]: 'true',
     });
   };
   const propertyKeys = Object.keys(properties);
-  const removeProperty = property => {
+  const removeProperty = (property) => {
     setProperties(_omit(properties, [property]));
   };
-  const handleSearch = ev => {
+  const handleSearch = (ev) => {
     ev.preventDefault();
 
     const searchProperties = {...properties};
@@ -93,11 +93,11 @@ const Filters = props => {
           placeholder="Select a property"
           value=""
         >
-          {propertyList.map(prop => (
+          {propertyList.map((prop) => (
             <option key={prop}>{prop}</option>
           ))}
         </Select>
-        {propertyKeys?.map(key => (
+        {propertyKeys?.map((key) => (
           <Checkbox
             key={key}
             defaultIsChecked
@@ -122,7 +122,7 @@ const Filters = props => {
 
 Filters.propTypes = {
   query: PropTypes.object,
-  updateQuery: PropTypes.func
+  updateQuery: PropTypes.func,
 };
 
 export default Filters;

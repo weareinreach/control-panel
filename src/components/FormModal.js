@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter,
   Stack,
-  Text
+  Text,
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
@@ -19,7 +19,7 @@ import FormField from './FormField';
 import {buildForm} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const FormModal = props => {
+const FormModal = (props) => {
   const {children, form, header, isAlert, isOpen, onClose, onConfirm} = props;
   const {
     isError,
@@ -27,10 +27,10 @@ const FormModal = props => {
     isSuccess,
     setError,
     setLoading,
-    setSuccess
+    setSuccess,
   } = useStatus();
   const {initialValues, inputs} = buildForm(form);
-  const onSubmit = values =>
+  const onSubmit = (values) =>
     onConfirm({setLoading, setSuccess, setError, values});
   const formik = useFormik({initialValues, onSubmit});
 
@@ -82,14 +82,14 @@ const FormModal = props => {
 FormModal.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
   form: PropTypes.shape(),
   header: PropTypes.string,
   isAlert: PropTypes.bool,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
 };
 
 export default FormModal;

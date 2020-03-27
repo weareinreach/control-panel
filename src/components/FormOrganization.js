@@ -9,7 +9,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
@@ -22,12 +22,12 @@ import {
   locationFields,
   organizationDetailsFields,
   phoneFields,
-  scheduleFields
+  scheduleFields,
 } from '../data/fields.json';
 import {formatOrgInput, getOrgInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const OrganizationForm = props => {
+const OrganizationForm = (props) => {
   const {isEdit, onCancel, onConfirm, organization, title} = props;
   const initialValues = getOrgInitialValues(organization || {});
   const formik = useFormik({initialValues});
@@ -37,9 +37,9 @@ const OrganizationForm = props => {
       setLoading,
       setSuccess,
       setError,
-      values: formatOrgInput(formik?.values || {})
+      values: formatOrgInput(formik?.values || {}),
     });
-  const createFieldItem = field => {
+  const createFieldItem = (field) => {
     const list = formik?.values?.[field] || [];
 
     list.push({});
@@ -49,7 +49,7 @@ const OrganizationForm = props => {
     const list = formik?.values?.[field] || [];
     const ListItems = {
       ...list?.[index],
-      name: `Duplicate of ${list?.[index]?.name}`
+      name: `Duplicate of ${list?.[index]?.name}`,
     };
     const newList = [...list, ListItems];
 
@@ -61,7 +61,7 @@ const OrganizationForm = props => {
     list.splice(index, 1);
     formik.setFieldValue(field, list);
   };
-  const updateField = field => value => {
+  const updateField = (field) => (value) => {
     formik.setFieldValue(field, value);
   };
 
@@ -291,7 +291,7 @@ OrganizationForm.propTypes = {
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   organization: PropTypes.shape(),
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default OrganizationForm;

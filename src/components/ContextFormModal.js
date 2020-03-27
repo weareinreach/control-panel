@@ -5,10 +5,10 @@ import FormModal from './FormModal';
 
 export const ContextFormModal = createContext('forms');
 
-export const ContextFormModalProvider = props => {
+export const ContextFormModalProvider = (props) => {
   const [showModal, setShowModel] = useState(false);
   const [formProps, setFormProps] = useState({});
-  const openModal = newProps => {
+  const openModal = (newProps) => {
     setShowModel(true);
     setFormProps(newProps);
   };
@@ -29,6 +29,6 @@ export const ContextFormModalProvider = props => {
 ContextFormModalProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired
+    PropTypes.node,
+  ]).isRequired,
 };

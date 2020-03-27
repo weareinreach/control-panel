@@ -11,7 +11,7 @@ export const getAPIUrl = () => {
 const initialValueDict = {
   checkbox: false,
   password: '',
-  text: ''
+  text: '',
 };
 
 export const buildForm = (form = {}) => {

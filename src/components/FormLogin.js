@@ -17,7 +17,7 @@ const Login = () => {
     isSuccess,
     setError,
     setLoading,
-    setSuccess
+    setSuccess,
   } = useStatus();
   const [password, setPassword] = useInputChange('');
   const loginUser = () => {
@@ -39,7 +39,7 @@ const Login = () => {
           window.location.reload();
         }, 250);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('An error occured while logging in users');
         console.error(err);
 

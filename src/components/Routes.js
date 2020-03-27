@@ -43,23 +43,23 @@ const Routes = () => {
         <Route
           exact
           path="/organizations/new"
-          component={props => <OrganizationFormPage {...props} />}
+          component={(props) => <OrganizationFormPage {...props} />}
         />
         <Route exact path="/organizations/:orgId" component={Organization} />
         <Route
           exact
           path="/organizations/:orgId/duplicate"
-          component={props => <OrganizationFormPage isDuplicate {...props} />}
+          component={(props) => <OrganizationFormPage isDuplicate {...props} />}
         />
         <Route
           exact
           path="/organizations/:orgId/edit"
-          component={props => <OrganizationFormPage isEdit {...props} />}
+          component={(props) => <OrganizationFormPage isEdit {...props} />}
         />
         <Route
           exact
           path="/organizations/:orgId/services/new"
-          component={props => <ServiceFormPage {...props} />}
+          component={(props) => <ServiceFormPage {...props} />}
         />
         <Route
           exact
@@ -69,12 +69,12 @@ const Routes = () => {
         <Route
           exact
           path="/organizations/:orgId/services/:serviceId/duplicate"
-          component={props => <ServiceFormPage isDuplicate {...props} />}
+          component={(props) => <ServiceFormPage isDuplicate {...props} />}
         />
         <Route
           exact
           path="/organizations/:orgId/services/:serviceId/edit"
-          component={props => <ServiceFormPage isEdit {...props} />}
+          component={(props) => <ServiceFormPage isEdit {...props} />}
         />
         <Route exact path="/admin" component={Admin} />
         <Route component={NotFound} />

@@ -5,7 +5,7 @@ import {Checkbox, Stack, Text} from '@chakra-ui/core';
 
 const noChange = () => null;
 
-const ListProperties = props => {
+const ListProperties = (props) => {
   const {list, properties} = props;
 
   return (
@@ -39,12 +39,12 @@ const ListProperties = props => {
 
 ListProperties.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape()),
-  properties: PropTypes.shape()
+  properties: PropTypes.shape(),
 };
 
 export default ListProperties;
 
-export const ListServiceArea = props => {
+export const ListServiceArea = (props) => {
   const {properties} = props;
 
   return _map(properties, (value, key) => {
@@ -62,13 +62,13 @@ export const ListServiceArea = props => {
 };
 
 ListServiceArea.propTypes = {
-  properties: PropTypes.shape({})
+  properties: PropTypes.shape({}),
 };
 
-export const ListItems = props => {
+export const ListItems = (props) => {
   const {items} = props;
 
-  return _map(items, item => {
+  return _map(items, (item) => {
     return (
       <div key={item}>
         <Checkbox isChecked onChange={noChange}>
@@ -80,5 +80,5 @@ export const ListItems = props => {
 };
 
 ListItems.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.string)
+  items: PropTypes.arrayOf(PropTypes.string),
 };

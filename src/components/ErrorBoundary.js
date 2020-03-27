@@ -31,6 +31,6 @@ export default class ErrorBoundary extends Component {
 ErrorBoundary.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired
+    PropTypes.node,
+  ]).isRequired,
 };

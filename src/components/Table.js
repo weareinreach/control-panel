@@ -56,7 +56,7 @@ const ActioSpan = styled(Text)`
   }
 `;
 
-const Table = props => {
+const Table = (props) => {
   const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
 
   return (
@@ -132,7 +132,7 @@ Table.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.shape()),
   hideHeaders: PropTypes.bool,
   isKeyValue: PropTypes.bool,
-  rows: PropTypes.arrayOf(PropTypes.shape())
+  rows: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 export default Table;
@@ -142,5 +142,5 @@ export const KeyValueTable = ({rows}) => (
 );
 
 KeyValueTable.propTypes = {
-  rows: Table.propTypes.rows
+  rows: Table.propTypes.rows,
 };

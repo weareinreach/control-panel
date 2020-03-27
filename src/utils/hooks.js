@@ -8,11 +8,11 @@ import {getAPIUrl} from './index';
  * @param  {Object} endpoint The endpoint to query
  * @return {Object} An object of data, loading status, etc
  */
-export const useAPIGet = endpoint => {
+export const useAPIGet = (endpoint) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const url = `${getAPIUrl()}${endpoint}`;
-  const fetchUrl = fetchUrl => {
+  const fetchUrl = (fetchUrl) => {
     setLoading(true);
 
     console.log('GET:', fetchUrl);
@@ -22,7 +22,7 @@ export const useAPIGet = endpoint => {
         setData(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         throw new Error(err);
       });
   };
@@ -43,12 +43,12 @@ export const useAPIGet = endpoint => {
  * @param  {Object} endpoints The endpoints to query
  * @return {Object} An object of data, loading status, etc
  */
-export const useMultipleAPIGet = endpoints => {
+export const useMultipleAPIGet = (endpoints) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const fetchUrls = endpoints => {
+  const fetchUrls = (endpoints) => {
     const queryData = {};
-    const requests = Object.keys(endpoints).map(key => {
+    const requests = Object.keys(endpoints).map((key) => {
       const url = `${getAPIUrl()}${endpoints[key]}`;
 
       console.log('GET:', url);
@@ -59,7 +59,7 @@ export const useMultipleAPIGet = endpoints => {
 
           return;
         })
-        .catch(err => {
+        .catch((err) => {
           throw new Error(err);
         });
     });
@@ -89,7 +89,7 @@ export const useMultipleAPIGet = endpoints => {
  */
 export const useInputChange = (initalState = '') => {
   const [value, setValue] = useState(initalState);
-  const setInputValue = event => {
+  const setInputValue = (event) => {
     setValue(event.target.value);
   };
 
@@ -105,7 +105,7 @@ const STATE_SUCCESS = 'SUCCESS';
  * @param  {Object} initalState The initial value
  * @return {Object} Hook values and updaters
  */
-export const useStatus = initalStatus => {
+export const useStatus = (initalStatus) => {
   const [status, setStatus] = useState(initalStatus);
   const isError = status === STATE_ERROR;
   const isLoading = status === STATE_IN_PROGRESS;
@@ -120,7 +120,7 @@ export const useStatus = initalStatus => {
     isSuccess,
     setError,
     setLoading,
-    setSuccess
+    setSuccess,
   };
 };
 

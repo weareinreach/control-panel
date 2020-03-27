@@ -14,7 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text
+  Text,
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
@@ -28,27 +28,27 @@ import {
   locationFields,
   phoneFields,
   scheduleFields,
-  serviceDetailsFields
+  serviceDetailsFields,
 } from '../data/fields.json';
 import {
   additionalInformationProperties,
   communityProperties,
   costProperties,
   eligibilityRequirementProperties,
-  languageProperties
+  languageProperties,
 } from '../data/properties.json';
 import tags from '../data/tags.json';
 import {formatServiceInput, getServiceInitialValues} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
-const findItem = _memoize((list, _id) => list.find(item => item._id === _id));
+const findItem = _memoize((list, _id) => list.find((item) => item._id === _id));
 const countryLabels = {
   canada: 'Canada',
   mexico: 'Mexico',
-  united_states: 'United States'
+  united_states: 'United States',
 };
 
-const FormService = props => {
+const FormService = (props) => {
   const {isEdit, onCancel, onConfirm, service, title} = props;
   const {isError, isLoading, setError, setLoading, setSuccess} = useStatus();
   const initialValues = getServiceInitialValues(service || {});
@@ -58,9 +58,9 @@ const FormService = props => {
       setLoading,
       setSuccess,
       setError,
-      values: formatServiceInput(formik?.values)
+      values: formatServiceInput(formik?.values),
     });
-  const updateField = field => value => {
+  const updateField = (field) => (value) => {
     formik.setFieldValue(field, value);
   };
 
@@ -120,7 +120,7 @@ const FormService = props => {
                       findItem(
                         service?.organization?.locations,
                         formik?.values?.location_id
-                      )
+                      ),
                     ]}
                   />
                 )}
@@ -142,7 +142,7 @@ const FormService = props => {
                       findItem(
                         service?.organization?.schedules,
                         formik?.values?.schedule_id
-                      )
+                      ),
                     ]}
                   />
                 )}
@@ -164,7 +164,7 @@ const FormService = props => {
                       findItem(
                         service?.organization?.emails,
                         formik?.values?.email_id
-                      )
+                      ),
                     ]}
                   />
                 )}
@@ -186,7 +186,7 @@ const FormService = props => {
                       findItem(
                         service?.organization?.phones,
                         formik?.values?.phone_id
-                      )
+                      ),
                     ]}
                   />
                 )}
@@ -286,7 +286,7 @@ const FormService = props => {
                       <Divider marginBottom={4} />
                       <Stack space={4}>
                         {subcategories.length > 0 ? (
-                          subcategories.map(subCatgory => (
+                          subcategories.map((subCatgory) => (
                             <FormField
                               key={subCatgory}
                               fieldKey={`tags.${category}.${subCatgory}`}
@@ -330,7 +330,7 @@ FormService.propTypes = {
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   service: PropTypes.shape(),
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default FormService;

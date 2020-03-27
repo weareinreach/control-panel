@@ -6,7 +6,7 @@ import {
   Flex,
   Modal,
   ModalContent,
-  ModalOverlay
+  ModalOverlay,
 } from '@chakra-ui/core';
 
 const Loading = () => {
@@ -21,7 +21,7 @@ const Loading = () => {
 
 export default Loading;
 
-export const LoadingModal = props => {
+export const LoadingModal = (props) => {
   const {isOpen} = props;
 
   return (
@@ -35,5 +35,5 @@ export const LoadingModal = props => {
 };
 
 LoadingModal.propTypes = {
-  isOpen: PropTypes.bool
+  isOpen: PropTypes.bool,
 };

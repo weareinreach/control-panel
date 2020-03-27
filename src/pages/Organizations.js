@@ -13,10 +13,10 @@ import {useMultipleAPIGet} from '../utils/hooks';
 
 const headers = [
   {key: 'name', label: 'Name'},
-  {key: 'updated_at', label: 'Last Updated'}
+  {key: 'updated_at', label: 'Last Updated'},
 ];
 
-const getQueryUrls = query => {
+const getQueryUrls = (query) => {
   const {name, page, properties} = query;
   let queryParam = '?';
 
@@ -48,7 +48,7 @@ const getQueryUrls = query => {
 
   return {
     organizations: `/organizations${queryParam}`,
-    count: `/organizations/count${queryParam}`
+    count: `/organizations/count${queryParam}`,
   };
 };
 
@@ -60,10 +60,10 @@ const Organizations = () => {
   );
   const {count, organizations} = data || {};
   const [query, setQuery] = useState(initialQuery);
-  const goToOrgPage = org => {
+  const goToOrgPage = (org) => {
     window.location = `/organizations/${org._id}`;
   };
-  const goToOrgEditPage = org => {
+  const goToOrgEditPage = (org) => {
     window.location = `/organizations/${org._id}/edit`;
   };
   const getLastPage = () => {
@@ -103,9 +103,9 @@ const Organizations = () => {
                     <Table
                       actions={[
                         {label: 'View', onClick: goToOrgPage},
-                        {label: 'Edit', onClick: goToOrgEditPage}
+                        {label: 'Edit', onClick: goToOrgEditPage},
                       ]}
-                      getRowLink={org => `/organizations/${org._id}`}
+                      getRowLink={(org) => `/organizations/${org._id}`}
                       headers={headers}
                       rows={organizations?.organizations}
                     />

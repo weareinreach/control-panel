@@ -5,20 +5,20 @@ import {Checkbox, Select, Stack} from '@chakra-ui/core';
 
 import {areaCoverageProperties} from '../data/properties.json';
 
-const ServiceAreaCoverage = props => {
+const ServiceAreaCoverage = (props) => {
   const {handleUpdate, properties = {}} = props;
-  const propertyKeys = Object.keys(properties).filter(key =>
+  const propertyKeys = Object.keys(properties).filter((key) =>
     key.includes('service-')
   );
-  const handleSelect = ev => {
+  const handleSelect = (ev) => {
     const value = ev.target.value;
 
     handleUpdate({
       ...properties,
-      [value]: 'true'
+      [value]: 'true',
     });
   };
-  const removeProperty = property => {
+  const removeProperty = (property) => {
     handleUpdate(_omit(properties, [property]));
   };
 
@@ -30,13 +30,13 @@ const ServiceAreaCoverage = props => {
         placeholder="Select an area"
         value=""
       >
-        {areaCoverageProperties.map(value => (
+        {areaCoverageProperties.map((value) => (
           <option key={value} value={value}>
             {value}
           </option>
         ))}
       </Select>
-      {propertyKeys?.map(key => (
+      {propertyKeys?.map((key) => (
         <Checkbox
           key={key}
           defaultIsChecked
@@ -51,7 +51,7 @@ const ServiceAreaCoverage = props => {
 
 ServiceAreaCoverage.propTypes = {
   handleUpdate: PropTypes.func,
-  properties: PropTypes.object
+  properties: PropTypes.object,
 };
 
 export default ServiceAreaCoverage;

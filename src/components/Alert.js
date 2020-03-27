@@ -4,10 +4,10 @@ import {
   Alert as ChakraAlert,
   AlertDescription,
   AlertIcon,
-  AlertTitle
+  AlertTitle,
 } from '@chakra-ui/core';
 
-const Alert = props => {
+const Alert = (props) => {
   const {description, title, type} = props;
 
   return (
@@ -22,7 +22,7 @@ const Alert = props => {
 Alert.propTypes = {
   description: PropTypes.string,
   title: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default Alert;

@@ -11,12 +11,12 @@ import {
   Select,
   Text,
   Textarea,
-  Tooltip
+  Tooltip,
 } from '@chakra-ui/core';
 
 import PasswordInput from './PasswordInput';
 
-const FormField = props => {
+const FormField = (props) => {
   const {
     description,
     fieldKey,
@@ -54,7 +54,7 @@ const FormField = props => {
   const inputProps = {
     ...(formik?.getFieldProps(fieldKey) || {}),
     id: fieldKey,
-    placeholder
+    placeholder,
   };
   const toolTipIcon = description && (
     <Tooltip hasArrow label={description} placement="top">
@@ -106,7 +106,7 @@ FormField.propTypes = {
   label: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape()),
   placeholder: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default FormField;

@@ -9,7 +9,7 @@ import Loading from '../components/Loading';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-const OrganizationFormPage = props => {
+const OrganizationFormPage = (props) => {
   const {isDuplicate, isEdit, match} = props;
   const {orgId} = match?.params;
   const apiUrl = orgId ? `/organizations/${orgId}` : '';
@@ -31,7 +31,7 @@ const OrganizationFormPage = props => {
         setSuccess();
         window.location = `/organizations/${orgId}`;
       })
-      .catch(err => {
+      .catch((err) => {
         setError();
         console.error(err);
       });
@@ -40,7 +40,7 @@ const OrganizationFormPage = props => {
     setLoading,
     setSuccess,
     setError,
-    values
+    values,
   }) => {
     const url = `${getAPIUrl()}/organizations`;
 
@@ -52,7 +52,7 @@ const OrganizationFormPage = props => {
         setSuccess();
         window.location = `/organizations/${id}`;
       })
-      .catch(err => {
+      .catch((err) => {
         setError();
         console.error(err);
       });
@@ -94,7 +94,7 @@ const OrganizationFormPage = props => {
 OrganizationFormPage.propTypes = {
   isDuplicate: PropTypes.bool,
   isEdit: PropTypes.bool,
-  match: PropTypes.shape()
+  match: PropTypes.shape(),
 };
 
 export default OrganizationFormPage;

@@ -9,7 +9,7 @@ import {
   BreadcrumbLink,
   Button,
   Icon,
-  Stack
+  Stack,
 } from '@chakra-ui/core';
 
 import NotFound from './NotFound';
@@ -26,12 +26,12 @@ import {
   emailFields,
   locationFields,
   phoneFields,
-  scheduleFields
+  scheduleFields,
 } from '../data/fields.json';
 import {getAPIUrl} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-const Organization = props => {
+const Organization = (props) => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId} = props?.match?.params;
@@ -53,12 +53,12 @@ const Organization = props => {
     slug,
     updated_at,
     verified_at,
-    website
+    website,
   } = data || {};
-  const goToServicePage = service => {
+  const goToServicePage = (service) => {
     window.location = `${orgPath}/services/${service._id}`;
   };
-  const goToServiceEditPage = service => {
+  const goToServiceEditPage = (service) => {
     window.location = `${orgPath}/services/${service._id}/edit`;
   };
   const openModalDelete = () =>
@@ -77,11 +77,11 @@ const Organization = props => {
             setSuccess();
             window.location = '/organizations';
           })
-          .catch(err => {
+          .catch((err) => {
             setError();
             console.error(err);
           });
-      }
+      },
     });
   const openModalVerify = () =>
     openModal({
@@ -94,14 +94,14 @@ const Organization = props => {
 
         setLoading();
         patch(url, {verified_at: Date.now()})
-          .then(result => {
+          .then((result) => {
             setSuccess();
             window.location = `/organizations`;
           })
-          .catch(err => {
+          .catch((err) => {
             setError();
           });
-      }
+      },
     });
 
   if (loading) {
@@ -127,12 +127,12 @@ const Organization = props => {
           items={[
             {
               onClick: openModalVerify,
-              text: 'Mark Information Verified'
+              text: 'Mark Information Verified',
             },
             {href: `${orgPath}/duplicate`, text: 'Duplicate'},
             ...(user.isAdminDataManager
               ? [{onClick: openModalDelete, text: 'Delete'}]
-              : [])
+              : []),
           ]}
         />
       </Box>
@@ -162,7 +162,7 @@ const Organization = props => {
               {key: 'Is Published', value: is_published},
               {key: 'Last Verified', value: verified_at},
               {key: 'Updated At', value: updated_at},
-              {key: 'Created At', value: created_at}
+              {key: 'Created At', value: created_at},
             ]}
           />
         </Container>
@@ -176,12 +176,12 @@ const Organization = props => {
           <Table
             actions={[
               {label: 'View', onClick: goToServicePage},
-              {label: 'Edit', onClick: goToServiceEditPage}
+              {label: 'Edit', onClick: goToServiceEditPage},
             ]}
-            getRowLink={service => `${orgPath}/services/${service._id}`}
+            getRowLink={(service) => `${orgPath}/services/${service._id}`}
             headers={[
               {key: 'name', label: 'Name'},
-              {key: 'updated_at', label: 'Last Updated'}
+              {key: 'updated_at', label: 'Last Updated'},
             ]}
             rows={services}
           />
@@ -212,7 +212,7 @@ const Organization = props => {
 };
 
 Organization.propTypes = {
-  match: PropTypes.shape()
+  match: PropTypes.shape(),
 };
 
 export default Organization;

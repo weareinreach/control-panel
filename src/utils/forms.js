@@ -3,7 +3,7 @@ import _reduce from 'lodash/reduce';
 const initialValueDict = {
   checkbox: false,
   password: '',
-  text: ''
+  text: '',
 };
 
 /**
@@ -11,7 +11,7 @@ const initialValueDict = {
  * @param  {Object} properties
  * @return {Object} Cleaned object with string values
  */
-export const cleanProperties = properties => {
+export const cleanProperties = (properties) => {
   return _reduce(
     properties,
     (result, value, key) => {
@@ -41,7 +41,7 @@ export const cleanProperties = properties => {
  * @param  {Object} organizationInput
  * @return {Object} Formatted input
  */
-export const formatOrgInput = orgInput => {
+export const formatOrgInput = (orgInput) => {
   if (orgInput.properties) {
     orgInput.properties = cleanProperties(orgInput.properties);
   }
@@ -54,7 +54,7 @@ export const formatOrgInput = orgInput => {
  * @param  {Object} serviceInput
  * @return {Object} Formatted input
  */
-export const formatServiceInput = serviceInput => {
+export const formatServiceInput = (serviceInput) => {
   if (serviceInput.properties) {
     serviceInput.properties = cleanProperties(serviceInput.properties);
   }
@@ -89,7 +89,7 @@ export const buildForm = (form = {}) => {
   );
 };
 
-export const getOrgInitialValues = initialValues => {
+export const getOrgInitialValues = (initialValues) => {
   return {
     alert_message: initialValues?.alert_message || '',
     description: initialValues?.description || '',
@@ -101,11 +101,11 @@ export const getOrgInitialValues = initialValues => {
     properties: initialValues?.properties || {},
     schedules: initialValues?.schedules || [],
     slug: initialValues?.slug || '',
-    website: initialValues?.website || ''
+    website: initialValues?.website || '',
   };
 };
 
-export const getServiceInitialValues = initialValues => {
+export const getServiceInitialValues = (initialValues) => {
   return {
     access_instructions: initialValues?.access_instructions || [],
     description: initialValues?.description || '',
@@ -118,6 +118,6 @@ export const getServiceInitialValues = initialValues => {
     schedule_id: initialValues?.schedule_id || '',
     services: initialValues?.services || [],
     slug: initialValues?.slug || '',
-    tags: initialValues?.tags || []
+    tags: initialValues?.tags || [],
   };
 };

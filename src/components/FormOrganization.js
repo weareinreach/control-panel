@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/core';
 
 import Alert from './Alert';
+import Breadcrumbs from './Breadcrumbs';
 import FormField from './FormField';
 import {LoadingModal} from './Loading';
 import ServiceAreaCoverage from './ServiceAreaCoverage';
@@ -75,6 +76,7 @@ const OrganizationForm = (props) => {
           type="error"
         />
       )}
+      <Breadcrumbs organization={organization} />
       <Title>
         {title}
         {organization?.name && ' - '}

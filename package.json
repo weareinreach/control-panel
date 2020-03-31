@@ -33,15 +33,6 @@
     "lint-staged": "^10.0.9",
     "prettier": "^2.0.2"
   },
-  "engines": {
-    "node": "12.x"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "react/prop-types": "warn"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -53,6 +44,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "react/prop-types": "warn"
+    }
   },
   "husky": {
     "hooks": {

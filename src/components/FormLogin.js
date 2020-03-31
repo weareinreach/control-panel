@@ -36,7 +36,7 @@ const Login = () => {
         setSuccess();
         // Add a timeout to avoid a race condition with the cookie
         setTimeout(() => {
-          window.location.reload();
+          window.location = '/';
         }, 250);
       })
       .catch((err) => {

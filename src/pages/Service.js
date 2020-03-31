@@ -4,22 +4,18 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
-  Icon,
   Stack,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from '@chakra-ui/core';
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
+import Breadcrumbs from '../components/Breadcrumbs';
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
@@ -125,27 +121,7 @@ const Service = (props) => {
           ]}
         />
       </Box>
-      <Breadcrumb
-        marginBottom={4}
-        spacing="8px"
-        separator={<Icon color="gray.300" name="chevron-right" />}
-      >
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Organizations</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink href={`/organizations/${orgId}`}>
-            {organization?.name || 'Organization Name'}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">
-            <Text isTruncated maxWidth="200px">
-              {name}
-            </Text>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+      <Breadcrumbs organization={organization} service={data} />
       <Title>{name}</Title>
       <Tabs marginTop={6}>
         <TabList>

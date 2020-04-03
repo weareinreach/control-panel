@@ -12,7 +12,8 @@ import {useAPIGet} from '../utils/hooks';
 const ServiceFormPage = (props) => {
   const {isDuplicate, isEdit, match} = props;
   const {orgId, serviceId} = match?.params;
-  const apiUrl = orgId ? `/organizations/${orgId}/services/${serviceId}` : '';
+  const apiUrl =
+    orgId && serviceId ? `/organizations/${orgId}/services/${serviceId}` : '';
   const {data, loading} = useAPIGet(apiUrl);
   const onCancelNew = () => {
     // Return to org page

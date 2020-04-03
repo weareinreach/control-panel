@@ -6,7 +6,7 @@ import {Checkbox, Stack, Text} from '@chakra-ui/core';
 const noChange = () => null;
 
 const ListProperties = (props) => {
-  const {list, properties} = props;
+  const {list, properties = {}} = props;
 
   return (
     <Stack space={4}>

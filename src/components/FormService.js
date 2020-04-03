@@ -88,8 +88,6 @@ const FormService = (props) => {
     formik.setFieldValue(field, value);
   };
 
-  console.log('render', initialValues, formik?.values);
-
   return (
     <>
       <LoadingModal isOpen={isLoading} />

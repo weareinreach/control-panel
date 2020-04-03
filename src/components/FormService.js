@@ -25,6 +25,7 @@ import ServiceAreaCoverage from './ServiceAreaCoverage';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
 import {
+  accessInstructionFields,
   emailFields,
   locationFields,
   phoneFields,
@@ -61,6 +62,28 @@ const FormService = (props) => {
       setError,
       values: formatServiceInput(formik?.values),
     });
+  const createFieldItem = (field) => {
+    const list = formik?.values?.[field] || [];
+
+    list.push({});
+    formik.setFieldValue(field, list);
+  };
+  const duplicateFieldItem = (field, index) => {
+    const list = formik?.values?.[field] || [];
+    const ListItems = {
+      ...list?.[index],
+      name: `Duplicate of ${list?.[index]?.name}`,
+    };
+    const newList = [...list, ListItems];
+
+    formik.setFieldValue(field, newList);
+  };
+  const deleteFieldItem = (field, index) => {
+    const list = formik?.values?.[field] || [];
+
+    list.splice(index, 1);
+    formik.setFieldValue(field, list);
+  };
   const updateField = (field) => (value) => {
     formik.setFieldValue(field, value);
   };
@@ -86,6 +109,7 @@ const FormService = (props) => {
       <Tabs>
         <TabList>
           <Tab>Service Details</Tab>
+          <Tab>Access Instructions</Tab>
           <Tab>Properties</Tab>
           <Tab>Tags</Tab>
         </TabList>
@@ -111,8 +135,8 @@ const FormService = (props) => {
                   {...(formik?.getFieldProps('location_id') || {})}
                   placeholder="Select a location from the organization"
                 >
-                  {service?.organization?.locations.map(({_id}) => (
-                    <option key={_id}>{_id}</option>
+                  {service?.organization?.locations.map(({_id, name}) => (
+                    <option key={_id}>{name || 'Location Name'}</option>
                   ))}
                 </Select>
                 {formik?.values?.location_id && (
@@ -133,8 +157,8 @@ const FormService = (props) => {
                   {...(formik?.getFieldProps('schedule_id') || {})}
                   placeholder="Select a schedule from the organization"
                 >
-                  {service?.organization?.schedules.map(({_id}) => (
-                    <option key={_id}>{_id}</option>
+                  {service?.organization?.schedules.map(({_id, name}) => (
+                    <option key={_id}>{name || 'Schedule Name'}</option>
                   ))}
                 </Select>
                 {formik?.values?.schedule_id && (
@@ -155,8 +179,8 @@ const FormService = (props) => {
                   {...(formik?.getFieldProps('email_id') || {})}
                   placeholder="Select an email from the organization"
                 >
-                  {service?.organization?.emails.map(({_id}) => (
-                    <option key={_id}>{_id}</option>
+                  {service?.organization?.emails.map(({_id, email}) => (
+                    <option key={_id}>{email || 'Email Address'}</option>
                   ))}
                 </Select>
                 {formik?.values?.email_id && (
@@ -177,8 +201,8 @@ const FormService = (props) => {
                   {...(formik?.getFieldProps('phone_id') || {})}
                   placeholder="Select a phone from the organization"
                 >
-                  {service?.organization?.phones.map(({_id}) => (
-                    <option key={_id}>{_id}</option>
+                  {service?.organization?.phones.map(({_id, phone_type}) => (
+                    <option key={_id}>{phone_type || 'Phone Type'}</option>
                   ))}
                 </Select>
                 {formik?.values?.phone_id && (
@@ -194,6 +218,50 @@ const FormService = (props) => {
                 )}
               </Container>
             </Stack>
+          </TabPanel>
+          <TabPanel marginTop={2}>
+            <Button
+              onClick={() => createFieldItem('access_instructions')}
+              marginBottom={2}
+            >
+              New Instruction
+            </Button>
+            {formik?.values?.access_instructions?.map((item, itemIndex) => {
+              return (
+                <Container key={itemIndex} marginBottom={4}>
+                  <Stack spacing={4}>
+                    {accessInstructionFields?.map(({key, ...rest}) => (
+                      <FormField
+                        key={`access_instructions[${itemIndex}][${key}]`}
+                        fieldKey={`access_instructions[${itemIndex}][${key}]`}
+                        formik={formik}
+                        {...rest}
+                      />
+                    ))}
+                    <Box>
+                      <Button
+                        onClick={() =>
+                          duplicateFieldItem('access_instructions', itemIndex)
+                        }
+                        mr={2}
+                        size="xs"
+                      >
+                        Duplicate
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          deleteFieldItem('access_instructions', itemIndex)
+                        }
+                        size="xs"
+                        variantColor="red"
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </Stack>
+                </Container>
+              );
+            })}
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack space={4}>

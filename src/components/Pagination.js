@@ -19,8 +19,9 @@ const Pagination = (props) => {
         disabled={isLastPage}
         onClick={getNextPage}
         icon="chevron-right"
+        marginRight={4}
       />
-      <Text>
+      <Text display="inline">
         Page {currentPage} of {totalPages}
       </Text>
     </Box>

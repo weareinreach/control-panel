@@ -1,4 +1,9 @@
 {
+  "accessInstructionFields": [
+    {"key": "access_type", "label": "Type"},
+    {"key": "access_value", "label": "Value", "type": "textarea"},
+    {"key": "instructions", "label": "Instructions"}
+  ],
   "emailFields": [
     {"key": "email", "label": "Email"},
     {"key": "title", "label": "Title"},
@@ -38,6 +43,7 @@
     {"key": "show_on_organization", "label": "Show on Org", "type": "checkbox"}
   ],
   "scheduleFields": [
+    {"key": "name", "label": "Name"},
     {"key": "monday_start", "label": "Monday Start"},
     {"key": "monday_end", "label": "Monday End"},
     {"key": "tuesday_start", "label": "Tuesday Start"},

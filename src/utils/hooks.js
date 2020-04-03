@@ -1,7 +1,7 @@
 import {get} from 'axios';
 import {useEffect, useState} from 'react';
 
-import {getAPIUrl} from './index';
+import {CATALOG_API_URL} from './index';
 
 /**
  * Fetch the catalog api for a single endpoint
@@ -11,7 +11,7 @@ import {getAPIUrl} from './index';
 export const useAPIGet = (endpoint) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const url = `${getAPIUrl()}${endpoint}`;
+  const url = `${CATALOG_API_URL}${endpoint}`;
   const fetchUrl = (fetchUrl) => {
     setLoading(true);
 
@@ -49,7 +49,7 @@ export const useMultipleAPIGet = (endpoints) => {
   const fetchUrls = (endpoints) => {
     const queryData = {};
     const requests = Object.keys(endpoints).map((key) => {
-      const url = `${getAPIUrl()}${endpoints[key]}`;
+      const url = `${CATALOG_API_URL}${endpoints[key]}`;
 
       console.log('GET:', url);
 

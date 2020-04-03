@@ -6,7 +6,7 @@ import NotFound from './NotFound';
 import FormService from '../components/FormService';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
-import {getAPIUrl} from '../utils';
+import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const ServiceFormPage = (props) => {
@@ -23,7 +23,7 @@ const ServiceFormPage = (props) => {
     window.location = `/organizations/${orgId}/services/${serviceId}`;
   };
   const onConfirmEdit = ({setLoading, setSuccess, setError, values}) => {
-    const url = `${getAPIUrl()}/organizations/${orgId}/services/${serviceId}`;
+    const url = `${CATALOG_API_URL}/organizations/${orgId}/services/${serviceId}`;
 
     setLoading();
     patch(url, values)
@@ -42,7 +42,7 @@ const ServiceFormPage = (props) => {
     setError,
     values,
   }) => {
-    const url = `${getAPIUrl()}/organizations/${orgId}/services`;
+    const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
 
     setLoading();
     post(url, values)

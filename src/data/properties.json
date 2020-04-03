@@ -3414,16 +3414,14 @@
       "description": "\"IF the opportunity is available to a specific age group, it should have the elig-age-or-over or elig-age-or-under with a numeric value for the years. For example, an opportunity that serves 18+ should have a property of elig-age-or-over with a value of 18."
     },
     {
-      "key": "elig-age-or-under (value = #)",
+      "key": "elig-age-or-under",
       "label": "Eligible Age or Under (e.g. age 25 and under)",
-      "description": "N/A",
-      "type": "checkbox"
+      "description": "N/A"
     },
     {
-      "key": "elig-age-range (value = # - #)",
+      "key": "elig-age-range",
       "label": "Eligible Age Range (e.g. ages 12-24)",
-      "description": "N/A",
-      "type": "checkbox"
+      "description": "N/A"
     },
     {
       "key": "req-photo-id",

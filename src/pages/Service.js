@@ -40,7 +40,7 @@ import {
   eligibilityRequirementProperties,
   languageProperties,
 } from '../data/properties.json';
-import {getAPIUrl} from '../utils';
+import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const Service = (props) => {
@@ -76,7 +76,7 @@ const Service = (props) => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
-        const url = `${getAPIUrl()}${servicePath}`;
+        const url = `${CATALOG_API_URL}${servicePath}`;
 
         console.log('DELETE:', url);
 

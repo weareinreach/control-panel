@@ -49,9 +49,8 @@ const Breadcrumbs = (props) => {
 };
 
 Breadcrumbs.propTypes = {
-  // description: PropTypes.string,
-  // title: PropTypes.string,
-  // type: PropTypes.string,
+  organization: PropTypes.shape(),
+  service: PropTypes.shape(),
 };
 
 export default Breadcrumbs;

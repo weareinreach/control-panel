@@ -16,6 +16,7 @@ const headers = [
   {key: 'updated_at', label: 'Last Updated'},
 ];
 
+// TODO: test this util
 const getQueryUrls = (query) => {
   const {name, page, properties} = query;
   let queryParam = '?';
@@ -52,7 +53,7 @@ const getQueryUrls = (query) => {
   };
 };
 
-const initialQuery = {page: 0, name: '', properties: ''};
+const initialQuery = {page: 1, name: '', properties: ''};
 
 const Organizations = () => {
   const {data, loading, fetchUrls} = useMultipleAPIGet(
@@ -67,10 +68,13 @@ const Organizations = () => {
     window.location = `/organizations/${org._id}/edit`;
   };
   const getLastPage = () => {
-    setQuery({...query, page: (query.page || 1) - 1});
+    setQuery({...query, page: query.page - 1});
   };
   const getNextPage = () => {
-    setQuery({...query, page: (query.page || 1) + 1});
+    setQuery({...query, page: query.page + 1});
+  };
+  const newQuery = (params) => {
+    setQuery({page: 1, ...params});
   };
 
   useEffect(() => {
@@ -118,14 +122,16 @@ const Organizations = () => {
                 </Box>
               </Container>
               <Pagination
-                getLastPage={query.page > 1 ? getLastPage : null}
-                getNextPage={count?.pages > query.page ? getNextPage : null}
+                currentPage={query?.page}
+                getLastPage={getLastPage}
+                getNextPage={getNextPage}
+                totalPages={count?.pages}
               />
             </>
           )}
         </Box>
         <Container height="fit-content">
-          <Filters query={query} updateQuery={setQuery} />
+          <Filters query={query} updateQuery={newQuery} />
         </Container>
       </Grid>
     </>

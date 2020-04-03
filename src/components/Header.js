@@ -8,7 +8,7 @@ import {ContextApp} from './ContextApp';
 import {ContextFormModal} from './ContextFormModal';
 import DropdownButton from './DropdownButton';
 import {Layout} from './styles';
-import {COOKIE_LOGIN, getAPIUrl} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN} from '../utils';
 
 const logOutUser = () => {
   Cookies.remove(COOKIE_LOGIN);
@@ -35,7 +35,7 @@ const Header = () => {
       header: `Change Password`,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        const url = `${getAPIUrl()}/users/${user._id}/password`;
+        const url = `${CATALOG_API_URL}/users/${user._id}/password`;
 
         if (!values.password) {
           return setError();

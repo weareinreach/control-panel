@@ -21,7 +21,7 @@ import {
   phoneFields,
   scheduleFields,
 } from '../data/fields.json';
-import {getAPIUrl} from '../utils';
+import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const Organization = (props) => {
@@ -60,7 +60,7 @@ const Organization = (props) => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
-        const url = `${getAPIUrl()}${orgPath}`;
+        const url = `${CATALOG_API_URL}${orgPath}`;
 
         console.log('DELETE:', url);
 
@@ -81,7 +81,7 @@ const Organization = (props) => {
       header: `Verify Information for ${name}`,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
-        const url = `${getAPIUrl()}${orgPath}`;
+        const url = `${CATALOG_API_URL}${orgPath}`;
 
         console.log('PATCH:', url);
 

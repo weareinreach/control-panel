@@ -6,7 +6,7 @@ import NotFound from './NotFound';
 import FormOrganization from '../components/FormOrganization';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
-import {getAPIUrl} from '../utils';
+import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const OrganizationFormPage = (props) => {
@@ -23,7 +23,7 @@ const OrganizationFormPage = (props) => {
     window.location = `/organizations/${orgId}`;
   };
   const onConfirmEdit = ({setLoading, setSuccess, setError, values}) => {
-    const url = `${getAPIUrl()}/organizations/${orgId}`;
+    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
 
     setLoading();
     patch(url, values)
@@ -42,7 +42,7 @@ const OrganizationFormPage = (props) => {
     setError,
     values,
   }) => {
-    const url = `${getAPIUrl()}/organizations`;
+    const url = `${CATALOG_API_URL}/organizations`;
 
     setLoading();
     post(url, values)

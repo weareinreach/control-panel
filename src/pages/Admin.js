@@ -9,7 +9,7 @@ import Loading from '../components/Loading';
 import Table from '../components/Table';
 import UnauthorizedPage from '../components/UnauthorizedPage';
 import {Container, SectionTitle, Title} from '../components/styles';
-import {getAPIUrl} from '../utils';
+import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
 const createAdminForm = {
@@ -39,7 +39,7 @@ const Admin = () => {
       header: 'New Data Manager',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        const url = `${getAPIUrl()}/users`;
+        const url = `${CATALOG_API_URL}/users`;
         const user = {...values, isDataManager: true, password: 'ac123'};
 
         setLoading();
@@ -78,7 +78,7 @@ const Admin = () => {
       header: 'Edit Data Manager',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+        const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
         patch(url, values)
@@ -102,7 +102,7 @@ const Admin = () => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
-        const url = `${getAPIUrl()}/users/${selectedManager._id}`;
+        const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
         patch(url, {isDataManager: false, isAdminDataManager: false})

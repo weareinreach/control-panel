@@ -6,7 +6,7 @@ import {Box, Button, Flex, Input, Stack} from '@chakra-ui/core';
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
 import {SectionTitle} from './styles';
-import {COOKIE_LOGIN, getAPIUrl} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN} from '../utils';
 import {useStatus, useInputChange} from '../utils/hooks';
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
   } = useStatus();
   const [password, setPassword] = useInputChange('');
   const loginUser = () => {
-    const url = `${getAPIUrl()}/auth`;
+    const url = `${CATALOG_API_URL}/auth`;
     const body = {email, password};
 
     setLoading();

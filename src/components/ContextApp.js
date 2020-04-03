@@ -4,7 +4,7 @@ import _isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, {createContext, useEffect, useState} from 'react';
 
-import {COOKIE_LOGIN, getAPIUrl} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN} from '../utils';
 
 export const ContextApp = createContext('app');
 
@@ -26,12 +26,12 @@ export const ContextAppProvider = (props) => {
       return setLoading(false);
     }
 
-    const url = `${getAPIUrl()}/auth/check`;
+    const url = `${CATALOG_API_URL}/auth/check`;
     const body = {token};
 
     post(url, body)
       .then(({data}) => {
-        const userUrl = `${getAPIUrl()}/users/${data._id}`;
+        const userUrl = `${CATALOG_API_URL}/users/${data._id}`;
 
         get(userUrl)
           .then(({data}) => {

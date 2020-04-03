@@ -2,11 +2,8 @@ import _reduce from 'lodash/reduce';
 
 import config from './config';
 
+export const CATALOG_API_URL = `${config.apiDomain}${config.apiBasePath}`;
 export const COOKIE_LOGIN = 'ac-cookie';
-
-export const getAPIUrl = () => {
-  return `${config.apiDomain}${config.apiBasePath}`;
-};
 
 const initialValueDict = {
   checkbox: false,

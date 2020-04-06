@@ -41,7 +41,10 @@ import {
   languageProperties,
 } from '../data/properties.json';
 import {CATALOG_API_URL} from '../utils';
+import config from '../utils/config';
 import {useAPIGet} from '../utils/hooks';
+
+const {catalogUrl} = config;
 
 const Service = (props) => {
   const {user} = useContext(ContextApp);
@@ -108,6 +111,11 @@ const Service = (props) => {
         <Alert title="This service is unpublished" type="warning" />
       )}
       <Box float="right">
+        <a
+          href={`${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`}
+        >
+          <Button marginRight={2}>View on Catalog</Button>
+        </a>
         <Link to={`${servicePath}/edit`}>
           <Button marginRight={2}>Edit Service</Button>
         </Link>

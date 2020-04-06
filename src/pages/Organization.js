@@ -22,7 +22,10 @@ import {
   scheduleFields,
 } from '../data/fields.json';
 import {CATALOG_API_URL} from '../utils';
+import config from '../utils/config';
 import {useAPIGet} from '../utils/hooks';
+
+const {catalogUrl} = config;
 
 const Organization = (props) => {
   const {user} = useContext(ContextApp);
@@ -112,6 +115,9 @@ const Organization = (props) => {
         <Alert title="This organization is unpublished" type="warning" />
       )}
       <Box float="right">
+        <a href={`${catalogUrl}/en_US/resource/${slug}`}>
+          <Button marginRight={2}>View on Catalog</Button>
+        </a>
         <Link to={`${orgPath}/edit`}>
           <Button marginRight={2}>Edit Organization</Button>
         </Link>

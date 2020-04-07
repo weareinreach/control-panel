@@ -1,10 +1,19 @@
 import _reduce from 'lodash/reduce';
+import _set from 'lodash/set';
 
 const initialValueDict = {
   checkbox: false,
   password: '',
   text: '',
 };
+
+/**
+ * Generate the slug of an item from its name
+ * @param  {String} name
+ * @return {String} slug
+ */
+export const generateSlug = (name) =>
+  name?.split(' ')?.join('-')?.toLowerCase() || '';
 
 /**
  * Clean the properties and convert all values to string
@@ -46,6 +55,10 @@ export const formatOrgInput = (orgInput) => {
     orgInput.properties = cleanProperties(orgInput.properties);
   }
 
+  if (!orgInput.slug) {
+    orgInput.slug = generateSlug(orgInput.name);
+  }
+
   return orgInput;
 };
 
@@ -58,6 +71,16 @@ export const formatServiceInput = (serviceInput) => {
   if (serviceInput.properties) {
     serviceInput.properties = cleanProperties(serviceInput.properties);
   }
+
+  // TODO: Temporarily comment out is_published functionality for services
+  serviceInput.is_published = true;
+
+  if (!serviceInput.slug) {
+    serviceInput.slug = generateSlug(serviceInput.name);
+  }
+
+  // We have to manuallly set since services are sub documents
+  serviceInput.updated_at = Date.now();
 
   return serviceInput;
 };
@@ -106,6 +129,26 @@ export const getOrgInitialValues = (initialValues) => {
 };
 
 export const getServiceInitialValues = (initialValues) => {
+  let tags = {};
+
+  if (initialValues?.tags) {
+    tags = _reduce(
+      initialValues?.tags,
+      (result, tags, country) => {
+        if (Array.isArray(tags)) {
+          tags.forEach((tag) => {
+            _set(result, `${country}.${tag}`, true);
+          });
+        } else {
+          result[country] = tags;
+        }
+
+        return result;
+      },
+      {}
+    );
+  }
+
   return {
     access_instructions: initialValues?.access_instructions || [],
     description: initialValues?.description || '',
@@ -118,6 +161,6 @@ export const getServiceInitialValues = (initialValues) => {
     schedule_id: initialValues?.schedule_id || '',
     services: initialValues?.services || [],
     slug: initialValues?.slug || '',
-    tags: initialValues?.tags || [],
+    tags,
   };
 };

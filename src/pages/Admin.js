@@ -200,12 +200,13 @@ const AdminPanelUsers = (props) => {
       <Container>
         <Table
           headers={[
-            {key: 'email', label: 'Email'},
             {key: 'name', label: 'Name'},
+            {key: 'email', label: 'Email'},
             {
               key: 'catalogType',
               label: 'Type',
             },
+            {key: 'created_at', label: 'Created At'},
           ]}
           rows={data?.users}
         />

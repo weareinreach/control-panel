@@ -3461,12 +3461,11 @@
     }
   ],
   "languageProperties": [
-    {"key": "lang-Albanian", "label": "lang-Albanian", "type": "checkbox"},
     {
       "key": "lang-all-languages-by-interpreter",
-      "label": "lang-all-languages-by-interpreter",
-      "type": "checkbox"
+      "label": "lang-all-languages-by-interpreter"
     },
+    {"key": "lang-Albanian", "label": "lang-Albanian", "type": "checkbox"},
     {
       "key": "lang-american-sign-language",
       "label": "lang-american-sign-language",

@@ -147,8 +147,7 @@ const Service = (props) => {
                     {key: 'ID', value: _id},
                     {key: 'Description', value: description},
                     {key: 'Slug', value: slug},
-                    // TODO:
-                    // Temporarily comment out is_published functionality for services
+                    // TODO: Temporarily comment out is_published functionality for services
                     // Add back into fields.json to make it editable again
                     // {key: 'Is Published', value: is_published},
                     {key: 'Updated At', value: updated_at},

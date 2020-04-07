@@ -15,7 +15,7 @@ const App = () => {
       <ErrorBoundary>
         <ContextAppProvider>
           <ContextFormModalProvider>
-            <Router forceRefresh={true}>
+            <Router>
               <Header />
               <Routes />
             </Router>

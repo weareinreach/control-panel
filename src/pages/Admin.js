@@ -1,6 +1,16 @@
 import {patch, post} from 'axios';
 import React, {useContext} from 'react';
-import {Box, Button} from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Stack,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Text,
+} from '@chakra-ui/core';
 
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
@@ -29,8 +39,7 @@ const createAdminForm = {
   },
 };
 
-const Admin = () => {
-  const {user} = useContext(ContextApp);
+const AdminPanelManagers = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {data, loading} = useAPIGet(`/users?isDataManager=true`);
   const openCreateModal = () =>
@@ -56,8 +65,6 @@ const Admin = () => {
       },
     });
   const openEditModal = (selectedManager) => {
-    console.log('openEditModal selectedManager', selectedManager);
-
     const form = {
       name: {
         ...createAdminForm.name,
@@ -95,8 +102,6 @@ const Admin = () => {
     });
   };
   const openRemoveModal = (selectedManager) => {
-    console.log('openRemoveModal selectedManager', selectedManager);
-
     return openModal({
       header: 'Remove Data Manager',
       isAlert: true,
@@ -123,19 +128,13 @@ const Admin = () => {
     return <Loading />;
   }
 
-  if (!user?.isAdminDataManager) {
-    return <UnauthorizedPage />;
-  }
-
   return (
     <>
-      <Helmet title="Admin" />
       <Box float="right">
         <Button onClick={openCreateModal}>New Manager</Button>
       </Box>
-      <Title>Admin</Title>
+      <Title>Data Managers</Title>
       <Container>
-        <SectionTitle>Data Managers</SectionTitle>
         <Table
           actions={[
             {label: 'Edit', onClick: openEditModal},
@@ -153,6 +152,96 @@ const Admin = () => {
           rows={data?.users}
         />
       </Container>
+    </>
+  );
+};
+
+const AdminPanelSuggestions = (props) => {
+  const {data, loading} = useAPIGet(`/organizations?pending=true`);
+  const openOrganization = (organization) => {
+    window.location = `/organizations/${organization._id}`;
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      <Title>Suggestions</Title>
+      <Stack spacing={4}>
+        <Container>
+          <SectionTitle>Organizations</SectionTitle>
+          {data?.organizations?.length > 0 ? (
+            <Table
+              actions={[{label: 'View', onClick: openOrganization}]}
+              headers={[{key: 'name', label: 'Name'}]}
+              rows={data?.organizations}
+            />
+          ) : (
+            <Text>No suggested organizations at this time</Text>
+          )}
+        </Container>
+      </Stack>
+    </>
+  );
+};
+
+const AdminPanelUsers = (props) => {
+  const {data, loading} = useAPIGet(`/users`);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      <Title>Users</Title>
+      <Container>
+        <Table
+          headers={[
+            {key: 'email', label: 'Email'},
+            {key: 'name', label: 'Name'},
+            {
+              key: 'catalogType',
+              label: 'Type',
+            },
+          ]}
+          rows={data?.users}
+        />
+      </Container>
+    </>
+  );
+};
+
+const Admin = () => {
+  const {user} = useContext(ContextApp);
+
+  if (!user?.isAdminDataManager) {
+    return <UnauthorizedPage />;
+  }
+
+  return (
+    <>
+      <Helmet title="Admin" />
+      <Tabs>
+        <TabList marginBottom={4}>
+          <Tab>Data Managers</Tab>
+          <Tab>Users</Tab>
+          <Tab>Suggestions</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <AdminPanelManagers />
+          </TabPanel>
+          <TabPanel>
+            <AdminPanelUsers />
+          </TabPanel>
+          <TabPanel>
+            <AdminPanelSuggestions />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   );
 };

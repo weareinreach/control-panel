@@ -20,6 +20,7 @@ import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import FormOrganizationInfo from '../components/FormOrganizationInfo';
+import FormProperties from '../components/FormProperties';
 import FormTags from '../components/FormTags';
 import Helmet from '../components/Helmet';
 import ListProperties, {
@@ -222,12 +223,13 @@ const Service = (props) => {
       onConfirm: updateListField('access_instructions'),
     });
   };
-  const openNewProperties = () =>
+  const openEditProperties = () =>
     openModal({
-      form: {initialValues: {}},
+      children: FormProperties,
+      form: {initialValues: {properties}},
       header: 'Edit Properties',
       onClose: closeModal,
-      onConfirm: updateListField('access_instructions', {isDelete: true}),
+      onConfirm: updateFields,
     });
   const openEditTags = (country) => () =>
     openModal({
@@ -382,7 +384,7 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack space={4}>
               <Box {...buttonGroupProps} float="none" textAlign="right">
-                <Button onClick={openNewProperties}>Edit Properties</Button>
+                <Button onClick={openEditProperties}>Edit Properties</Button>
               </Box>
               <Container>
                 <SectionTitle>Cost Properties</SectionTitle>

@@ -20,7 +20,17 @@ import {buildForm} from '../utils/forms';
 import {useStatus} from '../utils/hooks';
 
 const FormModal = (props) => {
-  const {children, form, header, isAlert, isOpen, onClose, onConfirm} = props;
+  const {
+    children,
+    childrenProps,
+    form,
+    header,
+    isAlert,
+    isOpen,
+    onClose,
+    onConfirm,
+    size = 'lg',
+  } = props;
   const {
     isError,
     isLoading,
@@ -29,13 +39,16 @@ const FormModal = (props) => {
     setLoading,
     setSuccess,
   } = useStatus();
-  const {initialValues, inputs} = buildForm(form);
+  const {fields, initialValues} = buildForm(form);
   const onSubmit = (values) =>
     onConfirm({setLoading, setSuccess, setError, values});
   const formik = useFormik({initialValues, onSubmit});
+  const updateField = (field, value) => {
+    formik.setFieldValue(field, value);
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size={size}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{header}</ModalHeader>
@@ -53,8 +66,8 @@ const FormModal = (props) => {
             {isAlert && (
               <Text>Are you sure? You can't undo this action afterwards.</Text>
             )}
-            {children}
-            {inputs?.map(({key, ...rest}) => {
+            {children && children({...childrenProps, formik, updateField})}
+            {fields?.map(({key, ...rest}) => {
               return (
                 <FormField key={key} fieldKey={key} formik={formik} {...rest} />
               );
@@ -84,12 +97,14 @@ FormModal.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  childrenProps: PropTypes.shape(),
   form: PropTypes.shape(),
   header: PropTypes.string,
   isAlert: PropTypes.bool,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
+  size: PropTypes.string,
 };
 
 export default FormModal;

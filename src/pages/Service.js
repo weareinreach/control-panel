@@ -1,7 +1,7 @@
-import {delete as httpDelete} from 'axios';
+import {delete as httpDelete, patch, post} from 'axios';
+import _memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
 import {
   Box,
   Button,
@@ -19,19 +19,22 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
+import FormOrganizationInfo from '../components/FormOrganizationInfo';
+import FormTags from '../components/FormTags';
 import Helmet from '../components/Helmet';
 import ListProperties, {
   ListServiceArea,
-  ListItems,
+  ListTags,
 } from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {
+  accessInstructionFields,
   emailFields,
   locationFields,
   phoneFields,
-  scheduleFields,
+  serviceDetailsFields,
 } from '../data/fields.json';
 import {
   additionalInformationProperties,
@@ -40,18 +43,34 @@ import {
   eligibilityRequirementProperties,
   languageProperties,
 } from '../data/properties.json';
-import {CATALOG_API_URL} from '../utils';
+import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
+import {formatServiceInput, formatTags} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
+
+const buttonGroupProps = {
+  marginBottom: 4,
+  float: ' right',
+};
+
+const countryLabels = {
+  canada: 'Canada',
+  mexico: 'Mexico',
+  united_states: 'United States',
+};
+
+const findItem = _memoize(
+  (list, _id) => list?.find((item) => item._id === _id) || null
+);
 
 const Service = (props) => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {orgId, serviceId} = props?.match?.params;
   const servicePath = `/organizations/${orgId}/services/${serviceId}`;
-  const {data, loading} = useAPIGet(servicePath);
+  const {data: service, loading} = useAPIGet(servicePath);
   const {
     _id,
     access_instructions,
@@ -68,12 +87,60 @@ const Service = (props) => {
     slug,
     tags: serviceTags,
     updated_at,
-  } = data || {};
-  const email = email_id && organization?.phones?.[email_id];
-  const location = location_id && organization?.emails?.[location_id];
-  const phone = phone_id && organization?.schedules?.[phone_id];
-  const schedule = schedule_id && organization?.locations?.[schedule_id];
-  const openModalDelete = () =>
+  } = service || {};
+  const email = findItem(organization?.emails, email_id);
+  const location = findItem(organization?.locations, location_id);
+  const phone = findItem(organization?.phones, phone_id);
+  const schedule = findItem(organization?.schedules, schedule_id);
+  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+    const url = `${CATALOG_API_URL}${servicePath}`;
+    const updatedService = formatServiceInput({...service, ...values});
+
+    setLoading();
+    patch(url, updatedService)
+      .then(({data}) => {
+        setSuccess();
+        window.location = servicePath;
+      })
+      .catch((err) => {
+        setError();
+        console.error(err);
+      });
+  };
+  const updateListField = (key, options) => ({
+    setLoading,
+    setSuccess,
+    setError,
+    values,
+  }) => {
+    const {isDelete, isEdit} = options || {};
+    const newField = [...(service?.[key] || [])];
+    const {_id, ...restValues} = values;
+    const itemIndex = newField.findIndex((item) => item._id === _id);
+    const isExistingItem = _id && itemIndex !== -1;
+
+    if (isEdit) {
+      if (isExistingItem) {
+        newField[itemIndex] = {...newField[itemIndex], ...restValues};
+      }
+    } else if (isDelete) {
+      if (isExistingItem) {
+        newField.splice(itemIndex, 1);
+      }
+    } else {
+      newField.push(restValues);
+    }
+
+    updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
+  };
+  const openDetailsEdit = () =>
+    openModal({
+      form: {fields: serviceDetailsFields, initialValues: service},
+      header: 'DetailsEdit',
+      onClose: closeModal,
+      onConfirm: updateFields,
+    });
+  const openServiceDelete = () =>
     openModal({
       header: `Delete ${name}`,
       isAlert: true,
@@ -87,7 +154,7 @@ const Service = (props) => {
         httpDelete(url)
           .then(() => {
             setSuccess();
-            window.location = '/organizations';
+            window.location = `/organizations/${orgId}`;
           })
           .catch((err) => {
             setError();
@@ -95,12 +162,88 @@ const Service = (props) => {
           });
       },
     });
+  const openServiceDuplicate = () =>
+    openModal({
+      form: {fields: [{key: 'name', label: 'name'}]},
+      header: 'Duplicate Organization',
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
+
+        setLoading();
+        post(url, values)
+          .then(() => {
+            setSuccess();
+            window.location = `/organizations/${orgId}`;
+          })
+          .catch((err) => {
+            setError();
+            console.error(err);
+          });
+      },
+    });
+  const openEditOrgField = (field, list) => () =>
+    openModal({
+      children: FormOrganizationInfo,
+      childrenProps: {field, fieldValue: service[field], list},
+      header: `Add field to ${name}`,
+      onClose: closeModal,
+      onConfirm: updateFields,
+    });
+  const openAccessForm = ({isDelete, isDuplicate, isEdit} = {}) => (
+    instruction
+  ) => {
+    if (isDelete) {
+      return openModal({
+        form: {initialValues: instruction},
+        header: 'Delete Access Information',
+        isAlert: true,
+        onClose: closeModal,
+        onConfirm: updateListField('access_instructions', {isDelete: true}),
+      });
+    }
+
+    if (isEdit) {
+      return openModal({
+        form: {fields: accessInstructionFields, initialValues: instruction},
+        header: 'Edit Access Information',
+        onClose: closeModal,
+        onConfirm: updateListField('access_instructions', {isEdit: true}),
+      });
+    }
+
+    return openModal({
+      form: {
+        fields: accessInstructionFields,
+        initialValues: isDuplicate ? instruction : {},
+      },
+      header: 'New Access Information',
+      onClose: closeModal,
+      onConfirm: updateListField('access_instructions'),
+    });
+  };
+  const openNewProperties = () =>
+    openModal({
+      form: {initialValues: {}},
+      header: 'Edit Properties',
+      onClose: closeModal,
+      onConfirm: updateListField('access_instructions', {isDelete: true}),
+    });
+  const openEditTags = (country) => () =>
+    openModal({
+      children: FormTags,
+      childrenProps: {country},
+      form: {initialValues: {tags: formatTags(serviceTags)}},
+      header: `Edit ${countryLabels[country]} Tags`,
+      onClose: closeModal,
+      onConfirm: updateFields,
+    });
 
   if (loading) {
     return <Loading />;
   }
 
-  if (!data) {
+  if (!service) {
     return <NotFound />;
   }
 
@@ -116,20 +259,17 @@ const Service = (props) => {
         >
           <Button marginRight={2}>View on Catalog</Button>
         </a>
-        <Link to={`${servicePath}/edit`}>
-          <Button marginRight={2}>Edit Service</Button>
-        </Link>
         <DropdownButton
           buttonText="More"
           items={[
-            {href: `${servicePath}/duplicate`, text: 'Duplicate'},
+            {onClick: openServiceDuplicate, text: 'Duplicate'},
             ...(user.isAdminDataManager
-              ? [{onClick: openModalDelete, text: 'Delete'}]
+              ? [{onClick: openServiceDelete, text: 'Delete'}]
               : []),
           ]}
         />
       </Box>
-      <Breadcrumbs organization={organization} service={data} />
+      <Breadcrumbs organization={organization} service={service} />
       <Title>{name}</Title>
       <Tabs marginTop={6}>
         <TabList>
@@ -141,6 +281,9 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
               <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openDetailsEdit}>Edit Details</Button>
+                </Box>
                 <SectionTitle>Service Details</SectionTitle>
                 <KeyValueTable
                   rows={[
@@ -156,6 +299,9 @@ const Service = (props) => {
                 />
               </Container>
               <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openAccessForm()}>New Instructions</Button>
+                </Box>
                 <SectionTitle>Access Instructions</SectionTitle>
                 <Table
                   headers={[
@@ -164,36 +310,80 @@ const Service = (props) => {
                     {key: 'instructions', label: 'Instructions'},
                   ]}
                   rows={access_instructions}
+                  actions={[
+                    {label: 'Edit', onClick: openAccessForm({isEdit: true})},
+                    {
+                      label: 'Duplicate',
+                      onClick: openAccessForm({isDuplicate: true}),
+                    },
+                    {
+                      label: 'Delete',
+                      onClick: openAccessForm({isDelete: true}),
+                    },
+                  ]}
                 />
               </Container>
-              {location ? (
-                <Container>
-                  <SectionTitle>Address</SectionTitle>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button
+                    onClick={openEditOrgField(
+                      'location_id',
+                      organization?.locations
+                    )}
+                  >
+                    Edit Address
+                  </Button>
+                </Box>
+                <SectionTitle>Address</SectionTitle>
+                {location && (
                   <Table headers={locationFields} rows={[location]} />
-                </Container>
-              ) : null}
-              {schedule ? (
-                <Container>
-                  <SectionTitle>Schedule</SectionTitle>
-                  <Table headers={scheduleFields} rows={[schedule]} />
-                </Container>
-              ) : null}
-              {email ? (
-                <Container>
-                  <SectionTitle>Email</SectionTitle>
-                  <Table headers={emailFields} rows={[email]} />
-                </Container>
-              ) : null}
-              {phone ? (
-                <Container>
-                  <SectionTitle>Phone</SectionTitle>
-                  <Table headers={phoneFields} rows={[phone]} />
-                </Container>
-              ) : null}
+                )}
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button
+                    onClick={openEditOrgField(
+                      'schedule_id',
+                      organization?.schedules
+                    )}
+                  >
+                    Edit Schedule
+                  </Button>
+                </Box>
+                <SectionTitle>Schedule</SectionTitle>
+                {schedule && (
+                  <Table headers={scheduleHeaders} rows={[schedule]} />
+                )}
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button
+                    onClick={openEditOrgField('email_id', organization?.emails)}
+                  >
+                    Edit Email
+                  </Button>
+                </Box>
+                <SectionTitle>Email</SectionTitle>
+                {email && <Table headers={emailFields} rows={[email]} />}
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button
+                    onClick={openEditOrgField('phone_id', organization?.phones)}
+                  >
+                    Edit Phone
+                  </Button>
+                </Box>
+                <SectionTitle>Phone</SectionTitle>
+                {phone && <Table headers={phoneFields} rows={[phone]} />}
+              </Container>
             </Stack>
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack space={4}>
+              <Box {...buttonGroupProps} float="none" textAlign="right">
+                <Button onClick={openNewProperties}>Edit Properties</Button>
+              </Box>
               <Container>
                 <SectionTitle>Cost Properties</SectionTitle>
                 <ListProperties list={costProperties} properties={properties} />
@@ -237,21 +427,32 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
               <Container>
-                <SectionTitle>United States</SectionTitle>
-                {serviceTags?.united_states?.length > 0 ? (
-                  <ListItems items={serviceTags?.united_states} />
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openEditTags('united_states')}>
+                    Edit Tags
+                  </Button>
+                </Box>
+                <SectionTitle>United States Tags</SectionTitle>
+                {serviceTags?.united_states ? (
+                  <ListTags items={serviceTags.united_states} />
                 ) : null}
               </Container>
               <Container>
-                <SectionTitle>Canada</SectionTitle>
-                {serviceTags?.canada?.length > 0 ? (
-                  <ListItems items={serviceTags?.canada} />
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openEditTags('canada')}>Edit Tags</Button>
+                </Box>
+                <SectionTitle>Canada Tags</SectionTitle>
+                {serviceTags?.canada ? (
+                  <ListTags items={serviceTags.canada} />
                 ) : null}
               </Container>
               <Container>
-                <SectionTitle>Mexico</SectionTitle>
-                {serviceTags?.mexico?.length > 0 ? (
-                  <ListItems items={serviceTags?.mexico} />
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openEditTags('mexico')}>Edit Tags</Button>
+                </Box>
+                <SectionTitle>Mexico Tags</SectionTitle>
+                {serviceTags?.mexico ? (
+                  <ListTags items={serviceTags.mexico} />
                 ) : null}
               </Container>
             </Stack>

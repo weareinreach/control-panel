@@ -8,6 +8,7 @@ import {ContextApp} from './ContextApp';
 import {ContextFormModal} from './ContextFormModal';
 import DropdownButton from './DropdownButton';
 import {Layout} from './styles';
+import {passwordFields} from '../data/fields.json';
 import {CATALOG_API_URL, COOKIE_LOGIN} from '../utils';
 
 const logOutUser = () => {
@@ -19,19 +20,12 @@ const logOutUser = () => {
   }, 250);
 };
 
-const passwordForm = {
-  password: {
-    placeholder: 'Enter your new password',
-    type: 'password',
-  },
-};
-
 const Header = () => {
   const {hasUser, user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const openPasswordModal = () =>
     openModal({
-      form: passwordForm,
+      form: {fields: passwordFields},
       header: `Change Password`,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {

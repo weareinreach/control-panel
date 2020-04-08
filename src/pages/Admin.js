@@ -19,32 +19,16 @@ import Loading from '../components/Loading';
 import Table from '../components/Table';
 import UnauthorizedPage from '../components/UnauthorizedPage';
 import {Container, SectionTitle, Title} from '../components/styles';
+import {adminFields} from '../data/fields.json';
 import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
-
-const createAdminForm = {
-  name: {
-    label: 'Name',
-    placeholder: "Enter the manager's name",
-    type: 'text',
-  },
-  email: {
-    label: 'Email',
-    placeholder: "Enter the manager's email",
-    type: 'text',
-  },
-  isAdminDataManager: {
-    label: 'Admin Data Manager',
-    type: 'checkbox',
-  },
-};
 
 const AdminPanelManagers = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const {data, loading} = useAPIGet(`/users?isDataManager=true`);
   const openCreateModal = () =>
     openModal({
-      form: createAdminForm,
+      form: {fields: adminFields},
       header: 'New Data Manager',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
@@ -64,24 +48,16 @@ const AdminPanelManagers = (props) => {
           });
       },
     });
-  const openEditModal = (selectedManager) => {
-    const form = {
-      name: {
-        ...createAdminForm.name,
-        initialValue: selectedManager?.name,
+  const openEditModal = (selectedManager) =>
+    openModal({
+      form: {
+        fields: adminFields,
+        initialValues: {
+          name: selectedManager?.name,
+          email: selectedManager?.email,
+          isAdminDataManager: selectedManager?.isAdminDataManager,
+        },
       },
-      email: {
-        ...createAdminForm.email,
-        initialValue: selectedManager?.email,
-      },
-      isAdminDataManager: {
-        ...createAdminForm.isAdminDataManager,
-        initialValue: selectedManager?.isAdminDataManager,
-      },
-    };
-
-    return openModal({
-      form,
       header: 'Edit Data Manager',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
@@ -100,9 +76,8 @@ const AdminPanelManagers = (props) => {
           });
       },
     });
-  };
-  const openRemoveModal = (selectedManager) => {
-    return openModal({
+  const openRemoveModal = (selectedManager) =>
+    openModal({
       header: 'Remove Data Manager',
       isAlert: true,
       onClose: closeModal,
@@ -122,7 +97,6 @@ const AdminPanelManagers = (props) => {
           });
       },
     });
-  };
 
   if (loading) {
     return <Loading />;

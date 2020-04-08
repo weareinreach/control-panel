@@ -87,7 +87,9 @@ const Table = (props) => {
               {headers?.map(({key, getValue}, keyIndex) => {
                 let value = row?.[key];
 
-                if (value === true) {
+                if (getValue) {
+                  value = getValue(row);
+                } else if (value === true) {
                   value = 'YES';
                 } else if (value === false) {
                   value = 'NO';

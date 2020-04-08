@@ -4,6 +4,23 @@
     {"key": "access_value", "label": "Value", "type": "textarea"},
     {"key": "instructions", "label": "Instructions"}
   ],
+  "adminFields": [
+    {
+      "key": "name",
+      "label": "Name",
+      "placeholder": "Enter the manager's name"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "placeholder": "Enter the manager's email"
+    },
+    {
+      "key": "isAdminDataManager",
+      "label": "Admin Data Manager",
+      "type": "checkbox"
+    }
+  ],
   "emailFields": [
     {"key": "email", "label": "Email"},
     {"key": "title", "label": "Title"},
@@ -31,6 +48,13 @@
     {"key": "description", "label": "Description", "type": "textarea"},
     {"key": "alert_message", "label": "Alert Message", "type": "textarea"},
     {"key": "is_published", "label": "Is Published", "type": "checkbox"}
+  ],
+  "passwordFields": [
+    {
+      "key": "password",
+      "placeholder": "Enter your new password",
+      "type": "password"
+    }
   ],
   "phoneFields": [
     {

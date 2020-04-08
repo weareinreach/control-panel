@@ -1,7 +1,7 @@
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Checkbox, Stack, Text} from '@chakra-ui/core';
+import {Checkbox, Divider, Stack, Text} from '@chakra-ui/core';
 
 const noChange = () => null;
 
@@ -27,7 +27,7 @@ const ListProperties = (props) => {
           }
 
           return (
-            <Text>
+            <Text key={key}>
               {key}: {value}
             </Text>
           );
@@ -65,20 +65,33 @@ ListServiceArea.propTypes = {
   properties: PropTypes.shape({}),
 };
 
-export const ListItems = (props) => {
+export const ListTags = (props) => {
   const {items} = props;
+  const renderList = (list) => {
+    return _map(list, (value, key) => {
+      if (typeof value === 'object') {
+        return (
+          <div key={key}>
+            <Divider marginBottom={4} />
+            <Text>{key}</Text>
+            {renderList(value)}
+          </div>
+        );
+      }
 
-  return _map(items, (item) => {
-    return (
-      <div key={item}>
-        <Checkbox isChecked onChange={noChange}>
-          {item}
-        </Checkbox>
-      </div>
-    );
-  });
+      return (
+        <div key={key}>
+          <Checkbox isChecked onChange={noChange}>
+            {key}
+          </Checkbox>
+        </div>
+      );
+    });
+  };
+
+  return renderList(items);
 };
 
-ListItems.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.string),
+ListTags.propTypes = {
+  items: PropTypes.shape({}),
 };

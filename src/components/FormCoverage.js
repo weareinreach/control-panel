@@ -1,25 +1,30 @@
 import _omit from 'lodash/omit';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {Checkbox, Select, Stack} from '@chakra-ui/core';
 
 import {areaCoverageProperties} from '../data/properties.json';
 
-const ServiceAreaCoverage = (props) => {
-  const {handleUpdate, properties = {}} = props;
+const FormCoverage = (props) => {
+  const {properties: initialProperties = {}, updateField} = props;
+  const [properties, setProperties] = useState(initialProperties);
   const propertyKeys = Object.keys(properties).filter((key) =>
     key.includes('service-')
   );
+  const updateProperties = (value) => {
+    updateField('properties', value);
+    setProperties(value);
+  };
   const handleSelect = (ev) => {
     const value = ev.target.value;
+    const newProperties = {...properties, [value]: 'true'};
 
-    handleUpdate({
-      ...properties,
-      [value]: 'true',
-    });
+    updateProperties(newProperties);
   };
   const removeProperty = (property) => {
-    handleUpdate(_omit(properties, [property]));
+    const newProperties = _omit(properties, [property]);
+
+    updateProperties(newProperties);
   };
 
   return (
@@ -49,9 +54,9 @@ const ServiceAreaCoverage = (props) => {
   );
 };
 
-ServiceAreaCoverage.propTypes = {
-  handleUpdate: PropTypes.func,
+FormCoverage.propTypes = {
   properties: PropTypes.object,
+  updateField: PropTypes.func,
 };
 
-export default ServiceAreaCoverage;
+export default FormCoverage;

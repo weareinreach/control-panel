@@ -91,10 +91,12 @@ export const formatServiceInput = (serviceInput) => {
  * @return {Object} The initial values and a list of input configs
  */
 export const buildForm = (form = {}) => {
+  const {fields = [], initialValues = {}} = form;
+
   return _reduce(
-    form,
-    (values, {initialValue, ...inputInfo}, key) => {
-      values.initialValues[key] = initialValue;
+    fields,
+    (values, {key, ...inputInfo}) => {
+      values.initialValues[key] = initialValues[key];
 
       // Apply the defaut if we still don't have a value
       if (
@@ -104,63 +106,28 @@ export const buildForm = (form = {}) => {
         values.initialValues[key] = initialValueDict?.[inputInfo?.type];
       }
 
-      values.inputs.push({...inputInfo, key});
+      values.fields.push({key, ...inputInfo});
 
       return values;
     },
-    {initialValues: {}, inputs: []}
+    {initialValues, fields: []}
   );
 };
 
-export const getOrgInitialValues = (initialValues) => {
-  return {
-    alert_message: initialValues?.alert_message || '',
-    description: initialValues?.description || '',
-    emails: initialValues?.emails || [],
-    is_published: initialValues?.is_published || false,
-    locations: initialValues?.locations || [],
-    name: initialValues?.name || '',
-    phones: initialValues?.phones || [],
-    properties: initialValues?.properties || {},
-    schedules: initialValues?.schedules || [],
-    slug: initialValues?.slug || '',
-    website: initialValues?.website || '',
-  };
-};
-
-export const getServiceInitialValues = (initialValues) => {
-  let tags = {};
-
-  if (initialValues?.tags) {
-    tags = _reduce(
-      initialValues?.tags,
-      (result, tags, country) => {
-        if (Array.isArray(tags)) {
-          tags.forEach((tag) => {
-            _set(result, `${country}.${tag}`, true);
-          });
-        } else {
-          result[country] = tags;
-        }
-
-        return result;
-      },
-      {}
-    );
-  }
-
-  return {
-    access_instructions: initialValues?.access_instructions || [],
-    description: initialValues?.description || '',
-    email_id: initialValues?.email_id || '',
-    is_published: initialValues?.is_published || false,
-    location_id: initialValues?.location_id || '',
-    name: initialValues?.name || '',
-    phone_id: initialValues?.phone_id || '',
-    properties: initialValues?.properties || {},
-    schedule_id: initialValues?.schedule_id || '',
-    services: initialValues?.services || [],
-    slug: initialValues?.slug || '',
+export const formatTags = (tags) => {
+  return _reduce(
     tags,
-  };
+    (result, tags, country) => {
+      if (Array.isArray(tags)) {
+        tags.forEach((tag) => {
+          _set(result, `${country}.${tag}`, true);
+        });
+      } else {
+        result[country] = tags;
+      }
+
+      return result;
+    },
+    {}
+  );
 };

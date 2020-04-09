@@ -19,6 +19,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
+import FormCoverage from '../components/FormCoverage';
 import FormOrganizationInfo from '../components/FormOrganizationInfo';
 import FormProperties from '../components/FormProperties';
 import FormTags from '../components/FormTags';
@@ -134,6 +135,14 @@ const Service = (props) => {
 
     updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
   };
+  const openCoverageEdit = () =>
+    openModal({
+      children: FormCoverage,
+      childrenProps: {properties},
+      header: 'CoverageEdit',
+      onClose: closeModal,
+      onConfirm: updateFields,
+    });
   const openDetailsEdit = () =>
     openModal({
       form: {fields: serviceDetailsFields, initialValues: service},
@@ -379,6 +388,13 @@ const Service = (props) => {
                 <SectionTitle>Phone</SectionTitle>
                 {phone && <Table headers={phoneFields} rows={[phone]} />}
               </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openCoverageEdit}>Edit Coverage</Button>
+                </Box>
+                <SectionTitle>Service Area Coverage</SectionTitle>
+                <ListServiceArea properties={properties} />
+              </Container>
             </Stack>
           </TabPanel>
           <TabPanel marginTop={2}>
@@ -412,10 +428,6 @@ const Service = (props) => {
                   list={languageProperties}
                   properties={properties}
                 />
-              </Container>
-              <Container>
-                <SectionTitle>Service Area Coverage</SectionTitle>
-                <ListServiceArea properties={properties} />
               </Container>
               <Container>
                 <SectionTitle>Additional Information Properties</SectionTitle>

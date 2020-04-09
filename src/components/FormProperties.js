@@ -66,14 +66,6 @@ const FormTags = (props) => {
         ))}
       </Stack>
       <Divider />
-      <SectionTitle>Service Area Properties</SectionTitle>
-      <Stack space={4}>
-        {/* <ServiceAreaCoverage
-          handleUpdate={updateField('properties')}
-          properties={formik?.values?.properties}
-        /> */}
-      </Stack>
-      <Divider />
       <SectionTitle>Additional Information Properties</SectionTitle>
       <Stack space={4}>
         {additionalInformationProperties.map(({key, ...rest}) => (

@@ -31,18 +31,45 @@ export const cleanProperties = (properties) => {
           break;
         case 'boolean':
         case 'number':
-          value.toString();
+          value = value.toString();
           break;
         default:
           value = '';
       }
 
-      result[key] = value;
+      if (value === 'true') {
+        result[key] = value;
+      }
 
       return result;
     },
     {}
   );
+};
+
+/**
+ * Loop through the tabs and their nested objects and set values to true
+ * @param  {Object} tags
+ * @return {Object} Cleaned object
+ */
+export const cleanTags = (tags) => {
+  const nestedReduce = (tagObject) => {
+    return _reduce(
+      tagObject,
+      (result, value, key) => {
+        if (typeof value === 'object') {
+          result[key] = nestedReduce(value);
+        } else if (value === true || value === 'true') {
+          result[key] = 'true';
+        }
+
+        return result;
+      },
+      {}
+    );
+  };
+
+  return nestedReduce(tags);
 };
 
 /**
@@ -70,6 +97,10 @@ export const formatOrgInput = (orgInput) => {
 export const formatServiceInput = (serviceInput) => {
   if (serviceInput.properties) {
     serviceInput.properties = cleanProperties(serviceInput.properties);
+  }
+
+  if (serviceInput.tags) {
+    serviceInput.tags = cleanTags(serviceInput.tags);
   }
 
   // TODO: Temporarily comment out is_published functionality for services
@@ -114,6 +145,9 @@ export const buildForm = (form = {}) => {
   );
 };
 
+/**
+ * Convert tags that might be an {} of arrays to {} of objects
+ */
 export const formatTags = (tags) => {
   return _reduce(
     tags,

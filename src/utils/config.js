@@ -20,5 +20,5 @@ const env = process.env.REACT_APP_APP_ENV;
 export default {
   ...base,
   ...(env === 'local' ? local : {}),
-  ...(env === 'prod' ? prod : {}),
+  ...(env === 'production' ? prod : {}),
 };

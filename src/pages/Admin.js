@@ -115,8 +115,8 @@ const AdminPanelManagers = (props) => {
             {label: 'Remove', onClick: openRemoveModal},
           ]}
           headers={[
-            {key: 'email', label: 'Email'},
             {key: 'name', label: 'Name'},
+            {key: 'email', label: 'Email'},
             {
               key: 'isAdminDataManager',
               label: 'Is Admin',

@@ -3397,8 +3397,8 @@
   ],
   "eligibilityRequirementProperties": [
     {
-      "key": "has-confidentiality-policy",
-      "label": "elig-description",
+      "key": "elig-description",
+      "label": "Elig Description",
       "description": "tk",
       "type": "textarea"
     },

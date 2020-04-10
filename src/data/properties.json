@@ -6,12 +6,7 @@
       "description": "If the organization has a confidentiality policy",
       "type": "checkbox"
     },
-    {
-      "key": "time-walk-in",
-      "label": "Has Walk-In Hours",
-      "description": "Accepts walk-ins; Walk-in clinic hours; Legal clinic; No appointment required",
-      "type": "checkbox"
-    },
+
     {
       "key": "at-capacity",
       "label": "At capacity",
@@ -28,6 +23,12 @@
       "label": "Public transit / specific directions",
       "description": "Written description of public transit services",
       "type": "textarea"
+    },
+    {
+      "key": "time-walk-in",
+      "label": "Has Walk-In Hours",
+      "description": "Accepts walk-ins; Walk-in clinic hours; Legal clinic; No appointment required",
+      "type": "checkbox"
     }
   ],
   "areaCoverageProperties": [
@@ -3243,75 +3244,21 @@
   ],
   "communityProperties": [
     {
-      "key": "community-transgender",
-      "label": "community-transgender",
-      "description": "Opportunities that serve the trans/gender nonconforming/nonbinary community",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-hiv-aids",
-      "label": "community-hiv-aids",
-      "description": "Opportunities that serve the HIV+ and at-risk community",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-detained-immigrant",
-      "label": "community-detained-immigrant",
-      "description": "Opportunities that serve detained immigrants",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-daca-recipient-seeker",
-      "label": "community-daca-recipient-seeker",
-      "description": "Opportunities that serve Dreamers (DACA recipients)",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-undocumented",
-      "label": "community-undocumented",
-      "description": "Opportunities that serve undocumented immigrants",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-homeless",
-      "label": "community-homeless",
-      "description": "Opportunities that serve homeless individuals",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-lgbtq-youth",
-      "label": "community-lgbtq-youth",
-      "description": "Opportunities that serve LGBTQ youth",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-teens",
-      "label": "community-teens",
-      "description": "\"teen\" defined as 12-18 years old",
-      "type": "checkbox"
-    },
-    {
       "key": "community-adults",
       "label": "community-adults",
       "description": "\"adult\" defined as 18 years or older",
       "type": "checkbox"
     },
     {
-      "key": "community-seniors",
-      "label": "community-seniors",
-      "description": "\"senior\" defined as 65 years or older",
+      "key": "community-africa-immigrant",
+      "label": "community-africa-immigrant",
+      "description": "Opportunities that serve those from African countries",
       "type": "checkbox"
     },
     {
-      "key": "community-human-trafficking-survivor",
-      "label": "community-human-trafficking-survivor",
-      "description": "Opportunities that serve human trafficking survivors",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-latino",
-      "label": "community-latino",
-      "description": "Opportunities that serve the Latinx community",
+      "key": "community-african-american",
+      "label": "community-african-american",
+      "description": "Opportunities that serve the African American community",
       "type": "checkbox"
     },
     {
@@ -3321,9 +3268,69 @@
       "type": "checkbox"
     },
     {
-      "key": "community-african-american",
-      "label": "community-african-american",
-      "description": "Opportunities that serve the African American community",
+      "key": "community-asylee",
+      "label": "community-asylee",
+      "description": "Opportunities that serve asylees (those who have been granted asylum status)",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-daca-recipient-seeker",
+      "label": "community-daca-recipient-seeker",
+      "description": "Opportunities that serve Dreamers (DACA recipients)",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-detained-immigrant",
+      "label": "community-detained-immigrant",
+      "description": "Opportunities that serve detained immigrants",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-disabled",
+      "label": "community-disabled",
+      "description": "Opportunities that serve the disabled community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-hiv-aids",
+      "label": "community-hiv-aids",
+      "description": "Opportunities that serve the HIV+ and at-risk community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-homeless",
+      "label": "community-homeless",
+      "description": "Opportunities that serve homeless individuals",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-human-trafficking-survivor",
+      "label": "community-human-trafficking-survivor",
+      "description": "Opportunities that serve human trafficking survivors",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-latin-america-immigrant",
+      "label": "community-latin-america-immigrant",
+      "description": "Opportunities that serve those from Latin America",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-latino",
+      "label": "community-latino",
+      "description": "Opportunities that serve the Latinx community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-lgbtq-youth",
+      "label": "community-lgbtq-youth",
+      "description": "Opportunities that serve LGBTQ youth",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-middle-east-immigrant",
+      "label": "community-middle-east-immigrant",
+      "description": "Opportunities that serve those from the Middle East",
       "type": "checkbox"
     },
     {
@@ -3339,21 +3346,9 @@
       "type": "checkbox"
     },
     {
-      "key": "community-disabled",
-      "label": "community-disabled",
-      "description": "Opportunities that serve the disabled community",
-      "type": "checkbox"
-    },
-    {
       "key": "community-refugee",
       "label": "community-refugee ",
       "description": "Opportunities that serve refugees",
-      "type": "checkbox"
-    },
-    {
-      "key": "community-asylee",
-      "label": "community-asylee",
-      "description": "Opportunities that serve asylees (those who have been granted asylum status)",
       "type": "checkbox"
     },
     {
@@ -3363,21 +3358,27 @@
       "type": "checkbox"
     },
     {
-      "key": "community-middle-east-immigrant",
-      "label": "community-middle-east-immigrant",
-      "description": "Opportunities that serve those from the Middle East",
+      "key": "community-seniors",
+      "label": "community-seniors",
+      "description": "\"senior\" defined as 65 years or older",
       "type": "checkbox"
     },
     {
-      "key": "community-latin-america-immigrant",
-      "label": "community-latin-america-immigrant",
-      "description": "Opportunities that serve those from Latin America",
+      "key": "community-teens",
+      "label": "community-teens",
+      "description": "\"teen\" defined as 12-18 years old",
       "type": "checkbox"
     },
     {
-      "key": "community-africa-immigrant",
-      "label": "community-africa-immigrant",
-      "description": "Opportunities that serve those from African countries",
+      "key": "community-transgender",
+      "label": "community-transgender",
+      "description": "Opportunities that serve the trans/gender nonconforming/nonbinary community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-undocumented",
+      "label": "community-undocumented",
+      "description": "Opportunities that serve undocumented immigrants",
       "type": "checkbox"
     }
   ],
@@ -3397,18 +3398,6 @@
   ],
   "eligibilityRequirementProperties": [
     {
-      "key": "elig-description",
-      "label": "Elig Description",
-      "description": "tk",
-      "type": "textarea"
-    },
-    {
-      "key": "time-appointment-required",
-      "label": "Time Appointment Required",
-      "description": "Enter this property for all services that require an appointment in advance",
-      "type": "checkbox"
-    },
-    {
       "key": "elig-age-or-over",
       "label": "Eligible Age or Over (e.g. age 18 and over)",
       "description": "\"IF the opportunity is available to a specific age group, it should have the elig-age-or-over or elig-age-or-under with a numeric value for the years. For example, an opportunity that serves 18+ should have a property of elig-age-or-over with a value of 18."
@@ -3424,6 +3413,24 @@
       "description": "N/A"
     },
     {
+      "key": "elig-description",
+      "label": "Elig Description",
+      "description": "tk",
+      "type": "textarea"
+    },
+    {
+      "key": "time-appointment-required",
+      "label": "Time Appointment Required",
+      "description": "Enter this property for all services that require an appointment in advance",
+      "type": "checkbox"
+    },
+    {
+      "key": "req-medical-insurance",
+      "label": "REQUIRES medical insurance",
+      "description": "If the service requires medical insurance from new/potential clients in order to access\"",
+      "type": "checkbox"
+    },
+    {
       "key": "req-photo-id",
       "label": "REQUIRES a photo ID",
       "description": "If the service requires a photo ID from new/potential clients in order to access\"",
@@ -3433,12 +3440,6 @@
       "key": "req-proof-of-age",
       "label": "REQUIRES proof of age",
       "description": "If the service requires proof of age from new/potential clients in order to access\"",
-      "type": "checkbox"
-    },
-    {
-      "key": "req-medical-insurance",
-      "label": "REQUIRES medical insurance",
-      "description": "If the service requires medical insurance from new/potential clients in order to access\"",
       "type": "checkbox"
     },
     {

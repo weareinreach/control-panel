@@ -217,7 +217,10 @@ const Organization = (props) => {
     }
 
     return openModal({
-      form: {fields: emailFields, initialValues: isDuplicate ? email : {}},
+      form: {
+        fields: emailFields,
+        initialValues: isDuplicate ? email : {show_on_organization: true},
+      },
       header: 'New Emails',
       onClose: closeModal,
       onConfirm: updateListField('emails'),
@@ -248,7 +251,7 @@ const Organization = (props) => {
     return openModal({
       form: {
         fields: locationFields,
-        initialValues: isDuplicate ? location : {},
+        initialValues: isDuplicate ? location : {show_on_organization: true},
       },
       header: 'New Location',
       onClose: closeModal,
@@ -276,7 +279,10 @@ const Organization = (props) => {
     }
 
     return openModal({
-      form: {fields: phoneFields, initialValues: isDuplicate ? phone : {}},
+      form: {
+        fields: phoneFields,
+        initialValues: isDuplicate ? phone : {show_on_organization: true},
+      },
       header: 'New Phone',
       onClose: closeModal,
       onConfirm: updateListField('phones'),

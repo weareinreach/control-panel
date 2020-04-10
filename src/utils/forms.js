@@ -37,7 +37,9 @@ export const cleanProperties = (properties) => {
           value = '';
       }
 
-      result[key] = value;
+      if (value && value !== 'false') {
+        result[key] = value;
+      }
 
       return result;
     },

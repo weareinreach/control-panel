@@ -172,10 +172,15 @@ const Service = (props) => {
           });
       },
     });
-  const openServiceDuplicate = () =>
+  const openServiceDuplicate = () => {
+    const {_id, name, ...restService} = service;
+
     openModal({
-      form: {fields: [{key: 'name', label: 'name'}]},
-      header: 'Duplicate Organization',
+      form: {
+        fields: [{key: 'name', label: 'name'}],
+        initialValues: restService,
+      },
+      header: 'Duplicate Service',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
         const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
@@ -192,6 +197,7 @@ const Service = (props) => {
           });
       },
     });
+  };
   const openEditOrgField = (field, list) => () =>
     openModal({
       children: FormOrganizationInfo,

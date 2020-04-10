@@ -1,6 +1,19 @@
 {
   "accessInstructionFields": [
-    {"key": "access_type", "label": "Type"},
+    {
+      "key": "access_type",
+      "label": "Type",
+      "type": "select",
+      "placeholder": "Select an instruction type",
+      "options": [
+        {"label": "Email", "value": "email"},
+        {"label": "File", "value": "file"},
+        {"label": "Link", "value": "link"},
+        {"label": "Location", "value": "location"},
+        {"label": "Phone", "value": "phone"},
+        {"label": "Other", "value": "other"}
+      ]
+    },
     {"key": "access_value", "label": "Value", "type": "textarea"},
     {"key": "instructions", "label": "Instructions"}
   ],

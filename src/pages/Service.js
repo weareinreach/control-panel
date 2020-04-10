@@ -315,11 +315,7 @@ const Service = (props) => {
                 </Box>
                 <SectionTitle>Access Instructions</SectionTitle>
                 <Table
-                  headers={[
-                    {key: 'access_type', label: 'Type'},
-                    {key: 'access_value', label: ' '},
-                    {key: 'instructions', label: 'Instructions'},
-                  ]}
+                  headers={accessInstructionFields}
                   rows={access_instructions}
                   actions={[
                     {label: 'Edit', onClick: openAccessForm({isEdit: true})},

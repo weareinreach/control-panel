@@ -1,4 +1,4 @@
-import {patch, post} from 'axios';
+import {delete as httpDelete, get, patch, post} from 'axios';
 import React, {useContext} from 'react';
 import {
   Box,
@@ -131,12 +131,102 @@ const AdminPanelManagers = (props) => {
 };
 
 const AdminPanelSuggestions = (props) => {
-  const {data, loading} = useAPIGet(`/organizations?pending=true`);
-  const openOrganization = (organization) => {
-    window.location = `/organizations/${organization._id}`;
+  const {closeModal, openModal} = useContext(ContextFormModal);
+  const {data: suggestedOrgs, loading: loadingOrgs} = useAPIGet(
+    `/organizations?pending=true`
+  );
+  const {data: orgOwners, loading: loadingOwners} = useAPIGet(
+    `/organizations?pendingOwnership=true`
+  );
+  const {data: suggestions, loading: loadingSuggestions} = useAPIGet(
+    `/suggestions`
+  );
+  const openOrganization = (id, serviceId) => {
+    window.location = `/organizations/${id}${
+      serviceId ? `/services/${serviceId}` : ''
+    }`;
   };
+  const pendingOwners = orgOwners?.organizations?.reduce((result, org) => {
+    // eslint-disable-next-line
+    org?.owners?.forEach((owner) => {
+      console.log('owner', owner);
 
-  if (loading) {
+      if (owner.isApproved === false) {
+        result.push({...owner, organization: org});
+      }
+    });
+
+    return result;
+  }, []);
+  const openModalApprovalOwner = (owner) =>
+    openModal({
+      header: 'Accept the request for affiliation',
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${CATALOG_API_URL}/organizations/${owner?.organization?._id}/owners/${owner?.userId}/approve`;
+
+        setLoading();
+
+        get(url)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while updating ownership');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+  const openModalDeclineOwner = (owner) =>
+    openModal({
+      header: 'Decline the request for affiliation',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${CATALOG_API_URL}/organizations/${owner?.organization?._id}/owners/${owner?.userId}`;
+
+        setLoading();
+
+        httpDelete(url)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while updating ownership');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+  const openModalDeclineEdit = (suggestion) =>
+    openModal({
+      header: 'Decline the suggested edit',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        console.log('suggestion', suggestion);
+
+        const url = `${CATALOG_API_URL}/suggestions/${suggestion?._id}`;
+
+        setLoading();
+
+        httpDelete(url)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while updating ownership');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+
+  if (loadingOrgs || loadingOwners || loadingSuggestions) {
     return <Loading />;
   }
 
@@ -145,12 +235,76 @@ const AdminPanelSuggestions = (props) => {
       <Title>Suggestions</Title>
       <Stack spacing={4}>
         <Container>
-          <SectionTitle>Organizations</SectionTitle>
-          {data?.organizations?.length > 0 ? (
+          <SectionTitle>Pending Affiliates</SectionTitle>
+          {pendingOwners?.length > 0 ? (
             <Table
-              actions={[{label: 'View', onClick: openOrganization}]}
+              actions={[
+                {
+                  label: 'View Organization',
+                  onClick: (owner) =>
+                    openOrganization(owner?.organization?._id),
+                },
+                {
+                  label: 'Approve',
+                  onClick: (owner) => openModalApprovalOwner(owner),
+                },
+                {
+                  label: 'Decline',
+                  onClick: (owner) => openModalDeclineOwner(owner),
+                },
+              ]}
+              headers={[
+                {key: 'email', label: 'Email'},
+                {
+                  key: 'org.name',
+                  label: 'Organization Name',
+                  getValue: (owner) => owner?.organization?.name,
+                },
+              ]}
+              rows={pendingOwners}
+            />
+          ) : (
+            <Text>No pending affiliates at this time</Text>
+          )}
+        </Container>
+        <Container>
+          <SectionTitle>Suggested Edits</SectionTitle>
+          {suggestions?.length > 0 ? (
+            <Table
+              actions={[
+                {
+                  label: 'View Organization',
+                  onClick: (suggestion) =>
+                    openOrganization(
+                      suggestion.organizationId,
+                      suggestion.serviceId
+                    ),
+                },
+                {
+                  label: 'Decline',
+                  onClick: (suggestion) => openModalDeclineEdit(suggestion),
+                },
+              ]}
+              headers={[
+                {key: 'userEmail', label: 'Suggested By'},
+                {key: 'field', label: 'Field'},
+                {key: 'value', label: 'Value'},
+              ]}
+              rows={suggestions}
+            />
+          ) : (
+            <Text>No suggested edits at this time</Text>
+          )}
+        </Container>
+        <Container>
+          <SectionTitle>Suggested Organizations</SectionTitle>
+          {suggestedOrgs?.organizations?.length > 0 ? (
+            <Table
+              actions={[
+                {label: 'View', onClick: (org) => openOrganization(org?._id)},
+              ]}
               headers={[{key: 'name', label: 'Name'}]}
-              rows={data?.organizations}
+              rows={suggestedOrgs.organizations}
             />
           ) : (
             <Text>No suggested organizations at this time</Text>

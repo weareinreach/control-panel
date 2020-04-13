@@ -49,6 +49,7 @@ const Organization = (props) => {
     is_published,
     locations,
     name = 'Organization Name',
+    owners,
     phones,
     properties,
     schedules,
@@ -374,6 +375,10 @@ const Organization = (props) => {
               {key: 'Created At', value: created_at},
             ]}
           />
+        </Container>
+        <Container>
+          <SectionTitle>Associated Affiliates</SectionTitle>
+          <Table headers={[{key: 'email', label: 'Email'}]} rows={owners} />
         </Container>
         <Container>
           <Box {...buttonGroupProps}>

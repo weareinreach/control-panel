@@ -1,14 +1,16 @@
+import {post} from 'axios';
 import _reduce from 'lodash/reduce';
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Grid, Text} from '@chakra-ui/core';
 
+import {ContextFormModal} from '../components/ContextFormModal';
 import Filters from '../components/Filters';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
+import {CATALOG_API_URL} from '../utils';
 import {useMultipleAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -59,8 +61,9 @@ const Organizations = () => {
   const {data, loading, fetchUrls} = useMultipleAPIGet(
     getQueryUrls(initialQuery)
   );
-  const {count, organizations} = data || {};
+  const {closeModal, openModal} = useContext(ContextFormModal);
   const [query, setQuery] = useState(initialQuery);
+  const {count, organizations} = data || {};
   const goToOrgPage = (org) => {
     window.location = `/organizations/${org._id}`;
   };
@@ -73,6 +76,29 @@ const Organizations = () => {
   const newQuery = (params) => {
     setQuery({page: 1, ...params});
   };
+  const openNewOrg = () =>
+    openModal({
+      form: {fields: [{key: 'name', label: 'Organization Name'}]},
+      header: 'New Organization Name',
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const url = `${CATALOG_API_URL}/organizations`;
+
+        console.log('POST:', url);
+
+        setLoading();
+        post(url, values)
+          .then(({data}) => {
+            setSuccess();
+
+            window.location = `/organizations/${data?.organization?._id}`;
+          })
+          .catch((err) => {
+            setError();
+            console.error(err);
+          });
+      },
+    });
 
   useEffect(() => {
     fetchUrls(getQueryUrls(query));
@@ -87,9 +113,7 @@ const Organizations = () => {
     <>
       <Helmet title="Organizations" />
       <Box float="right">
-        <Link to="/organizations/new">
-          <Button>New Organization</Button>
-        </Link>
+        <Button onClick={openNewOrg}>New Organization</Button>
       </Box>
       <Title>Organizations</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>

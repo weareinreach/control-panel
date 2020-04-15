@@ -149,8 +149,6 @@ const AdminPanelSuggestions = (props) => {
   const pendingOwners = orgOwners?.organizations?.reduce((result, org) => {
     // eslint-disable-next-line
     org?.owners?.forEach((owner) => {
-      console.log('owner', owner);
-
       if (owner.isApproved === false) {
         result.push({...owner, organization: org});
       }
@@ -207,8 +205,6 @@ const AdminPanelSuggestions = (props) => {
       isAlert: true,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
-        console.log('suggestion', suggestion);
-
         const url = `${CATALOG_API_URL}/suggestions/${suggestion?._id}`;
 
         setLoading();

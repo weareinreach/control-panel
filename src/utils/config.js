@@ -11,8 +11,7 @@ const local = {
 
 const prod = {
   apiDomain: 'https://asylum-connect-api.herokuapp.com',
-  // TODO: Switch to production
-  catalogUrl: 'https://asylum-connect-catalog-staging.herokuapp.com',
+  catalogUrl: 'https://asylum-connect-catalog.herokuapp.com',
 };
 
 const env = process.env.REACT_APP_APP_ENV;

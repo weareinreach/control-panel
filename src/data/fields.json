@@ -57,6 +57,11 @@
   ],
   "organizationDetailsFields": [
     {"key": "name", "label": "Name"},
+    {
+      "key": "slug",
+      "label": "Slug",
+      "description": "Please be cautious editing this at it can result in broken links."
+    },
     {"key": "website", "label": "Website"},
     {"key": "description", "label": "Description", "type": "textarea"},
     {"key": "alert_message", "label": "Alert Message", "type": "textarea"},
@@ -117,6 +122,11 @@
   ],
   "serviceDetailsFields": [
     {"key": "name", "label": "Name"},
+    {
+      "key": "slug",
+      "label": "Slug",
+      "description": "Please be cautious editing this at it can result in broken links."
+    },
     {"key": "description", "label": "Description", "type": "textarea"}
   ]
 }

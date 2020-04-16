@@ -321,6 +321,12 @@ const Organization = (props) => {
       onConfirm: updateListField('schedules'),
     });
   };
+  const openOnCatalog = () => {
+    const url = `${catalogUrl}/en_US/resource/${slug}`;
+    const win = window.open(url, '_blank');
+
+    win.focus();
+  };
 
   if (loading) {
     return <Loading />;
@@ -337,9 +343,9 @@ const Organization = (props) => {
         <Alert title="This organization is unpublished" type="warning" />
       )}
       <Box float="right">
-        <a href={`${catalogUrl}/en_US/resource/${slug}`}>
-          <Button marginRight={2}>View on Catalog</Button>
-        </a>
+        <Button onClick={openOnCatalog} marginRight={2}>
+          View on Catalog
+        </Button>
         <DropdownButton
           buttonText="More"
           items={[

@@ -57,7 +57,7 @@ const FormField = (props) => {
     placeholder,
   };
   const toolTipIcon = description && (
-    <Tooltip hasArrow label={description} placement="top">
+    <Tooltip hasArrow label={description} placement="top" zIndex={9999}>
       <Icon name="info-outline" />
     </Tooltip>
   );

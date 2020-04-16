@@ -255,6 +255,12 @@ const Service = (props) => {
       onClose: closeModal,
       onConfirm: updateFields,
     });
+  const openOnCatalog = () => {
+    const url = `${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`;
+    const win = window.open(url, '_blank');
+
+    win.focus();
+  };
 
   if (loading) {
     return <Loading />;
@@ -271,11 +277,9 @@ const Service = (props) => {
         <Alert title="This service is unpublished" type="warning" />
       )}
       <Box float="right">
-        <a
-          href={`${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`}
-        >
-          <Button marginRight={2}>View on Catalog</Button>
-        </a>
+        <Button onClick={openOnCatalog} marginRight={2}>
+          View on Catalog
+        </Button>
         <DropdownButton
           buttonText="More"
           items={[

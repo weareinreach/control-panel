@@ -11,6 +11,7 @@ import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {CATALOG_API_URL} from '../utils';
+import {formatOrgInput} from '../utils/forms';
 import {useMultipleAPIGet} from '../utils/hooks';
 
 const headers = [
@@ -82,12 +83,13 @@ const Organizations = () => {
       header: 'New Organization Name',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const newOrg = formatOrgInput(values);
         const url = `${CATALOG_API_URL}/organizations`;
 
         console.log('POST:', url);
 
         setLoading();
-        post(url, values)
+        post(url, newOrg)
           .then(({data}) => {
             setSuccess();
 

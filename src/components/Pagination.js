@@ -21,9 +21,11 @@ const Pagination = (props) => {
         icon="chevron-right"
         marginRight={4}
       />
-      <Text display="inline">
-        Page {currentPage} of {totalPages}
-      </Text>
+      {totalPages !== 0 && (
+        <Text display="inline">
+          Page {currentPage} of {totalPages}
+        </Text>
+      )}
     </Box>
   );
 };

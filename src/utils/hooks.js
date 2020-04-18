@@ -11,13 +11,14 @@ import {CATALOG_API_URL} from './index';
 export const useAPIGet = (endpoint) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const url = `${CATALOG_API_URL}${endpoint}`;
-  const fetchUrl = (fetchUrl) => {
+  const fetchUrl = (fetchEndpoint) => {
+    const url = `${CATALOG_API_URL}${fetchEndpoint}`;
+
     setLoading(true);
 
-    console.log('GET:', fetchUrl);
+    console.log('GET:', url);
 
-    get(fetchUrl)
+    get(url)
       .then(({data}) => {
         setData(data);
         setLoading(false);
@@ -29,57 +30,13 @@ export const useAPIGet = (endpoint) => {
 
   useEffect(() => {
     if (endpoint) {
-      fetchUrl(url);
+      fetchUrl(endpoint);
     } else {
       setLoading(false);
     }
-  }, [endpoint, url]);
+  }, [endpoint]);
 
   return {data, loading, fetchUrl};
-};
-
-/**
- * Fetch the catalog api for multiple endpoints
- * @param  {Object} endpoints The endpoints to query
- * @return {Object} An object of data, loading status, etc
- */
-export const useMultipleAPIGet = (endpoints) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const fetchUrls = (endpoints) => {
-    const queryData = {};
-    const requests = Object.keys(endpoints).map((key) => {
-      const url = `${CATALOG_API_URL}${endpoints[key]}`;
-
-      console.log('GET:', url);
-
-      return get(url)
-        .then(({data}) => {
-          queryData[key] = data;
-
-          return;
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    });
-
-    Promise.all(requests).then(() => {
-      setData(queryData);
-      setLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    if (endpoints) {
-      fetchUrls(endpoints);
-    } else {
-      setLoading(false);
-    }
-    // eslint-disable-next-line
-  }, [JSON.stringify(endpoints)]);
-
-  return {data, loading, fetchUrls};
 };
 
 /**

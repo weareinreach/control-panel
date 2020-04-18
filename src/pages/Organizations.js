@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Grid, Text} from '@chakra-ui/core';
 
 import {ContextFormModal} from '../components/ContextFormModal';
-import Filters from '../components/Filters';
+import Filters from '../components/FiltersOrganizations';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
@@ -12,16 +12,16 @@ import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {CATALOG_API_URL} from '../utils';
 import {formatOrgInput} from '../utils/forms';
-import {useMultipleAPIGet} from '../utils/hooks';
+import {useAPIGet} from '../utils/hooks';
 
 const headers = [
   {key: 'name', label: 'Name'},
   {key: 'updated_at', label: 'Last Updated'},
 ];
 
-// TODO: test this util
+// TODO: add to utils and test
 const getQueryUrls = (query) => {
-  const {name, page, properties} = query;
+  const {name, page, properties, tags, tagLocale} = query;
   let queryParam = '?';
 
   if (name) {
@@ -50,6 +50,10 @@ const getQueryUrls = (query) => {
     }
   }
 
+  if (tagLocale && tags?.length > 0) {
+    queryParam += `&tagLocale=${tagLocale}&tags=${tags.join(',')}`;
+  }
+
   return {
     organizations: `/organizations${queryParam}`,
     count: `/organizations/count${queryParam}`,
@@ -57,14 +61,14 @@ const getQueryUrls = (query) => {
 };
 
 const initialQuery = {page: 1, name: '', properties: ''};
+const initialUrls = getQueryUrls(initialQuery);
 
 const Organizations = () => {
-  const {data, loading, fetchUrls} = useMultipleAPIGet(
-    getQueryUrls(initialQuery)
-  );
+  const organizations = useAPIGet(initialUrls.organizations);
+  const count = useAPIGet(initialUrls.count);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const [query, setQuery] = useState(initialQuery);
-  const {count, organizations} = data || {};
+  const loading = count?.loading || organizations?.loading;
   const goToOrgPage = (org) => {
     window.location = `/organizations/${org._id}`;
   };
@@ -103,11 +107,14 @@ const Organizations = () => {
     });
 
   useEffect(() => {
-    fetchUrls(getQueryUrls(query));
+    const urls = getQueryUrls(query);
+
+    organizations.fetchUrl(urls.organizations);
+    count.fetchUrl(urls.count);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
-  if (!data && loading) {
+  if (!organizations?.data && loading) {
     return <Loading />;
   }
 
@@ -126,12 +133,12 @@ const Organizations = () => {
             <>
               <Container>
                 <Box>
-                  {organizations?.organizations?.length > 0 ? (
+                  {organizations?.data?.organizations?.length > 0 ? (
                     <Table
                       actions={[{label: 'View', onClick: goToOrgPage}]}
                       getRowLink={(org) => `/organizations/${org._id}`}
                       headers={headers}
-                      rows={organizations?.organizations}
+                      rows={organizations.data.organizations}
                     />
                   ) : (
                     <Box textAlign="center" padding={4}>
@@ -145,7 +152,7 @@ const Organizations = () => {
                 currentPage={query?.page}
                 getLastPage={getLastPage}
                 getNextPage={getNextPage}
-                totalPages={count?.pages}
+                totalPages={count?.data?.pages}
               />
             </>
           )}

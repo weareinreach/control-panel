@@ -3,7 +3,13 @@ import React from 'react';
 import {Box, IconButton, Text} from '@chakra-ui/core';
 
 const Pagination = (props) => {
-  const {currentPage, getLastPage, getNextPage, totalPages} = props;
+  const {
+    currentPage,
+    getLastPage,
+    getNextPage,
+    renderAdditionalStats,
+    totalPages,
+  } = props;
   const isFirstPage = currentPage >= 1;
   const isLastPage = currentPage >= totalPages;
 
@@ -23,9 +29,10 @@ const Pagination = (props) => {
       />
       {totalPages !== 0 && (
         <Text display="inline">
-          Page {currentPage} of {totalPages}
+          Page {currentPage} of {totalPages}.
         </Text>
       )}
+      {renderAdditionalStats && renderAdditionalStats()}
     </Box>
   );
 };
@@ -35,6 +42,7 @@ Pagination.propTypes = {
   getLastPage: PropTypes.func,
   getNextPage: PropTypes.func,
   totalPages: PropTypes.number,
+  renderAdditionalStats: PropTypes.func,
 };
 
 export default Pagination;

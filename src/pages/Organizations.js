@@ -64,11 +64,13 @@ const initialQuery = {page: 1, name: '', properties: ''};
 const initialUrls = getQueryUrls(initialQuery);
 
 const Organizations = () => {
+  const totalCount = useAPIGet(initialUrls.count);
   const organizations = useAPIGet(initialUrls.organizations);
   const count = useAPIGet(initialUrls.count);
   const {closeModal, openModal} = useContext(ContextFormModal);
   const [query, setQuery] = useState(initialQuery);
-  const loading = count?.loading || organizations?.loading;
+  const loading =
+    count?.loading || organizations?.loading || totalCount?.loading;
   const goToOrgPage = (org) => {
     window.location = `/organizations/${org._id}`;
   };
@@ -152,6 +154,12 @@ const Organizations = () => {
                 currentPage={query?.page}
                 getLastPage={getLastPage}
                 getNextPage={getNextPage}
+                renderAdditionalStats={() => (
+                  <Text display="inline" marginLeft={2}>
+                    {count?.data?.count} of {totalCount?.data?.count}{' '}
+                    organizations.
+                  </Text>
+                )}
                 totalPages={count?.data?.pages}
               />
             </>

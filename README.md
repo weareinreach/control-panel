@@ -1,6 +1,6 @@
 # Asylum Connect Control Panel
 
-[![Build Status](https://travis-ci.org/asylum-connect/admin-control-panel.svg?branch=master)](https://travis-ci.org/asylum-connect/admin-control-panel)
+[![Build Status](https://travis-ci.org/asylum-connect/control-panel.svg?branch=master)](https://travis-ci.org/asylum-connect/control-panel)
 
 ## Development
 

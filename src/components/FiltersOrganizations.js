@@ -1,7 +1,7 @@
 import _omit from 'lodash/omit';
 import _reduce from 'lodash/reduce';
 import _sortBy from 'lodash/sortBy';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/core';
 import PropTypes from 'prop-types';
 
-import { SectionTitle } from './styles';
+import {SectionTitle} from './styles';
 import {
   additionalInformationProperties,
   communityProperties,
@@ -22,7 +22,7 @@ import {
   languageProperties,
 } from '../data/properties.json';
 import tagData from '../data/tags.json';
-import { useInputChange } from '../utils/hooks';
+import {useInputChange} from '../utils/hooks';
 
 const propertyList = [
   additionalInformationProperties,
@@ -34,8 +34,8 @@ const propertyList = [
   .reduce((result, propertyCategory) => {
     result = result.concat(
       propertyCategory
-        .filter(({ type }) => type === 'checkbox')
-        .map(({ key }) => key)
+        .filter(({type}) => type === 'checkbox')
+        .map(({key}) => key)
     );
 
     return result;
@@ -56,7 +56,7 @@ const tagList = _reduce(
             }))
           );
         } else {
-          countryResult.push({ label: name, value: name });
+          countryResult.push({label: name, value: name});
         }
 
         return countryResult;
@@ -72,14 +72,14 @@ const tagList = _reduce(
 );
 
 const FiltersOrganizations = (props) => {
-  const { updateQuery } = props;
+  const {updateQuery} = props;
   const [name, handleNameChange] = useInputChange();
   const [serviceArea, handleServiceAreaChange] = useInputChange();
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
-  const handlePublishChange = ev => setPublishedStatus(ev.target.checked);
+  const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
 
@@ -106,14 +106,14 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    const query = { name, properties, tags, tagLocale };
+    const query = {name, properties, tags, tagLocale};
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
     }
 
     if (!isPublished) {
-      query.pending = 'true'
+      query.pending = 'true';
     }
 
     updateQuery(query);
@@ -189,7 +189,7 @@ const FiltersOrganizations = (props) => {
           placeholder="Select a tag"
           value=""
         >
-          {tagList?.[tagLocale]?.map(({ label, value }) => (
+          {tagList?.[tagLocale]?.map(({label, value}) => (
             <option key={value} value={value}>
               {label}
             </option>

@@ -1,14 +1,14 @@
-import {delete as httpDelete, patch, post} from 'axios';
-import React, {useState, useContext, useEffect} from 'react';
-import {Box, Button, Grid, Text} from '@chakra-ui/core';
+import { delete as httpDelete, patch, post } from 'axios';
+import React, { useState, useContext, useEffect } from 'react';
+import { Box, Button, Grid, Text } from '@chakra-ui/core';
 
-import {ContextFormModal} from './ContextFormModal';
+import { ContextFormModal } from './ContextFormModal';
 import FiltersUsers from './FiltersUsers';
 import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
-import {Container, SectionTitle, Title} from './styles';
-import {adminFields} from '../data/fields.json';
+import { Container, SectionTitle, Title } from './styles';
+import { adminFields } from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -16,54 +16,36 @@ import {
   USER_TYPE_LAWYER,
   USER_TYPE_PROVIDER,
   USER_TYPE_SEEKER,
+  getUserQueryUrls
 } from '../utils';
-import {useAPIGet} from '../utils/hooks';
+import { useAPIGet } from '../utils/hooks';
 
-// TODO: add to utils and test
-const getQueryUrls = (query) => {
-  const {page, type} = query;
-  let queryParam = '?';
-
-  if (page) {
-    queryParam += `&page=${page}`;
-  }
-
-  if (type) {
-    queryParam += `&type=${type}`;
-  }
-
-  return {
-    users: `/users${queryParam}`,
-    count: `/users/count${queryParam}`,
-  };
-};
-
-const initialQuery = {page: 1, name: '', properties: ''};
-const initialUrls = getQueryUrls(initialQuery);
+const initialQuery = { page: 1, name: '', properties: '' };
+const initialUrls = getUserQueryUrls(initialQuery);
 
 const AdminPanelUsers = (props) => {
   const users = useAPIGet(initialUrls.users);
   const count = useAPIGet(initialUrls.count);
-  const {closeModal, openModal} = useContext(ContextFormModal);
+  const { closeModal, openModal } = useContext(ContextFormModal);
   const [query, setQuery] = useState(initialQuery);
   const loading = count?.loading || users?.loading;
   const getLastPage = () => {
-    setQuery({...query, page: query.page - 1});
+    setQuery({ ...query, page: query.page - 1 });
   };
   const getNextPage = () => {
-    setQuery({...query, page: query.page + 1});
+    setQuery({ ...query, page: query.page + 1 });
   };
   const newQuery = (params) => {
-    setQuery({page: 1, ...params});
+    setQuery({ page: 1, ...params });
   };
   const openCreateModal = () =>
     openModal({
-      form: {fields: adminFields},
+      form: { fields: adminFields },
       header: 'New Data Manager',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({ setLoading, setSuccess, setError, values }) => {
         const url = `${CATALOG_API_URL}/users`;
-        const user = {...values, isDataManager: true, password: 'ac123'};
+        const user = { ...values, isDataManager: true, password: 'ac123' };
 
         setLoading();
         post(url, user)
@@ -90,7 +72,7 @@ const AdminPanelUsers = (props) => {
       },
       header: 'Edit Data Manager',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({ setLoading, setSuccess, setError, values }) => {
         const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
@@ -111,7 +93,7 @@ const AdminPanelUsers = (props) => {
       header: `Delete User: ${selectedUser?.name || selectedUser?.email}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
+      onConfirm: ({ setLoading, setSuccess, setError }) => {
         const url = `${CATALOG_API_URL}/users/${selectedUser._id}`;
 
         setLoading();
@@ -132,11 +114,11 @@ const AdminPanelUsers = (props) => {
       header: 'Remove Data Manager',
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
+      onConfirm: ({ setLoading, setSuccess, setError }) => {
         const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
-        patch(url, {isDataManager: false, isAdminDataManager: false})
+        patch(url, { isDataManager: false, isAdminDataManager: false })
           .then(() => {
             window.location.reload();
             setSuccess();
@@ -152,26 +134,26 @@ const AdminPanelUsers = (props) => {
   const tableActions = [
     ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
       ? [
-          {label: 'Edit', onClick: openEditModal},
-          {label: 'Revoke', onClick: openRemoveModal},
-        ]
+        { label: 'Edit', onClick: openEditModal },
+        { label: 'Revoke', onClick: openRemoveModal },
+      ]
       : []),
     ...(queryType === USER_TYPE_LAWYER ? [] : []),
     ...(queryType === USER_TYPE_PROVIDER ? [] : []),
     ...(queryType === USER_TYPE_SEEKER ? [] : []),
-    {label: 'Delete', onClick: openDeleteModal},
+    { label: 'Delete', onClick: openDeleteModal },
   ];
   const tableHeaders = [
-    {key: 'name', label: 'Name'},
-    {key: 'email', label: 'Email'},
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
     ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
       ? [
-          {
-            key: 'isAdminDataManager',
-            label: 'Is Admin',
-            type: 'boolean',
-          },
-        ]
+        {
+          key: 'isAdminDataManager',
+          label: 'Is Admin',
+          type: 'boolean',
+        },
+      ]
       : []),
     ...(queryType === USER_TYPE_LAWYER ? [] : []),
     ...(queryType === USER_TYPE_PROVIDER ? [] : []),
@@ -181,7 +163,7 @@ const AdminPanelUsers = (props) => {
   console.log('render query', query);
 
   useEffect(() => {
-    const urls = getQueryUrls(query);
+    const urls = getUserQueryUrls(query);
 
     console.log('useEffect query', query);
 
@@ -207,31 +189,31 @@ const AdminPanelUsers = (props) => {
           {loading ? (
             <Loading />
           ) : (
-            <>
-              <Container>
-                <Box>
-                  {users?.data?.users?.length > 0 ? (
-                    <Table
-                      actions={tableActions}
-                      headers={tableHeaders}
-                      rows={users?.data?.users}
-                    />
-                  ) : (
-                    <Box textAlign="center" padding={4}>
-                      <SectionTitle>No results found.</SectionTitle>
-                      <Text>Please refine your search</Text>
-                    </Box>
-                  )}
-                </Box>
-              </Container>
-              <Pagination
-                currentPage={query?.page}
-                getLastPage={getLastPage}
-                getNextPage={getNextPage}
-                totalPages={count?.data?.pages}
-              />
-            </>
-          )}
+              <>
+                <Container>
+                  <Box>
+                    {users?.data?.users?.length > 0 ? (
+                      <Table
+                        actions={tableActions}
+                        headers={tableHeaders}
+                        rows={users?.data?.users}
+                      />
+                    ) : (
+                        <Box textAlign="center" padding={4}>
+                          <SectionTitle>No results found.</SectionTitle>
+                          <Text>Please refine your search</Text>
+                        </Box>
+                      )}
+                  </Box>
+                </Container>
+                <Pagination
+                  currentPage={query?.page}
+                  getLastPage={getLastPage}
+                  getNextPage={getNextPage}
+                  totalPages={count?.data?.pages}
+                />
+              </>
+            )}
         </Box>
         <Container height="fit-content">
           <FiltersUsers query={query} updateQuery={newQuery} />

@@ -1,3 +1,5 @@
+import _reduce from 'lodash/reduce';
+
 import config from './config';
 
 export const CATALOG_API_URL = `${config.apiDomain}${config.apiBasePath}`;
@@ -8,7 +10,7 @@ export const USER_TYPE_LAWYER = 'lawyer';
 export const USER_TYPE_PROVIDER = 'provider';
 export const USER_TYPE_SEEKER = 'seeker';
 
-const getSchedule = (start, end) => {
+export const getSchedule = (start, end) => {
   if (start || end) {
     return `${start || 'N/A'} - ${end || 'N/A'}`;
   }
@@ -17,7 +19,7 @@ const getSchedule = (start, end) => {
 };
 
 export const scheduleHeaders = [
-  {key: 'name', label: 'Name'},
+  { key: 'name', label: 'Name' },
   {
     key: 'monday',
     label: 'Monday',
@@ -59,17 +61,84 @@ export const scheduleHeaders = [
     type: 'select',
     placeholder: 'Select a timezone',
     options: [
-      {label: 'AKST', value: 'AKST'},
-      {label: 'AST', value: 'AST'},
-      {label: 'CST', value: 'CST'},
-      {label: 'EST', value: 'EST'},
-      {label: 'HST', value: 'HST'},
-      {label: 'MDT', value: 'MDT'},
-      {label: 'MST', value: 'MST'},
-      {label: 'NST', value: 'NST'},
-      {label: 'PDT', value: 'PDT'},
-      {label: 'PST', value: 'PST'},
+      { label: 'AKST', value: 'AKST' },
+      { label: 'AST', value: 'AST' },
+      { label: 'CST', value: 'CST' },
+      { label: 'EST', value: 'EST' },
+      { label: 'HST', value: 'HST' },
+      { label: 'MDT', value: 'MDT' },
+      { label: 'MST', value: 'MST' },
+      { label: 'NST', value: 'NST' },
+      { label: 'PDT', value: 'PDT' },
+      { label: 'PST', value: 'PST' },
     ],
   },
-  {key: 'note', label: 'Note', type: 'textarea'},
+  { key: 'note', label: 'Note', type: 'textarea' },
 ];
+
+export const getOrgQueryUrls = (query) => {
+  const { name, page, pending, properties, serviceArea, tags, tagLocale } = query;
+  let queryParam = '?';
+
+  if (name) {
+    queryParam += `&name=${name}`;
+  }
+
+  if (page) {
+    queryParam += `&page=${page}`;
+  }
+
+  if (pending) {
+    queryParam += '&pending=true';
+  }
+
+  if (serviceArea) {
+    queryParam += `&serviceArea=${serviceArea}`;
+  }
+
+  if (properties && Object.keys(properties).length > 0) {
+    const propString = _reduce(
+      properties,
+      (result, value, key) => {
+        if (key && value) {
+          result += `${key}=${value},`;
+        }
+
+        return result;
+      },
+      ''
+    );
+
+    if (propString) {
+      queryParam += `&properties=${propString}`;
+    }
+  }
+
+  if (tagLocale && tags?.length > 0) {
+    queryParam += `&tagLocale=${tagLocale}&tags=${tags.join(',')}`;
+  }
+
+  return {
+    organizations: `/organizations${queryParam === '?' ? '' : queryParam}`,
+    count: `/organizations/count${queryParam === '?' ? '' : queryParam}`,
+  };
+};
+
+// TODO: add to utils and test
+export const getUserQueryUrls = (query) => {
+  const { page, type } = query;
+  let queryParam = '?';
+
+  if (page) {
+    queryParam += `&page=${page}`;
+  }
+
+  if (type) {
+    queryParam += `&type=${type}`;
+  }
+
+  return {
+    users: `/users${queryParam === '?' ? '' : queryParam}`,
+    count: `/users/count${queryParam === '?' ? '' : queryParam}`,
+  };
+};

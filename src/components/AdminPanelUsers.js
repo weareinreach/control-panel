@@ -11,6 +11,7 @@ import {Container, SectionTitle, Title} from './styles';
 import {adminFields} from '../data/fields.json';
 import {
   CATALOG_API_URL,
+  COOKIE_LOGIN,
   USER_TYPE_ADMIN_DM,
   USER_TYPE_DM,
   USER_TYPE_LAWYER,
@@ -18,6 +19,7 @@ import {
   USER_TYPE_SEEKER,
 } from '../utils';
 import {useAPIGet} from '../utils/hooks';
+import getCookie from '../utils/getCookie';
 
 // TODO: add to utils and test
 const getQueryUrls = (query) => {
@@ -40,6 +42,8 @@ const getQueryUrls = (query) => {
 
 const initialQuery = {page: 1, name: '', properties: ''};
 const initialUrls = getQueryUrls(initialQuery);
+
+const token = getCookie(COOKIE_LOGIN);
 
 const AdminPanelUsers = (props) => {
   const users = useAPIGet(initialUrls.users);
@@ -66,7 +70,7 @@ const AdminPanelUsers = (props) => {
         const user = {...values, isDataManager: true, password: 'ac123'};
 
         setLoading();
-        post(url, user)
+        post(url, user, {headers: {'x-json-web-token': token}})
           .then(() => {
             window.location.reload();
             setSuccess();
@@ -94,7 +98,7 @@ const AdminPanelUsers = (props) => {
         const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
-        patch(url, values)
+        patch(url, values, {headers: {'x-json-web-token': token}})
           .then(() => {
             window.location.reload();
             setSuccess();
@@ -115,7 +119,7 @@ const AdminPanelUsers = (props) => {
         const url = `${CATALOG_API_URL}/users/${selectedUser._id}`;
 
         setLoading();
-        httpDelete(url)
+        httpDelete(url, {headers: {'x-json-web-token': token}})
           .then(() => {
             window.location.reload();
             setSuccess();
@@ -136,7 +140,7 @@ const AdminPanelUsers = (props) => {
         const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
         setLoading();
-        patch(url, {isDataManager: false, isAdminDataManager: false})
+        patch(url, {isDataManager: false, isAdminDataManager: false}, {headers: {'x-json-web-token': token}})
           .then(() => {
             window.location.reload();
             setSuccess();

@@ -10,9 +10,10 @@ import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
-import {CATALOG_API_URL} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN} from '../utils';
 import {formatOrgInput} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
+import getCookie from '../utils/getCookie';
 
 const headers = [
   {key: 'name', label: 'Name'},
@@ -99,11 +100,12 @@ const Organizations = () => {
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
         const newOrg = formatOrgInput(values);
         const url = `${CATALOG_API_URL}/organizations`;
+        const token = getCookie(COOKIE_LOGIN);
 
         console.log('POST:', url);
 
         setLoading();
-        post(url, newOrg)
+        post(url, newOrg, {headers: {'x-json-web-token': token}})
           .then(({data}) => {
             setSuccess();
 

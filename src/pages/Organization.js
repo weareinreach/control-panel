@@ -22,10 +22,11 @@ import {
   phoneFields,
   scheduleFields,
 } from '../data/fields.json';
-import {CATALOG_API_URL, scheduleHeaders} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN, scheduleHeaders} from '../utils';
 import config from '../utils/config';
 import {formatOrgInput, formatServiceInput} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
+import getCookie from '../utils/getCookie';
 
 const {catalogUrl} = config;
 
@@ -59,13 +60,16 @@ const Organization = (props) => {
     verified_at,
     website,
   } = organization || {};
+  const token = getCookie(COOKIE_LOGIN);
+  
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
 
     console.log('PATCH:', url);
+    console.log(token);
 
     setLoading();
-    patch(url, values)
+    patch(url, values, {headers: {'x-json-web-token': token}})
       .then(({data}) => {
         setSuccess();
         window.location = `/organizations/${orgId}`;
@@ -123,7 +127,7 @@ const Organization = (props) => {
         console.log('DELETE:', url);
 
         setLoading();
-        httpDelete(url)
+        httpDelete(url, {headers: {'x-json-web-token': token}})
           .then(() => {
             setSuccess();
             window.location = '/organizations';
@@ -186,7 +190,7 @@ const Organization = (props) => {
         console.log('POST:', url);
 
         setLoading();
-        post(url, service)
+        post(url, service, {headers: {'x-json-web-token': token}})
           .then((data) => {
             setSuccess();
             window.location.reload();

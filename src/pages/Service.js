@@ -45,10 +45,11 @@ import {
   eligibilityRequirementProperties,
   languageProperties,
 } from '../data/properties.json';
-import {CATALOG_API_URL, scheduleHeaders} from '../utils';
+import {CATALOG_API_URL, COOKIE_LOGIN, scheduleHeaders} from '../utils';
 import config from '../utils/config';
 import {formatServiceInput, formatTags} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
+import getCookie from '../utils/getCookie';
 
 const {catalogUrl} = config;
 
@@ -66,6 +67,8 @@ const countryLabels = {
 const findItem = _memoize(
   (list, _id) => list?.find((item) => item._id === _id) || null
 );
+
+const token = getCookie(COOKIE_LOGIN);
 
 const Service = (props) => {
   const {user} = useContext(ContextApp);
@@ -98,8 +101,10 @@ const Service = (props) => {
     const url = `${CATALOG_API_URL}${servicePath}`;
     const updatedService = formatServiceInput({...service, ...values});
 
+    console.log('PATCH:', url);
+
     setLoading();
-    patch(url, updatedService)
+    patch(url, updatedService, {headers: {'x-json-web-token': token}})
       .then(({data}) => {
         setSuccess();
         window.location = servicePath;
@@ -161,7 +166,7 @@ const Service = (props) => {
         console.log('DELETE:', url);
 
         setLoading();
-        httpDelete(url)
+        httpDelete(url, {headers: {'x-json-web-token': token}})
           .then(() => {
             setSuccess();
             window.location = `/organizations/${orgId}`;

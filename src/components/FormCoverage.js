@@ -153,13 +153,17 @@ const CanadianPicker = () => {
   return (
     <>
       <FormField label="Province">
-        <Select options={CanadianProvinceOptions}
-                onChange={(option) => setProvince(option)}
-                value={province} placeholder="Select a Province" />
+        <Creatable
+          isClearable
+          options={CanadianProvinceOptions}
+          onChange={(option) => setProvince(option)}
+          value={province}
+          placeholder="Select a Province" />
       </FormField>
       {province &&
         <FormField label="City">
-          <Select
+          <Creatable
+            isClearable
             options={cityOptions}
             onChange={(option) => setCity(option)}
             value={city}
@@ -185,6 +189,7 @@ const MexicoPicker = () => {
     <>
       <FormField label="State">
         <Creatable
+          isClearable
           options={stateOptions}
           onChange={(option) => setState(option)}
           value={state}
@@ -194,6 +199,7 @@ const MexicoPicker = () => {
         <>
           <FormField label="City">
             <Creatable
+              isClearable
               options={cityOptions}
               onChange={(option) => setCity(option)}
               value={city}

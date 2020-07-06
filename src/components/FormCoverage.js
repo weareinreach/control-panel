@@ -1,5 +1,6 @@
 import { css, Global, ClassNames } from '@emotion/core'
 import _omit from 'lodash/omit';
+import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
 import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ import CanadianCities from '../data/canadian-cities.json';
 import USCities from '../data/us-cities.json';
 import MexicanCities from '../data/mexican-cities.json';
 import MexicanStates from '../data/mexican-states.json';
+import {areaCoverageProperties} from '../data/properties.json';
 
 import styled from '@emotion/styled';
 
@@ -21,18 +23,40 @@ const OptionalTag = styled.span`
   color: #888;
   padding-left: 8px;
   font-size: 12px;
-`
+`;
+
+const FormSection = styled.div`
+  margin-bottom: 20px;
+  & > h1 {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+`;
 
 const FormField = ({label, children, isOptional}) => {
   return (
     <FormControl css={css`
-      margin: 15px 0;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      & > label {
+        display:inline-flex;
+        min-width: 200px;
+        flex-shrink: 0;
+        align-items: center;
+      }
+      & > .form-field-children {
+        width: 100%;
+      }
     `}>
       <FormLabel>
         <span>{label}</span>
         {isOptional && <OptionalTag>(Optional)</OptionalTag>}
       </FormLabel>
-      {children}
+      <div className="form-field-children">
+        {children}
+      </div>
     </FormControl>
   )
 }
@@ -47,7 +71,7 @@ const ServiceAreaForm = () => {
   let nextField = null;
   if(country){
     if(country.value === 'USA') {
-      nextField = <USStatePicker key="us-state-picker" />;
+      nextField = <USPicker key="us-state-picker" />;
     } else if(country.value === 'Canada'){
       nextField = <CanadianPicker key="canadian-province-picker" />;
     } else if(country.value === 'Mexico') {
@@ -55,7 +79,8 @@ const ServiceAreaForm = () => {
     }
   }
   return (
-    <>
+    <FormSection>
+      <h1>New Coverage Area</h1>
       <FormField label="Country">
         <Select options={countryOptions}
                 onChange={(option) => setCountry(option)}
@@ -63,47 +88,28 @@ const ServiceAreaForm = () => {
                 placeholder="Select a country" />
       </FormField>
       {nextField}
-    </>
+    </FormSection>
   )
 };
 
 const USStateOptions = _values(USStates).map(state => ({value: state, label: state}));
 const CanadianProvinceOptions = _values(CanadianProvinces).map(province => ({value: province.name, label: province.name}));
+const USCountyOptions = areaCoverageProperties.filter(prop => prop.startsWith('service-county'));
 
-const USCityPicker = ({state}) => {
-  const [city, setCity] = useState(null);
-  const options = USCities[state]?.map(city => ({value: city, label: city})) ?? [];
-  return (
-    <FormField label="City">
-      <Creatable
-        options={options}
-        onChange={(option) => setCity(option)}
-        value={city}
-        placeholder="Select a City" />
-    </FormField>
-  )
-}
-
-const USCountyPicker = () => {
-  const [county, setCounty] = useState(null);
-  return (
-    <FormField label="County" isOptional>
-      <Input type="text" value={county} onChange={event => setCounty(event.target.value)} />
-    </FormField>
-  )
-}
-
-const USTownPicker = () => {
-  const [town, setTown] = useState(null);
-  return (
-    <FormField label="Town" isOptional>
-      <Input type="text" value={town} onChange={event => setTown(event.target.value)} />
-    </FormField>
-  );
-}
-
-const USStatePicker = () => {
+const USPicker = () => {
   const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
+  const [county, setCounty] = useState(null);
+  const [town, setTown] = useState(null);
+  const cityOptions = USCities[state?.value]?.map(city => ({value: city, label: city})) ?? [];
+  const countyOptions = USCountyOptions.filter(county => {
+    return county.startsWith(`service-county-${state?.value.toLowerCase()}`);
+  }).map(county => {
+    return {
+      value: county,
+      label: _capitalize(county.split('-')[3])
+    };
+  });
   return (
     <>
       <FormField label="State">
@@ -113,9 +119,25 @@ const USStatePicker = () => {
       </FormField>
       {state &&
         <>
-          <USCityPicker state={state.value} />
-          <USCountyPicker />
-          <USTownPicker />
+          <FormField label="City">
+            <Creatable
+              isClearable
+              options={cityOptions}
+              onChange={(option) => setCity(option)}
+              value={city}
+              placeholder="Select a City" />
+          </FormField>
+          <FormField label="County" isOptional>
+            <Creatable
+              isClearable
+              options={countyOptions}
+              onChange={(option) => setCounty(option)}
+              value={county}
+              placeholder="Select a County" />
+          </FormField>
+          <FormField label="Town" isOptional>
+            <Input type="text" value={town} onChange={event => setTown(event.target.value)} />
+          </FormField>
         </>
       }
     </>
@@ -183,20 +205,42 @@ const MexicoPicker = () => {
   );
 };
 
-const ExistingCoverageAreas = () => {
+const ExistingCoverageAreas = ({properties, updateProperties}) => {
+  const propertyKeys = Object.keys(properties).filter((key) =>
+    key.includes('service-')
+  );
+  const removeProperty = (property) => {
+    const newProperties = _omit(properties, [property]);
+    updateProperties(newProperties);
+  };
   return (
-    <div>
-
-    </div>
+    <FormSection>
+      <h1>Existing Coverage Areas</h1>
+      {propertyKeys?.map((key) => (
+        <Checkbox
+          key={key}
+          defaultIsChecked
+          onChange={() => removeProperty(key)}
+        >
+          {key}
+        </Checkbox>
+      ))}
+    </FormSection>
   );
 };
 
 
 const FormCoverage = (props) => {
+  const {properties: initialProperties = {}, updateField} = props;
+  const [properties, setProperties] = useState(initialProperties);
+  const updateProperties = (value) => {
+    updateField('properties', value);
+    setProperties(value);
+  }
   return (
     <Stack space={4}>
+      <ExistingCoverageAreas properties={properties} updateProperties={updateProperties} />
       <ServiceAreaForm />
-      <ExistingCoverageAreas />
     </Stack>
   );
 }

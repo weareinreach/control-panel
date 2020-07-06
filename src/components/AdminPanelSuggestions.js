@@ -1,4 +1,4 @@
-import {delete as httpDelete, get} from 'axios';
+import {delete as httpDelete, get, post} from 'axios';
 import React, {useContext} from 'react';
 import {Stack, Text} from '@chakra-ui/core';
 
@@ -8,6 +8,16 @@ import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
+
+export const catalogPost = (path, body, options) => {
+  const url = `${CATALOG_API_URL}${path}`;
+
+  return post(url, body, options)
+    .then(({data, status}) => {
+      return {status, ...data};
+    })
+    .catch();
+};
 
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -43,6 +53,18 @@ const AdminPanelSuggestions = (props) => {
 
         get(url)
           .then(() => {
+            const user = owner?.email;
+            const org = owner?.organization?.name;
+            const ownerStatus = 'approve';
+
+            // Send notification email to user with approval email
+            catalogPost(`/mail/${ownerStatus}/${org}`, {user})
+              .then(({data, status}) => {
+                return {status, ...data};
+              })
+              .catch((err) => {
+                console.error(`An error occurred while sending email: ${err}`);
+              });
             window.location.reload();
             setSuccess();
           })
@@ -65,6 +87,18 @@ const AdminPanelSuggestions = (props) => {
 
         httpDelete(url)
           .then(() => {
+            const user = owner?.email;
+            const org = owner?.organization?.name;
+            const ownerStatus = 'deny';
+
+            // Send notification email to user with approval email
+            catalogPost(`/mail/${ownerStatus}/${org}`, {user})
+              .then(({data, status}) => {
+                return {status, ...data};
+              })
+              .catch((err) => {
+                console.error(`An error occurred while sending email: ${err}`);
+              });
             window.location.reload();
             setSuccess();
           })

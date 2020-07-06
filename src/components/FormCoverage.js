@@ -1,5 +1,6 @@
 import { css, Global, ClassNames } from '@emotion/core'
 import _omit from 'lodash/omit';
+import _drop from 'lodash/drop';
 import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
@@ -33,6 +34,11 @@ const FormSection = styled.div`
   }
 `;
 
+const CheckboxList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const FormField = ({label, children, isOptional}) => {
   return (
     <FormControl css={css`
@@ -61,42 +67,16 @@ const FormField = ({label, children, isOptional}) => {
   )
 }
 
-const ServiceAreaForm = () => {
-  const [country, setCountry] = React.useState(null);
-  const countryOptions = [
-    {value: 'Canada', label: 'Canada'},
-    {value: 'Mexico', label: 'Mexico'},
-    {value: 'USA', label: 'USA'}
-  ];
-  let nextField = null;
-  if(country){
-    if(country.value === 'USA') {
-      nextField = <USPicker key="us-state-picker" />;
-    } else if(country.value === 'Canada'){
-      nextField = <CanadianPicker key="canadian-province-picker" />;
-    } else if(country.value === 'Mexico') {
-      nextField = <MexicoPicker key="mexican-state-picker" />;
-    }
-  }
-  return (
-    <FormSection>
-      <h1>New Coverage Area</h1>
-      <FormField label="Country">
-        <Select options={countryOptions}
-                onChange={(option) => setCountry(option)}
-                value={country}
-                placeholder="Select a country" />
-      </FormField>
-      {nextField}
-    </FormSection>
-  )
-};
-
 const USStateOptions = _values(USStates).map(state => ({value: state, label: state}));
 const CanadianProvinceOptions = _values(CanadianProvinces).map(province => ({value: province.name, label: province.name}));
 const USCountyOptions = areaCoverageProperties.filter(prop => prop.startsWith('service-county'));
 
-const USPicker = () => {
+function countyToLabel(county){
+  return _capitalize(_drop(county.split('-'), 3).join(' '));
+}
+
+const USPicker = (props) => {
+  const {onChange} = props;
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
   const [county, setCounty] = useState(null);
@@ -106,15 +86,18 @@ const USPicker = () => {
     return county.startsWith(`service-county-${state?.value.toLowerCase()}`);
   }).map(county => {
     return {
-      value: county,
-      label: _capitalize(county.split('-')[3])
+      value: countyToLabel(county),
+      label: countyToLabel(county)
     };
   });
   return (
     <>
       <FormField label="State">
         <Select options={USStateOptions}
-                onChange={(option) => setState(option)}
+                onChange={(option) => {
+                  setState(option);
+                  onChange('state', option?.value);
+                }}
                 value={state} placeholder="Select a State" />
       </FormField>
       {state &&
@@ -123,7 +106,10 @@ const USPicker = () => {
             <Creatable
               isClearable
               options={cityOptions}
-              onChange={(option) => setCity(option)}
+              onChange={(option) => {
+                setCity(option);
+                onChange('city', option?.value);
+              }}
               value={city}
               placeholder="Select a City" />
           </FormField>
@@ -131,12 +117,18 @@ const USPicker = () => {
             <Creatable
               isClearable
               options={countyOptions}
-              onChange={(option) => setCounty(option)}
+              onChange={(option) => {
+                setCounty(option);
+                onChange('county', option?.value);
+              }}
               value={county}
               placeholder="Select a County" />
           </FormField>
           <FormField label="Town" isOptional>
-            <Input type="text" value={town} onChange={event => setTown(event.target.value)} />
+            <Input type="text" value={town} onChange={event => {
+              setTown(event.target.value);
+              onChange('town', event.target.value);
+            }} />
           </FormField>
         </>
       }
@@ -144,7 +136,7 @@ const USPicker = () => {
   );
 };
 
-const CanadianPicker = () => {
+const CanadianPicker = ({onChange}) => {
   const [province, setProvince] = useState(null);
   const [city, setCity] = useState(null);
   const cityOptions = _sortBy(CanadianCities.filter(city => city.admin === province?.value).map(city => {
@@ -156,7 +148,10 @@ const CanadianPicker = () => {
         <Creatable
           isClearable
           options={CanadianProvinceOptions}
-          onChange={(option) => setProvince(option)}
+          onChange={(option) => {
+            setProvince(option)
+            onChange('state', option?.value);
+          }}
           value={province}
           placeholder="Select a Province" />
       </FormField>
@@ -165,7 +160,10 @@ const CanadianPicker = () => {
           <Creatable
             isClearable
             options={cityOptions}
-            onChange={(option) => setCity(option)}
+            onChange={(option) => {
+              setCity(option);
+              onChange('city', option?.value);
+            }}
             value={city}
             placeholder="Select a City"
           />
@@ -175,7 +173,7 @@ const CanadianPicker = () => {
   );
 };
 
-const MexicoPicker = () => {
+const MexicoPicker = ({onChange}) => {
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
   const stateOptions = _sortBy(MexicanStates.states.map(state => {
@@ -191,7 +189,10 @@ const MexicoPicker = () => {
         <Creatable
           isClearable
           options={stateOptions}
-          onChange={(option) => setState(option)}
+          onChange={(option) => {
+            setState(option);
+            onChange('state', option?.value);
+          }}
           value={state}
           placeholder="Select a State" />
       </FormField>
@@ -201,7 +202,10 @@ const MexicoPicker = () => {
             <Creatable
               isClearable
               options={cityOptions}
-              onChange={(option) => setCity(option)}
+              onChange={(option) => {
+                setCity(option);
+                onChange('city', option?.value);
+              }}
               value={city}
               placeholder="Select a City" />
           </FormField>
@@ -211,26 +215,100 @@ const MexicoPicker = () => {
   );
 };
 
-const ExistingCoverageAreas = ({properties, updateProperties}) => {
-  const propertyKeys = Object.keys(properties).filter((key) =>
+const ServiceAreaForm = (props) => {
+  const {onChange} = props;
+  const [country, setCountry] = React.useState(null);
+  const countryOptions = [
+    {value: 'Canada', label: 'Canada'},
+    {value: 'Mexico', label: 'Mexico'},
+    {value: 'United States', label: 'United States'}
+  ];
+  let nextField = null;
+  if(country){
+    if(country.value === 'United States') {
+      nextField = <USPicker key="us-state-picker" onChange={onChange} />;
+    } else if(country.value === 'Canada'){
+      nextField = <CanadianPicker key="canadian-province-picker" onChange={onChange} />;
+    } else if(country.value === 'Mexico') {
+      nextField = <MexicoPicker key="mexican-state-picker" onChange={onChange} />;
+    }
+  }
+
+  function onChangeCountry(option){
+    setCountry(option);
+    onChange('country', option.value);
+  }
+
+  return (
+    <FormSection>
+      <h1>New Coverage Area</h1>
+      <FormField label="Country">
+        <Select options={countryOptions}
+                onChange={onChangeCountry}
+                value={country}
+                placeholder="Select a country" />
+      </FormField>
+      {nextField}
+    </FormSection>
+  )
+};
+
+function normalizeField(field){
+  return field.toLowerCase().replace(/ /g, '-');
+}
+
+function toProperties({country, state, city, town, county}) {
+  const properties = {};
+  if(country) {
+    properties[`service-national-${normalizeField(country)}`] = 'true';
+  }
+  if(state){
+    properties[`service-state-${normalizeField(state)}`] = 'true';
+    if(city){
+      properties[`service-city-${normalizeField(state)}-${normalizeField(city)}`] = 'true';
+    }
+    if(town) {
+      properties[`service-town-${normalizeField(state)}-${normalizeField(town)}`] = 'true';
+    }
+    if(county){
+      properties[`service-county-${normalizeField(state)}-${normalizeField(county)}`] = 'true';
+    }
+  }
+  return properties;
+}
+
+const ExistingCoverageAreas = ({existingProperties, locationFields, updateProperties}) => {
+  const propertyKeys = Object.keys(existingProperties).filter((key) =>
     key.includes('service-')
-  );
+  ).sort();
   const removeProperty = (property) => {
-    const newProperties = _omit(properties, [property]);
+    const newProperties = _omit(existingProperties, [property]);
     updateProperties(newProperties);
   };
   return (
     <FormSection>
-      <h1>Existing Coverage Areas</h1>
-      {propertyKeys?.map((key) => (
-        <Checkbox
-          key={key}
-          defaultIsChecked
-          onChange={() => removeProperty(key)}
-        >
-          {key}
-        </Checkbox>
-      ))}
+      <h1>Coverage Areas</h1>
+      <CheckboxList>
+        {propertyKeys?.map((key) => (
+          <Checkbox
+            key={key}
+            isChecked={true}
+            onChange={() => removeProperty(key)}
+          >
+            {key}
+          </Checkbox>
+        ))}
+        {Object.keys(toProperties(locationFields))?.map((key) => (
+            <Checkbox
+              key={key}
+              variantColor="green"
+              isChecked={true}
+              onChange={() => removeProperty(key)}
+            >
+              {key}
+            </Checkbox>
+          ))}
+      </CheckboxList>
     </FormSection>
   );
 };
@@ -238,15 +316,79 @@ const ExistingCoverageAreas = ({properties, updateProperties}) => {
 
 const FormCoverage = (props) => {
   const {properties: initialProperties = {}, updateField} = props;
-  const [properties, setProperties] = useState(initialProperties);
-  const updateProperties = (value) => {
-    updateField('properties', value);
-    setProperties(value);
+  const [existingProperties, setExistingProperties] = useState(initialProperties);
+  const [locationFields, setLocationFields] = useState({});
+
+
+  function onChangeLocationFields(fields){
+    updateField('properties', {...existingProperties, ...toProperties(fields)});
+    setLocationFields(fields);
   }
+
+  function onChangeExistingProperties(value){
+    updateField('properties', {...toProperties(locationFields), ...value});
+    setExistingProperties(value);
+  }
+
+  function onChange(name, value){
+    if(name === 'country'){
+      if(!value){
+        onChangeLocationFields(_omit(locationFields, 'country'));
+      } else {
+        onChangeLocationFields({
+          country: value
+        });
+      }
+    } else if(name === 'state') {
+      if(!value){
+        onChangeLocationFields(_omit(locationFields, 'state'));
+      } else {
+        onChangeLocationFields({
+          country: locationFields.country,
+          state: value
+        });
+      }
+    } else if(name === 'city') {
+      if(!value){
+        onChangeLocationFields(_omit(locationFields, 'city'));
+      } else {
+        onChangeLocationFields({
+          ...locationFields,
+          city: value
+        });
+      }
+    } else if(name === 'county'){
+      if(!value){
+        onChangeLocationFields(_omit(locationFields, 'county'));
+      } else {
+        onChangeLocationFields({
+          ...locationFields,
+          county: value
+        });
+      }
+    } else if(name === 'town') {
+      if(!value){
+        onChangeLocationFields(_omit(locationFields, 'town'));
+      } else {
+        onChangeLocationFields({
+          ...locationFields,
+          town: value
+        });
+      }
+    } else {
+      throw new Error(`Unknown Field ${name}`);
+    }
+  }
+
+  console.log("Location Fields", locationFields);
+
   return (
     <Stack space={4}>
-      <ExistingCoverageAreas properties={properties} updateProperties={updateProperties} />
-      <ServiceAreaForm />
+      <ExistingCoverageAreas
+          existingProperties={existingProperties}
+          locationFields={locationFields}
+          updateProperties={onChangeExistingProperties} />
+      <ServiceAreaForm onChange={onChange}/>
     </Stack>
   );
 }

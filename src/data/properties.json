@@ -24,6 +24,12 @@
       "type": "textarea"
     },
     {
+      "key": "translations.es.geo-public-transit-description",
+      "label": "Public transit / specific directions_ES",
+      "description": "Written description of public transit services",
+      "type": "textarea"
+    },
+    {
       "key": "time-walk-in",
       "label": "Has Walk-In Hours",
       "description": "Accepts walk-ins; Walk-in clinic hours; Legal clinic; No appointment required",
@@ -3400,6 +3406,12 @@
       "label": "Cost Fees",
       "description": "Enter a # or brief written short description of fees (e.g. \"costs offered on a sliding scale\"",
       "type": "text"
+    },
+    {
+      "key": "translations.es.cost-fees",
+      "label": "Cost Fees_ES",
+      "description": "Enter a # or brief written short description of fees (e.g. \"costs offered on a sliding scale\"",
+      "type": "text"
     }
   ],
   "eligibilityRequirementProperties": [
@@ -3421,6 +3433,12 @@
     {
       "key": "elig-description",
       "label": "Elig Description",
+      "description": "tk",
+      "type": "textarea"
+    },
+    {
+      "key": "translations.es.elig-description",
+      "label": "Elig Description_ES",
       "description": "tk",
       "type": "textarea"
     },
@@ -3471,6 +3489,10 @@
     {
       "key": "lang-all-languages-by-interpreter",
       "label": "lang-all-languages-by-interpreter"
+    },
+    {
+      "key": "translations.es.lang-all-languages-by-interpreter",
+      "label": "lang-all-languages-by-interpreter_ES"
     },
     {
       "key": "lang-Albanian",

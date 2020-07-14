@@ -58,6 +58,7 @@ const Organization = (props) => {
     updated_at,
     verified_at,
     website,
+    translations,
   } = organization || {};
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
@@ -372,8 +373,11 @@ const Organization = (props) => {
             rows={[
               {key: 'ID', value: _id},
               {key: 'Website', value: website},
+              {key: 'Website_ES', value: translations?.es?.website},
               {key: 'Description', value: description},
+              {key: 'Description_ES', value: translations?.es?.description},
               {key: 'Alert Message', value: alert_message},
+              {key: 'Alert Message_ES', value: translations?.es?.alert_message},
               {key: 'Slug', value: slug},
               {key: 'Is Published', value: is_published},
               {key: 'Last Verified', value: verified_at},

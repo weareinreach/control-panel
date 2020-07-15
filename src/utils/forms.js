@@ -29,6 +29,8 @@ export const cleanProperties = (properties) => {
       switch (valueType) {
         case 'string':
           break;
+        case 'object':
+          break;
         case 'boolean':
         case 'number':
           value = value.toString();

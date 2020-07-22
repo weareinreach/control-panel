@@ -15,9 +15,9 @@
       ]
     },
     {"key": "access_value", "label": "Value", "type": "textarea"},
-    {"key": "translations.es.access_value", "label": "Value_ES", "type": "textarea"},
+    {"key": "access_value_ES", "label": "Value_ES", "type": "textarea"},
     {"key": "instructions", "label": "Instructions"},
-    {"key": "translations.es.instructions", "label": "Instructions_ES"}
+    {"key": "instructions_ES", "label": "Instructions_ES"}
   ],
   "adminFields": [
     {
@@ -39,7 +39,7 @@
   "emailFields": [
     {"key": "email", "label": "Email"},
     {"key": "title", "label": "Title"},
-    {"key": "translations.es.title", "label": "Title_ES"},
+    {"key": "title_ES", "label": "Title_ES"},
     {"key": "first_name", "label": "First Name"},
     {"key": "last_name", "label": "Last Name"},
     {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
@@ -47,15 +47,15 @@
   ],
   "locationFields": [
     {"key": "name", "label": "Name"},
-    {"key": "translations.es.name", "label": "Name_ES"},
+    {"key": "name_ES", "label": "Name_ES"},
     {"key": "unit", "label": "Unit"},
     {"key": "address", "label": "Address"},
     {"key": "city", "label": "City"},
     {"key": "state", "label": "State"},
     {"key": "country", "label": "Country"},
-    {"key": "translations.es.city", "label": "City_ES"},
-    {"key": "translations.es.state", "label": "State_ES"},
-    {"key": "translations.es.country", "label": "Country_ES"},
+    {"key": "city_ES", "label": "City_ES"},
+    {"key": "state_ES", "label": "State_ES"},
+    {"key": "country_ES", "label": "Country_ES"},
     {"key": "zip_code", "label": "Zipcode"},
     {"key": "lat", "label": "Lat"},
     {"key": "long", "label": "Long"},
@@ -70,16 +70,16 @@
       "description": "Please be cautious editing this at it can result in broken links."
     },
     {
-      "key": "translations.es.slug",
+      "key": "slug_ES",
       "label": "Slug_ES",
       "description": "Please be cautious editing this at it can result in broken links."
     },
     {"key": "website", "label": "Website"},
-    {"key": "translations.es.website", "label": "Website_ES"},
+    {"key": "website_ES", "label": "Website_ES"},
     {"key": "description", "label": "Description", "type": "textarea"},
-    {"key": "translations.es.description", "label": "Description_ES", "type": "textarea"},
+    {"key": "description_ES", "label": "Description_ES", "type": "textarea"},
     {"key": "alert_message", "label": "Alert Message", "type": "textarea"},
-    {"key": "translations.es.alert_message", "label": "Alert Message_ES", "type": "textarea"},
+    {"key": "alert_message_ES", "label": "Alert Message_ES", "type": "textarea"},
     {"key": "is_published", "label": "Is Published", "type": "checkbox"}
   ],
   "passwordFields": [
@@ -96,7 +96,7 @@
       "placeholder": "For example is it a mobile, fax, office phone?"
     },
     {
-      "key": "translations.es.phone_type",
+      "key": "phone_type_ES",
       "label": "Phone Type_ES",
       "placeholder": "For example is it a mobile, fax, office phone?"
     },
@@ -148,11 +148,11 @@
       "description": "Please be cautious editing this at it can result in broken links."
     },
     {
-      "key": "translations.es.slug",
+      "key": "slug_ES",
       "label": "Slug_ES",
       "description": "Please be cautious editing this at it can result in broken links."
     },
     {"key": "description", "label": "Description", "type": "textarea"},
-    {"key": "translations.es.description", "label": "Description_ES", "type": "textarea"}
+    {"key": "description_ES", "label": "Description_ES", "type": "textarea"}
   ]
 }

@@ -24,7 +24,7 @@
       "type": "textarea"
     },
     {
-      "key": "translations.es.geo-public-transit-description",
+      "key": "geo-public-transit-description_ES",
       "label": "Public transit / specific directions_ES",
       "description": "Written description of public transit services",
       "type": "textarea"
@@ -3408,7 +3408,7 @@
       "type": "text"
     },
     {
-      "key": "translations.es.cost-fees",
+      "key": "cost-fees_ES",
       "label": "Cost Fees_ES",
       "description": "Enter a # or brief written short description of fees (e.g. \"costs offered on a sliding scale\"",
       "type": "text"
@@ -3437,7 +3437,7 @@
       "type": "textarea"
     },
     {
-      "key": "translations.es.elig-description",
+      "key": "elig-description_ES",
       "label": "Elig Description_ES",
       "description": "tk",
       "type": "textarea"
@@ -3491,7 +3491,7 @@
       "label": "lang-all-languages-by-interpreter"
     },
     {
-      "key": "translations.es.lang-all-languages-by-interpreter",
+      "key": "lang-all-languages-by-interpreter_ES",
       "label": "lang-all-languages-by-interpreter_ES"
     },
     {

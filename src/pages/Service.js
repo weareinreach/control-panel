@@ -89,7 +89,8 @@ const Service = (props) => {
     slug,
     tags: serviceTags,
     updated_at,
-    translations,
+    description_ES,
+    slug_ES,
   } = service || {};
   const email = findItem(organization?.emails, email_id);
   const location = findItem(organization?.locations, location_id);
@@ -311,9 +312,9 @@ const Service = (props) => {
                   rows={[
                     {key: 'ID', value: _id},
                     {key: 'Description', value: description},
-                    {key: 'Description_ES', value: translations?.es?.description},
+                    {key: 'Description_ES', value: description_ES},
                     {key: 'Slug', value: slug},
-                    {key: 'Slug_ES', value: translations?.es?.slug},
+                    {key: 'Slug_ES', value: slug_ES},
                     // TODO: Temporarily comment out is_published functionality for services
                     // Add back into fields.json to make it editable again
                     // {key: 'Is Published', value: is_published},

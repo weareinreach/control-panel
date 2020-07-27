@@ -9,15 +9,6 @@ import {Container, SectionTitle, Title} from '../components/styles';
 import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
-export const catalogPost = (path, body, options) => {
-  const url = `${CATALOG_API_URL}${path}`;
-
-  return post(url, body, options)
-    .then(({data, status}) => {
-      return {status, ...data};
-    })
-    .catch();
-};
 
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -53,17 +44,20 @@ const AdminPanelSuggestions = (props) => {
 
         get(url)
           .then(() => {
-            const user = owner?.email;
-            const org = owner?.organization?.name;
             const ownerStatus = 'approve';
+            const org = owner?.organization?.name;
+            const recipient = owner?.email;
+            const mailUrl = `${CATALOG_API_URL}/mail`;
 
-            // Send notification email to user with approval email
-            catalogPost(`/mail/${ownerStatus}/${org}`, {user})
+            // Sends email to pending affiliate
+            post(`${mailUrl}`, {ownerStatus, org, recipient})
               .then(({data, status}) => {
+                console.log('approval is sent');
                 return {status, ...data};
               })
               .catch((err) => {
                 console.error(`An error occurred while sending email: ${err}`);
+                setError();
               });
             window.location.reload();
             setSuccess();
@@ -82,29 +76,33 @@ const AdminPanelSuggestions = (props) => {
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${CATALOG_API_URL}/organizations/${owner?.organization?._id}/owners/${owner?.userId}`;
-
+        const ownerStatus = 'deny';
+        const org = owner?.organization?.name;
+        const recipient = owner?.email;
+        const mailUrl = `${CATALOG_API_URL}/mail`;
+        console.log(mailUrl);
         setLoading();
-
+        
+        // Sends email to pending affiliate
+        post(`${mailUrl}`, {ownerStatus, org, recipient})
+          .then(({data, status}) => {
+            console.log('denial is sent');
+            return {status, ...data};
+          })
+          .catch((err) => {
+            console.error(`An error occurred while sending email. ${err}`);
+            setError();
+          });
+        
+        // Removes email from pending affiliates
         httpDelete(url)
           .then(() => {
-            const user = owner?.email;
-            const org = owner?.organization?.name;
-            const ownerStatus = 'deny';
-
-            // Send notification email to user with approval email
-            catalogPost(`/mail/${ownerStatus}/${org}`, {user})
-              .then(({data, status}) => {
-                return {status, ...data};
-              })
-              .catch((err) => {
-                console.error(`An error occurred while sending email: ${err}`);
-              });
             window.location.reload();
             setSuccess();
           })
           .catch((err) => {
-            console.error('An error occured while updating ownership');
-            console.error(err);
+            console.log('An error occured while updating ownership');
+            console.log(err);
             setError();
           });
       },

@@ -347,7 +347,18 @@ const Organization = (props) => {
         <Alert title="This organization is unpublished" type="warning" />
       )}
       <Box float="right">
-        <Button onClick={openOnCatalog} marginRight={2}>
+        <DropdownButton
+          buttonText="Select a language"
+          items={[
+            {
+              text: 'English',
+            },
+            {
+              text: 'Español',
+            },
+          ]}
+        />
+        <Button onClick={openOnCatalog} marginLeft={2} marginRight={2}>
           View on Catalog
         </Button>
         <DropdownButton

@@ -4,7 +4,6 @@ import _drop from 'lodash/drop';
 import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
-import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {Checkbox, Stack, Input, FormControl, FormLabel} from '@chakra-ui/core';
 import Select from 'react-select';
@@ -71,8 +70,9 @@ const USStateOptions = _values(USStates).map(state => ({value: state, label: sta
 const CanadianProvinceOptions = _values(CanadianProvinces).map(province => ({value: province.name, label: province.name}));
 const USCountyOptions = areaCoverageProperties.filter(prop => prop.startsWith('service-county'));
 
-function countyToLabel(county){
-  return _capitalize(_drop(county.split('-'), 3).join(' '));
+function countyToLabel(state, county){
+  const prefix = 'service-county-' + state;
+  return _capitalize(county.slice(prefix.length).split('-').join(' ').trim());
 }
 
 const USPicker = (props) => {
@@ -82,12 +82,13 @@ const USPicker = (props) => {
   const [county, setCounty] = useState(null);
   const [town, setTown] = useState(null);
   const cityOptions = USCities[state?.value]?.map(city => ({value: city, label: city})) ?? [];
+
   const countyOptions = USCountyOptions.filter(county => {
-    return county.startsWith(`service-county-${state?.value.toLowerCase()}`);
+    return county.startsWith(`service-county-${state?.value.toLowerCase().split(' ').join('-')}`);
   }).map(county => {
     return {
-      value: countyToLabel(county),
-      label: countyToLabel(county)
+      value: countyToLabel(state?.value, county),
+      label: countyToLabel(state?.value, county)
     };
   });
   return (

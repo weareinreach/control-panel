@@ -388,7 +388,6 @@ const Organization = (props) => {
               {key: 'ID', value: _id},
               {key: 'Website', value: website},
               {key: 'Website_ES', value: website_ES},
-
               {key: 'Description', value: description},
               {key: 'Description_ES', value: description_ES},
               {key: 'Alert Message', value: alert_message},

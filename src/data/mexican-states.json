@@ -197,6 +197,12 @@
       "key": "32",
       "name": "Zacatecas",
       "shortname": "Zac."
+    },
+    {
+      "id": "33",
+      "key": "33",
+      "name": "Mexico City",
+      "shortname": "CDMX"
     }
   ]
 }

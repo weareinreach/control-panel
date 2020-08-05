@@ -93,6 +93,16 @@ const USPicker = (props) => {
   });
   return (
     <>
+      <FormField label="National">
+        <Checkbox
+          key='national'
+          onChange={(e) => {
+            onChange('national', e.target.checked);
+          }}
+        >
+          check this field only if the org/service is able to help people located anywhere in the country.
+        </Checkbox>
+      </FormField>
       <FormField label="State">
         <Select options={USStateOptions}
                 onChange={(option) => {
@@ -258,9 +268,9 @@ function normalizeField(field){
   return field.toLowerCase().replace(/ /g, '-');
 }
 
-function toProperties({country, state, city, town, county}) {
+function toProperties({ national, country, state, city, town, county }) {
   const properties = {};
-  if(country) {
+  if (country && national) {
     properties[`service-national-${normalizeField(country)}`] = 'true';
   }
   if(state){
@@ -332,7 +342,16 @@ const FormCoverage = (props) => {
   }
 
   function onChange(name, value){
-    if(name === 'country'){
+    if (name === 'national') {
+      if (!value) {
+        onChangeLocationFields(_omit(locationFields, 'national'));
+      } else {
+        onChangeLocationFields({
+          ...locationFields,
+          national: value
+        });
+      }
+    } else if (name === 'country') {
       if(!value){
         onChangeLocationFields(_omit(locationFields, 'country'));
       } else {
@@ -345,7 +364,7 @@ const FormCoverage = (props) => {
         onChangeLocationFields(_omit(locationFields, 'state'));
       } else {
         onChangeLocationFields({
-          country: locationFields.country,
+          ...locationFields,
           state: value
         });
       }

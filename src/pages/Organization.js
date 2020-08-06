@@ -325,12 +325,6 @@ const Organization = (props) => {
       onConfirm: updateListField('schedules'),
     });
   };
-  const openOnCatalog = () => {
-    const url = `${catalogUrl}/en_US/resource/${slug}`;
-    const win = window.open(url, '_blank');
-
-    win.focus();
-  };
 
   if (loading) {
     return <Loading />;
@@ -358,9 +352,19 @@ const Organization = (props) => {
             },
           ]}
         />
-        <Button onClick={openOnCatalog} marginLeft={2} marginRight={2}>
-          View on Catalog
-        </Button>
+        <DropdownButton
+          buttonText="View on Catalog"
+          items={[
+            {
+              href: `${catalogUrl}/en_US/resource/${slug}`,
+              text: 'English',
+            },
+            {
+              href: `${catalogUrl}/es_MX/resource/${slug_ES}`,
+              text: 'Español',
+            },
+          ]}
+        />
         <DropdownButton
           buttonText="More"
           items={[

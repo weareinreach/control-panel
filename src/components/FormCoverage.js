@@ -155,6 +155,16 @@ const CanadianPicker = ({onChange}) => {
   }), option => option.label);
   return (
     <>
+      <FormField label="National">
+        <Checkbox
+          key='national'
+          onChange={(e) => {
+            onChange('national', e.target.checked);
+          }}
+        >
+          check this field only if the org/service is able to help people located anywhere in the country.
+        </Checkbox>
+      </FormField>
       <FormField label="Province">
         <Creatable
           isClearable
@@ -196,6 +206,16 @@ const MexicoPicker = ({onChange}) => {
       .map(city => ({label: city.name, value: city.name}));
   return (
     <>
+      <FormField label="National">
+        <Checkbox
+          key='national'
+          onChange={(e) => {
+            onChange('national', e.target.checked);
+          }}
+        >
+          check this field only if the org/service is able to help people located anywhere in the country.
+        </Checkbox>
+      </FormField>
       <FormField label="State">
         <Creatable
           isClearable

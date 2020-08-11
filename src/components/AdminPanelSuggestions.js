@@ -1,4 +1,4 @@
-import {delete as httpDelete, get} from 'axios';
+import {delete as httpDelete, get, post} from 'axios';
 import React, {useContext} from 'react';
 import {Stack, Text} from '@chakra-ui/core';
 
@@ -8,6 +8,7 @@ import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import {CATALOG_API_URL} from '../utils';
 import {useAPIGet} from '../utils/hooks';
+
 
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -43,6 +44,21 @@ const AdminPanelSuggestions = (props) => {
 
         get(url)
           .then(() => {
+            const ownerStatus = 'approve';
+            const org = owner?.organization?.name;
+            const recipient = owner?.email;
+            const mailUrl = `${CATALOG_API_URL}/mail`;
+
+            // Sends email to pending affiliate
+            post(`${mailUrl}`, {ownerStatus, org, recipient})
+              .then(({data, status}) => {
+                console.log('approval is sent');
+                return {status, ...data};
+              })
+              .catch((err) => {
+                console.error(`An error occurred while sending email: ${err}`);
+                setError();
+              });
             window.location.reload();
             setSuccess();
           })
@@ -60,17 +76,33 @@ const AdminPanelSuggestions = (props) => {
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${CATALOG_API_URL}/organizations/${owner?.organization?._id}/owners/${owner?.userId}`;
-
+        const ownerStatus = 'deny';
+        const org = owner?.organization?.name;
+        const recipient = owner?.email;
+        const mailUrl = `${CATALOG_API_URL}/mail`;
+        console.log(mailUrl);
         setLoading();
-
+        
+        // Sends email to pending affiliate
+        post(`${mailUrl}`, {ownerStatus, org, recipient})
+          .then(({data, status}) => {
+            console.log('denial is sent');
+            return {status, ...data};
+          })
+          .catch((err) => {
+            console.error(`An error occurred while sending email. ${err}`);
+            setError();
+          });
+        
+        // Removes email from pending affiliates
         httpDelete(url)
           .then(() => {
             window.location.reload();
             setSuccess();
           })
           .catch((err) => {
-            console.error('An error occured while updating ownership');
-            console.error(err);
+            console.log('An error occured while updating ownership');
+            console.log(err);
             setError();
           });
       },

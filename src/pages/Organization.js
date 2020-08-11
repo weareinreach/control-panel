@@ -58,6 +58,10 @@ const Organization = (props) => {
     updated_at,
     verified_at,
     website,
+    website_ES,
+    description_ES,
+    alert_message_ES,
+    slug_ES,
   } = organization || {};
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
@@ -321,12 +325,6 @@ const Organization = (props) => {
       onConfirm: updateListField('schedules'),
     });
   };
-  const openOnCatalog = () => {
-    const url = `${catalogUrl}/en_US/resource/${slug}`;
-    const win = window.open(url, '_blank');
-
-    win.focus();
-  };
 
   if (loading) {
     return <Loading />;
@@ -343,9 +341,30 @@ const Organization = (props) => {
         <Alert title="This organization is unpublished" type="warning" />
       )}
       <Box float="right">
-        <Button onClick={openOnCatalog} marginRight={2}>
-          View on Catalog
-        </Button>
+        <DropdownButton
+          buttonText="Select a language"
+          items={[
+            {
+              text: 'English',
+            },
+            {
+              text: 'Español',
+            },
+          ]}
+        />
+        <DropdownButton
+          buttonText="View on Catalog"
+          items={[
+            {
+              href: `${catalogUrl}/en_US/resource/${slug}`,
+              text: 'English',
+            },
+            {
+              href: `${catalogUrl}/es_MX/resource/${slug_ES}`,
+              text: 'Español',
+            },
+          ]}
+        />
         <DropdownButton
           buttonText="More"
           items={[
@@ -372,9 +391,13 @@ const Organization = (props) => {
             rows={[
               {key: 'ID', value: _id},
               {key: 'Website', value: website},
+              {key: 'Website_ES', value: website_ES},
               {key: 'Description', value: description},
+              {key: 'Description_ES', value: description_ES},
               {key: 'Alert Message', value: alert_message},
+              {key: 'Alert Message_ES', value: alert_message_ES},
               {key: 'Slug', value: slug},
+              {key: 'Slug_ES', value: slug_ES},
               {key: 'Is Published', value: is_published},
               {key: 'Last Verified', value: verified_at},
               {key: 'Updated At', value: updated_at},

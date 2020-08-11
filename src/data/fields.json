@@ -15,7 +15,9 @@
       ]
     },
     {"key": "access_value", "label": "Value", "type": "textarea"},
-    {"key": "instructions", "label": "Instructions"}
+    {"key": "access_value_ES", "label": "Value_ES", "type": "textarea"},
+    {"key": "instructions", "label": "Instructions"},
+    {"key": "instructions_ES", "label": "Instructions_ES"}
   ],
   "adminFields": [
     {
@@ -37,6 +39,7 @@
   "emailFields": [
     {"key": "email", "label": "Email"},
     {"key": "title", "label": "Title"},
+    {"key": "title_ES", "label": "Title_ES"},
     {"key": "first_name", "label": "First Name"},
     {"key": "last_name", "label": "Last Name"},
     {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
@@ -44,11 +47,15 @@
   ],
   "locationFields": [
     {"key": "name", "label": "Name"},
+    {"key": "name_ES", "label": "Name_ES"},
     {"key": "unit", "label": "Unit"},
     {"key": "address", "label": "Address"},
     {"key": "city", "label": "City"},
     {"key": "state", "label": "State"},
     {"key": "country", "label": "Country"},
+    {"key": "city_ES", "label": "City_ES"},
+    {"key": "state_ES", "label": "State_ES"},
+    {"key": "country_ES", "label": "Country_ES"},
     {"key": "zip_code", "label": "Zipcode"},
     {"key": "lat", "label": "Lat"},
     {"key": "long", "label": "Long"},
@@ -57,14 +64,27 @@
   ],
   "organizationDetailsFields": [
     {"key": "name", "label": "Name"},
+    {"key": "name_ES", "label": "Name_ES"},
     {
       "key": "slug",
       "label": "Slug",
       "description": "Please be cautious editing this at it can result in broken links."
     },
+    {
+      "key": "slug_ES",
+      "label": "Slug_ES",
+      "description": "Please be cautious editing this at it can result in broken links."
+    },
     {"key": "website", "label": "Website"},
+    {"key": "website_ES", "label": "Website_ES"},
     {"key": "description", "label": "Description", "type": "textarea"},
+    {"key": "description_ES", "label": "Description_ES", "type": "textarea"},
     {"key": "alert_message", "label": "Alert Message", "type": "textarea"},
+    {
+      "key": "alert_message_ES",
+      "label": "Alert Message_ES",
+      "type": "textarea"
+    },
     {"key": "is_published", "label": "Is Published", "type": "checkbox"}
   ],
   "passwordFields": [
@@ -78,6 +98,11 @@
     {
       "key": "phone_type",
       "label": "Phone Type",
+      "placeholder": "For example is it a mobile, fax, office phone?"
+    },
+    {
+      "key": "phone_type_ES",
+      "label": "Phone Type_ES",
       "placeholder": "For example is it a mobile, fax, office phone?"
     },
     {"key": "digits", "label": "Digits"},
@@ -122,11 +147,18 @@
   ],
   "serviceDetailsFields": [
     {"key": "name", "label": "Name"},
+    {"key": "name_ES", "label": "Name_ES"},
     {
       "key": "slug",
       "label": "Slug",
       "description": "Please be cautious editing this at it can result in broken links."
     },
-    {"key": "description", "label": "Description", "type": "textarea"}
+    {
+      "key": "slug_ES",
+      "label": "Slug_ES",
+      "description": "Please be cautious editing this at it can result in broken links."
+    },
+    {"key": "description", "label": "Description", "type": "textarea"},
+    {"key": "description_ES", "label": "Description_ES", "type": "textarea"}
   ]
 }

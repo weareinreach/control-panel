@@ -1,6 +1,5 @@
-import { css, Global, ClassNames } from '@emotion/core'
+import { css } from '@emotion/core'
 import _omit from 'lodash/omit';
-import _drop from 'lodash/drop';
 import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
@@ -284,7 +283,7 @@ const ServiceAreaForm = (props) => {
   )
 };
 
-function normalizeField(field){
+export function normalizeField(field){
   return field.toLowerCase().replace(/ /g, '-');
 }
 

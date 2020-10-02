@@ -16,7 +16,7 @@ const USStateServiceAreas = _values(USStates).map(state => (`service-state-${nor
 const CanadianStateServiceAreas = _values(CanadianProvinces).map(province => (`service-state-${normalizeField(province.name)}`));
 const MexicanStateServiceAreas = _values(MexicanStates.states).map(state => (`service-state-${normalizeField(state.name)}`));
 const CountryServiceAreaMapping = [
-  {country: "Unitied States", serviceAreas: USStateServiceAreas.concat(["service-national-united-states"])},
+  {country: "United States", serviceAreas: USStateServiceAreas.concat(["service-national-united-states"])},
   {country: "Canada", serviceAreas: CanadianStateServiceAreas.concat(["service-national-canada"])},
   {country: "Mexico", serviceAreas: MexicanStateServiceAreas.concat(["service-national-mexico"])},
 ]

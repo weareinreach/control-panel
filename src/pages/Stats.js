@@ -42,7 +42,6 @@ const Stats = () => {
       let urls = queryFunction(query);
 
       let url = `${CATALOG_API_URL}${urls.count}`;
-      console.log('GET:', url);
   
       return get(url)
         .then(({data}) => {

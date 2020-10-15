@@ -54,57 +54,57 @@
     ]
   },
   "mexico": {
-    "Apoyo comunitario": [
-      "Centros culturales",
-      "Centros para la comunidad LGBTTTI+"
+    "Community Support": ["Cultural centers", "LGBTQ centers"],
+    "Computers and Internet": [],
+    "Education and Employment": [
+      "Career counseling",
+      "Educational support for LGBTQ youth",
+      "Language classes",
+      "Libraries",
+      "Scholarships"
     ],
-    "Computadoras e Internet": [],
-    "Educación y Empleo": [
-      "Orientación profesional",
-      "Becas",
-      "Clases de idiomas",
-      "Bibliotecas",
-      "Apoyo educativo para jóvenes LGBTTTI+"
+    "Food": [],
+    "Housing": [
+      "Drop-in centers for LGBTQ youth",
+      "Emergency housing",
+      "Housing information and referrals"
     ],
-    "Comida": [],
-    "Alojamiento": [
-      "Referencias e información de alojamiento",
-      "Alojamiento de emergencia",
-      "Centros de acogida para jóvenes LGBTTTI+"
+    "Hygiene and Clothing": [
+      "Clothes",
+      "Gender-affirming items",
+      "Gender-neutral bathrooms",
+      "Hygiene"
     ],
-    "Higiene y Ropa": [
-      "Baños de género neutro",
-      "Artículos que afirman la identidad de género",
-      "Ropa",
-      "Higiene"
+    "Legal": [
+      "Asylum application in the US from Mexico",
+      "Asylum application in Mexico",
+      "Crime and discrimination",
+      "Deportation or removal",
+      "Immigration detention",
+      "Name and gender change"
     ],
-    "Servicios legales": [
-      "Solicitud de asilo en EEUU desde México",
-      "Solicitud de asilo en México",
-      "Deportación o expulsión",
-      "Cambio de nombre y género",
-      "Detención migratoria",
-      "Crimen y discriminación"
+    "Medical": [
+      "Dental care",
+      "HIV and sexual health",
+      "Medical clinics",
+      "Physical evaluations for asylum claim",
+      "Trans health",
+      "Women's health"
     ],
-    "Servicios médicos": [
-      "Clínicas médicas",
-      "Salud femenina",
-      "VIH y salud sexual",
-      "Salud para personas Trans",
-      "Evaluaciones físicas para solicitudes de asilo",
-      "Cuidado dental"
+    "Mental Health": [
+      "Hotlines",
+      "Private therapy and counseling",
+      "Psychological evaluations for asylum claim",
+      "Substance use",
+      "Support groups",
+      "Trans support groups"
     ],
-    "Salud Mental": [
-      "Líneas de atención",
-      "Grupos de apoyo",
-      "Grupos de apoyo para personas Trans",
-      "Terapia privada y asesoramiento",
-      "Evaluaciones psicológicas para solicitudes de asilo",
-      "Consumo de sustancias"
-    ],
-    "Deportes y diversión": [],
-    "Traducción e interpretación": [],
-    "Transporte": ["Pases de transporte y descuentos", "Ayuda con transporte"]
+    "Sports and Entertainment": [],
+    "Translation and Interpretation": [],
+    "Transportation": [
+      "Transit passes and discounts",
+      "Transportation assistance"
+    ]
   },
   "united_states": {
     "Community Support": ["Cultural centers", "LGBTQ centers", "Sponsors"],

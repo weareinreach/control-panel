@@ -91,7 +91,7 @@ const Stats = () => {
                       />
                   </Box>
                 </Container>
-                <Container>
+                <Container marginTop={8}>
                   <Box>
                       <SectionTitle>Verified Services</SectionTitle>
                       <Table

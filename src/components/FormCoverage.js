@@ -1,5 +1,7 @@
 import { css } from '@emotion/core'
 import _omit from 'lodash/omit';
+import _drop from 'lodash/drop';
+import _mapKeys from 'lodash/mapKeys';
 import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
@@ -56,7 +58,7 @@ const FormField = ({label, children, isOptional}) => {
     `}>
       <FormLabel>
         <span>{label}</span>
-        {isOptional && <OptionalTag>(Optional)</OptionalTag>}
+        {isOptional && <OptionalTag>&#40;Optional&#41;</OptionalTag>}
       </FormLabel>
       <div className="form-field-children">
         {children}
@@ -68,6 +70,9 @@ const FormField = ({label, children, isOptional}) => {
 const USStateOptions = _values(USStates).map(state => ({value: state, label: state}));
 const CanadianProvinceOptions = _values(CanadianProvinces).map(province => ({value: province.name, label: province.name}));
 const USCountyOptions = areaCoverageProperties.filter(prop => prop.startsWith('service-county'));
+const NormalizedUSCityNames = _mapKeys(USCities, (value, key) => {
+  return key.toLowerCase();
+});
 
 function countyToLabel(state, county){
   const prefix = 'service-county-' + state;
@@ -80,8 +85,7 @@ const USPicker = (props) => {
   const [city, setCity] = useState(null);
   const [county, setCounty] = useState(null);
   const [town, setTown] = useState(null);
-  const cityOptions = USCities[state?.value]?.map(city => ({value: city, label: city})) ?? [];
-
+  const cityOptions = NormalizedUSCityNames[state?.value?.toLowerCase()]?.map(city => ({value: city, label: city})) ?? [];
   const countyOptions = USCountyOptions.filter(county => {
     return county.startsWith(`service-county-${state?.value.toLowerCase().split(' ').join('-')}`);
   }).map(county => {

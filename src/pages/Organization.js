@@ -360,7 +360,7 @@ const Organization = (props) => {
               text: 'English',
             },
             {
-              href: `${catalogUrl}/es_MX/resource/${slug_ES}`,
+              href: `${catalogUrl}/en_MX/resource/${slug_ES}#googtrans(es)`,
               text: 'Español',
             },
           ]}

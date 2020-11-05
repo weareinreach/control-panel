@@ -36,8 +36,7 @@ const Stats = () => {
   function getStats(queryFunction, setStateFunction){
     const promises = CountryServiceAreaMapping.map(({country, serviceAreas}) => {
       let query = {
-        "serviceArea": serviceAreas.join(),
-        "verified": true,
+        "serviceArea": serviceAreas.join()
       };
       let urls = queryFunction(query);
 

@@ -1,74 +1,51 @@
 import {get} from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Box, Grid } from '@chakra-ui/core';
-import _values from 'lodash/values';
+import React, {useEffect, useState} from 'react';
+import {Box, Grid} from '@chakra-ui/core';
 import Helmet from '../components/Helmet';
 import Table from '../components/Table';
-import { Container, SectionTitle, Title } from '../components/styles';
-import { CATALOG_API_URL, getOrgQueryUrls, getServiceQueryUrls } from '../utils';
+import {Container, SectionTitle, Title} from '../components/styles';
+import {CATALOG_API_URL} from '../utils';
 import Loading from '../components/Loading';
-import { normalizeField } from '../components/FormCoverage';
-import USStates from '../data/us-states.json';
-import CanadianProvinces from '../data/canadian-provinces.json';
-import MexicanStates from '../data/mexican-states.json';
 
-const USStateServiceAreas = _values(USStates).map(state => (`service-state-${normalizeField(state)}`));
-const CanadianStateServiceAreas = _values(CanadianProvinces).map(province => (`service-state-${normalizeField(province.name)}`));
-const MexicanStateServiceAreas = _values(MexicanStates.states).map(state => (`service-state-${normalizeField(state.name)}`));
-const CountryServiceAreaMapping = [
-  {country: "United States", serviceAreas: USStateServiceAreas.concat(["service-national-united-states"])},
-  {country: "Canada", serviceAreas: CanadianStateServiceAreas.concat(["service-national-canada"])},
-  {country: "Mexico", serviceAreas: MexicanStateServiceAreas.concat(["service-national-mexico"])},
-]
 
 const headers = [
-  { key: 'country', label: 'Country' },
-  { key: 'count', label: 'Count' },
+  {key: 'country', label: 'Country'},
+  {key: 'count', label: 'Count'},
 ];
 
-
+/**
+ * corresponds with country property in service.tags
+ * e.g. service.tags.united_states.Mental or service.tags.canada.Legal
+ **/
+const countryList = [
+  {country: 'United States', tag: 'united_states'},
+  {country: 'Canada', tag: 'canada'},
+  {country: 'Mexico', tag: 'mexico'},
+];
 const Stats = () => {
   const loading = false;
 
   const [orgStats, setOrgStats] = useState([]);
   const [serviceStats, setserviceStats] = useState([]);
 
-  function getStats(queryFunction, setStateFunction){
-    const promises = CountryServiceAreaMapping.map(({country, serviceAreas}) => {
-      let query = {
-        "serviceArea": serviceAreas.join()
+  async function getStats(query, setStateFunction) {
+    const promises = await countryList.map(async ({country, tag}) => {
+      let url = `${CATALOG_API_URL}/reporting/${tag}/${query}/count`;
+      const {data} = await get(url);
+      return {
+        country: country,
+        count: data.count,
       };
-      let urls = queryFunction(query);
-
-      let url = `${CATALOG_API_URL}${urls.count}`;
-  
-      return get(url)
-        .then(({data}) => {
-          return {
-            country: country,
-            count: data.count
-          }
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    })
-
-    Promise
-      .all(promises)
-        .then((resp) => {
-          const total = resp.map(item => item.count).reduce((a, b) => a + b, 0);
-          setStateFunction(resp.concat([{country: "total", count: total}]));
-        })
-        .catch((err) => {
-          throw new Error(err);
-        })
+    });
+    const res = await Promise.all(promises);
+    const total = res.map((item) => item.count).reduce((a, b) => a + b, 0);
+    setStateFunction(res.concat([{country: 'total', count: total}]));
   }
 
   useEffect(() => {
-    getStats(getOrgQueryUrls, setOrgStats);
-    getStats(getServiceQueryUrls, setserviceStats);
-  }, [])
+    getStats('organizations', setOrgStats);
+    getStats('services', setserviceStats);
+  }, []);
 
   return (
     <>
@@ -79,35 +56,25 @@ const Stats = () => {
           {loading ? (
             <Loading />
           ) : (
-              <>
-                <Container>
-                  <Box>
-                      <SectionTitle>Verified Organizations</SectionTitle>
-                      <Table
-                        headers={headers}
-                        rows={orgStats}
-                      />
-                  </Box>
-                </Container>
-                <Container marginTop={8}>
-                  <Box>
-                      <SectionTitle>Verified Services</SectionTitle>
-                      <Table
-                        headers={headers}
-                        rows={serviceStats}
-                      />
-                  </Box>
-                </Container>
-              </>
-            )}
+            <>
+              <Container>
+                <Box>
+                  <SectionTitle>Verified Organizations</SectionTitle>
+                  <Table headers={headers} rows={orgStats} />
+                </Box>
+              </Container>
+              <Container marginTop={8}>
+                <Box>
+                  <SectionTitle>Verified Services</SectionTitle>
+                  <Table headers={headers} rows={serviceStats} />
+                </Box>
+              </Container>
+            </>
+          )}
         </Box>
       </Grid>
     </>
   );
 };
-
-
-
-
 
 export default Stats;

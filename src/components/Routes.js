@@ -11,6 +11,7 @@ import NotFound from '../pages/NotFound';
 import Organization from '../pages/Organization';
 import Organizations from '../pages/Organizations';
 import Service from '../pages/Service';
+import Stats from '../pages/Stats';
 
 const Routes = () => {
   const {loading, hasUser, user} = useContext(ContextApp);
@@ -45,6 +46,7 @@ const Routes = () => {
           component={Service}
         />
         <Route exact path="/admin" component={Admin} />
+        <Route exact path="/stats" component={Stats} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

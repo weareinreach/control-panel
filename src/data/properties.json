@@ -3498,6 +3498,11 @@
       "label": "lang-all-languages-by-interpreter_ES"
     },
     {
+      "key": "lang-afrikaans",
+      "label": "lang-afrikaans",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-Albanian",
       "label": "lang-Albanian",
       "type": "checkbox"
@@ -3520,6 +3525,11 @@
     {
       "key": "lang-armenian",
       "label": "lang-armenian",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-azerbaijani",
+      "label": "lang-azerbaijani",
       "type": "checkbox"
     },
     {
@@ -3563,6 +3573,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-catalan",
+      "label": "lang-catalan",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-cebuano",
       "label": "lang-cebuano",
       "type": "checkbox"
@@ -3588,6 +3603,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-czech",
+      "label": "lang-czech",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-dari",
       "label": "lang-dari",
       "type": "checkbox"
@@ -3595,6 +3615,16 @@
     {
       "key": "lang-Dinka",
       "label": "lang-Dinka",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-dutch",
+      "label": "lang-dutch",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-english",
+      "label": "lang-english",
       "type": "checkbox"
     },
     {
@@ -3613,6 +3643,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-flaams",
+      "label": "lang-flaams",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-french",
       "label": "lang-french",
       "type": "checkbox"
@@ -3623,6 +3658,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-ga",
+      "label": "lang-ga",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-german",
       "label": "lang-german",
       "type": "checkbox"
@@ -3630,6 +3670,11 @@
     {
       "key": "lang-greek",
       "label": "lang-greek",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-guarani",
+      "label": "lang-guarani",
       "type": "checkbox"
     },
     {
@@ -3678,6 +3723,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-ixil",
+      "label": "lang-ixil",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-japanese",
       "label": "lang-japanese",
       "type": "checkbox"
@@ -3708,6 +3758,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-kinyarwanda",
+      "label": "lang-kinyarwanda",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-Kirundi",
       "label": "lang-Kirundi",
       "type": "checkbox"
@@ -3733,6 +3788,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-ladino",
+      "label": "lang-ladino",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-laotian",
       "label": "lang-laotian",
       "type": "checkbox"
@@ -3740,6 +3800,21 @@
     {
       "key": "lang-Lingala",
       "label": "lang-Lingala",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-lithuanian",
+      "label": "lang-lithuanian",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-malagasy",
+      "label": "lang-malagasy",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-malinke",
+      "label": "lang-malinke",
       "type": "checkbox"
     },
     {
@@ -3763,6 +3838,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-mexican-sign-language",
+      "label": "lang-mexican-sign-language",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-mien",
       "label": "lang-mien",
       "type": "checkbox"
@@ -3775,6 +3855,11 @@
     {
       "key": "lang-nepali",
       "label": "lang-nepali",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-oromo",
+      "label": "lang-oromo",
       "type": "checkbox"
     },
     {
@@ -3793,6 +3878,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-pulaar",
+      "label": "lang-pulaar",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-punjabi",
       "label": "lang-punjabi",
       "type": "checkbox"
@@ -3800,6 +3890,11 @@
     {
       "key": "lang-Quechua",
       "label": "lang-Quechua",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-rohingya",
+      "label": "lang-rohingya",
       "type": "checkbox"
     },
     {
@@ -3828,6 +3923,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-shona",
+      "label": "lang-shona",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-Sinhala",
       "label": "lang-Sinhala",
       "type": "checkbox"
@@ -3843,6 +3943,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-swedish",
+      "label": "lang-swedish",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-tagalog",
       "label": "lang-tagalog",
       "type": "checkbox"
@@ -3850,6 +3955,16 @@
     {
       "key": "lang-taiwanese",
       "label": "lang-taiwanese",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-tajiki",
+      "label": "lang-tajiki",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-tamazight",
+      "label": "lang-tamazight",
       "type": "checkbox"
     },
     {
@@ -3920,6 +4035,16 @@
     {
       "key": "lang-wolof",
       "label": "lang-wolof",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-yiddish",
+      "label": "lang-yiddish",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-yoruba",
+      "label": "lang-yoruba",
       "type": "checkbox"
     }
   ]

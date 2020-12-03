@@ -16,7 +16,7 @@ const cellCSS = ({theme}) => css`
   vertical-align: middle;
   padding: ${theme.space[2]}};
 
-  &:first-child {
+  &:first-of-type {
     padding-left: ${theme.space[4]}};
   }
 

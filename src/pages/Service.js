@@ -162,8 +162,6 @@ const Service = (props) => {
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${CATALOG_API_URL}${servicePath}`;
 
-        console.log('DELETE:', url);
-
         setLoading();
         httpDelete(url)
           .then(() => {

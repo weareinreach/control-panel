@@ -38,6 +38,36 @@ const OrganizationAutocomplete = (props) => {
       </div>
     );
   };
+  const inputStyles = {
+    container: {
+      flex: 1,
+      position: 'relative',
+      zIndex: 1,
+      marginBottom: '1rem'
+    },
+    suggestionsContainerOpen: {
+      border: 'solid 1px #edf2f7',
+      padding: '8px 16px',
+    },
+    suggestion: {
+      display: 'block',
+    },
+    suggestionsList: {
+      listStyleType: 'none',
+    },
+    input: {
+      width: '100%',
+      background:'#edf2f7',
+      padding: '8px 16px',
+      borderRadius: '4px',
+      '&:hover': {
+        background: '#e2e8f0'
+      }
+    },
+    inputFocused: {
+      background:'#ffffff',
+    }
+  }
   const inputProps = {
     placeholder: 'Start typing...',
     value: orgQuery || (orgSelection && orgSelection.name ? orgSelection.name : ''),
@@ -54,6 +84,14 @@ const OrganizationAutocomplete = (props) => {
         onSuggestionsFetchRequested={onOrgFetchRequested}
         onSuggestionsClearRequested={onQueryClearRequested}
         focusInputOnSuggestionClick={false}
+        theme={{
+          container: inputStyles.container,
+          suggestionsContainerOpen: inputStyles.suggestionsContainerOpen,
+          suggestionsList: inputStyles.suggestionsList,
+          suggestion: inputStyles.suggestion,
+          input: inputStyles.input,
+          inputFocused: inputStyles.inputFocused
+        }}
       />
   );
 };

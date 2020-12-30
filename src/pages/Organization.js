@@ -161,7 +161,7 @@ const Organization = (props) => {
     });
   const openOrgVerify = () =>
     openModal({
-      header: `Verify Information for ${name}`,
+      header: `Verify Information for ${name}?`,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const values = {verified_at: Date.now()};
@@ -169,12 +169,29 @@ const Organization = (props) => {
         updateFields({setLoading, setSuccess, setError, values});
       },
     });
+  const updateAndVerify = ({setLoading, setError, values}) => {
+    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
+
+    console.log('PATCH:', url);
+
+    setLoading();
+    patch(url, values)
+      .then(({data}) => {
+        closeModal();
+        openOrgVerify();
+      })
+      .catch((err) => {
+        setError();
+        console.error(err);
+      });
+  }
   const openDetailsEdit = () =>
     openModal({
       form: {fields: organizationDetailsFields, initialValues: organization},
       header: 'Edit Details',
       onClose: closeModal,
       onConfirm: updateFields,
+      onVerify: updateAndVerify,
     });
   const openNewService = () =>
     openModal({

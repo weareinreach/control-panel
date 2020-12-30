@@ -29,6 +29,7 @@ const FormModal = (props) => {
     isOpen,
     onClose,
     onConfirm,
+    onVerify,
     size = 'lg',
   } = props;
   const {
@@ -40,9 +41,20 @@ const FormModal = (props) => {
     setSuccess,
   } = useStatus();
   const {fields, initialValues} = buildForm(form);
-  const onSubmit = (values) =>
-    onConfirm({setLoading, setSuccess, setError, values});
-  const formik = useFormik({initialValues, onSubmit});
+  const onSubmit = (values) => {
+    if (values.isVerify) {
+      onVerify({setLoading, setSuccess, setError, values});
+    } else {
+      onConfirm({setLoading, setSuccess, setError, values});
+    }
+  };   
+  const formik = useFormik({
+    initialValues: {
+      ...initialValues,
+      isVerify: false,
+    },
+    onSubmit,
+  });
   const updateField = (field, value) => {
     formik.setFieldValue(field, value);
   };
@@ -86,6 +98,19 @@ const FormModal = (props) => {
           >
             Confirm
           </Button>
+          {onVerify && <Button
+            ml={2}
+            isLoading={isLoading}
+            onClick={(e) => {
+              formik.setFieldValue('isVerify', true, false);
+              formik.handleSubmit(e);
+            }}
+            loadingText="Waiting..."
+            variantColor={isAlert ? 'red' : 'blue'}
+            >
+              Confirm and Verify
+            </Button>
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>
@@ -104,6 +129,7 @@ FormModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
+  onVerify: PropTypes.func,
   size: PropTypes.string,
 };
 

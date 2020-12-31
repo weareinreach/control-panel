@@ -47,7 +47,7 @@ import {
 } from '../data/properties.json';
 import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
-import {formatServiceInput, formatTags} from '../utils/forms';
+import {formatServiceInput, formatTags, removeWhitespace} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
@@ -99,8 +99,9 @@ const Service = (props) => {
   const schedule = findItem(organization?.schedules, schedule_id);
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}${servicePath}`;
-    const updatedService = formatServiceInput({...service, ...values});
 
+    const updatedService = formatServiceInput({...service, ...values});
+    removeWhitespace(updatedService);
     setLoading();
     patch(url, updatedService)
       .then(({data}) => {
@@ -160,8 +161,6 @@ const Service = (props) => {
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${CATALOG_API_URL}${servicePath}`;
-
-        console.log('DELETE:', url);
 
         setLoading();
         httpDelete(url)

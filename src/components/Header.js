@@ -60,10 +60,13 @@ const Header = () => {
                   Home
                 </ChakraLink>
                 {user?.isAdminDataManager && (
-                  <ChakraLink as={Link} fontSize="xl" to="/admin">
+                  <ChakraLink as={Link} fontSize="xl" to="/admin" mr={3}>
                     Admin
                   </ChakraLink>
                 )}
+                <ChakraLink as={Link} fontSize="xl" to="/stats">
+                    Stats
+                </ChakraLink>
               </Box>
               <Box display="inline-block" textAlign="right" width="25%">
                 <DropdownButton

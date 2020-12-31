@@ -16,8 +16,6 @@ export const useAPIGet = (endpoint) => {
 
     setLoading(true);
 
-    console.log('GET:', url);
-
     get(url)
       .then(({data}) => {
         setData(data);

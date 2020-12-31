@@ -1,7 +1,7 @@
 import _omit from 'lodash/omit';
 import _reduce from 'lodash/reduce';
 import _sortBy from 'lodash/sortBy';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Box,
   Button,
@@ -12,8 +12,9 @@ import {
   Text,
 } from '@chakra-ui/core';
 import PropTypes from 'prop-types';
-
 import {SectionTitle} from './styles';
+import withOrganizations from './WithOrganizations';
+import OrganizationAutocomplete from './OrganizationAutocomplete';
 import {
   additionalInformationProperties,
   communityProperties,
@@ -72,8 +73,18 @@ const tagList = _reduce(
 );
 
 const FiltersOrganizations = (props) => {
-  const {updateQuery} = props;
-  const [name, handleNameChange] = useInputChange();
+  const {
+    updateQuery,
+    setOrgSelection,
+    setOrgQuery,
+    onOrgFetchRequested,
+    onQueryClearRequested,
+    handleBlurOrganizations,
+    organizations,
+    orgSelection,
+    orgQuery,
+  } = props;
+  const [name, handleNameChange] = useState('');
   const [serviceArea, handleServiceAreaChange] = useInputChange();
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
@@ -118,6 +129,14 @@ const FiltersOrganizations = (props) => {
 
     updateQuery(query);
   };
+  useEffect(() => {
+    handleNameChange(`"${orgSelection?.name}"` || '');
+  }, [orgSelection]);
+
+  useEffect(() => {
+    handleNameChange(`"${orgQuery}"` || '');
+  }, [orgQuery]);
+  
   const tagsNames = tags.map((tag) => {
     const [category, subCategory] = tag.split('.');
 
@@ -129,11 +148,15 @@ const FiltersOrganizations = (props) => {
       <SectionTitle>Filter Organizations</SectionTitle>
       <Stack>
         <Text>Name:</Text>
-        <Input
-          onChange={handleNameChange}
-          variant="filled"
-          placeholder="Search on name"
-          value={name}
+        <OrganizationAutocomplete
+          setOrgSelection={setOrgSelection}
+          setOrgQuery={setOrgQuery}
+          onOrgFetchRequested={onOrgFetchRequested}
+          onQueryClearRequested={onQueryClearRequested}
+          handleBlurOrganizations={handleBlurOrganizations}
+          organizations={organizations}
+          orgSelection={orgSelection}
+          orgQuery={orgQuery}
         />
         <Text>Service Area Coverage:</Text>
         <Input
@@ -223,4 +246,4 @@ FiltersOrganizations.propTypes = {
   updateQuery: PropTypes.func,
 };
 
-export default FiltersOrganizations;
+export default withOrganizations(FiltersOrganizations);

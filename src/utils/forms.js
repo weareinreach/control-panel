@@ -28,6 +28,7 @@ export const cleanProperties = (properties) => {
 
       switch (valueType) {
         case 'string':
+          value = value.trim();
           break;
         case 'object':
           break;
@@ -167,3 +168,19 @@ export const formatTags = (tags) => {
     {}
   );
 };
+
+
+/**
+ * Format string fields for submission
+ * @param  {Object} Input
+ * @return {Object} Formatted input
+ */
+export const removeWhitespace = (input) => {
+  Object.entries(input).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        return input[key] = value.trim();
+      }
+      return input[key] = value
+    });
+  return input
+}

@@ -24,7 +24,7 @@ import {
 } from '../data/fields.json';
 import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
-import {formatOrgInput, formatServiceInput} from '../utils/forms';
+import {formatOrgInput, formatServiceInput, removeWhitespace} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
@@ -65,9 +65,7 @@ const Organization = (props) => {
   } = organization || {};
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
-
-    console.log('PATCH:', url);
-
+    removeWhitespace(values);
     setLoading();
     patch(url, values)
       .then(({data}) => {

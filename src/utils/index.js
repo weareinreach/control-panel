@@ -77,7 +77,7 @@ export const scheduleHeaders = [
 ];
 
 export const getOrgQueryUrls = (query) => {
-  const { name, page, pending, properties, serviceArea, tags, tagLocale } = query;
+  const { name, page, pending, properties, serviceArea, tags, tagLocale, verified } = query;
   let queryParam = '?';
 
   if (name) {
@@ -90,6 +90,10 @@ export const getOrgQueryUrls = (query) => {
 
   if (pending) {
     queryParam += '&pending=true';
+  }
+
+  if (verified) {
+    queryParam += '&verified=true';
   }
 
   if (serviceArea) {
@@ -121,6 +125,23 @@ export const getOrgQueryUrls = (query) => {
   return {
     organizations: `/organizations${queryParam === '?' ? '' : queryParam}`,
     count: `/organizations/count${queryParam === '?' ? '' : queryParam}`,
+  };
+};
+
+export const getServiceQueryUrls = (query) => {
+  const { serviceArea, verified } = query;
+  let queryParam = '?';
+
+  if (verified) {
+    queryParam += '&verified=true';
+  }
+
+  if (serviceArea) {
+    queryParam += `&serviceArea=${serviceArea}`;
+  }
+
+  return {
+    count: `/services/count${queryParam === '?' ? '' : queryParam}`,
   };
 };
 

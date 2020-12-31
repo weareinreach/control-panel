@@ -1,4 +1,4 @@
-import { css, Global, ClassNames } from '@emotion/core'
+import { css } from '@emotion/core'
 import _omit from 'lodash/omit';
 import _drop from 'lodash/drop';
 import _mapKeys from 'lodash/mapKeys';
@@ -287,7 +287,7 @@ const ServiceAreaForm = (props) => {
   )
 };
 
-function normalizeField(field){
+export function normalizeField(field){
   return field.toLowerCase().replace(/ /g, '-');
 }
 

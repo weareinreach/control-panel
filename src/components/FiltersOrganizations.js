@@ -24,6 +24,7 @@ import {
 } from '../data/properties.json';
 import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
+import DateFieldPicker from './DateFieldPicker';
 
 const propertyList = [
   additionalInformationProperties,
@@ -90,6 +91,8 @@ const FiltersOrganizations = (props) => {
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
+  const [lastVerified, setLastVerified] = useState('');
+  const [updatedAt, setUpdatedAt] = useState('');
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -165,6 +168,13 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
+
+        <Text>Last Verified:</Text>
+        <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
+
+        <Text>Updated At:</Text>
+        <DateFieldPicker selected={updatedAt} onChange={setUpdatedAt} />
+
         <Text>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

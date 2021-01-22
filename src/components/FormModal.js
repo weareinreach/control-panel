@@ -91,25 +91,19 @@ const FormModal = (props) => {
             Cancel
           </Button>
           <Button
-            isLoading={isLoading}
             onClick={formik.handleSubmit}
-            loadingText="Waiting..."
             variantColor={isAlert ? 'red' : 'blue'}
           >
-            Confirm
+            Save Changes
           </Button>
-          {onVerify && <Button
-            ml={2}
-            isLoading={isLoading}
-            onClick={(e) => {
+          {onVerify && <Button ml={2} onClick={(e) => {
               formik.setFieldValue('isVerify', true, false);
               formik.handleSubmit(e);
             }}
-            loadingText="Waiting..."
             variantColor={isAlert ? 'red' : 'blue'}
             >
-              Confirm and Verify
-            </Button>
+							Save and Verify
+						</Button>
           }
         </ModalFooter>
       </ModalContent>

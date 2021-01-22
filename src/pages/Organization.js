@@ -103,22 +103,6 @@ const Organization = (props) => {
 
     updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
   };
-  const updateAndVerify = ({setLoading, setError, values}) => {
-    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
-
-    console.log('PATCH:', url);
-
-    setLoading();
-    patch(url, values)
-      .then(({data}) => {
-        closeModal();
-        openOrgVerify();
-      })
-      .catch((err) => {
-        setError();
-        console.error(err);
-      });
-  };
   const goToServicePage = (service) => {
     window.location = `${orgPath}/services/${service._id}`;
   };
@@ -179,8 +163,13 @@ const Organization = (props) => {
     openModal({
       header: `Verify Information for ${name}?`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
-        const values = {verified_at: Date.now()};
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        // const values = {verified_at: Date.now()};
+
+        updateFields({setLoading, setSuccess, setError, values});
+      },
+      onVerify: ({setLoading, setSuccess, setError, values}) => {
+        values = {...values, verified_at: Date.now()};
 
         updateFields({setLoading, setSuccess, setError, values});
       },
@@ -190,8 +179,7 @@ const Organization = (props) => {
       form: {fields: organizationDetailsFields, initialValues: organization},
       header: 'Edit Details',
       onClose: closeModal,
-      onConfirm: updateFields,
-      onVerify: updateAndVerify,
+      onConfirm: openOrgVerify,
     });
   const openNewService = () =>
     openModal({

@@ -3683,8 +3683,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Hebrew",
-      "label": "lang-Hebrew",
+      "key": "lang-hebrew",
+      "label": "lang-hebrew",
       "type": "checkbox"
     },
     {

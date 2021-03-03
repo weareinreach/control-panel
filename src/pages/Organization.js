@@ -1,7 +1,7 @@
 import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
-import {Box, Button, Stack } from '@chakra-ui/core';
+import {Box, Button, Stack, Text } from '@chakra-ui/core';
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -45,8 +45,8 @@ const Organization = (props) => {
   const orgPath = `/organizations/${orgId}`;
   const { data: organization, loading } = useAPIGet(orgPath);
   //Andy 
-  const [openPhotos, setOpenPhotos ] = useState(false);
-  // const [venueId, setVenueId ] = useState('');
+  const [showPhotos, setShowPhotos ] = useState(null);
+  const photos = [];
 
   const {
     _id,
@@ -339,11 +339,11 @@ const Organization = (props) => {
   // {isDelete, isDuplicate, isEdit } = {}
   // const venues = () => getPlaces({ locations })
 
-  const openPhotosForm = () => {
-    openPhotos ?
-      setOpenPhotos(false)
+  const showPhotosForm = () => {
+    showPhotos ?
+      setShowPhotos(false)
     :
-      setOpenPhotos(true)
+      setShowPhotos(true)
    }
 
   if (loading) {
@@ -399,147 +399,150 @@ const Organization = (props) => {
             ]}
           />
           <Box {...buttonGroupProps}>
-            <Button onClick={openPhotosForm}>Edit Photos</Button>
+            <Button onClick={showPhotosForm}>Photos</Button>
           </Box>
         </Box>
         <Breadcrumbs organization={organization} />
         <Title>{name}</Title>
         <Stack marginTop={6}>
-          <Container>
-            {   openPhotos && (
-                    <Box>
-                      <FormPhotos location={{ locations }} venueId={ false }/>
-                    </Box>
-                  )
+            <Container>
+            {
+              showPhotos ? (
+                 <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} />
+              )
+              :
+              <div>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openDetailsEdit}>Edit Details</Button>
+                </Box>
+                <SectionTitle>General Details</SectionTitle>
+                <KeyValueTable
+                  rows={[
+                    { key: 'ID', value: _id },
+                    { key: 'Website', value: website },
+                    { key: 'Website_ES', value: website_ES },
+                    { key: 'Description', value: description },
+                    { key: 'Description_ES', value: description_ES },
+                    { key: 'Alert Message', value: alert_message },
+                    { key: 'Alert Message_ES', value: alert_message_ES },
+                    { key: 'Slug', value: slug },
+                    { key: 'Slug_ES', value: slug_ES },
+                    { key: 'Is Published', value: is_published },
+                    { key: 'Last Verified', value: verified_at },
+                    { key: 'Updated At', value: updated_at },
+                    { key: 'Created At', value: created_at },
+                  ]}
+                />
+
+              <Container>
+                <SectionTitle>Associated Affiliates</SectionTitle>
+                <Table headers={[{ key: 'email', label: 'Email' }]} rows={owners} />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openNewService}>New Service</Button>
+                </Box>
+                <SectionTitle>Services</SectionTitle>
+                <Table
+                  actions={[{ label: 'View', onClick: goToServicePage }]}
+                  getRowLink={(service) => `${orgPath}/services/${service._id}`}
+                  headers={[
+                    { key: 'name', label: 'Name' },
+                    { key: 'updated_at', label: 'Last Updated' },
+                  ]}
+                  rows={services}
+                />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openLocationForm()}>New Address</Button>
+                </Box>
+                <SectionTitle>Addresses</SectionTitle>
+                <Table
+                  headers={locationFields}
+                  rows={locations}
+                  actions={[
+                    { label: 'Edit', onClick: openLocationForm({ isEdit: true }) },
+                    {
+                      label: 'Duplicate',
+                      onClick: openLocationForm({ isDuplicate: true }),
+                    },
+                    {
+                      label: 'Delete',
+                      onClick: openLocationForm({ isDelete: true }),
+                    },
+                  ]}
+                />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openScheduleForm()}>New Schedule</Button>
+                </Box>
+                <SectionTitle>Schedules</SectionTitle>
+                <Table
+                  headers={scheduleHeaders}
+                  rows={schedules}
+                  actions={[
+                    { label: 'Edit', onClick: openScheduleForm({ isEdit: true }) },
+                    {
+                      label: 'Duplicate',
+                      onClick: openScheduleForm({ isDuplicate: true }),
+                    },
+                    {
+                      label: 'Delete',
+                      onClick: openScheduleForm({ isDelete: true }),
+                    },
+                  ]}
+                />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openEmailForm()}>New Email</Button>
+                </Box>
+                <SectionTitle>Emails</SectionTitle>
+                <Table
+                  headers={emailFields}
+                  rows={emails}
+                  actions={[
+                    { label: 'Edit', onClick: openEmailForm({ isEdit: true }) },
+                    {
+                      label: 'Duplicate',
+                      onClick: openEmailForm({ isDuplicate: true }),
+                    },
+                    { label: 'Delete', onClick: openEmailForm({ isDelete: true }) },
+                  ]}
+                />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openPhoneForm()}>New Phone</Button>
+                </Box>
+                <SectionTitle>Phones</SectionTitle>
+                <Table
+                  headers={phoneFields}
+                  rows={phones}
+                  actions={[
+                    { label: 'Edit', onClick: openPhoneForm({ isEdit: true }) },
+                    {
+                      label: 'Duplicate',
+                      onClick: openPhoneForm({ isDuplicate: true }),
+                    },
+                    {
+                      label: 'Delete',
+                      onClick: openPhoneForm({ isDelete: true }),
+                    },
+                  ]}
+                />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openCoverageEdit}>Edit Coverage</Button>
+                </Box>
+                <SectionTitle>Service Area Coverage</SectionTitle>
+                <ListServiceArea properties={properties} />
+              </Container>
+              </div>
             }
-            <Box {...buttonGroupProps}>
-              <Button onClick={openDetailsEdit}>Edit Details</Button>
-            </Box>
-            <SectionTitle>General Details</SectionTitle>
-            <KeyValueTable
-              rows={[
-                { key: 'ID', value: _id },
-                { key: 'Website', value: website },
-                { key: 'Website_ES', value: website_ES },
-                { key: 'Description', value: description },
-                { key: 'Description_ES', value: description_ES },
-                { key: 'Alert Message', value: alert_message },
-                { key: 'Alert Message_ES', value: alert_message_ES },
-                { key: 'Slug', value: slug },
-                { key: 'Slug_ES', value: slug_ES },
-                { key: 'Is Published', value: is_published },
-                { key: 'Last Verified', value: verified_at },
-                { key: 'Updated At', value: updated_at },
-                { key: 'Created At', value: created_at },
-              ]}
-            />
-          </Container>
-          <Container>
-            <SectionTitle>Associated Affiliates</SectionTitle>
-            <Table headers={[{ key: 'email', label: 'Email' }]} rows={owners} />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openNewService}>New Service</Button>
-            </Box>
-            <SectionTitle>Services</SectionTitle>
-            <Table
-              actions={[{ label: 'View', onClick: goToServicePage }]}
-              getRowLink={(service) => `${orgPath}/services/${service._id}`}
-              headers={[
-                { key: 'name', label: 'Name' },
-                { key: 'updated_at', label: 'Last Updated' },
-              ]}
-              rows={services}
-            />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openLocationForm()}>New Address</Button>
-            </Box>
-            <SectionTitle>Addresses</SectionTitle>
-            <Table
-              headers={locationFields}
-              rows={locations}
-              actions={[
-                { label: 'Edit', onClick: openLocationForm({ isEdit: true }) },
-                {
-                  label: 'Duplicate',
-                  onClick: openLocationForm({ isDuplicate: true }),
-                },
-                {
-                  label: 'Delete',
-                  onClick: openLocationForm({ isDelete: true }),
-                },
-              ]}
-            />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openScheduleForm()}>New Schedule</Button>
-            </Box>
-            <SectionTitle>Schedules</SectionTitle>
-            <Table
-              headers={scheduleHeaders}
-              rows={schedules}
-              actions={[
-                { label: 'Edit', onClick: openScheduleForm({ isEdit: true }) },
-                {
-                  label: 'Duplicate',
-                  onClick: openScheduleForm({ isDuplicate: true }),
-                },
-                {
-                  label: 'Delete',
-                  onClick: openScheduleForm({ isDelete: true }),
-                },
-              ]}
-            />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openEmailForm()}>New Email</Button>
-            </Box>
-            <SectionTitle>Emails</SectionTitle>
-            <Table
-              headers={emailFields}
-              rows={emails}
-              actions={[
-                { label: 'Edit', onClick: openEmailForm({ isEdit: true }) },
-                {
-                  label: 'Duplicate',
-                  onClick: openEmailForm({ isDuplicate: true }),
-                },
-                { label: 'Delete', onClick: openEmailForm({ isDelete: true }) },
-              ]}
-            />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openPhoneForm()}>New Phone</Button>
-            </Box>
-            <SectionTitle>Phones</SectionTitle>
-            <Table
-              headers={phoneFields}
-              rows={phones}
-              actions={[
-                { label: 'Edit', onClick: openPhoneForm({ isEdit: true }) },
-                {
-                  label: 'Duplicate',
-                  onClick: openPhoneForm({ isDuplicate: true }),
-                },
-                {
-                  label: 'Delete',
-                  onClick: openPhoneForm({ isDelete: true }),
-                },
-              ]}
-            />
-          </Container>
-          <Container>
-            <Box {...buttonGroupProps}>
-              <Button onClick={openCoverageEdit}>Edit Coverage</Button>
-            </Box>
-            <SectionTitle>Service Area Coverage</SectionTitle>
-            <ListServiceArea properties={properties} />
           </Container>
         </Stack>
       </>

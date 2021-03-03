@@ -1,140 +1,133 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'axios';
 import { Box, Text, Button, Flex } from '@chakra-ui/core';
 import { SectionTitle } from '../components/styles';
-import Table from '../components/Table';
-import Loading from './Loading';
+import Gallery from 'react-photo-gallery';
+import SelectedImage from '../components/SelectImage';
+
+const galleryStyles = {
+    '.react-photo-gallery--gallery::firstChild': { 
+        'jusitfy-content': 'center'
+    }
+}
 
 const fourSquarePhotosApiURL = process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL;
 const fourSquareVenuesApiURL =  process.env.REACT_APP_FOUR_SQUARE_VENUES_URL;
 const clientID = process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET;
 
-const Photos = (props) => { 
-    return (
-        <Flex wrap='wrap'  align="center" justify="space-between" >
-            {
-                props.photos.length === 0 ? 
-                    <Text>There are No Photos available for this venue on Four Square</Text>
-                :
-                props.photos.map((url) => {
-                    const prefix = url.prefix
-                    const suffix = url.suffix
-                    const size = '300x500'
-        
-                    return (
-                        <Box>
-                            <img src={`${prefix}${size}${suffix}`} alt='test' />
-                            <Button>x</Button>
-                        </Box>
-                    )
-                })
-            }
-        </Flex>
-    )
-} 
-
-//add check for db venue id 
-//add check for non matching venue id 
-//check for no photos fnd
-
 const FormPhotos = (props) => {
-    const [venues, setVenues] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(null);
-    
-    useEffect(function () { 
-        const fetchVenues = async (lat, long) => {
-            await get(`${fourSquareVenuesApiURL}?ll=${lat},${long}&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
-                .then((venueList) => {
-                    venueList = venueList.data.response.venues
-                    setVenues(venueList)
-                    return
-                })
-                .catch((err) => {
-                    throw new Error(err)
-                })
-        }
-
-        if (!props.venueId && venues.length === 0 ){
-            fetchVenues(props.location.locations[0].lat, props.location.locations[0].long)
-        }
-    })
-
-
-    const [venueId, setVenueId] = useState(null)
+    const [selectAll, setSelectAll] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [images, setImages] = useState([]);
-    
-    useEffect(() => { 
-        const fetchPhotos = async () => {
-            await get(`${fourSquarePhotosApiURL}/${venueId}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+
+    useEffect(function () {
+        if (props.location === undefined) return null
+        if (images.length > 0) return null
+        const fetchPhotos = async (name, lat, long) => {
+            await get(`${fourSquareVenuesApiURL}?name=${name}&ll=${lat},${long}&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+                .then((venueList) => {
+                    return venueList.data.response.venues.find(ven => {
+                        console.log(ven.name.toLowerCase(), name.toLowerCase())
+                        if (ven.name.toLowerCase() === name.toLowerCase()) return ven
+                        // if (props.location.length > 0) {
+                        //     props.location.find(local => {
+                        //         if (ven.name.toLowerCase() === name.toLowerCase()) { 
+                        //                 return ven
+                        //         }
+                        //         console.log(parseFloat(local.lat).toFixed(4), ven.location.lat.toFixed(4))
+                        //     })
+                        // } 
+                        // return 'Cant find Venue'
+                    })
+                })
                 .then((data) => {
-                    setImages(data.data.response.photos.items)
-                    setIsLoaded(true)
-                    return
+                    if (!data) return null
+                    return get(`${fourSquarePhotosApiURL}/${data.id}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+                        .then((data) => {
+                            const imageList = data.data.response.photos.items.map(image => { 
+                                    return image = {
+                                                title: name, 
+                                                prefix: image.prefix, 
+                                                suffix: image.suffix, 
+                                                src: `${image.prefix}250x250${image.suffix}`,
+                                                width: 250,
+                                                height: 250
+                                            }
+                            })
+                            setImages(imageList)
+                            console.log(imageList)
+                            return imageList
+                        })
                 })
                 .catch((err) => {
                     throw new Error(err)
                 })
         }
+        fetchPhotos(props.name, props.location.locations[0].lat, props.location.locations[0].long)
+        if (!isLoaded) setIsLoaded(true)
+    }, [isLoaded])
 
-        if (venueId && images.length === 0) {
-            fetchPhotos(venueId)
-        }
-    })
-
-
+    const imageRenderer = useCallback(
+        ({ index, key, photo }) => (
+        <SelectedImage
+            selected={selectAll ? true : false}
+            key={key}
+            margin={"2px"}
+            index={index}
+            photo={photo}
+        />
+    ),
+    [selectAll]
+    );
     
-    const handleVenueClick = (row) => {
-        setVenueId(row.id)
-    }
-
-    if (!venueId && venues.length > 0) { 
-
-        return (
+    return (
+        <Box m={5}>
             <Box>
-                <SectionTitle>Select A Venue</SectionTitle>
-                    <Table 
-                        headers={[
-                            { key: 'name', label: 'Name' },
-                            { key: 'id', label: 'Venue ID' },
-                            { key: 'location.formattedAddress', label: 'Address' },
-                        ]}
-                        rows={venues}
-                        actions={[{label: 'Select', onClick: handleVenueClick}]}
-                    />
-                </Box>
-        )
-    }
+                <Flex align="start">
+                    <SectionTitle mr={100}>Photos</SectionTitle>
+                    <Button borderTopRightRadius="0" borderBottomRightRadius="0" _hover={{backgroundColor: "#3A81C9", color: "#fff"}}>Unapproved</Button>
+                    <Button borderTopLeftRadius="0" borderBottomLeftRadius="0" _hover={{backgroundColor: "#3A81C9", color: "#fff"}}>Approves</Button>
+                </Flex>
 
-    if (isLoaded) {
-        return (
-            <Box>
-                <SectionTitle>Select Photos</SectionTitle>
-                <Photos photos={images} />
+                <Flex align="center" justify="space-between">
+                    <Button bg="#F2D0D0" ml={200} mt={ 10 }>Cancel</Button>
+                    <Button>Select</Button>
+                </Flex>
             </Box>
-        )
-    } else {
-        return (<Loading />)
-    }
+            <Box>
+                <Gallery photos={images} renderImage={imageRenderer} style={{margin: '0 auto'}} />
+            </Box>
+        </Box>
+    ) 
 }
 
-Photos.propTypes = {
-    photos: PropTypes.arrayOf(PropTypes.shape())
+FormPhotos.propTypes = {
+    photos: PropTypes.arrayOf(PropTypes.shape()), 
+    venueId: PropTypes.bool,
+    name: PropTypes.string,
+    location: PropTypes.arrayOf(PropTypes.shape())
 }
 
 export default FormPhotos
+            // {/* <Flex wrap="wrap" align="center" justify="space-between" >
+            //     {
+            //         images.map((url) => {
+            //             const prefix = url.prefix
+            //             const suffix = url.suffix
+            //             const size = '250x250'
+            
+            //             return (
+            //                 <Box borderRadius={ 20 }>
+            //                         <img src={`${prefix}${size}${suffix}`} alt='test' />
+            //                 </Box>
+            //                 )
+            //             })
+            //     }
+            // </Flex>  */}
 
-
-
-                    // <Box key={venue.id}>
-                    //     <Text>Venue ID: {venue.id}</Text>
-                    //     <Text>Name: {venue.name} </Text>
-                    //     <Text>Address: {address[0]}, {address[1]}, {address[2]}</Text>
-                    //     <Button onClick={e => handleVenueClick(e)} value={venue.id}>Select</Button>
-                    // </Box>
-
-
-                                //                     {value: venue.name},
-                                // {value: venue.id},
-                                // {value: `${address[0]},${address[1]},${address[2]}`},
+        // <Flex align="center" justify="space-between">
+        //     <Text> Add some photos for {props.name} to help asylum seeker locate your organization.</Text>
+        //     <Button onClick={ handleAddPhotos }>Add Photos</Button>
+        // </Flex>

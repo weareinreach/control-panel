@@ -2,7 +2,6 @@ import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
 import {Box, Button, Stack, Text } from '@chakra-ui/core';
-
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -16,6 +15,7 @@ import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import { Container, SectionTitle, Title } from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/core';
 
 import {
   emailFields,
@@ -45,7 +45,6 @@ const Organization = (props) => {
   const orgPath = `/organizations/${orgId}`;
   const { data: organization, loading } = useAPIGet(orgPath);
   //Andy 
-  const [showPhotos, setShowPhotos ] = useState(null);
   const photos = [];
 
   const {
@@ -307,6 +306,7 @@ const Organization = (props) => {
   const openScheduleForm = ({isDelete, isDuplicate, isEdit} = {}) => (
     schedule
   ) => {
+    console.log(schedule)
     if (isDelete) {
       return openModal({
         form: {initialValues: schedule},
@@ -336,15 +336,7 @@ const Organization = (props) => {
       onConfirm: updateListField('schedules'),
     });
   };
-  // {isDelete, isDuplicate, isEdit } = {}
-  // const venues = () => getPlaces({ locations })
 
-  const showPhotosForm = () => {
-    showPhotos ?
-      setShowPhotos(false)
-    :
-      setShowPhotos(true)
-   }
 
   if (loading) {
     return <Loading />;
@@ -398,20 +390,18 @@ const Organization = (props) => {
                 : []),
             ]}
           />
-          <Box {...buttonGroupProps}>
-            <Button onClick={showPhotosForm}>Photos</Button>
-          </Box>
         </Box>
         <Breadcrumbs organization={organization} />
         <Title>{name}</Title>
         <Stack marginTop={6}>
-            <Container>
-            {
-              showPhotos ? (
-                 <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} />
-              )
-              :
-              <div>
+          <Tabs variant="enclosed" colorScheme="blue">
+            <TabList>
+              <Tab>General</Tab>
+              <Tab>Photos</Tab>
+            </TabList>
+          <TabPanels>
+            <TabPanel mt={ 5 }>
+                <div>
                 <Box {...buttonGroupProps}>
                   <Button onClick={openDetailsEdit}>Edit Details</Button>
                 </Box>
@@ -542,8 +532,15 @@ const Organization = (props) => {
                 <ListServiceArea properties={properties} />
               </Container>
               </div>
-            }
-          </Container>
+              </TabPanel>
+              <TabPanel mt={5}>
+                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} />
+              </TabPanel>
+          </TabPanels>
+            {/* <Container>
+          </Container> */}
+
+          </Tabs>
         </Stack>
       </>
     );

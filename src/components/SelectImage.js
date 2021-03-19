@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '@chakra-ui/core';
+import { Box, Button, useDisclosure } from '@chakra-ui/core';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react"
+import { Container } from './styles';
 
-const Checkmark = ({ selected }) => (
+const Checkmark = ({ selected, select }) => (
   <div
-    style={
-      selected
-        ? { right: "20px", bottom: "20px", position: "absolute", zIndex: "1" }
-        : { display: "none" }
+        style={
+            !select ?
+                { display: 'none' }
+                : { right: "50px", bottom: "50px", position: "absolute", zIndex: "1" }
+
     }
   >
     <svg
@@ -18,7 +29,11 @@ const Checkmark = ({ selected }) => (
       <circle cx="12.5" cy="12.2" r="8.292" />
     </svg>
     <svg
-      style={{ fill: "#0D8700", position: "absolute" }}
+            style={
+                selected ?  
+                    { fill: "#0D8700", position: "absolute" }
+                    : { fill: "#1D1F23", position: "absolute" }
+            }
       width="40px"
       height="40px"
     >
@@ -33,29 +48,41 @@ const imgStyle = {
     maxWidth: "250px",
     maxHeight: "250px"
 };
-const selectedImgStyle = {
-  transform: "translateZ(0px) scale3d(0.9, 0.9, 1)",
-  transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s"
-};
 
 const cont = {
-  backgroundColor: "#eee",
   cursor: "pointer",
   overflow: "hidden",
   position: "relative"
 };
 
+
 const SelectedImage = ({
   index,
   photo,
   margin,
-  selected
+  select,
+  selected,
+  handleSelected,
 }) => {
   const [isSelected, setIsSelected] = useState(selected);
+  const [selection, setSelection] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = useRef()
+  
 
-
-  const handleOnClick = e => {
-    setIsSelected(!isSelected);
+  const handleOnClick = () => {
+    if (select) {
+      if (selected) handleSelected(photo.src, 'add');
+      if (!selection) {
+        handleSelected(photo.src, 'remove');
+        setIsSelected(!isSelected);
+        setSelection(true);
+      } else {
+        handleSelected(photo.src, 'add');
+        setIsSelected(!isSelected);
+        setSelection(false);
+      }
+    } 
   };
 
   useEffect(() => {
@@ -63,23 +90,45 @@ const SelectedImage = ({
   }, [selected]);
 
   return (
+    <>
       <Box
-          m={5}
-          className={!isSelected ? "not-selected" : ""}
-    >
-      <Checkmark selected={isSelected ? true : false} />
+        m={5}
+        style={{ margin, height: photo.height, width: photo.width, ...cont }}
+        onClick={select ? handleOnClick : onOpen}
+        ref={finalRef}
+        tabIndex={-1}
+        aria-label="Focus moved to this box"
+      >
+      <Checkmark selected={isSelected ? true : false} select={select ? true : false} />
       <img
         alt={photo.title}
         style={
-          isSelected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }
+          isSelected ? { ...imgStyle } : { ...imgStyle }
         }
         {...photo}
-        onClick={handleOnClick}
       />
       <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
-    </Box>
+      </Box>
+      <Modal isCentered inalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha'>
+        <ModalOverlay />
+          <ModalContent justifyContent='center' alignContent='center' flexDirection='column'>
+            <ModalCloseButton alignSelf='flex-end'/>
+            <ModalBody>
+              <img alt={photo.title} {...photo} />
+            </ModalBody>
+            <ModalFooter display='flex' flexDirection='column'>
+              <Button variant="ghost">Approve</Button>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+      </Modal>
+
+    </>
   );
 };
+
 
 Checkmark.propTypes = {
     selected: PropTypes.bool
@@ -89,6 +138,7 @@ SelectedImage.propTypes = {
     photo: PropTypes.objectOf(PropTypes.string), 
     index: PropTypes.string,
     selected: PropTypes.bool, 
+    select: PropTypes.bool
 }
 
 export default SelectedImage;

@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'axios';
 import { Box, Text, Button, Flex } from '@chakra-ui/core';
 import { SectionTitle } from '../components/styles';
 import Gallery from 'react-photo-gallery';
 import SelectedImage from '../components/SelectImage';
+import {ContextFormModal} from '../components/ContextFormModal';
 
-const galleryStyles = {
-    '.react-photo-gallery--gallery::firstChild': { 
-        'jusitfy-content': 'center'
-    }
-}
+//things to do 
+    //fix chackra tab stylings -- done 
+    //fix selectedPhotos push -- done
+    //create on click modal 
+    //show approved
+    //save photos to db 
+    //delete photos from db
+    //clean up code 
 
 const fourSquarePhotosApiURL = process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL;
 const fourSquareVenuesApiURL =  process.env.REACT_APP_FOUR_SQUARE_VENUES_URL;
@@ -19,45 +23,57 @@ const clientSecret = process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET;
 
 const FormPhotos = (props) => {
     const [selectAll, setSelectAll] = useState(false);
+    const [select, setSelect] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [images, setImages] = useState([]);
+    const [unapproved, setUnapproved] = useState([]);
+    const [approved, setApproved] = useState([])
+    const [selectedPhotos, setSelectedPhotos] = useState([])
+    const { closeModal, openModal } = useContext(ContextFormModal);
+
+    const toggleSelectAll = () => {
+        if (unapproved.length === selectedPhotos.length) return
+        setSelectedPhotos(selectedPhotos.concat(unapproved))
+        setSelectAll(!selectAll);
+    };
+
+    const toggleSelect = () => {
+        setSelect(!select);
+    };
+
+    const handleCancel = () => {
+        if (select) {
+            setSelectAll(false)
+            setSelect(false)
+            setSelectedPhotos([])
+            setApproved([])
+        };
+    }
 
     useEffect(function () {
-        if (props.location === undefined) return null
-        if (images.length > 0) return null
-        const fetchPhotos = async (name, lat, long) => {
-            await get(`${fourSquareVenuesApiURL}?name=${name}&ll=${lat},${long}&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+        const fetchPhotos = async (name, lat, long, city) => {
+            if (unapproved.length > 0) return null
+            await get(`${fourSquareVenuesApiURL}?query=${name}&&ll=${lat},${long}&near=${city}&limit=1000&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
                 .then((venueList) => {
                     return venueList.data.response.venues.find(ven => {
-                        console.log(ven.name.toLowerCase(), name.toLowerCase())
                         if (ven.name.toLowerCase() === name.toLowerCase()) return ven
-                        // if (props.location.length > 0) {
-                        //     props.location.find(local => {
-                        //         if (ven.name.toLowerCase() === name.toLowerCase()) { 
-                        //                 return ven
-                        //         }
-                        //         console.log(parseFloat(local.lat).toFixed(4), ven.location.lat.toFixed(4))
-                        //     })
-                        // } 
-                        // return 'Cant find Venue'
                     })
                 })
                 .then((data) => {
                     if (!data) return null
                     return get(`${fourSquarePhotosApiURL}/${data.id}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
                         .then((data) => {
-                            const imageList = data.data.response.photos.items.map(image => { 
-                                    return image = {
-                                                title: name, 
-                                                prefix: image.prefix, 
-                                                suffix: image.suffix, 
-                                                src: `${image.prefix}250x250${image.suffix}`,
-                                                width: 250,
-                                                height: 250
-                                            }
+                            const imageList = data.data.response.photos.items.map(image => {
+                                return image = {
+                                    title: name,
+                                    prefix: image.prefix,
+                                    suffix: image.suffix,
+                                    src: `${image.prefix}250x250${image.suffix}`,
+                                    width: "250px",
+                                    height: "250px"
+                                }
                             })
-                            setImages(imageList)
-                            console.log(imageList)
+                            setUnapproved(imageList)
+                            if (!isLoaded) setIsLoaded(true)
                             return imageList
                         })
                 })
@@ -65,39 +81,74 @@ const FormPhotos = (props) => {
                     throw new Error(err)
                 })
         }
-        fetchPhotos(props.name, props.location.locations[0].lat, props.location.locations[0].long)
-        if (!isLoaded) setIsLoaded(true)
-    }, [isLoaded])
+        if (!isLoaded) fetchPhotos(props.name, props.location.locations[0].lat, props.location.locations[0].long, props.location.locations[0].city)
+    })
 
+    const showApproved = () => {
+        if (selectedPhotos.length > 0) {
+            setApproved(approved.concat(selectedPhotos))
+        } else {
+            setApproved([])
+        }
+
+        // <Gallery photos={approved} renderImage={imageRenderer} handleSelected={ handleSelected }/>
+    }
+
+
+    
     const imageRenderer = useCallback(
         ({ index, key, photo }) => (
-        <SelectedImage
-            selected={selectAll ? true : false}
-            key={key}
-            margin={"2px"}
-            index={index}
-            photo={photo}
-        />
-    ),
-    [selectAll]
+            <SelectedImage
+                selected={selectAll ? true : false}
+                select={select ? true : false}
+                key={key}
+                margin={"20px"}
+                index={index}
+                photo={photo}
+                handleSelected={
+                    (val, selection) => {
+                        console.log(val, selection)
+                        if (selection === 'add') {
+                            setSelectedPhotos(selectedPhotos => [...selectedPhotos, val])
+                        } else {
+                            console.log('remove', selectedPhotos.splice(val, 1))
+                            setSelectedPhotos(selectedPhotos => selectedPhotos.filter(photo => photo !== val))
+                        }
+                    }
+                }
+            />
+        )
     );
     
     return (
-        <Box m={5}>
+        <Box>
             <Box>
                 <Flex align="start">
-                    <SectionTitle mr={100}>Photos</SectionTitle>
+                    <SectionTitle mr={25}>Photos</SectionTitle>
                     <Button borderTopRightRadius="0" borderBottomRightRadius="0" _hover={{backgroundColor: "#3A81C9", color: "#fff"}}>Unapproved</Button>
-                    <Button borderTopLeftRadius="0" borderBottomLeftRadius="0" _hover={{backgroundColor: "#3A81C9", color: "#fff"}}>Approves</Button>
+                    <Button borderTopLeftRadius="0" borderBottomLeftRadius="0" _hover={{backgroundColor: "#3A81C9", color: "#fff"}}>Approved</Button>
                 </Flex>
-
-                <Flex align="center" justify="space-between">
-                    <Button bg="#F2D0D0" ml={200} mt={ 10 }>Cancel</Button>
-                    <Button>Select</Button>
+                <Flex alignItems="flex-end" justifyContent="flex-end" mt={50} mb={ 50 }>
+                    <Button bg="#F2D0D0" onClick={handleCancel} ml={ 3 } style={ !select  ? {display: 'none'}: null}>Cancel</Button>
+                    {
+                        select && unapproved.length > 0 ?
+                            <div style={{display: 'flex'} }>
+                                <Button onClick={toggleSelectAll} ml={ 3 } style={!select ? { display: 'none' } : { display: 'block' }} >Select All</Button>
+                                <Button ml={ 3 } style={!select ? { display: 'none' } : { display: 'block' }} onClick={showApproved}>Approve</Button>
+                            </div>
+                            : <Button onClick={toggleSelect}>Select</Button>
+                    }
                 </Flex>
             </Box>
             <Box>
-                <Gallery photos={images} renderImage={imageRenderer} style={{margin: '0 auto'}} />
+                {
+                    isLoaded && unapproved.length === 0?
+                        <Box>
+                            There is no verified photo for this organization.
+                        </Box>
+                        : <Gallery photos={unapproved} renderImage={imageRenderer}/>
+                }
+
             </Box>
         </Box>
     ) 
@@ -111,23 +162,3 @@ FormPhotos.propTypes = {
 }
 
 export default FormPhotos
-            // {/* <Flex wrap="wrap" align="center" justify="space-between" >
-            //     {
-            //         images.map((url) => {
-            //             const prefix = url.prefix
-            //             const suffix = url.suffix
-            //             const size = '250x250'
-            
-            //             return (
-            //                 <Box borderRadius={ 20 }>
-            //                         <img src={`${prefix}${size}${suffix}`} alt='test' />
-            //                 </Box>
-            //                 )
-            //             })
-            //     }
-            // </Flex>  */}
-
-        // <Flex align="center" justify="space-between">
-        //     <Text> Add some photos for {props.name} to help asylum seeker locate your organization.</Text>
-        //     <Button onClick={ handleAddPhotos }>Add Photos</Button>
-        // </Flex>

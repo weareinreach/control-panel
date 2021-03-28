@@ -1,6 +1,6 @@
 import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Box, Button, Stack, Text } from '@chakra-ui/core';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -44,7 +44,7 @@ const Organization = (props) => {
   const { orgId } = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const { data: organization, loading } = useAPIGet(orgPath);
-  //Andy 
+  console.log(props )
   const photos = [];
 
   const {
@@ -394,10 +394,10 @@ const Organization = (props) => {
         <Breadcrumbs organization={organization} />
         <Title>{name}</Title>
         <Stack marginTop={6}>
-          <Tabs variant="enclosed" colorScheme="blue">
+          <Tabs variant="enclosed">
             <TabList>
-              <Tab>General</Tab>
-              <Tab>Photos</Tab>
+              <Tab style={{boxShadow: 'none'}}>General</Tab>
+              <Tab style={{boxShadow: 'none'}}>Photos</Tab>
             </TabList>
           <TabPanels>
             <TabPanel mt={ 5 }>
@@ -534,12 +534,12 @@ const Organization = (props) => {
               </div>
               </TabPanel>
               <TabPanel mt={5}>
-                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} />
+                <Box >
+                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name}/>
+                </Box>
+                  
               </TabPanel>
           </TabPanels>
-            {/* <Container>
-          </Container> */}
-
           </Tabs>
         </Stack>
       </>

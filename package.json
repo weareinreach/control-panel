@@ -17,7 +17,7 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^10.0.27",
     "autosuggest-highlight": "^3.1.1",
-    "axios": "^0.21.1",
+    "axios": "^0.19.2",
     "emotion-theming": "^10.0.27",
     "express": "^4.17.1",
     "formik": "^2.1.4",

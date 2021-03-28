@@ -3593,8 +3593,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-creole",
-      "label": "lang-creole",
+      "key": "lang-Creole",
+      "label": "lang-Creole",
       "type": "checkbox"
     },
     {
@@ -3683,8 +3683,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-hebrew",
-      "label": "lang-hebrew",
+      "key": "lang-Hebrew",
+      "label": "lang-Hebrew",
       "type": "checkbox"
     },
     {

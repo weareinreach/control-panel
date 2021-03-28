@@ -5,10 +5,12 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  ModalHeader,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react"
+import { Container } from './styles';
 
 const Checkmark = ({ selected, select }) => (
   <div
@@ -72,11 +74,11 @@ const SelectedImage = ({
     if (select) {
       if (selected) handleSelected(photo.src, 'add');
       if (!selection) {
-        handleSelected(photo, 'remove');
+        handleSelected(photo.src, 'remove');
         setIsSelected(!isSelected);
         setSelection(true);
       } else {
-        handleSelected(photo, 'add');
+        handleSelected(photo.src, 'add');
         setIsSelected(!isSelected);
         setSelection(false);
       }
@@ -90,6 +92,7 @@ const SelectedImage = ({
   return (
     <>
       <Box
+        m={5}
         style={{ margin, height: photo.height, width: photo.width, ...cont }}
         onClick={select ? handleOnClick : onOpen}
         ref={finalRef}
@@ -106,16 +109,16 @@ const SelectedImage = ({
       />
       <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
       </Box>
-      <Modal isCentered inalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
+      <Modal isCentered inalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha'>
         <ModalOverlay />
-        <ModalContent justifyContent='center' alignContent='center' flexDirection='column' borderRadius={20}>
-            <ModalCloseButton/>
-            <ModalBody mt={ 10 } alignSelf='center'>
+          <ModalContent justifyContent='center' alignContent='center' flexDirection='column'>
+            <ModalCloseButton alignSelf='flex-end'/>
+            <ModalBody>
               <img alt={photo.title} {...photo} />
             </ModalBody>
-            <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-            <Button colorScheme="blue" mb={2.5} w={140} h={45} onClick={handleOnClick}>Approve</Button>
-              <Button colorScheme="blue"onClick={onClose} mb={2.5} w={140} h={45} bg="#F2D0D0">
+            <ModalFooter display='flex' flexDirection='column'>
+              <Button variant="ghost">Approve</Button>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Cancel
               </Button>
             </ModalFooter>

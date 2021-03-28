@@ -16,6 +16,7 @@ import Table, {KeyValueTable} from '../components/Table';
 import { Container, SectionTitle, Title } from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/core';
+// import {useStatus, useInputChange} from '../utils/hooks';
 
 import {
   emailFields,
@@ -44,8 +45,6 @@ const Organization = (props) => {
   const { orgId } = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const { data: organization, loading } = useAPIGet(orgPath);
-  console.log(props )
-  const photos = [];
 
   const {
     _id,
@@ -58,6 +57,7 @@ const Organization = (props) => {
     name = 'Organization Name',
     owners,
     phones,
+    photos,
     properties,
     schedules,
     services,
@@ -303,6 +303,22 @@ const Organization = (props) => {
       onConfirm: updateListField('phones'),
     });
   };
+  const updatePhotos = ( photos ) => {
+    
+    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
+
+        console.log('POST:', url)
+
+        patch(url, {photos})
+        .then(({data}) => {
+          console.log(data)
+          return data
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      console.log('add photos to db')
+    }
   const openScheduleForm = ({isDelete, isDuplicate, isEdit} = {}) => (
     schedule
   ) => {
@@ -535,7 +551,7 @@ const Organization = (props) => {
               </TabPanel>
               <TabPanel mt={5}>
                 <Box >
-                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name}/>
+                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} edit={updatePhotos}/>
                 </Box>
                   
               </TabPanel>

@@ -43,8 +43,7 @@ const Checkmark = ({ selected, select }) => (
 const imgStyle = {
     transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s",
     borderRadius: "20px",
-    maxWidth: "250px",
-    maxHeight: "250px"
+
 };
 
 const cont = {

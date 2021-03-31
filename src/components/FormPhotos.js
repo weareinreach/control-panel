@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { delete as httpDelete, patch, post } from 'axios';
-import config from '../utils/config';
 import PropTypes from 'prop-types';
 import { get } from 'axios';
 import { Box, Button, Flex, useDisclosure, Link , Text} from '@chakra-ui/core';
 import { SectionTitle } from '../components/styles';
 import Gallery from 'react-photo-gallery';
 import SelectedImage from '../components/SelectImage';
-import {CATALOG_API_URL} from '../utils'
+
 import {
   Modal,
   ModalOverlay,
@@ -16,8 +15,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/core";
-import {useStatus, useInputChange} from '../utils/hooks';
-
 
 //things to do 
     //fix chackra tab stylings -- done 
@@ -33,7 +30,7 @@ const fourSquareVenuesApiURL =  process.env.REACT_APP_FOUR_SQUARE_VENUES_URL;
 const clientID = process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET;
 
-const FormPhotos = ({ photos, name, location }, props) => {
+const FormPhotos = ({ photos, name, location, organizationId, edit }) => {
     photos = photos.map( photo => { 
         return photo = {
             src: photo.url,
@@ -41,15 +38,7 @@ const FormPhotos = ({ photos, name, location }, props) => {
             height: 250
         }
     })
-      const {
-    isError,
-    isLoading,
-    isSuccess,
-    setError,
-    setLoading,
-    setSuccess,
-      } = useStatus();
-    const { orgId } = props?.match?.params;
+
     const [selectAll, setSelectAll] = useState(false);
     const [select, setSelect] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -62,7 +51,6 @@ const FormPhotos = ({ photos, name, location }, props) => {
     const buttonStyles = {
         boxShadow: 'none'
     }
-
 
     const toggleSelectAll = () => {
         if (unapproved.length === selectedPhotos.length) return
@@ -98,11 +86,8 @@ const FormPhotos = ({ photos, name, location }, props) => {
                         .then((foundPhotos) => {
                             const imageList = foundPhotos.data.response.photos.items.map(image => {
                                 return image = {
-                                    title: name,
                                     src: `${image.prefix}250x250${image.suffix}`,
-                                    width: 250,
-                                    height: 250,
-                                    foursquareVendorId: vendorId.id
+                                    foursquare_vendor_id: vendorId.id
                                 }
                             })
                             setUnapproved(imageList)
@@ -118,30 +103,11 @@ const FormPhotos = ({ photos, name, location }, props) => {
     })
 
     const saveApproved = () => {
-        console.log(window.location)
-        const url = `${CATALOG_API_URL}/organizations/${orgId}`;
         if (selectedPhotos.length > 0) {
             setApproved(approved.concat(selectedPhotos))
-                
-
-
-        console.log('POST:', url)
-
-        patch(url, {photos})
-        .then(({data}) => {
-            console.log(data)
-            setSuccess();
-          return data
-        })
-        .catch((err) => {
-            console.error(err);
-            setError()
-        });
-      console.log('add photos to db')
+            edit(selectedPhotos)
             setSelect(false)
             onOpen()
-        } else {
-            setApproved(photos)
         }
     }
 

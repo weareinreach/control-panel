@@ -1,7 +1,7 @@
 import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Box, Button, Stack, Text } from '@chakra-ui/core';
+import {Box, Button, Stack} from '@chakra-ui/core';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -16,18 +16,19 @@ import Table, {KeyValueTable} from '../components/Table';
 import { Container, SectionTitle, Title } from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/core';
-// import {useStatus, useInputChange} from '../utils/hooks';
+import { useStatus } from '../utils/hooks'
 
 import {
   emailFields,
   locationFields,
   organizationDetailsFields,
   phoneFields,
+  photosFields,
   scheduleFields,
 } from '../data/fields.json';
 import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
-import {formatOrgInput, formatServiceInput, removeWhitespace} from '../utils/forms';
+import {formatOrgInput, formatServiceInput, removeWhitespace, cleanProperties} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
@@ -70,14 +71,15 @@ const Organization = (props) => {
     alert_message_ES,
     slug_ES,
   } = organization || {};
-  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+  const updateFields = ({ setLoading, setSuccess, setError, values }) => {
+    console.log(values)
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
     patch(url, values)
       .then(({data}) => {
         setSuccess();
-        window.location = `/organizations/${orgId}`;
+        //window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
         setError();
@@ -172,7 +174,7 @@ const Organization = (props) => {
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
         // const values = {verified_at: Date.now()};
-
+        console.log(values)
         updateFields({setLoading, setSuccess, setError, values});
       },
       onVerify: ({setLoading, setSuccess, setError, values}) => {
@@ -211,7 +213,8 @@ const Organization = (props) => {
           });
       },
     });
-  const openEmailForm = ({isDelete, isDuplicate, isEdit} = {}) => (email) => {
+  const openEmailForm = ({ isDelete, isDuplicate, isEdit } = {}) => (email) => {
+    console.log(email)
     if (isDelete) {
       return openModal({
         form: {initialValues: email},
@@ -303,26 +306,22 @@ const Organization = (props) => {
       onConfirm: updateListField('phones'),
     });
   };
-  const updatePhotos = ( photos ) => {
-    
+  const updatePhotos = (photos) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
+    console.log(url)
+    openModal({
+      form: { fields: photosFields, initialValues: [...photos]}, 
+      header: `${name} photos`,
+      onClose: closeModal,
+      onConfirm:  updateListField('photos'),
 
-        console.log('POST:', url)
+    })
 
-        patch(url, {photos})
-        .then(({data}) => {
-          console.log(data)
-          return data
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      console.log('add photos to db')
-    }
+
+  };
   const openScheduleForm = ({isDelete, isDuplicate, isEdit} = {}) => (
     schedule
   ) => {
-    console.log(schedule)
     if (isDelete) {
       return openModal({
         form: {initialValues: schedule},
@@ -551,7 +550,7 @@ const Organization = (props) => {
               </TabPanel>
               <TabPanel mt={5}>
                 <Box >
-                  <FormPhotos location={{ locations }} venueId={false} photos={photos} name={name} edit={updatePhotos}/>
+                  <FormPhotos organizationId={orgId} location={{ locations }} venueId={false} photos={photos} name={name} edit={updatePhotos}/>
                 </Box>
                   
               </TabPanel>

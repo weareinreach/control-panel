@@ -49,7 +49,9 @@ const imgStyle = {
 const cont = {
   cursor: "pointer",
   overflow: "hidden",
-  position: "relative"
+  position: "relative",
+  maxWidth: 250,
+  maxHeight: 250
 };
 
 
@@ -68,8 +70,11 @@ const SelectedImage = ({
   
 
   const handleOnClick = () => {
+    photo = {
+      src: photo.src,
+      foursquare_vendor_id: photo.foursquare_vendor_id
+    }
     if (select) {
-      if (selected) handleSelected(photo.src, 'add');
       if (!selection) {
         handleSelected(photo, 'remove');
         setIsSelected(!isSelected);
@@ -89,7 +94,7 @@ const SelectedImage = ({
   return (
     <>
       <Box
-        style={{ margin, height: photo.height, width: photo.width, ...cont }}
+        style={{ margin, ...cont }}
         onClick={select ? handleOnClick : onOpen}
         ref={finalRef}
         tabIndex={-1}

@@ -27,11 +27,11 @@ const Checkmark = ({ selected, select }) => (
       <circle cx="12.5" cy="12.2" r="8.292" />
     </svg>
     <svg
-            style={
-                selected ?  
-                    { fill: "#0D8700", position: "absolute" }
-                    : { fill: "#1D1F23", position: "absolute" }
-            }
+        style={
+            selected ?  
+                { fill: "#0D8700", position: "absolute" }
+                : { fill: "#1D1F23", position: "absolute" }
+        }
       width="40px"
       height="40px"
     >
@@ -51,12 +51,14 @@ const cont = {
   overflow: "hidden",
   position: "relative",
   maxWidth: 250,
-  maxHeight: 250
+  maxHeight: 250,
+  outline: "none"
 };
 
 
 const SelectedImage = ({
   index,
+  view,
   photo,
   margin,
   select,
@@ -70,17 +72,17 @@ const SelectedImage = ({
   
 
   const handleOnClick = () => {
-    photo = {
-      src: photo.src,
-      foursquare_vendor_id: photo.foursquare_vendor_id
-    }
+
     if (select) {
+      
       if (!selection) {
         handleSelected(photo, 'remove');
+        console.log(photo)
         setIsSelected(!isSelected);
         setSelection(true);
       } else {
         handleSelected(photo, 'add');
+        console.log(photo)
         setIsSelected(!isSelected);
         setSelection(false);
       }
@@ -113,13 +115,26 @@ const SelectedImage = ({
       <Modal isCentered inalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
         <ModalOverlay />
         <ModalContent justifyContent='center' alignContent='center' flexDirection='column' borderRadius={20}>
-            <ModalCloseButton/>
+          <ModalCloseButton style={{outline: "none"}}/>
             <ModalBody mt={ 10 } alignSelf='center'>
               <img alt={photo.title} {...photo} />
             </ModalBody>
             <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-            <Button colorScheme="blue" mb={2.5} w={140} h={45} onClick={handleOnClick}>Approve</Button>
-              <Button colorScheme="blue"onClick={onClose} mb={2.5} w={140} h={45} bg="#F2D0D0">
+            <Button
+              colorScheme="blue"
+              mb={2.5} w={140} h={45}
+              onClick={handleOnClick}
+              _active={{ backgroundColor: "#3A81C9", color: "#fff" }}
+              _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
+              >
+                { view !== 'approved' ? 'Approve' : 'Disapprove' }
+              </Button>
+            <Button
+              colorScheme="blue"
+              onClick={onClose}
+              mb={2.5} w={140} h={45}
+              bg="#F2D0D0"
+            >
                 Cancel
               </Button>
             </ModalFooter>
@@ -132,14 +147,17 @@ const SelectedImage = ({
 
 
 Checkmark.propTypes = {
-    selected: PropTypes.bool
+  selected: PropTypes.bool,
+  select: PropTypes.bool
 }
 
 SelectedImage.propTypes = {
-    photo: PropTypes.objectOf(PropTypes.string), 
-    index: PropTypes.string,
-    selected: PropTypes.bool, 
-    select: PropTypes.bool
+  photo: PropTypes.objectOf(PropTypes.string), 
+  index: PropTypes.string,
+  selected: PropTypes.bool,
+  select: PropTypes.bool,
+  margin: PropTypes.number,
+  handleSelected: PropTypes.func
 }
 
 export default SelectedImage;

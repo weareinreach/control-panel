@@ -16,19 +16,17 @@ import Table, {KeyValueTable} from '../components/Table';
 import { Container, SectionTitle, Title } from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/core';
-import { useStatus } from '../utils/hooks'
 
 import {
   emailFields,
   locationFields,
   organizationDetailsFields,
   phoneFields,
-  photosFields,
   scheduleFields,
 } from '../data/fields.json';
 import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
-import {formatOrgInput, formatServiceInput, removeWhitespace, cleanProperties} from '../utils/forms';
+import {formatOrgInput, formatServiceInput, removeWhitespace } from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
@@ -37,8 +35,6 @@ const buttonGroupProps = {
   marginBottom: 4,
   float: ' right',
 };
-
-
 
 const Organization = (props) => {
   const { user } = useContext(ContextApp);
@@ -72,14 +68,13 @@ const Organization = (props) => {
     slug_ES,
   } = organization || {};
   const updateFields = ({ setLoading, setSuccess, setError, values }) => {
-    console.log(values)
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
     patch(url, values)
       .then(({data}) => {
         setSuccess();
-        //window.location = `/organizations/${orgId}`;
+        // window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
         setError();
@@ -97,7 +92,7 @@ const Organization = (props) => {
     const {_id, ...restValues} = values;
     const itemIndex = newField.findIndex((item) => item._id === _id);
     const isExistingItem = _id && itemIndex !== -1;
-
+    console.log(key, options)
     if (isEdit) {
       if (isExistingItem) {
         newField[itemIndex] = {...newField[itemIndex], ...restValues};
@@ -305,19 +300,6 @@ const Organization = (props) => {
       onClose: closeModal,
       onConfirm: updateListField('phones'),
     });
-  };
-  const updatePhotos = (photos) => {
-    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
-    console.log(url)
-    openModal({
-      form: { fields: photosFields, initialValues: [...photos]}, 
-      header: `${name} photos`,
-      onClose: closeModal,
-      onConfirm:  updateListField('photos'),
-
-    })
-
-
   };
   const openScheduleForm = ({isDelete, isDuplicate, isEdit} = {}) => (
     schedule
@@ -550,7 +532,7 @@ const Organization = (props) => {
               </TabPanel>
               <TabPanel mt={5}>
                 <Box >
-                  <FormPhotos organizationId={orgId} location={{ locations }} venueId={false} photos={photos} name={name} edit={updatePhotos}/>
+                  <FormPhotos organizationId={orgId} location={{ locations }} photos={photos} name={name} />
                 </Box>
                   
               </TabPanel>

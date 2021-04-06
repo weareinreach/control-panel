@@ -99,7 +99,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
         }
     })
 
-    const saveApproved = async () => {
+    const handlePreApproved = async () => {
         if (selectedPhotos.length > 0) {
             setApprovedPhotos(approvedPhotos.concat(selectedPhotos))
             await handleApprovedPhotos(selectedPhotos)
@@ -112,7 +112,6 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
         patch(url, { "photos": data })
             .then(response => {
                 console.log(response, "Photos have been added to the database")
-                window.location.reload()
             })
             .catch(err => {
                 console.log(err)
@@ -128,9 +127,10 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     
     const handleDelete = (data) => {
         data.forEach(element => {
-            axios.put(url, {
-                params: {
-                    "photos": element._id
+            console.log(element._id)
+            axios.delete(url, {
+                data: {
+                    photos: [element.src]
                 }
             })
                 .then(response => {
@@ -245,7 +245,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                                 <Button
                                     ml={3}
                                     style={!select ? { display: 'none' } : buttonStyles }
-                                    onClick={view !== 'approved' ? saveApproved : disapprovedPhotos }
+                                    onClick={view !== 'approved' ? handlePreApproved : disapprovedPhotos }
                                     ref={approvedRef}
                                 >
                                     { view !== 'approved' ? 'Approve' : 'Disapprove' }

@@ -531,8 +531,8 @@ const Organization = (props) => {
               </div>
               </TabPanel>
               <TabPanel mt={5}>
-                <Box >
-                  <FormPhotos organizationId={orgId} location={{ locations }} photos={photos} name={name} />
+                <Box>
+                  <FormPhotos organizationId={orgId} location={locations} photos={photos} name={name} />
                 </Box>
                   
               </TabPanel>

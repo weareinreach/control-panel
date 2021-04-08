@@ -70,11 +70,8 @@ const SelectedImage = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef()
   
-
   const handleOnClick = () => {
-
     if (select) {
-      
       if (!selection) {
         handleSelected(photo, 'remove');
         console.log(photo)
@@ -108,6 +105,8 @@ const SelectedImage = ({
         style={
           isSelected ? { ...imgStyle } : { ...imgStyle }
         }
+        width={'250'}
+        height={'250'}
         {...photo}
       />
       <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
@@ -123,7 +122,7 @@ const SelectedImage = ({
             <Button
               colorScheme="blue"
               mb={2.5} w={140} h={45}
-              onClick={handleOnClick}
+              onClick={ view !== 'approved' ? handleOnClick : handleOnClick }
               _active={{ backgroundColor: "#3A81C9", color: "#fff" }}
               _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
               >

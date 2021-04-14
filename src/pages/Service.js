@@ -509,5 +509,8 @@ const Service = (props) => {
   );
 };
 
+Service.propTypes = {
+  match: PropTypes.shape(),
+}
 
 export default Service;

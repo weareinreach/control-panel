@@ -29,7 +29,7 @@ jobs:
           - node_modules
          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: Complie Binary
+          name: Compile Binary
           command: npm run build
     
 

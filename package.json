@@ -2,13 +2,15 @@
   "name": "asylum-connect-admin-control-panel",
   "private": true,
   "scripts": {
-    "local": "REACT_APP_APP_ENV=local npm start",
+    "local": "REACT_APP_APP_ENV=local npm run start",
+    "local-background":"pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "serve": "node src/server"
+    "serve": "node src/server",
+    "cypress:open": "cypress open --config-file ./cypress.json"
   },
   "dependencies": {
     "@chakra-ui/core": "^0.7.0",
@@ -33,8 +35,12 @@
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.3",
     "@testing-library/user-event": "^10.0.2",
+    "cypress": "^7.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
+    "mochawesome": "^6.2.2",
+    "mochawesome-merge": "^4.2.0",
+    "nyc": "^15.1.0",
     "prettier": "^2.0.5"
   },
   "browserslist": {
@@ -49,6 +55,21 @@
       "last 1 safari version"
     ]
   },
+  "nyc": {
+		"sourceMap": false,
+		"instrument": false,
+		"excludeAfterRemap": false,
+		"all": true,
+		"include": [
+			"**/src/*"
+		],
+		"report-dir": "cypressCoverage",
+		"reporter": [
+			"html",
+			"json",
+			"lcov"
+		]
+	},
   "engines": {
     "node": "12.x"
   },

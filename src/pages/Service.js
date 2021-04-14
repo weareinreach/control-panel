@@ -171,7 +171,6 @@ const Service = (props) => {
       form: {fields: serviceDetailsFields, initialValues: service},
       header: 'DetailsEdit',
       onClose: closeModal,
-      // onConfirm: updateFields,
       onConfirm: openOrgVerify
     });
   const openServiceDelete = () =>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios, { get, patch } from 'axios';
 import { Box, Button, Flex, useDisclosure, Link , Text} from '@chakra-ui/core';
@@ -28,7 +28,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [unapprovedPhotos, setUnapprovedPhotos] = useState([]);
 
-    const [approvedPhotos, setApprovedPhotos] = useState(photos === undefined ? [] : [...photos])
+    const [approvedPhotos, setApprovedPhotos] = useState(photos === undefined || photos.length < 1 ? [] : [...photos])
     const [view, setView] = useState(approvedPhotos.length > 0 ? 'approved' : 'no-approved-found')
     const [selectedPhotos, setSelectedPhotos] = useState([])
     
@@ -123,20 +123,16 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     }
     
     const handleDelete = (data) => {
-        data.forEach(element => {
-            axios.delete(`${url}:${element.photos_id}`, {
-                data: {
-                    photos: element
+        const remaining = []
+        photos.forEach(element => {
+            data.forEach(obj => {
+                if (obj._id !== element._id) {
+                    remaining.push(element)
                 }
             })
-                .then(response => {
-                    console.log(element, "Photos have been removed from the database")
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        });
-
+        })
+        console.log(remaining, 'handle Delete ran')
+        axios.patch(url, {"photos": [...remaining]})
 
     }
 
@@ -192,6 +188,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     
     return (
         <Box>
+            {console.log(photos)}
             <Box>
                 <Flex align="start">
                     <SectionTitle mr={25}>Photos</SectionTitle>

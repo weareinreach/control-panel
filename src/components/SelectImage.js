@@ -64,6 +64,7 @@ const SelectedImage = ({
   select,
   selected,
   handleSelected,
+  approve
 }) => {
   const [isSelected, setIsSelected] = useState(selected);
   const [selection, setSelection] = useState(true);
@@ -74,12 +75,10 @@ const SelectedImage = ({
     if (select) {
       if (!selection) {
         handleSelected(photo, 'remove');
-        console.log(photo)
         setIsSelected(!isSelected);
         setSelection(true);
       } else {
         handleSelected(photo, 'add');
-        console.log(photo)
         setIsSelected(!isSelected);
         setSelection(false);
       }
@@ -122,7 +121,11 @@ const SelectedImage = ({
             <Button
               colorScheme="blue"
               mb={2.5} w={140} h={45}
-              onClick={ view !== 'approved' ? handleOnClick : handleOnClick }
+              onClick={() => {
+                handleOnClick()
+                approve(photo)
+                }
+              }
               _active={{ backgroundColor: "#3A81C9", color: "#fff" }}
               _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
               >

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import axios, { get, patch } from 'axios';
+import axios, { get, patch, post, put} from 'axios';
 import { Box, Button, Flex, useDisclosure, Link , Text} from '@chakra-ui/core';
 import { SectionTitle } from '../components/styles';
 import Gallery from 'react-photo-gallery';
@@ -22,16 +22,19 @@ const clientID = process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET;
 
 const FormPhotos = ({ photos, name, location, organizationId }) => {
-
+    const lat = location[0].lat
+    const long = location[0].long
+    const city = location[0].city
     const [selectAll, setSelectAll] = useState(false);
     const [select, setSelect] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [fourSquarePhotos, setFourSquarePhotos] = useState([]);
+    const [vendorId, setVendorId] = useState('')
 
     const [view, setView] = useState(photos.length <= 0 ? 'no-approved-photos' :'approved')
     const [selectedPhotos, setSelectedPhotos] = useState([])
     
-    const { onOpen } = useDisclosure();
+    const { onOpen, isOpen, onClose } = useDisclosure();
     const approvedRef = useRef();
     const disApprovedRef = useRef();
     const url = `${CATALOG_API_URL}/organizations/${organizationId}`
@@ -41,21 +44,15 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     }
 
     const toggleSelectAll = () => {
-        console.log(view)
-        if(selectedPhotos.length === fourSquarePhotos.length) return
-        if (view === 'unapproved' && selectAll) {
-            setSelectedPhotos(selectedPhotos.concat(fourSquarePhotos))
-            setSelectAll(!selectAll);
-        } else {
-            setSelectedPhotos(selectedPhotos.concat(photos))
-            setSelectAll(!selectAll);
-        }
+        setSelectAll(!selectAll);
+        if(!selectAll) return setSelectedPhotos([])
     };
 
     const toggleSelect = () => {
         setSelect(!select);
     };
 
+    
     const handleCancel = () => {
         if (select) {
             setSelectAll(false)
@@ -64,64 +61,97 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
         };
     }
 
-    useEffect(function () {
-        const fetchPhotos = async (name, lat, long, city) => {
-            if (fourSquarePhotos.length > 0 || !(location[0].lat || !location[0].long)) return null
-            await get(`${fourSquareVenuesApiURL}?query=${name}&&ll=${lat},${long}&near=${city}&limit=1000&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
-                .then((venueList) => {
-                    return venueList.data.response.venues.find(ven => {
-                        if (ven.name.toLowerCase() === name.toLowerCase()) return ven
-                        return null
+    const getVendorId = async function(){
+        await get(`${fourSquareVenuesApiURL}?query=${name}&&ll=${lat},${long}&near=${city}&limit=1000&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+            .then((venueList) => {
+                return venueList.data.response.venues.find(ven => {
+                    if (ven.name.toLowerCase() === name.toLowerCase()) {
+                        setVendorId(ven.id)
+                    }
+                })
+            })
+            .catch((err) => {
+                throw new Error(err)
+            })
+    }
+    
+    useEffect(() => {
+        const fetchPhotos = async (vendorId) => {
+            if (!vendorId) return setView('no-fourSquarePhotos-found')
+            if (fourSquarePhotos.length > 0) return setView('fourSquarePhotos')
+            const photoData = await get(`${fourSquarePhotosApiURL}/${vendorId}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
+                .then((response) => {
+                    return response.data.response.photos.items.map(image => {
+                        return image = {
+                            src: `${image.prefix}250x250${image.suffix}`,
+                            foursquare_vendor_id: vendorId
+                        }
                     })
                 })
-                .then((vendorId) => {
-                    if (!vendorId) return null
-                    return get(`${fourSquarePhotosApiURL}/${vendorId.id}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
-                        .then((foundPhotos) => {
-                            const imageList = foundPhotos.data.response.photos.items.map(image => {
-                                return image = {
-                                    src: `${image.prefix}250x250${image.suffix}`,
-                                    foursquare_vendor_id: vendorId.id
-                                }
-                            })
-                            setFourSquarePhotos(imageList)
-                            if (!isLoaded) setIsLoaded(true)
-                            return imageList
-                        })
-                })
-                .catch((err) => {
-                    throw new Error(err)
-                })
+            
+            setFourSquarePhotos(fourSquarePhotos.concat(photoData))
+            setIsLoaded(!selectAll)
         }
-        if(location.length === 0) return
-        if (!isLoaded) {
-            fetchPhotos(name, location[0].lat, location[0].long, location[0].city)
+        
+        if (vendorId === '') {
+            getVendorId()
+        } else {
+            if (vendorId === undefined) return
+            if (!isLoaded) {
+                fetchPhotos(vendorId)
+            }
         }
     })
 
-    const handleApprovedPhotos = (data) => {
-        if(data <= 0) return
-        patch(url, { "photos": [...data] })
+    
+
+
+    useEffect(() => {
+        if (selectAll) {
+            if(selectedPhotos.length > 0 ) setSelectedPhotos([])
+            if (view === 'fourSquarePhotos') {
+                setSelectedPhotos(selectedPhotos.concat(fourSquarePhotos))
+                setSelectAll(true);
+            } else {
+                setSelectedPhotos(selectedPhotos.concat(photos))
+                setSelectAll(true);
+            }
+        } 
+    }, [selectAll])
+
+    const handleApprovedPhotos = () => {
+        console.log('approved', selectedPhotos)
+        if(selectedPhotos <= 0) return
+        patch(url, { "photos": [...photos.concat(selectedPhotos)] })
             .then(response => {
-                onOpen( () => <ApprovedModal inalFocusRef={approvedRef} selectedPhotos={selectedPhotos} setView={setView} />)
-                setSelectAll(false)
+                onOpen()
             })
             .catch(err => {
                 console.log(err)
             })
+                        
     }
     
     const handleDelete = (data) => {
-        if(data <= 0) return
-        const remaining = []
+        console.log('deleting')
+        if (data <= 0) return
+        let remaining = []
+        if (!selectAll) {
+            // remaining = photos.map(elem => {
+            //     if (!data.includes(elem)) {
+            //         return elem
+            //     }
+            // })
+            
         photos.forEach(element => {
             data.forEach(obj => {
                 if (obj._id !== element._id) {
-                    console.log(`${obj._id }, obj`, `${element._id}, e`)
                     remaining.push(element)
                 }
             })
         })
+    }
+        console.log(remaining)
         axios.patch(url, { "photos": [...remaining] })
             .then(response => {
                 setSelect(false)
@@ -129,7 +159,6 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                 setSelectedPhotos([])
                 console.log('photos deleted')
             })
-        console.log(remaining)
     }
 
     const renderPhotos = (param) => {
@@ -159,6 +188,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     const imageRenderer = useCallback(
         ({ index, key, photo }) => (
             <SelectedImage
+                approve={()=> handleApprovedPhotos}
                 selected={selectAll ? true : false}
                 select={select ? true : false}
                 key={key}
@@ -173,7 +203,6 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                         if (selection === 'add') {
                             setSelectedPhotos(selectedPhotos => [...selectedPhotos, val])
                         } else {
-                            console.log('remove', selectedPhotos.splice(val, 1))
                             setSelectedPhotos(selectedPhotos => selectedPhotos.filter(photo => photo !== val))
                         }
                     }
@@ -234,7 +263,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                                     <Button
                                         ml={3}
                                         style={!select ? { display: 'none' } : buttonStyles }
-                                        onClick={handleApprovedPhotos(selectedPhotos)}
+                                        onClick={handleApprovedPhotos}
                                         ref={approvedRef}
                                     >
                                         Approved
@@ -263,12 +292,18 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                     renderPhotos(view)
                 }
             </Box>
-            <DisapprovedModal inalFocusRef={disApprovedRef} selectedPhotos={selectedPhotos} setView={setView} handleDelete={handleDelete}/>
+            {
+                view === 'approved' ?
+                    <DisapprovedModal inalFocusRef={disApprovedRef} selectedPhotos={selectedPhotos} isOpen={isOpen} onClose={onClose} setView={setView} handleDelete={handleDelete}/>
+                :
+                    <ApprovedModal inalFocusRef={approvedRef} selectedPhotos={selectedPhotos} setSelectedPhotos={setSelectedPhotos}isOpen={isOpen} onClose={onClose} setView={setView} />
+            }
+            
+            
         </Box>
     ) 
 }
-const ApprovedModal = ({ approvedRef, selectedPhotos, setView }) => {
-    const { isOpen, onClose } = useDisclosure()
+const ApprovedModal = ({ approvedRef, selectedPhotos, setView, isOpen, onClose, setSelectedPhotos }) => {
     return (
          <Modal isCentered inalFocusRef={approvedRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
             <ModalOverlay />
@@ -306,8 +341,7 @@ const ApprovedModal = ({ approvedRef, selectedPhotos, setView }) => {
                     <Box>
                         <Link color='#2F80ED'
                             onClick={() => {
-                                setView('approved')
-                                onClose()
+                                onClose( () => setSelectedPhotos([]))
                                 window.location.reload()
                             }}>
                                 See approved photos
@@ -319,8 +353,7 @@ const ApprovedModal = ({ approvedRef, selectedPhotos, setView }) => {
     )
 }
 
-const DisapprovedModal = ({ disApprovedRef, selectedPhotos, handleDelete, setView }) => {
-    const { isOpen, onClose } = useDisclosure()
+const DisapprovedModal = ({ disApprovedRef, selectedPhotos, handleDelete, setView, isOpen, onClose }) => {
     return (
          <Modal isCentered inalFocusRef={disApprovedRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
             <ModalOverlay />
@@ -337,7 +370,6 @@ const DisapprovedModal = ({ disApprovedRef, selectedPhotos, handleDelete, setVie
                 <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                     <Button onClick={() => {
                         handleDelete(selectedPhotos)
-                        setView('approved')
                         onClose()
                         window.location.reload()
                     }
@@ -362,7 +394,8 @@ ApprovedModal.propTypes = {
     isOpen: PropTypes.bool,
     onClose: PropTypes.bool,
     selectedPhotos: PropTypes.arrayOf(PropTypes.shape()),
-    setView: PropTypes.string
+    setView: PropTypes.string,
+    setSelectedPhotos: PropTypes.func
 }
 
 DisapprovedModal.propTypes = {

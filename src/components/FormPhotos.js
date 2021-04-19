@@ -16,6 +16,10 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/core";
 
+//Needs to be done
+//Refactor delete functionality 
+//add React Router to links in Modals for approved and unapproved Galleries
+
 const fourSquarePhotosApiURL = process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL;
 const fourSquareVenuesApiURL =  process.env.REACT_APP_FOUR_SQUARE_VENUES_URL;
 const clientID = process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID;
@@ -132,6 +136,8 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                         
     }
     
+    // needs to be refactored axios delete functionality is removing entire org.
+    //code below is a quick fix just to get it working
     const handleDelete = (data) => {
         console.log('deleting')
         if (data <= 0) return
@@ -368,6 +374,7 @@ const DisapprovedModal = ({ disApprovedRef, selectedPhotos, handleDelete, setVie
                      <Text>Do you want to disapprove {selectedPhotos.length} photos?</Text>
                 </ModalBody>
                 <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                    { /* buttons need to be resized */ }
                     <Button onClick={() => {
                         handleDelete(selectedPhotos)
                         onClose()

@@ -10,6 +10,9 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/core";
 
+// Still needs the following features
+// send single approved photo to db 
+// remove approved photos from db
 const Checkmark = ({ selected, select }) => (
   <div
         style={
@@ -121,11 +124,7 @@ const SelectedImage = ({
             <Button
               colorScheme="blue"
               mb={2.5} w={140} h={45}
-              onClick={() => {
-                handleOnClick()
-                approve(photo)
-                }
-              }
+              onClick={handleOnClick}
               _active={{ backgroundColor: "#3A81C9", color: "#fff" }}
               _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
               >

@@ -26,13 +26,12 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     const [selectAll, setSelectAll] = useState(false);
     const [select, setSelect] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [unapprovedPhotos, setUnapprovedPhotos] = useState([]);
+    const [fourSquarePhotos, setFourSquarePhotos] = useState([]);
 
-    const [approvedPhotos, setApprovedPhotos] = useState(photos === undefined || photos.length < 1 ? [] : [...photos])
-    const [view, setView] = useState(approvedPhotos.length > 0 ? 'approved' : 'no-approved-found')
+    const [view, setView] = useState(photos.length <= 0 ? 'no-approved-photos' :'approved')
     const [selectedPhotos, setSelectedPhotos] = useState([])
     
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { onOpen } = useDisclosure();
     const approvedRef = useRef();
     const disApprovedRef = useRef();
     const url = `${CATALOG_API_URL}/organizations/${organizationId}`
@@ -42,9 +41,15 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     }
 
     const toggleSelectAll = () => {
-        if (unapprovedPhotos.length === selectedPhotos.length) return
-        setSelectedPhotos(selectedPhotos.concat(unapprovedPhotos))
-        setSelectAll(!selectAll);
+        console.log(view)
+        if(selectedPhotos.length === fourSquarePhotos.length) return
+        if (view === 'unapproved' && selectAll) {
+            setSelectedPhotos(selectedPhotos.concat(fourSquarePhotos))
+            setSelectAll(!selectAll);
+        } else {
+            setSelectedPhotos(selectedPhotos.concat(photos))
+            setSelectAll(!selectAll);
+        }
     };
 
     const toggleSelect = () => {
@@ -56,13 +61,12 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
             setSelectAll(false)
             setSelect(false)
             setSelectedPhotos([])
-            setApprovedPhotos(photos)
         };
     }
 
     useEffect(function () {
         const fetchPhotos = async (name, lat, long, city) => {
-            if (unapprovedPhotos.length > 0 || !(location[0].lat || !location[0].long)) return null
+            if (fourSquarePhotos.length > 0 || !(location[0].lat || !location[0].long)) return null
             await get(`${fourSquareVenuesApiURL}?query=${name}&&ll=${lat},${long}&near=${city}&limit=1000&client_id=${clientID}&client_secret=${clientSecret}&v=20200101`)
                 .then((venueList) => {
                     return venueList.data.response.venues.find(ven => {
@@ -80,7 +84,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                                     foursquare_vendor_id: vendorId.id
                                 }
                             })
-                            setUnapprovedPhotos(imageList)
+                            setFourSquarePhotos(imageList)
                             if (!isLoaded) setIsLoaded(true)
                             return imageList
                         })
@@ -95,54 +99,46 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
         }
     })
 
-    const handlePreApproved = async () => {
-        if (selectedPhotos.length > 0) {
-            setApprovedPhotos(approvedPhotos.concat(selectedPhotos))
-            await handleApprovedPhotos(selectedPhotos)
-            setSelect(false)
-            onOpen()
-        }
-    }
-
     const handleApprovedPhotos = (data) => {
+        if(data <= 0) return
         patch(url, { "photos": [...data] })
             .then(response => {
-                console.log(response, "Photos have been added to the database")
+                onOpen( () => <ApprovedModal inalFocusRef={approvedRef} selectedPhotos={selectedPhotos} setView={setView} />)
+                setSelectAll(false)
             })
             .catch(err => {
                 console.log(err)
             })
-        }
-    
-    const disapprovedPhotos = async () => {
-        if (selectedPhotos.length > 0) {
-            await handleDelete(selectedPhotos)
-            setSelect(false)
-            onOpen()
-        } 
     }
     
     const handleDelete = (data) => {
+        if(data <= 0) return
         const remaining = []
         photos.forEach(element => {
             data.forEach(obj => {
                 if (obj._id !== element._id) {
+                    console.log(`${obj._id }, obj`, `${element._id}, e`)
                     remaining.push(element)
                 }
             })
         })
-        console.log(remaining, 'handle Delete ran')
-        axios.patch(url, {"photos": [...remaining]})
-
+        axios.patch(url, { "photos": [...remaining] })
+            .then(response => {
+                setSelect(false)
+                setSelectAll(false)
+                setSelectedPhotos([])
+                console.log('photos deleted')
+            })
+        console.log(remaining)
     }
 
     const renderPhotos = (param) => {
         switch(param) {
             case 'approved':
-                return <Gallery photos={approvedPhotos} renderImage={imageRenderer} />;
-            case 'unapprovedPhotos':
-                return <Gallery photos={unapprovedPhotos} renderImage={imageRenderer} />;
-            case 'no-unapprovedPhotos-found':
+                return <Gallery photos={photos} renderImage={imageRenderer} />;
+            case 'fourSquarePhotos':
+                return <Gallery photos={fourSquarePhotos} renderImage={imageRenderer} />;
+            case 'no-fourSquarePhotos-found':
                   return (
                     <Box>
                         <Text textAlign='center'>There is no verified photos for this organization.</Text>
@@ -155,7 +151,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                     </Box>
                 )
             default:
-                return photos.length > 0 ? renderPhotos('approved'): renderPhotos('no-approved-found');
+                return renderPhotos('no-approved-found');
         }
     }
 
@@ -188,7 +184,6 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
     
     return (
         <Box>
-            {console.log(photos)}
             <Box>
                 <Flex align="start">
                     <SectionTitle mr={25}>Photos</SectionTitle>
@@ -196,9 +191,9 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                         borderTopRightRadius="0"
                         borderBottomRightRadius="0"
                         _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
-                        onClick={() => unapprovedPhotos.length > 0 ? setView('unapprovedPhotos') : setView('no-unapprovedPhotos-found')}
+                        onClick={() => fourSquarePhotos.length > 0 ? setView('fourSquarePhotos') : setView('no-fourSquarePhotos-found')}
                         style={buttonStyles}
-                        isActive={view === 'unapprovedPhotos' ? true : false}
+                        isActive={view === 'fourSquarePhotos' ? true : false}
                         _active={{ backgroundColor: "#3A81C9", color: "#fff" } }
                     >
                         Unapproved
@@ -208,7 +203,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                         borderBottomLeftRadius="0"
                         _hover={{ backgroundColor: "#3A81C9", color: "#fff" }}
                         isActive={ view === 'approved' ? true : false}
-                        onClick={() => approvedPhotos.length > 0 ? setView('approved') : setView('no-approved-found')}
+                        onClick={() => photos.length > 0 ? setView('approved') : setView('no-approved-found')}
                         style={buttonStyles}
                         _active={{ backgroundColor: "#3A81C9", color: "#fff" } }
                     >
@@ -225,7 +220,7 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                         Cancel
                     </Button>
                     {
-                        select && unapprovedPhotos.length > 0 ?
+                        select && fourSquarePhotos.length > 0 ?
                             <div style={{display: 'flex'} }>
                                 <Button
                                     isDisabled={selectAll}
@@ -235,14 +230,24 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                                 >
                                     Select All
                                 </Button>
-                                <Button
-                                    ml={3}
-                                    style={!select ? { display: 'none' } : buttonStyles }
-                                    onClick={view !== 'approved' ? handlePreApproved : disapprovedPhotos }
-                                    ref={view === 'approved' ? approvedRef: disApprovedRef}
-                                >
-                                    { view !== 'approved' ? 'Approve' : 'Disapprove' }
-                                </Button>
+                                { view !== 'approved' ?
+                                    <Button
+                                        ml={3}
+                                        style={!select ? { display: 'none' } : buttonStyles }
+                                        onClick={handleApprovedPhotos(selectedPhotos)}
+                                        ref={approvedRef}
+                                    >
+                                        Approved
+                                    </Button>
+                                    :
+                                    <Button
+                                        ml={3}
+                                        style={!select ? { display: 'none' } : buttonStyles }
+                                        onClick={onOpen}
+                                        ref={disApprovedRef}>
+                                        Disapprove
+                                    </Button>
+                                }
                             </div>
                             : <Button
                                 onClick={toggleSelect}
@@ -258,12 +263,12 @@ const FormPhotos = ({ photos, name, location, organizationId }) => {
                     renderPhotos(view)
                 }
             </Box>
-            { approvedModal(approvedRef, isOpen, onClose, selectedPhotos, setView)}
-            { disapprovedModal(disApprovedRef, isOpen, onClose, selectedPhotos, disapprovedPhotos)}
+            <DisapprovedModal inalFocusRef={disApprovedRef} selectedPhotos={selectedPhotos} setView={setView} handleDelete={handleDelete}/>
         </Box>
     ) 
 }
-const approvedModal = (approvedRef, isOpen, onClose, selectedPhotos, setView) => {
+const ApprovedModal = ({ approvedRef, selectedPhotos, setView }) => {
+    const { isOpen, onClose } = useDisclosure()
     return (
          <Modal isCentered inalFocusRef={approvedRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
             <ModalOverlay />
@@ -299,7 +304,14 @@ const approvedModal = (approvedRef, isOpen, onClose, selectedPhotos, setView) =>
                 </ModalBody>
                 <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                     <Box>
-                        <Link color='#2F80ED' onClick={() => { setView('approved'); onClose()}}>See approved photos</Link>
+                        <Link color='#2F80ED'
+                            onClick={() => {
+                                setView('approved')
+                                onClose()
+                                window.location.reload()
+                            }}>
+                                See approved photos
+                        </Link>
                     </Box>
                 </ModalFooter>
             </ModalContent>
@@ -307,7 +319,8 @@ const approvedModal = (approvedRef, isOpen, onClose, selectedPhotos, setView) =>
     )
 }
 
-const disapprovedModal = (disApprovedRef, isOpen, onClose, selectedPhotos, disapprovedPhotos ) => {
+const DisapprovedModal = ({ disApprovedRef, selectedPhotos, handleDelete, setView }) => {
+    const { isOpen, onClose } = useDisclosure()
     return (
          <Modal isCentered inalFocusRef={disApprovedRef} isOpen={isOpen} onClose={onClose} colorScheme='whiteAlpha' size='lg'>
             <ModalOverlay />
@@ -322,7 +335,13 @@ const disapprovedModal = (disApprovedRef, isOpen, onClose, selectedPhotos, disap
                      <Text>Do you want to disapprove {selectedPhotos.length} photos?</Text>
                 </ModalBody>
                 <ModalFooter display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                    <Button onClick={()=> {disapprovedPhotos()}}>Yes</Button>
+                    <Button onClick={() => {
+                        handleDelete(selectedPhotos)
+                        setView('approved')
+                        onClose()
+                        window.location.reload()
+                    }
+                    }>Yes</Button>
                     <Button onClick={onClose}>Cancel</Button>
                 </ModalFooter>
             </ModalContent>
@@ -338,4 +357,20 @@ FormPhotos.propTypes = {
     organizationId: PropTypes.string
 }
 
+ApprovedModal.propTypes = {
+    approvedRef: PropTypes.element,
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.bool,
+    selectedPhotos: PropTypes.arrayOf(PropTypes.shape()),
+    setView: PropTypes.string
+}
+
+DisapprovedModal.propTypes = {
+    disApprovedRef: PropTypes.element,
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.bool,
+    selectedPhotos: PropTypes.arrayOf(PropTypes.shape()),
+    handleDelete: PropTypes.func,
+    setView: PropTypes.string
+}
 export default FormPhotos

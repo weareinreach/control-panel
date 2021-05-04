@@ -1,6 +1,6 @@
 {
   "canada": {
-    "Community Support": ["Cultural centres", "LGBTQ centres", "Reception services"],
+    "Community Support": ["Cultural centres", "LGBTQ centres", "Reception services", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",
@@ -54,7 +54,7 @@
     ]
   },
   "mexico": {
-    "Community Support": ["Cultural centers", "LGBTQ centers"],
+    "Community Support": ["Cultural centers", "LGBTQ centers", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",
@@ -107,7 +107,7 @@
     ]
   },
   "united_states": {
-    "Community Support": ["Cultural centers", "LGBTQ centers", "Sponsors"],
+    "Community Support": ["Cultural centers", "LGBTQ centers", "Sponsors", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",

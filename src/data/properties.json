@@ -3503,8 +3503,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Albanian",
-      "label": "lang-Albanian",
+      "key": "lang-albanian",
+      "label": "lang-albanian",
       "type": "checkbox"
     },
     {
@@ -3553,8 +3553,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Bulgarian",
-      "label": "lang-Bulgarian",
+      "key": "lang-bulgarian",
+      "label": "lang-bulgarian",
       "type": "checkbox"
     },
     {
@@ -3583,8 +3583,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Chin",
-      "label": "lang-Chin",
+      "key": "lang-chin",
+      "label": "lang-chin",
       "type": "checkbox"
     },
     {
@@ -3678,8 +3678,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Gujarati",
-      "label": "lang-Gujarati",
+      "key": "lang-gujarati",
+      "label": "lang-gujarati",
       "type": "checkbox"
     },
     {
@@ -3698,13 +3698,13 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Hunan",
-      "label": "lang-Hunan",
+      "key": "lang-hunan",
+      "label": "lang-hunan",
       "type": "checkbox"
     },
     {
-      "key": "lang-Hungarian",
-      "label": "lang-Hungarian",
+      "key": "lang-hungarian",
+      "label": "lang-hungarian",
       "type": "checkbox"
     },
     {
@@ -3743,8 +3743,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Katchi",
-      "label": "lang-Katchi",
+      "key": "lang-katchi",
+      "label": "lang-katchi",
       "type": "checkbox"
     },
     {
@@ -3763,8 +3763,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Kirundi",
-      "label": "lang-Kirundi",
+      "key": "lang-kirundi",
+      "label": "lang-kirundi",
       "type": "checkbox"
     },
     {
@@ -3778,13 +3778,13 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Kurdish",
-      "label": "lang-Kurdish",
+      "key": "lang-kurdish",
+      "label": "lang-kurdish",
       "type": "checkbox"
     },
     {
-      "key": "lang-Kurmanji",
-      "label": "lang-Kurmanji",
+      "key": "lang-kurmanji",
+      "label": "lang-kurmanji",
       "type": "checkbox"
     },
     {
@@ -3798,8 +3798,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Lingala",
-      "label": "lang-Lingala",
+      "key": "lang-lingala",
+      "label": "lang-lingala",
       "type": "checkbox"
     },
     {
@@ -3833,8 +3833,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Marathi",
-      "label": "lang-Marathi",
+      "key": "lang-marathi",
+      "label": "lang-marathi",
       "type": "checkbox"
     },
     {
@@ -3868,8 +3868,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Polish",
-      "label": "lang-Polish",
+      "key": "lang-polish",
+      "label": "lang-polish",
       "type": "checkbox"
     },
     {
@@ -3888,8 +3888,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Quechua",
-      "label": "lang-Quechua",
+      "key": "lang-quechua",
+      "label": "lang-quechua",
       "type": "checkbox"
     },
     {
@@ -3928,8 +3928,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Sinhala",
-      "label": "lang-Sinhala",
+      "key": "lang-sinhala",
+      "label": "lang-sinhala",
       "type": "checkbox"
     },
     {
@@ -3968,8 +3968,8 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Tamil",
-      "label": "lang-Tamil",
+      "key": "lang-tamil",
+      "label": "lang-tamil",
       "type": "checkbox"
     },
     {
@@ -4008,13 +4008,13 @@
       "type": "checkbox"
     },
     {
-      "key": "lang-Turkish",
-      "label": "lang-Turkish",
+      "key": "lang-turkish",
+      "label": "lang-turkish",
       "type": "checkbox"
     },
     {
-      "key": "lang-Twi",
-      "label": "lang-Twi",
+      "key": "lang-twi",
+      "label": "lang-twi",
       "type": "checkbox"
     },
     {

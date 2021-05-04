@@ -98,15 +98,19 @@ const Service = (props) => {
   const phone = findItem(organization?.phones, phone_id);
   const schedule = findItem(organization?.schedules, schedule_id);
   const updateFields = ({setLoading, setSuccess, setError, values}) => {
-    const url = `${CATALOG_API_URL}${servicePath}`;
+    const serviceUrl = `${CATALOG_API_URL}${servicePath}`;
+    const orgUrl = `${CATALOG_API_URL}/organizations/${orgId}`;
 
     const updatedService = formatServiceInput({...service, ...values});
+
     removeWhitespace(updatedService);
     setLoading();
-    patch(url, updatedService)
+    patch(serviceUrl, updatedService)
       .then(({data}) => {
-        setSuccess();
-        window.location = servicePath;
+        patch(orgUrl, {verified_at: Date.now()}).then(() => {
+          setSuccess();
+          window.location = servicePath;
+        });
       })
       .catch((err) => {
         setError();
@@ -139,6 +143,21 @@ const Service = (props) => {
 
     updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
   };
+  const openOrgVerify = () =>
+    openModal({
+      header: `Verify Information for ${name}?`,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        // const values = {verified_at: Date.now()};
+
+        updateFields({setLoading, setSuccess, setError, values});
+      },
+      onVerify: ({setLoading, setSuccess, setError, values}) => {
+        values = {...values, verified_at: Date.now()};
+
+        updateFields({setLoading, setSuccess, setError, values});
+      },
+    });
   const openCoverageEdit = () =>
     openModal({
       children: FormCoverage,
@@ -152,7 +171,7 @@ const Service = (props) => {
       form: {fields: serviceDetailsFields, initialValues: service},
       header: 'DetailsEdit',
       onClose: closeModal,
-      onConfirm: updateFields,
+      onConfirm: openOrgVerify
     });
   const openServiceDelete = () =>
     openModal({
@@ -491,6 +510,6 @@ const Service = (props) => {
 
 Service.propTypes = {
   match: PropTypes.shape(),
-};
+}
 
 export default Service;

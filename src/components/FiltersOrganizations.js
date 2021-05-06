@@ -120,7 +120,8 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    const query = {name, properties, tags, tagLocale};
+    // const query = {name, properties, tags, tagLocale};
+    const query = {name, properties, tags, tagLocale, lastVerified}
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
@@ -130,6 +131,12 @@ const FiltersOrganizations = (props) => {
       query.pending = 'true';
     }
 
+    if (lastVerified) {
+      query.lastVerified = new Date(lastVerified).toISOString();
+    }
+
+    console.log(query);
+    
     updateQuery(query);
   };
   useEffect(() => {
@@ -145,6 +152,8 @@ const FiltersOrganizations = (props) => {
 
     return subCategory || category;
   });
+
+
 
   return (
     <form onSubmit={handleSearch}>

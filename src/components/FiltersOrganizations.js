@@ -92,7 +92,7 @@ const FiltersOrganizations = (props) => {
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
-  const [updatedAt, setUpdatedAt] = useState('');
+  const [lastUpdated, setLastUpdated] = useState('');
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -121,7 +121,7 @@ const FiltersOrganizations = (props) => {
     ev.preventDefault();
 
     // const query = {name, properties, tags, tagLocale};
-    const query = {name, properties, tags, tagLocale, lastVerified}
+    const query = {name, properties, tags, tagLocale, lastVerified, lastUpdated}
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
@@ -133,6 +133,10 @@ const FiltersOrganizations = (props) => {
 
     if (lastVerified) {
       query.lastVerified = new Date(lastVerified).toISOString();
+    }
+
+    if (lastUpdated) {
+      query.lastUpdated = new Date(lastUpdated).toISOString();
     }
 
     console.log(query);
@@ -182,7 +186,7 @@ const FiltersOrganizations = (props) => {
         <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
 
         <Text>Updated At:</Text>
-        <DateFieldPicker selected={updatedAt} onChange={setUpdatedAt} />
+        <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
 
         <Text>Publish Status:</Text>
         <Checkbox

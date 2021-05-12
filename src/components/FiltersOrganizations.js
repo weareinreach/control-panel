@@ -139,8 +139,6 @@ const FiltersOrganizations = (props) => {
       query.lastUpdated = new Date(lastUpdated).toISOString();
     }
 
-    console.log(query);
-    
     updateQuery(query);
   };
   useEffect(() => {

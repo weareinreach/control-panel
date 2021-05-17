@@ -66,8 +66,9 @@ const Organization = (props) => {
     description_ES,
     alert_message_ES,
     slug_ES,
+    venue_id
   } = organization || {};
-  const updateFields = ({ setLoading, setSuccess, setError, values }) => {
+   const updateFields = ({ setLoading, setSuccess, setError, values }) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -334,6 +335,8 @@ const Organization = (props) => {
     });
   };
 
+  
+  const primaryLocation = (locations && locations.find(it => it.is_primary)) ?? (locations && locations[0]) ?? null;
 
   if (loading) {
     return <Loading />;
@@ -532,7 +535,7 @@ const Organization = (props) => {
               </TabPanel>
               <TabPanel mt={5}>
                 <Box>
-                  <FormPhotos organizationId={orgId} location={locations} photos={photos} name={name} />
+                  <FormPhotos organizationId={orgId} location={primaryLocation} photos={photos} name={name} venue_id={venue_id} />
                 </Box>
                   
               </TabPanel>

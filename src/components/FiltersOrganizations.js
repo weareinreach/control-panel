@@ -120,7 +120,6 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    // const query = {name, properties, tags, tagLocale};
     const query = {name, properties, tags, tagLocale, lastVerified}
 
     if (serviceArea) {
@@ -135,7 +134,6 @@ const FiltersOrganizations = (props) => {
       query.lastVerified = new Date(lastVerified).toISOString();
     }
 
-    console.log(query);
     
     updateQuery(query);
   };

@@ -176,10 +176,10 @@ const FiltersOrganizations = (props) => {
           value={serviceArea}
         />
 
-        <Text>Last Verified:</Text>
+        <Text>Last Verified Before:</Text>
         <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
 
-        <Text>Updated At:</Text>
+        <Text>Last Updated Before:</Text>
         <DateFieldPicker selected={updatedAt} onChange={setUpdatedAt} />
 
         <Text>Publish Status:</Text>

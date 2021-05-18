@@ -72,7 +72,6 @@ const OrganizationAutocomplete = (props) => {
     placeholder: 'Start typing...',
     value: orgQuery || (orgSelection && orgSelection.name ? orgSelection.name : ''),
     onChange: setOrgQuery,
-    onBlur: handleBlurOrganizations
   };
   return (
       <Autosuggest

@@ -142,11 +142,11 @@ const FiltersOrganizations = (props) => {
     updateQuery(query);
   };
   useEffect(() => {
-    handleNameChange(`"${orgSelection?.name}"` || '');
+    handleNameChange(`${orgSelection?.name}` || '');
   }, [orgSelection]);
 
   useEffect(() => {
-    handleNameChange(`"${orgQuery}"` || '');
+    handleNameChange(`${orgQuery}` || '');
   }, [orgQuery]);
   
   const tagsNames = tags.map((tag) => {
@@ -180,10 +180,10 @@ const FiltersOrganizations = (props) => {
           value={serviceArea}
         />
 
-        <Text>Last Verified:</Text>
+        <Text>Last Verified Before:</Text>
         <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
 
-        <Text>Updated At:</Text>
+        <Text>Last Updated Before:</Text>
         <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
 
         <Text>Publish Status:</Text>

@@ -140,11 +140,11 @@ const FiltersOrganizations = (props) => {
     updateQuery(query);
   };
   useEffect(() => {
-    handleNameChange(`"${orgSelection?.name}"` || '');
+    handleNameChange(`${orgSelection?.name}` || '');
   }, [orgSelection]);
 
   useEffect(() => {
-    handleNameChange(`"${orgQuery}"` || '');
+    handleNameChange(`${orgQuery}` || '');
   }, [orgQuery]);
   
   const tagsNames = tags.map((tag) => {

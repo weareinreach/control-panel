@@ -161,10 +161,15 @@ const Organization = (props) => {
     });
   const openOrgVerify = () =>
     openModal({
-      header: `Verify Information for ${name}`,
+      header: `Verify Information for ${name}?`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
-        const values = {verified_at: Date.now()};
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        // const values = {verified_at: Date.now()};
+
+        updateFields({setLoading, setSuccess, setError, values});
+      },
+      onVerify: ({setLoading, setSuccess, setError, values}) => {
+        values = {...values, verified_at: Date.now()};
 
         updateFields({setLoading, setSuccess, setError, values});
       },
@@ -174,7 +179,7 @@ const Organization = (props) => {
       form: {fields: organizationDetailsFields, initialValues: organization},
       header: 'Edit Details',
       onClose: closeModal,
-      onConfirm: updateFields,
+      onConfirm: openOrgVerify,
     });
   const openNewService = () =>
     openModal({

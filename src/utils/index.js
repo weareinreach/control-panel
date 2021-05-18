@@ -77,7 +77,7 @@ export const scheduleHeaders = [
 ];
 
 export const getOrgQueryUrls = (query) => {
-  const { name, page, pending, properties, serviceArea, tags, tagLocale, verified, lastVerified } = query;
+  const { name, page, pending, properties, serviceArea, tags, tagLocale, verified, lastVerified, lastUpdated } = query;
   let queryParam = '?';
 
   if (name) {
@@ -98,6 +98,10 @@ export const getOrgQueryUrls = (query) => {
 
   if (lastVerified) {
     queryParam += `&lastVerified=${lastVerified}`;
+  }
+
+  if (lastUpdated) {
+    queryParam += `&lastUpdated=${lastUpdated}`;
   }
 
   if (serviceArea) {

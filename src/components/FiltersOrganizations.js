@@ -120,7 +120,6 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    // const query = {name, properties, tags, tagLocale};
     const query = {name, properties, tags, tagLocale, lastVerified, lastUpdated}
 
     if (serviceArea) {

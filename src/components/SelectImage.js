@@ -9,7 +9,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/core';
-import Checkmark from '../components/icons/Checkmark'
+import Checkmark from '../components/icons/Checkmark';
 
 // Still needs the following features
 // send single approved photo to db
@@ -39,27 +39,17 @@ const SelectedImage = ({
   handleSelected,
   approve,
 }) => {
-  const [selection, setSelection] = useState(true);
+  const [isSelected, setIsSelected] = useState(selectAll);
   const {isOpen, onOpen, onClose} = useDisclosure();
   const finalRef = useRef();
 
+  useEffect(() => {
+    setIsSelected(selectAll);
+  }, [selectAll]);
+
   const handleOnClick = () => {
-    console.log('handleOnClick called')
-    // if(isSelected) {
-    //   // add to selected photos
-    // }
-    // else {
-    //   //
-    // }
-      // if (!selection) {
-      //   handleSelected(photo, 'remove');
-      //   setIsSelected(!isSelected);
-      //   setSelection(true);
-      // } else {
-      //   handleSelected(photo, 'add');
-      //   setIsSelected(!isSelected);
-      //   setSelection(false);
-      // }
+    handleSelected(photo, selectAll ? 'remove' : 'add');
+    setIsSelected(!isSelected);
   };
 
   return (
@@ -71,10 +61,7 @@ const SelectedImage = ({
         tabIndex={-1}
         aria-label="Focus moved to this box"
       >
-        <Checkmark
-          isSelected={selectAll}
-          editSelection={editSelection}
-        />
+        <Checkmark isSelected={isSelected} editSelection={editSelection} />
         <img
           alt={photo.title}
           style={selectAll ? {...imgStyle} : {...imgStyle}}

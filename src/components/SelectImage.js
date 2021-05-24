@@ -9,38 +9,11 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/core';
+import Checkmark from '../components/icons/Checkmark'
 
 // Still needs the following features
 // send single approved photo to db
 // remove approved photos from db
-const Checkmark = ({selected, select}) => (
-  <div
-    style={
-      !select
-        ? {display: 'none'}
-        : {right: '50px', bottom: '50px', position: 'absolute', zIndex: '1'}
-    }
-  >
-    <svg
-      style={{fill: '#fff', position: 'absolute'}}
-      width="24px"
-      height="24px"
-    >
-      <circle cx="12.5" cy="12.2" r="8.292" />
-    </svg>
-    <svg
-      style={
-        selected
-          ? {fill: '#0D8700', position: 'absolute'}
-          : {fill: '#1D1F23', position: 'absolute'}
-      }
-      width="40px"
-      height="40px"
-    >
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-    </svg>
-  </div>
-);
 
 const imgStyle = {
   transition: 'transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s',
@@ -61,50 +34,50 @@ const SelectedImage = ({
   view,
   photo,
   margin,
-  select,
-  selected,
+  editSelection,
+  selectAll,
   handleSelected,
   approve,
 }) => {
-  const [isSelected, setIsSelected] = useState(selected);
   const [selection, setSelection] = useState(true);
   const {isOpen, onOpen, onClose} = useDisclosure();
   const finalRef = useRef();
 
   const handleOnClick = () => {
-    if (select) {
-      if (!selection) {
-        handleSelected(photo, 'remove');
-        setIsSelected(!isSelected);
-        setSelection(true);
-      } else {
-        handleSelected(photo, 'add');
-        setIsSelected(!isSelected);
-        setSelection(false);
-      }
-    }
+    console.log('handleOnClick called')
+    // if(isSelected) {
+    //   // add to selected photos
+    // }
+    // else {
+    //   //
+    // }
+      // if (!selection) {
+      //   handleSelected(photo, 'remove');
+      //   setIsSelected(!isSelected);
+      //   setSelection(true);
+      // } else {
+      //   handleSelected(photo, 'add');
+      //   setIsSelected(!isSelected);
+      //   setSelection(false);
+      // }
   };
-
-  useEffect(() => {
-    setIsSelected(selected);
-  }, [selected]);
 
   return (
     <>
       <Box
         style={{margin, ...cont}}
-        onClick={select ? handleOnClick : onOpen}
+        onClick={editSelection ? handleOnClick : onOpen}
         ref={finalRef}
         tabIndex={-1}
         aria-label="Focus moved to this box"
       >
         <Checkmark
-          selected={isSelected ? true : false}
-          select={select ? true : false}
+          isSelected={selectAll}
+          editSelection={editSelection}
         />
         <img
           alt={photo.title}
-          style={isSelected ? {...imgStyle} : {...imgStyle}}
+          style={selectAll ? {...imgStyle} : {...imgStyle}}
           width={'250'}
           height={'250'}
           {...photo}
@@ -145,7 +118,7 @@ const SelectedImage = ({
               _active={{backgroundColor: '#3A81C9', color: '#fff'}}
               _hover={{backgroundColor: '#3A81C9', color: '#fff'}}
             >
-              {view !== 'approved' ? 'Approve' : 'Disapprove'}
+              {view !== 'approved' ? 'Approve' : 'Unapprove'}
             </Button>
             <Button
               colorScheme="blue"

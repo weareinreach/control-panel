@@ -31,7 +31,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const long = location?.long;
   const city = location?.city;
   const [selectAll, setSelectAll] = useState(false);
-  const [select, setSelect] = useState(false);
+  const [editSelection, setEditSelection] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [fourSquarePhotos, setFourSquarePhotos] = useState([]);
   const [approvedPhotos, setApprovedPhotos] = useState(photos);
@@ -60,18 +60,20 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   }, [venueId]);
 
   const toggleSelectAll = () => {
+    if (selectAll) {
+      setSelectedPhotos([]);
+    }
     setSelectAll(!selectAll);
-    if (!selectAll) return setSelectedPhotos([]);
   };
 
-  const toggleSelect = () => {
-    setSelect(!select);
+  const toggleEditSelection = () => {
+    setEditSelection(!editSelection);
   };
 
   const handleCancel = () => {
-    if (select) {
+    if (editSelection) {
       setSelectAll(false);
-      setSelect(false);
+      setEditSelection(false);
       setSelectedPhotos([]);
     }
   };
@@ -135,31 +137,6 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     } catch (error) {}
   };
 
-  // useEffect(() => {
-  //   const fetchPhotos = async (venueId) => {
-  //     then((response) => {
-  //       return response.data.response.photos.items.map((image) => {
-  //         return (image = {
-  //           src: `${image.prefix}100x100${image.suffix}`,
-  //           foursquare_vendor_id: venueId,
-  //         });
-  //       });
-  //     });
-
-  //     setFourSquarePhotos(fourSquarePhotos.concat(photoData));
-  //     setIsLoaded(!selectAll);
-  //   };
-
-  //   if (location && venueId === '') {
-  //     getVendorId();
-  //   } else {
-  //     if (location && venueId === undefined) return;
-  //     if (!isLoaded) {
-  //       fetchPhotos(venueId);
-  //     }
-  //   }
-  // },[]);
-
   useEffect(() => {
     if (selectAll) {
       if (selectedPhotos.length > 0) setSelectedPhotos([]);
@@ -208,7 +185,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     }
     console.log(remaining);
     axios.patch(url, {photos: [...remaining]}).then((response) => {
-      setSelect(false);
+      setEditSelection(false);
       setSelectAll(false);
       setSelectedPhotos([]);
       console.log('photos deleted');
@@ -247,8 +224,8 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const imageRenderer = useCallback(({index, key, photo}) => (
     <SelectedImage
       approve={() => handleApprovedPhotos}
-      selected={selectAll ? true : false}
-      select={select ? true : false}
+      selectAll={selectAll}
+      editSelection={editSelection}
       key={key}
       view={view}
       margin={20}
@@ -309,43 +286,43 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
             bg="#F2D0D0"
             onClick={handleCancel}
             ml={3}
-            style={!select ? {display: 'none'} : buttonStyles}
+            style={!editSelection ? {display: 'none'} : buttonStyles}
           >
             Cancel
           </Button>
-          {select && fourSquarePhotos.length > 0 ? (
+          {editSelection && fourSquarePhotos.length > 0 ? (
             <div style={{display: 'flex'}}>
               <Button
-                isDisabled={selectAll}
                 onClick={toggleSelectAll}
                 ml={3}
-                style={!select ? {display: 'none'} : buttonStyles}
+                style={!editSelection ? {display: 'none'} : buttonStyles}
               >
-                Select All
+               {selectAll ? `Deselect All` : `Select All`}
               </Button>
               {view !== 'approved' ? (
                 <Button
                   ml={3}
-                  style={!select ? {display: 'none'} : buttonStyles}
+                  style={!editSelection ? {display: 'none'} : buttonStyles}
                   onClick={handleApprovedPhotos}
                   ref={approvedRef}
+                  isDisabled={!(selectedPhotos.length > 0)}
                 >
-                  Approved
+                  Approve Selected
                 </Button>
               ) : (
                 <Button
                   ml={3}
-                  style={!select ? {display: 'none'} : buttonStyles}
+                  style={!editSelection ? {display: 'none'} : buttonStyles}
                   onClick={onOpen}
                   ref={disApprovedRef}
                 >
-                  Disapprove
+                  Unapprove
                 </Button>
               )}
             </div>
           ) : (
-            <Button onClick={toggleSelect} style={buttonStyles}>
-              Select
+            <Button onClick={toggleEditSelection} style={buttonStyles}>
+              Select Photos
             </Button>
           )}
         </Flex>

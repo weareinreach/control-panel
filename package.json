@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "local": "REACT_APP_APP_ENV=local npm run start",
-    "local-background":"pm2 --name Control-Panel start npm -- start",
+    "local-background": "pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",
     "start": "react-scripts start",
@@ -36,6 +36,7 @@
     "react-select": "^3.1.0"
   },
   "devDependencies": {
+    "@babel/helper-skip-transparent-expression-wrappers": "^7.12.1",
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.3",
     "@testing-library/user-event": "^10.0.2",
@@ -60,20 +61,20 @@
     ]
   },
   "nyc": {
-		"sourceMap": false,
-		"instrument": false,
-		"excludeAfterRemap": false,
-		"all": true,
-		"include": [
-			"**/src/*"
-		],
-		"report-dir": "cypressCoverage",
-		"reporter": [
-			"html",
-			"json",
-			"lcov"
-		]
-	},
+    "sourceMap": false,
+    "instrument": false,
+    "excludeAfterRemap": false,
+    "all": true,
+    "include": [
+      "**/src/*"
+    ],
+    "report-dir": "cypressCoverage",
+    "reporter": [
+      "html",
+      "json",
+      "lcov"
+    ]
+  },
   "engines": {
     "node": ">=12.x"
   },

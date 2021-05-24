@@ -150,9 +150,22 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     }
   }, [selectAll]);
 
-  const handleApprovedPhotos = () => {
-    console.log('approved', selectedPhotos);
-    if (selectedPhotos <= 0) return;
+  const handleSelectedPhotos = async (val, selection) => {
+    if (selection === 'add') {
+      setSelectedPhotos((selectedPhotos) => [...selectedPhotos, val]);
+      if(!selectAll) {
+        handleApprovedPhotos()
+      }
+    } else {
+      setSelectedPhotos((selectedPhotos) =>
+        selectedPhotos.filter((photo) => photo !== val)
+      );
+    }
+  }
+
+  const handleApprovedPhotos = (photo) => {
+    console.log('approved', selectedPhotos, photo);
+    if (!photo || selectedPhotos <= 0) return;
     patch(url, {photos: [...photos.concat(selectedPhotos)]})
       .then((response) => {
         onOpen();
@@ -223,7 +236,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
 
   const imageRenderer = useCallback(({index, key, photo}) => (
     <SelectedImage
-      approve={() => handleApprovedPhotos}
+      approvePhoto={(val) => handleApprovedPhotos(val)}
       selectAll={selectAll}
       editSelection={editSelection}
       key={key}
@@ -233,15 +246,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       height={`${size}`}
       index={index}
       photo={photo}
-      handleSelected={(val, selection) => {
-        if (selection === 'add') {
-          setSelectedPhotos((selectedPhotos) => [...selectedPhotos, val]);
-        } else {
-          setSelectedPhotos((selectedPhotos) =>
-            selectedPhotos.filter((photo) => photo !== val)
-          );
-        }
-      }}
+      handleSelected={(val,selection) => handleSelectedPhotos(val, selection)}
     />
   ));
 

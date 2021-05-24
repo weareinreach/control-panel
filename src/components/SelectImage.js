@@ -37,7 +37,7 @@ const SelectedImage = ({
   editSelection,
   selectAll,
   handleSelected,
-  approve,
+  approvePhoto
 }) => {
   const [isSelected, setIsSelected] = useState(selectAll);
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -48,8 +48,13 @@ const SelectedImage = ({
   }, [selectAll]);
 
   const handleOnClick = () => {
-    handleSelected(photo, selectAll ? 'remove' : 'add');
-    setIsSelected(!isSelected);
+    if (selectAll) {
+      handleSelected(photo, selectAll ? 'remove' : 'add');
+      setIsSelected(!isSelected);
+    }
+    else {
+      approvePhoto(photo)
+    }
   };
 
   return (

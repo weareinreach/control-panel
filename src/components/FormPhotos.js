@@ -178,7 +178,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
 
   const handleSelectedPhotos = async (val, selection) => {
     if (selection === 'add') {
-    if(includes(val,approvedPhotos)) {
+    if(includes(val,approvedPhotos)  && view !== 'approved') {
       photoAlreadyApproved()
       return
     }
@@ -188,7 +188,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       }
     } else {
       setSelectedPhotos((selectedPhotos) =>
-        selectedPhotos.filter((photo) => photo !== val)
+        selectedPhotos.filter((photo) => photo.suffix !== val.suffix)
       );
     }
   };
@@ -196,7 +196,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
  
   const handleApprovedPhotos = async (photo) => {
     if (!photo && selectedPhotos <= 0) return;
-    if(includes(photo, approvedPhotos) || includes(selectedPhotos, approvedPhotos)) {
+    if((includes(photo, approvedPhotos) || includes(selectedPhotos, approvedPhotos)) && view !== 'approved') {
       photoAlreadyApproved()
       return
     }
@@ -424,7 +424,7 @@ const ApprovedModal = ({
           <Flex direction="column" justify="center" alignItems="center">
             {selectedPhotos.length > 1 ? (
               <Text>
-               { `${selectedPhotos.length} photo(s) has been approved!`}
+               { `${selectedPhotos.length} photo(s) have been approved!`}
               </Text>
             ) : (
               <Text>Photo has been approved!</Text>

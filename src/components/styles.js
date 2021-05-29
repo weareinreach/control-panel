@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box as ChakraBox, Heading as ChakraHeading} from '@chakra-ui/core';
+import {Box as ChakraBox, Heading as ChakraHeading} from '@chakra-ui/react';
 
 export const Container = ({children, ...rest}) => (
   <ChakraBox padding={5} rounded="md" borderWidth="1px" {...rest}>

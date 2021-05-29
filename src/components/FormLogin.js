@@ -1,7 +1,7 @@
 import {post} from 'axios';
 import Cookies from 'js-cookie';
 import React from 'react';
-import {Box, Button, Flex, Input, Stack} from '@chakra-ui/core';
+import {Box, Button, Flex, Input, Stack} from '@chakra-ui/react';
 
 import Alert from './Alert';
 import PasswordInput from './PasswordInput';
@@ -76,7 +76,7 @@ const Login = () => {
             isLoading={isLoading}
             onClick={loginUser}
             loadingText="Logging..."
-            variantColor="blue"
+            colorScheme="blue"
           >
             Submit
           </Button>

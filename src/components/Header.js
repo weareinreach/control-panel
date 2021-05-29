@@ -2,7 +2,7 @@ import {patch} from 'axios';
 import Cookies from 'js-cookie';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {Box, Link as ChakraLink, Text} from '@chakra-ui/core';
+import {Box, Link as ChakraLink, Text} from '@chakra-ui/react';
 
 import {ContextApp} from './ContextApp';
 import {ContextFormModal} from './ContextFormModal';

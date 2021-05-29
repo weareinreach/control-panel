@@ -5,7 +5,7 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 const Alert = (props) => {
   const {description, title, type} = props;

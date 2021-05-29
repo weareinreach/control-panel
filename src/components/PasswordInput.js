@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Input, InputGroup, InputRightElement} from '@chakra-ui/core';
+import {Button, Input, InputGroup, InputRightElement} from '@chakra-ui/react';
 
 import {useToggle} from '../utils/hooks';
 

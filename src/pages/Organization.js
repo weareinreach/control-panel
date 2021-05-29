@@ -1,7 +1,7 @@
 import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Box, Button, Stack} from '@chakra-ui/core';
+import {Box, Button, Stack} from '@chakra-ui/react';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -15,7 +15,7 @@ import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
 import { Container, SectionTitle, Title } from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/core';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
 import {
   emailFields,

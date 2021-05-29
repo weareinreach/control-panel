@@ -5,7 +5,7 @@ import {Box, Button, Flex, useDisclosure, Link, Text} from '@chakra-ui/react';
 import {createStandaloneToast} from '@chakra-ui/react';
 import {SectionTitle} from '../components/styles';
 import Gallery from 'react-photo-gallery';
-import {includes, difference} from 'ramda'
+import {intersection, difference} from 'ramda';
 import SelectedImage from '../components/SelectImage';
 import {CATALOG_API_URL} from '../utils';
 import {ReactComponent as Tada} from '../assets/vectors/tada.svg';
@@ -21,7 +21,6 @@ import {
 } from '@chakra-ui/react';
 
 //Needs to be done
-//Refactor delete functionality
 //add React Router to links in Modals for approved and unapproved Galleries
 
 const fourSquarePhotosApiURL = process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL;
@@ -40,7 +39,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const [selectAll, setSelectAll] = useState(false);
   const [editSelection, setEditSelection] = useState(false);
   const [fourSquarePhotos, setFourSquarePhotos] = useState([]);
-  const [approvedPhotos, setApprovedPhotos] = useState(photos ?? null);
+  const [approvedPhotos, setApprovedPhotos] = useState([...photos] ?? null);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [venueId, setVenueId] = useState(venue_id ?? null);
 
@@ -74,9 +73,6 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   }, [selectAll]);
 
   const toggleSelectAll = () => {
-    if (selectAll) {
-      setSelectedPhotos([]);
-    }
     setSelectAll(!selectAll);
   };
 
@@ -92,38 +88,38 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     }
   };
 
-  const handleError = () =>{
+  const handleError = () => {
     toast({
       title: 'An error occurred',
       description: 'We ran into an error processing your request',
       status: 'error',
       duration: 4000,
-      position: "top",
+      position: 'top',
       isClosable: true,
     });
-  }
+  };
 
-  const photoAlreadyApproved = () =>{
+  const photoAlreadyApproved = () => {
     toast({
       title: 'Cannot perform action',
       description: 'Selected photo(s) are already approved',
       status: 'warning',
       duration: 4000,
-      position: "top",
+      position: 'top',
       isClosable: true,
     });
-  }
+  };
 
   const getVendorId = async function () {
     try {
       const response =
         lat && long
           ? await get(
-              `${fourSquareVenuesApiURL}?name=${name}&ll=${lat},${long}&client_id=${clientID}&client_secret=${clientSecret}&v=20200101&intent=match`
+              `${process.env.REACT_APP_FOUR_SQUARE_VENUES_URL}?name=${name}&ll=${lat},${long}&client_id=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID}&client_secret=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET}&v=20200101&intent=match`
             )
           : city
           ? await get(
-              `${fourSquareVenuesApiURL}?query=${name}&near=${city}&client_id=${clientID}&client_secret=${clientSecret}&v=20200101&intent=browse&radius=10000`
+              `${process.env.REACT_APP_FOUR_SQUARE_VENUES_URL}?query=${name}&near=${city}&client_id=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID}&client_secret=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET}&v=20200101&intent=browse&radius=10000`
             )
           : null;
       if (!response) {
@@ -132,9 +128,8 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       const {venues} = response?.data?.response || null;
       if (venues && venues.length > 0) {
         const target =
-          venues.find(
-            (venue) =>
-              venue.name.toLowerCase().trim().includes(name.toLowerCase().trim())
+          venues.find((venue) =>
+            venue.name.toLowerCase().trim().includes(name.toLowerCase().trim())
           ) ?? null;
         if (target) {
           await patch(url, {venue_id: target.id});
@@ -143,8 +138,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       } else {
         return setView('no-fourSquarePhotos-found');
       }
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.log(`Encountered error retrieving foursquare data. ${e}`);
+      handleError();
     }
   };
 
@@ -154,7 +150,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
         return setView('fourSquarePhotos');
       }
       const response = await get(
-        `${fourSquarePhotosApiURL}${venueId}/photos?client_id=${clientID}&client_secret=${clientSecret}&v=20200101&group=venue&limit=25`
+        `${process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL}${venueId}/photos?client_id=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID}&client_secret=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET}&v=20200101&group=venue&limit=25`
       );
       const {
         photos: {items: photos},
@@ -175,17 +171,18 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       return;
     } catch (error) {}
   };
+  const isInPhotoSet = (targetPhotos) => {
+    const common = intersection(targetPhotos, approvedPhotos);
+    return common.length > 0 ? true : false;
+  };
 
   const handleSelectedPhotos = async (val, selection) => {
     if (selection === 'add') {
-    if(includes(val,approvedPhotos)  && view !== 'approved') {
-      photoAlreadyApproved()
-      return
-    }
-      setSelectedPhotos((selectedPhotos) => [...selectedPhotos, val]);
-      if (!editSelection && view !== 'approved') {
-        handleApprovedPhotos();
+      if (isInPhotoSet(val) && view !== 'approved') {
+        photoAlreadyApproved();
+        return;
       }
+      setSelectedPhotos((selectedPhotos) => [...selectedPhotos, val]);
     } else {
       setSelectedPhotos((selectedPhotos) =>
         selectedPhotos.filter((photo) => photo.suffix !== val.suffix)
@@ -193,55 +190,64 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     }
   };
 
- 
-  const handleApprovedPhotos = async (photo) => {
-    if (!photo && selectedPhotos <= 0) return;
-    if((includes(photo, approvedPhotos) || includes(selectedPhotos, approvedPhotos)) && view !== 'approved') {
-      photoAlreadyApproved()
-      return
-    }
-    try {
-      const newPhotos = [...selectedPhotos, photo];
-      await patch(url, {photos: [...photos.concat(newPhotos)]});
-      setApprovedPhotos([...approvedPhotos.concat(newPhotos)]);
-      onOpen();
-      if(editSelection || selectAll) {
-        setSelectAll(false)
-        handleCancel()
+  const handleApprovedPhotos = async (data) => {
+    if(!data) return
+    if (isInPhotoSet(data) && view !== 'approved') {
+        photoAlreadyApproved();
+        return;
       }
+  
+    try {
+      await patch(url, {photos: [...approvedPhotos.concat(data)]});
+      setApprovedPhotos((approvedPhotos) => [...approvedPhotos.concat(data)]);
+      onOpen();
     } catch (e) {
       console.log(`Encountered error saving photo(s). ${e}`);
-      handleError()
+      handleError();
+    } finally {
+      if (selectedPhotos.length > 0) {
+        setSelectedPhotos([]);
+      }
+      if (editSelection || selectAll) {
+        setSelectAll(false);
+        handleCancel();
+      }
     }
   };
 
   const handleDeletePhotos = async (data) => {
     try {
-      console.log('deleting');
-      console.log(`data ${JSON.stringify(data)}`);
-      if (!data) return;
-      const newPhotos = selectAll
-        ? []
-        : difference(photos, data)
-      console.log(newPhotos);
+      if (!data && !data.suffix) return;
+      const newPhotos =
+        selectAll || approvedPhotos.length === 1
+          ? []
+          : difference(photos, data);
       await patch(url, {photos: newPhotos});
       setApprovedPhotos(newPhotos);
+      setSelectedPhotos([]);
       onClose();
-      if (approvedPhotos.length <= 0) {setView('fourSquarePhotos')}
-      if(editSelection || selectAll) {
-        setSelectAll(false)
-        handleCancel()
-      }
     } catch (e) {
       console.log(`Encountered error deleting photo(s). ${e}`);
-      handleError()
+      handleError();
+    } finally {
+      if (editSelection || selectAll) {
+        setSelectAll(false);
+        handleCancel();
+      }
+      if (approvedPhotos.length <= 0) {
+        setView('fourSquarePhotos');
+      }
     }
   };
 
   const renderPhotos = (param) => {
     switch (param) {
       case 'approved':
-        return approvedPhotos.length > 0 ? <Gallery photos={approvedPhotos} renderImage={imageRenderer} /> : setView('no-approved-found');
+        return approvedPhotos.length > 0 ? (
+          <Gallery photos={approvedPhotos} renderImage={imageRenderer} />
+        ) : (
+          setView('no-approved-found')
+        );
       case 'fourSquarePhotos':
         return (
           <Gallery photos={fourSquarePhotos} renderImage={imageRenderer} />
@@ -270,14 +276,14 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const imageRenderer = useCallback(({index, key, photo}) => (
     <SelectedImage
       approvePhoto={(photo) => handleApprovedPhotos(photo)}
-      unapprovePhoto={() => onOpen()}
+      confirmAction={onOpen}
       selectAll={selectAll}
       editSelection={editSelection}
       key={key}
       view={view}
       margin={20}
-      width={`${size}`}
-      height={`${size}`}
+      width={size}
+      height={size}
       index={index}
       photo={photo}
       setSelected={setSelectedPhotos}
@@ -343,7 +349,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
                 <Button
                   ml={3}
                   style={!editSelection ? {display: 'none'} : buttonStyles}
-                  onClick={handleApprovedPhotos}
+                  onClick={() => handleApprovedPhotos(selectedPhotos)}
                   ref={approvedRef}
                   isDisabled={!(selectedPhotos.length > 0)}
                 >
@@ -395,10 +401,8 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
 const ApprovedModal = ({
   approvedRef,
   selectedPhotos,
-  setView,
   isOpen,
   onClose,
-  setSelectedPhotos,
 }) => {
   return (
     <Modal
@@ -422,13 +426,9 @@ const ApprovedModal = ({
             <Tada />
           </Flex>
           <Flex direction="column" justify="center" alignItems="center">
-            {selectedPhotos.length > 1 ? (
-              <Text>
-               { `${selectedPhotos.length} photo(s) have been approved!`}
+            <Text>
+                Photo(s) have been approved!
               </Text>
-            ) : (
-              <Text>Photo has been approved!</Text>
-            )}
           </Flex>
         </ModalBody>
       </ModalContent>

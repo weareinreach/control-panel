@@ -10,7 +10,6 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import Checkmark from '../components/icons/Checkmark';
-import {ReactComponent as Caution} from '../assets/vectors/warning-question.svg';
 
 // Still needs the following features
 // send single approved photo to db
@@ -39,28 +38,28 @@ const SelectedImage = ({
   selectAll,
   handleSelected,
   approvePhoto,
-  unapprovePhoto,
+  confirmAction,
 }) => {
   const [isSelected, setIsSelected] = useState(selectAll);
   const {isOpen, onOpen, onClose} = useDisclosure();
   const finalRef = useRef();
-  const disApprovedRef = useRef();
+
   useEffect(() => {
     setIsSelected(selectAll);
   }, [selectAll]);
 
   const handleOnClick = () => {
+    if (view === 'approved') {
+      handleSelected(photo, 'add');
+      confirmAction();
+      return;
+    }
     if (selectAll || editSelection) {
       handleSelected(photo, isSelected ? 'remove' : 'add');
       setIsSelected(!isSelected);
       return;
     } else {
-      if (view !== 'approved') {
-        approvePhoto(photo);
-      } else {
-        handleSelected(photo, 'add');
-        unapprovePhoto();
-      }
+      approvePhoto(photo);
     }
     onClose();
   };
@@ -84,15 +83,6 @@ const SelectedImage = ({
         />
         <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
       </Box>
-      {/* {view === 'approved' ? (
-        <ConfirmActionModal
-          inalFocusRef={disApprovedRef}
-          selectedPhotos={selectedPhotos}
-          isOpen={isOpen}
-          onClose={onClose}
-          handleDelete={unapprovePhoto}
-        />
-      ) : ( */}
       <ActionModal
         finalRef={finalRef}
         isOpen={isOpen}
@@ -164,70 +154,6 @@ const ActionModal = ({
   </Modal>
 );
 
-const ConfirmActionModal = ({
-  disApprovedRef,
-  selectedPhotos,
-  handleDelete,
-  isOpen,
-  onClose,
-}) => {
-  const footerButtons = {
-    boxShadow: 'none',
-    width: '100%',
-    marginTop: '1px',
-  };
-  return (
-    <Modal
-      isCentered
-      inalFocusRef={disApprovedRef}
-      isOpen={isOpen}
-      onClose={onClose}
-      colorScheme="whiteAlpha"
-      size="lg"
-    >
-      <ModalOverlay />
-      <ModalContent
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        borderRadius={4}
-      >
-        <ModalCloseButton />
-        <ModalBody mt={10} p={10}>
-          <Flex direction="column" justify="center" alignItems="center" mb={10}>
-            <Caution />
-          </Flex>
-          <Flex direction="column" justify="center" alignItems="center">
-            <Text>{`Do you want to unapprove ${
-              selectedPhotos.length > 1
-                ? `${selectedPhotos.length} photo(s)`
-                : `this photo`
-            }?`}</Text>
-          </Flex>
-        </ModalBody>
-        <ModalFooter
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Button
-            onClick={() => {
-              handleDelete(selectedPhotos);
-              onClose();
-            }}
-            style={footerButtons}
-          >
-            Yes
-          </Button>
-          <Button bg="#F2D0D0" onClick={onClose} style={footerButtons}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
 Checkmark.propTypes = {
   selected: PropTypes.bool,
   select: PropTypes.bool,

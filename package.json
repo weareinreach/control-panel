@@ -24,6 +24,7 @@
     "framer-motion": "^4.1.17",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.15",
+    "ramda": "^0.27.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.4",
     "react-dom": "^16.13.1",

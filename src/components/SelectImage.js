@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import {Box, Button, useDisclosure} from '@chakra-ui/core';
+import {Box, Button, useDisclosure} from '@chakra-ui/react';
 import {
   Modal,
   ModalOverlay,
@@ -8,7 +8,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import Checkmark from '../components/icons/Checkmark';
 
 // Still needs the following features
@@ -37,7 +37,8 @@ const SelectedImage = ({
   editSelection,
   selectAll,
   handleSelected,
-  approvePhoto
+  approvePhoto,
+  unapprovePhoto
 }) => {
   const [isSelected, setIsSelected] = useState(selectAll);
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -48,13 +49,21 @@ const SelectedImage = ({
   }, [selectAll]);
 
   const handleOnClick = () => {
-    if (selectAll) {
+    if (selectAll || editSelection) {
       handleSelected(photo, selectAll ? 'remove' : 'add');
       setIsSelected(!isSelected);
+      return
     }
     else {
-      approvePhoto(photo)
+      if (view !== 'approved') {
+        approvePhoto(photo)
+      }
+      else {
+        handleSelected(photo, 'add');
+        unapprovePhoto()
+      }
     }
+    onClose()
   };
 
   return (

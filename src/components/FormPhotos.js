@@ -23,10 +23,6 @@ import {
 //Needs to be done
 //add React Router to links in Modals for approved and unapproved Galleries
 
-const fourSquarePhotosApiURL = process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL;
-const fourSquareVenuesApiURL = process.env.REACT_APP_FOUR_SQUARE_VENUES_URL;
-const clientID = process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID;
-const clientSecret = process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET;
 const size = 300;
 const buttonStyles = {
   boxShadow: 'none',

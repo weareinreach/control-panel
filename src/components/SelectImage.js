@@ -49,17 +49,17 @@ const SelectedImage = ({
   }, [selectAll]);
 
   const handleOnClick = () => {
-    if (view === 'approved') {
-      handleSelected(photo, 'add');
-      confirmAction();
-      return;
-    }
     if (selectAll || editSelection) {
       handleSelected(photo, isSelected ? 'remove' : 'add');
       setIsSelected(!isSelected);
       return;
     } else {
-      approvePhoto(photo);
+    if (view === 'approved') {
+      handleSelected(photo, 'add');
+      confirmAction();
+      return;
+    }
+      approvePhoto([photo]);
     }
     onClose();
   };

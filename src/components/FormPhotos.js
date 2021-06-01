@@ -359,7 +359,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
                   ref={disApprovedRef}
                   isDisabled={!(selectedPhotos.length > 0)}
                 >
-                  Unapprove
+                  Unapprove Selected
                 </Button>
               )}
             </div>
@@ -372,7 +372,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       </Box>
       <Box style={{marginLeft: '5%'}}>{renderPhotos(view)}</Box>
       {view === 'approved' ? (
-        <DisapprovedModal
+       <DisapprovedModal
           inalFocusRef={disApprovedRef}
           selectedPhotos={selectedPhotos}
           isOpen={isOpen}

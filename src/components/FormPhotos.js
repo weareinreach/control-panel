@@ -35,7 +35,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const [selectAll, setSelectAll] = useState(false);
   const [editSelection, setEditSelection] = useState(false);
   const [fourSquarePhotos, setFourSquarePhotos] = useState([]);
-  const [approvedPhotos, setApprovedPhotos] = useState([...photos] ?? null);
+  const [approvedPhotos, setApprovedPhotos] = useState([...photos] ?? []);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [venueId, setVenueId] = useState(venue_id ?? null);
 
@@ -126,7 +126,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
         const target =
           venues.find((venue) =>
             venue.name.toLowerCase().trim().includes(name.toLowerCase().trim())
-          ) ?? null;
+          ) ?? venues[0] ?? null;
         if (target) {
           await patch(url, {venue_id: target.id});
           setVenueId(target.id);
@@ -146,7 +146,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
         return setView('fourSquarePhotos');
       }
       const response = await get(
-        `${process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL}${venueId}/photos?client_id=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID}&client_secret=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET}&v=20200101&group=venue&limit=25`
+        `${process.env.REACT_APP_FOUR_SQUARE_PHOTOS_URL}${venueId}/photos?client_id=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_ID}&client_secret=${process.env.REACT_APP_FOUR_SQUARE_CLIENT_SECRET}&v=20200101&group=venue&limit=30`
       );
       const {
         photos: {items: photos},
@@ -195,7 +195,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   
     try {
       await patch(url, {photos: [...approvedPhotos.concat(data)]});
-      setApprovedPhotos((approvedPhotos) => [...approvedPhotos.concat(data)]);
+      setApprovedPhotos((approvedPhotos) => [...approvedPhotos,...data]);
       onOpen();
     } catch (e) {
       console.log(`Encountered error saving photo(s). ${e}`);

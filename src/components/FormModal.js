@@ -58,6 +58,11 @@ const FormModal = (props) => {
   const updateField = (field, value) => {
     formik.setFieldValue(field, value);
   };
+  const formFields = fields?.map(({key, ...rest}) => {
+    return (
+      <FormField key={key} fieldKey={key} formik={formik} {...rest} />
+    );
+  })
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
@@ -79,11 +84,7 @@ const FormModal = (props) => {
               <Text>Are you sure? You can't undo this action afterwards.</Text>
             )}
             {children && children({...childrenProps, formik, updateField})}
-            {fields?.map(({key, ...rest}) => {
-              return (
-                <FormField key={key} fieldKey={key} formik={formik} {...rest} />
-              );
-            })}
+            {formFields}
           </Stack>
         </ModalBody>
         <ModalFooter>

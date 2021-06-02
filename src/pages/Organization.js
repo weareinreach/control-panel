@@ -183,7 +183,7 @@ const Organization = (props) => {
     });
   const openNewService = () =>
     openModal({
-      form: {fields: [{key: 'name', label: 'Service Name'}]},
+      form: {fields: [{key: 'name', label: 'Service Name', isRequired: true}]},
       header: 'New Service Name',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {

@@ -5,7 +5,7 @@ import {Box, Button, Flex, useDisclosure, Link, Text} from '@chakra-ui/react';
 import {createStandaloneToast} from '@chakra-ui/react';
 import {SectionTitle} from '../components/styles';
 import Gallery from 'react-photo-gallery';
-import {includes, intersection, without} from 'ramda';
+import {equals, includes, intersection, without} from 'ramda';
 import SelectedImage from '../components/SelectImage';
 import {CATALOG_API_URL} from '../utils';
 import {ReactComponent as Tada} from '../assets/vectors/tada.svg';
@@ -177,7 +177,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       return includes(targetPhotos, approvedPhotos)
     }
     const common = intersection(targetPhotos, approvedPhotos);
-    return common.length > 0 ? true : false;
+    return (common.length > 0 || equals(targetPhotos, approvedPhotos)) ? true : false;
   };
 
   const handleSelectedPhotos = async (val, selection) => {

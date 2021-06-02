@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import PropTypes from 'prop-types';
-import axios, {get, patch, post, put} from 'axios';
+import {get, patch} from 'axios';
 import {Box, Button, Flex, useDisclosure, Link, Text} from '@chakra-ui/react';
 import {createStandaloneToast} from '@chakra-ui/react';
 import {SectionTitle} from '../components/styles';
 import Gallery from 'react-photo-gallery';
-import {intersection, difference} from 'ramda';
+import {includes, intersection, without} from 'ramda';
 import SelectedImage from '../components/SelectImage';
 import {CATALOG_API_URL} from '../utils';
 import {ReactComponent as Tada} from '../assets/vectors/tada.svg';
@@ -40,7 +40,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   const [venueId, setVenueId] = useState(venue_id ?? null);
 
   const [view, setView] = useState(
-    photos && photos.length > 0 ? 'approved' : 'fourSquarePhotos'
+    approvedPhotos && approvedPhotos.length > 0
+      ? 'approved'
+      : 'fourSquarePhotos'
   );
 
   const {onOpen, isOpen, onClose} = useDisclosure();
@@ -58,13 +60,16 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
 
   useEffect(() => {
     if (selectAll) {
-      if (selectedPhotos.length > 0) setSelectedPhotos([]);
       if (view === 'fourSquarePhotos') {
-        setSelectedPhotos(selectedPhotos.concat(fourSquarePhotos));
+        setSelectedPhotos(fourSquarePhotos);
+        return;
       } else {
-        setSelectedPhotos(selectedPhotos.concat(photos));
+        setSelectedPhotos(approvedPhotos);
+        return;
       }
-      setSelectAll(true);
+    } else if (selectedPhotos.length > 0) {
+      setSelectedPhotos([]);
+      return;
     }
   }, [selectAll]);
 
@@ -77,11 +82,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   };
 
   const handleCancel = () => {
-    if (editSelection) {
-      setSelectAll(false);
-      setEditSelection(false);
-      setSelectedPhotos([]);
-    }
+    setSelectAll(false);
+    setEditSelection(false);
+    setSelectedPhotos([]);
   };
 
   const handleError = () => {
@@ -126,7 +129,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
         const target =
           venues.find((venue) =>
             venue.name.toLowerCase().trim().includes(name.toLowerCase().trim())
-          ) ?? venues[0] ?? null;
+          ) ??
+          venues[0] ??
+          null;
         if (target) {
           await patch(url, {venue_id: target.id});
           setVenueId(target.id);
@@ -168,16 +173,15 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     } catch (error) {}
   };
   const isInPhotoSet = (targetPhotos) => {
+    if(targetPhotos.hasOwnProperty('suffix')) {
+      return includes(targetPhotos, approvedPhotos)
+    }
     const common = intersection(targetPhotos, approvedPhotos);
     return common.length > 0 ? true : false;
   };
 
   const handleSelectedPhotos = async (val, selection) => {
     if (selection === 'add') {
-      if (isInPhotoSet(val) && view !== 'approved') {
-        photoAlreadyApproved();
-        return;
-      }
       setSelectedPhotos((selectedPhotos) => [...selectedPhotos, val]);
     } else {
       setSelectedPhotos((selectedPhotos) =>
@@ -187,27 +191,21 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   };
 
   const handleApprovedPhotos = async (data) => {
-    if(!data) return
+    if (!data) return;
     if (isInPhotoSet(data) && view !== 'approved') {
-        photoAlreadyApproved();
-        return;
-      }
-  
+      photoAlreadyApproved();
+      return;
+    }
+
     try {
       await patch(url, {photos: [...approvedPhotos.concat(data)]});
-      setApprovedPhotos((approvedPhotos) => [...approvedPhotos,...data]);
+      setApprovedPhotos((approvedPhotos) => [...approvedPhotos, ...data]);
       onOpen();
     } catch (e) {
       console.log(`Encountered error saving photo(s). ${e}`);
       handleError();
     } finally {
-      if (selectedPhotos.length > 0) {
-        setSelectedPhotos([]);
-      }
-      if (editSelection || selectAll) {
-        setSelectAll(false);
-        handleCancel();
-      }
+      handleCancel();
     }
   };
 
@@ -217,7 +215,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       const newPhotos =
         selectAll || approvedPhotos.length === 1
           ? []
-          : difference(photos, data);
+          : without(data, approvedPhotos);
       await patch(url, {photos: newPhotos});
       setApprovedPhotos(newPhotos);
       setSelectedPhotos([]);
@@ -226,10 +224,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       console.log(`Encountered error deleting photo(s). ${e}`);
       handleError();
     } finally {
-      if (editSelection || selectAll) {
-        setSelectAll(false);
-        handleCancel();
-      }
+      handleCancel();
       if (approvedPhotos.length <= 0) {
         setView('fourSquarePhotos');
       }
@@ -296,9 +291,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
             borderTopRightRadius="0"
             borderBottomRightRadius="0"
             _hover={{backgroundColor: '#3A81C9', color: '#fff'}}
-            isActive={view === 'approved' ? true : false}
+            isActive={view.includes('approved')}
             onClick={() =>
-              photos.length > 0
+              approvedPhotos.length > 0
                 ? setView('approved')
                 : setView('no-approved-found')
             }
@@ -364,7 +359,14 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
               )}
             </div>
           ) : (
-            <Button onClick={toggleEditSelection} style={buttonStyles}>
+            <Button
+              onClick={toggleEditSelection}
+              style={buttonStyles}
+              disabled={
+                (view === 'fourSquarePhotos' && fourSquarePhotos.length <= 0) ||
+                (view.includes('approved') && approvedPhotos.length <= 0)
+              }
+            >
               Select Photos
             </Button>
           )}
@@ -372,7 +374,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       </Box>
       <Box style={{marginLeft: '5%'}}>{renderPhotos(view)}</Box>
       {view === 'approved' ? (
-       <DisapprovedModal
+        <DisapprovedModal
           inalFocusRef={disApprovedRef}
           selectedPhotos={selectedPhotos}
           isOpen={isOpen}
@@ -394,12 +396,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
   );
 };
 
-const ApprovedModal = ({
-  approvedRef,
-  selectedPhotos,
-  isOpen,
-  onClose,
-}) => {
+const ApprovedModal = ({approvedRef, selectedPhotos, isOpen, onClose}) => {
   return (
     <Modal
       isCentered
@@ -422,9 +419,7 @@ const ApprovedModal = ({
             <Tada />
           </Flex>
           <Flex direction="column" justify="center" alignItems="center">
-            <Text>
-                Photo(s) have been approved!
-              </Text>
+            <Text>Photo(s) have been approved!</Text>
           </Flex>
         </ModalBody>
       </ModalContent>

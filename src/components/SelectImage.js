@@ -48,20 +48,25 @@ const SelectedImage = ({
     setIsSelected(selectAll);
   }, [selectAll]);
 
+  useEffect(()=>{
+    if(!editSelection) {
+      setIsSelected(false)
+    }
+  },[editSelection])
+
   const handleOnClick = () => {
     if (selectAll || editSelection) {
       handleSelected(photo, isSelected ? 'remove' : 'add');
       setIsSelected(!isSelected);
       return;
-    } else {
-    if (view === 'approved') {
+    } else if (view === 'approved') {
       handleSelected(photo, 'add');
       confirmAction();
       return;
-    }
+    } else {
       approvePhoto([photo]);
+      onClose();
     }
-    onClose();
   };
 
   return (

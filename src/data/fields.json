@@ -109,6 +109,16 @@
     {"key": "is_primary", "label": "Is Primary", "type": "checkbox"},
     {"key": "show_on_organization", "label": "Show on Org", "type": "checkbox"}
   ],
+  "photosFields": [
+    {
+      "key": "src",
+      "label": "Photo URL"
+    },
+    {
+      "key": "foursquare_vendor_id",
+      "label": "FourSquare Vendor ID"
+    }
+  ],
   "scheduleFields": [
     {"key": "name", "label": "Name"},
     {"key": "monday_start", "label": "Monday Start"},

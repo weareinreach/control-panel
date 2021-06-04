@@ -1,6 +1,6 @@
 import {get} from 'axios';
 import React, {useEffect, useState} from 'react';
-import {Box, Grid} from '@chakra-ui/core';
+import {Box, Grid} from '@chakra-ui/react';
 import Helmet from '../components/Helmet';
 import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';

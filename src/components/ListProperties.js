@@ -1,7 +1,7 @@
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Checkbox, Divider, Stack, Text} from '@chakra-ui/core';
+import {Checkbox, Divider, Stack, Text} from '@chakra-ui/react';
 
 const noChange = () => null;
 

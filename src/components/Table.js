@@ -6,8 +6,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Text} from '@chakra-ui/core';
-import {css} from '@emotion/core';
+import {Text} from '@chakra-ui/react';
+import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 
 const cellCSS = ({theme}) => css`

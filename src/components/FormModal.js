@@ -12,7 +12,7 @@ import {
   ModalFooter,
   Stack,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import Alert from './Alert';
 import FormField from './FormField';
@@ -92,7 +92,7 @@ const FormModal = (props) => {
           </Button>
           <Button
             onClick={formik.handleSubmit}
-            variantColor={isAlert ? 'red' : 'blue'}
+            colorScheme={isAlert ? 'red' : 'blue'}
           >
             Save Changes
           </Button>
@@ -100,7 +100,7 @@ const FormModal = (props) => {
               formik.setFieldValue('isVerify', true, false);
               formik.handleSubmit(e);
             }}
-            variantColor={isAlert ? 'red' : 'blue'}
+            colorScheme={isAlert ? 'red' : 'blue'}
             >
 							Save and Verify
 						</Button>

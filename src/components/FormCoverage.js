@@ -1,4 +1,4 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import _omit from 'lodash/omit';
 import _drop from 'lodash/drop';
 import _mapKeys from 'lodash/mapKeys';
@@ -6,7 +6,7 @@ import _capitalize from 'lodash/capitalize';
 import _sortBy from 'lodash/sortBy';
 import _values from 'lodash/values';
 import React, {useState} from 'react';
-import {Checkbox, Stack, Input, FormControl, FormLabel} from '@chakra-ui/core';
+import {Checkbox, Stack, Input, FormControl, FormLabel} from '@chakra-ui/react';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable';
 
@@ -335,7 +335,7 @@ const ExistingCoverageAreas = ({existingProperties, locationFields, updateProper
         {Object.keys(toProperties(locationFields))?.map((key) => (
             <Checkbox
               key={key}
-              variantColor="green"
+              colorScheme="green"
               isChecked={true}
               onChange={() => removeProperty(key)}
             >

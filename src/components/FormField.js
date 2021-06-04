@@ -12,7 +12,7 @@ import {
   Text,
   Textarea,
   Tooltip,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import PasswordInput from './PasswordInput';
 

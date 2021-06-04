@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {Select} from '@chakra-ui/core';
+import {Select} from '@chakra-ui/react';
 
 const FormOrganizationInfo = (props) => {
   const {field, list, fieldValue: initialFieldValue, updateField} = props;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/core';
-
+import {Button, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/react';
+import {FaChevronDown} from 'react-icons/fa';
 const DropdownButton = (props) => {
   const {buttonProps = {}, listProps = {}, buttonText, items} = props;
 
@@ -14,7 +14,7 @@ const DropdownButton = (props) => {
         marginRight="5px"
         backgroundColor="gray.100"
         _hover={{bg: 'gray.200'}}
-        rightIcon="chevron-down"
+        rightIcon={<FaChevronDown/>}
         {...buttonProps}
       >
         {buttonText}

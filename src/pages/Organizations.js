@@ -1,6 +1,6 @@
 import { post } from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Grid, Text } from '@chakra-ui/core';
+import { Box, Button, Grid, Text } from '@chakra-ui/react';
 
 import { ContextFormModal } from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';

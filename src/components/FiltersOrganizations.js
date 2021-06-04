@@ -24,6 +24,7 @@ import {
 } from '../data/properties.json';
 import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
+import DateFieldPicker from './DateFieldPicker';
 
 const propertyList = [
   additionalInformationProperties,
@@ -90,6 +91,8 @@ const FiltersOrganizations = (props) => {
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
+  const [lastVerified, setLastVerified] = useState('');
+  const [lastUpdated, setLastUpdated] = useState('');
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -117,7 +120,7 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    const query = {name, properties, tags, tagLocale};
+    const query = {name, properties, tags, tagLocale, lastVerified, lastUpdated}
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
@@ -125,6 +128,14 @@ const FiltersOrganizations = (props) => {
 
     if (!isPublished) {
       query.pending = 'true';
+    }
+
+    if (lastVerified) {
+      query.lastVerified = new Date(lastVerified).toISOString();
+    }
+
+    if (lastUpdated) {
+      query.lastUpdated = new Date(lastUpdated).toISOString();
     }
 
     updateQuery(query);
@@ -142,6 +153,8 @@ const FiltersOrganizations = (props) => {
 
     return subCategory || category;
   });
+
+
 
   return (
     <form onSubmit={handleSearch}>
@@ -165,6 +178,13 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
+
+        <Text>Last Verified Before:</Text>
+        <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
+
+        <Text>Last Updated Before:</Text>
+        <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
+
         <Text>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

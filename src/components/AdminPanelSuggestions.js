@@ -1,6 +1,6 @@
 import {delete as httpDelete, get, post} from 'axios';
 import React, {useContext} from 'react';
-import {Stack, Text} from '@chakra-ui/core';
+import {Stack, Text} from '@chakra-ui/react';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';

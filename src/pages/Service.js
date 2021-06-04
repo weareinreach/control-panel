@@ -11,7 +11,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import NotFound from './NotFound';
 import Alert from '../components/Alert';

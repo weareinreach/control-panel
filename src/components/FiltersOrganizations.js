@@ -10,7 +10,7 @@ import {
   Select,
   Stack,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
 import withOrganizations from './WithOrganizations';
@@ -251,7 +251,7 @@ const FiltersOrganizations = (props) => {
           <Button
             display="inline-block"
             onClick={handleSearch}
-            variantColor="blue"
+            colorScheme="blue"
           >
             Search
           </Button>

@@ -75,7 +75,7 @@ const Organization = (props) => {
     patch(url, values)
       .then(({data}) => {
         setSuccess();
-        // window.location = `/organizations/${orgId}`;
+        window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
         setError();
@@ -169,8 +169,6 @@ const Organization = (props) => {
       header: `Verify Information for ${name}?`,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        // const values = {verified_at: Date.now()};
-        console.log(values)
         updateFields({setLoading, setSuccess, setError, values});
       },
       onVerify: ({setLoading, setSuccess, setError, values}) => {
@@ -188,7 +186,7 @@ const Organization = (props) => {
     });
   const openNewService = () =>
     openModal({
-      form: {fields: [{key: 'name', label: 'Service Name'}]},
+      form: {fields: [{key: 'name', label: 'Service Name', isRequired: true}]},
       header: 'New Service Name',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {

@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/core';
+import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 
 import AdminPanelSuggestions from '../components/AdminPanelSuggestions';
 import AdminPanelUsers from '../components/AdminPanelUsers';

@@ -1,6 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import { FormControl } from '@chakra-ui/core';
+import { FormControl } from '@chakra-ui/react';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../date-picker.css';
 

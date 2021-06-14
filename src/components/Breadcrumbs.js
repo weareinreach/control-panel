@@ -6,7 +6,8 @@ import {
   BreadcrumbLink,
   Icon,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
+import {FaChevronDown} from 'react-icons/fa';
 
 const Breadcrumbs = (props) => {
   const {organization, service} = props;
@@ -20,7 +21,7 @@ const Breadcrumbs = (props) => {
     <ChakraBreadcrumb
       marginBottom={4}
       spacing="8px"
-      separator={<Icon color="gray.300" name="chevron-right" />}
+      separator={<FaChevronDown />}
     >
       <BreadcrumbItem>
         <BreadcrumbLink href="/">

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Divider, Stack} from '@chakra-ui/core';
+import {Divider, Stack} from '@chakra-ui/react';
 
 import FormField from './FormField';
 import {SectionTitle} from './styles';

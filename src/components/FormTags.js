@@ -1,7 +1,7 @@
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import {Divider, Stack, Text} from '@chakra-ui/core';
+import {Divider, Stack, Text} from '@chakra-ui/react';
 
 import FormField from './FormField';
 import tagList from '../data/tags.json';

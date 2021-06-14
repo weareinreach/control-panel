@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Select, Stack, Text} from '@chakra-ui/core';
+import {Box, Button, Select, Stack, Text} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 
 import {SectionTitle} from './styles';
@@ -48,7 +48,7 @@ const FiltersUsers = (props) => {
           <Button
             display="inline-block"
             onClick={handleSearch}
-            variantColor="blue"
+            colorScheme="blue"
           >
             Search
           </Button>

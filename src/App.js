@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {CSSReset, ThemeProvider} from '@chakra-ui/core';
+import {CSSReset, ChakraProvider} from '@chakra-ui/react';
 
 import {ContextAppProvider} from './components/ContextApp';
 import {ContextFormModalProvider} from './components/ContextFormModal';
@@ -10,7 +10,7 @@ import Routes from './components/Routes';
 
 const App = () => {
   return (
-    <ThemeProvider>
+    <ChakraProvider>
       <CSSReset />
       <ErrorBoundary>
         <ContextAppProvider>
@@ -22,7 +22,7 @@ const App = () => {
           </ContextFormModalProvider>
         </ContextAppProvider>
       </ErrorBoundary>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 };
 

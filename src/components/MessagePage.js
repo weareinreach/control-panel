@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Flex, Text} from '@chakra-ui/core';
+import {Box, Flex, Text} from '@chakra-ui/react';
 
 import {SectionTitle} from './styles';
 

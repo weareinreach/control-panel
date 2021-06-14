@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, IconButton, Text} from '@chakra-ui/core';
+import {Box, IconButton, Text} from '@chakra-ui/react';
+import {FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 
 const Pagination = (props) => {
   const {
@@ -18,13 +19,13 @@ const Pagination = (props) => {
       <IconButton
         disabled={isFirstPage}
         onClick={getLastPage}
-        icon="chevron-left"
+        icon={<FaChevronLeft/>}
         marginRight={2}
       />
       <IconButton
         disabled={isLastPage}
         onClick={getNextPage}
-        icon="chevron-right"
+        icon={<FaChevronRight/>}
         marginRight={4}
       />
       {totalPages !== 0 && (

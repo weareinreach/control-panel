@@ -19,7 +19,7 @@ export const getSchedule = (start, end) => {
 };
 
 export const scheduleHeaders = [
-  { key: 'name', label: 'Name' },
+  {key: 'name', label: 'Name'},
   {
     key: 'monday',
     label: 'Monday',
@@ -61,23 +61,35 @@ export const scheduleHeaders = [
     type: 'select',
     placeholder: 'Select a timezone',
     options: [
-      { label: 'AKST', value: 'AKST' },
-      { label: 'AST', value: 'AST' },
-      { label: 'CST', value: 'CST' },
-      { label: 'EST', value: 'EST' },
-      { label: 'HST', value: 'HST' },
-      { label: 'MDT', value: 'MDT' },
-      { label: 'MST', value: 'MST' },
-      { label: 'NST', value: 'NST' },
-      { label: 'PDT', value: 'PDT' },
-      { label: 'PST', value: 'PST' },
+      {label: 'AKST', value: 'AKST'},
+      {label: 'AST', value: 'AST'},
+      {label: 'CST', value: 'CST'},
+      {label: 'EST', value: 'EST'},
+      {label: 'HST', value: 'HST'},
+      {label: 'MDT', value: 'MDT'},
+      {label: 'MST', value: 'MST'},
+      {label: 'NST', value: 'NST'},
+      {label: 'PDT', value: 'PDT'},
+      {label: 'PST', value: 'PST'},
     ],
   },
-  { key: 'note', label: 'Note', type: 'textarea' },
+  {key: 'note', label: 'Note', type: 'textarea'},
 ];
 
 export const getOrgQueryUrls = (query) => {
-  const { name, page, pending, properties, serviceArea, tags, tagLocale, verified, lastVerified, lastUpdated } = query;
+  const {
+    name,
+    page,
+    pending,
+    properties,
+    serviceArea,
+    tags,
+    tagLocale,
+    verified,
+    lastVerified,
+    lastVerifiedEnd,
+    lastUpdated,
+  } = query;
   let queryParam = '?';
 
   if (name) {
@@ -98,6 +110,10 @@ export const getOrgQueryUrls = (query) => {
 
   if (lastVerified) {
     queryParam += `&lastVerified=${lastVerified}`;
+  }
+
+  if (lastVerifiedEnd) {
+    queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
   }
 
   if (lastUpdated) {
@@ -137,7 +153,7 @@ export const getOrgQueryUrls = (query) => {
 };
 
 export const getServiceQueryUrls = (query) => {
-  const { serviceArea, verified } = query;
+  const {serviceArea, verified} = query;
   let queryParam = '?';
 
   if (verified) {
@@ -155,7 +171,7 @@ export const getServiceQueryUrls = (query) => {
 
 // TODO: add to utils and test
 export const getUserQueryUrls = (query) => {
-  const { page, type } = query;
+  const {page, type} = query;
   let queryParam = '?';
 
   if (page) {

@@ -92,6 +92,7 @@ const FiltersOrganizations = (props) => {
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
+  const [lastVerifiedEnd, setLastVerifiedEnd] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
@@ -120,7 +121,14 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    const query = {name, properties, tags, tagLocale, lastVerified, lastUpdated}
+    const query = {
+      name,
+      properties,
+      tags,
+      tagLocale,
+      lastVerified,
+      lastUpdated,
+    };
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
@@ -132,6 +140,10 @@ const FiltersOrganizations = (props) => {
 
     if (lastVerified) {
       query.lastVerified = new Date(lastVerified).toISOString();
+    }
+
+    if (lastVerifiedEnd) {
+      query.lastVerifiedEnd = new Date(lastVerifiedEnd).toISOString();
     }
 
     if (lastUpdated) {
@@ -147,14 +159,12 @@ const FiltersOrganizations = (props) => {
   useEffect(() => {
     handleNameChange(`${orgQuery}` || '');
   }, [orgQuery]);
-  
+
   const tagsNames = tags.map((tag) => {
     const [category, subCategory] = tag.split('.');
 
     return subCategory || category;
   });
-
-
 
   return (
     <form onSubmit={handleSearch}>
@@ -181,6 +191,10 @@ const FiltersOrganizations = (props) => {
 
         <Text>Last Verified Before:</Text>
         <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
+        <DateFieldPicker
+          selected={lastVerifiedEnd}
+          onChange={setLastVerifiedEnd}
+        />
 
         <Text>Last Updated Before:</Text>
         <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />

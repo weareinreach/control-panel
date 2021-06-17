@@ -89,6 +89,7 @@ export const getOrgQueryUrls = (query) => {
     lastVerified,
     lastVerifiedEnd,
     lastUpdated,
+    lastUpdatedEnd,
   } = query;
   let queryParam = '?';
 
@@ -118,6 +119,10 @@ export const getOrgQueryUrls = (query) => {
 
   if (lastUpdated) {
     queryParam += `&lastUpdated=${lastUpdated}`;
+  }
+
+  if (lastUpdatedEnd) {
+    queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
   }
 
   if (serviceArea) {

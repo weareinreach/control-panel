@@ -367,11 +367,19 @@ const Organization = (props) => {
             items={[
               {
                 href: `${catalogUrl}/en_US/resource/${slug}`,
-                text: 'English',
+                text: 'USA',
               },
               {
-                href: `${catalogUrl}/en_MX/resource/${slug_ES}#googtrans(es)`,
-                text: 'Español',
+                href: `${catalogUrl}/en_CA/resource/${slug}`,
+                text: 'Canada',
+              },
+              {
+                href: `${catalogUrl}/en_MX/resource/${slug}`,
+                text: 'Mexico (EN)',
+              },
+              {
+                href: `${catalogUrl}/es_MX/resource/${slug_ES}#googtrans(es)`,
+                text: 'Mexico (ES)',
               },
             ]}
           />

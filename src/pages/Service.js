@@ -49,7 +49,8 @@ import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
 import {formatServiceInput, formatTags, removeWhitespace} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
-import { Grid, GridItem, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
+import LastUpdateTag from '../components/LastUpdateTag';
 
 const {catalogUrl} = config;
 
@@ -443,19 +444,9 @@ const Service = (props) => {
                   <Button onClick={openNotesEdit}>Edit Notes</Button>
                 </Box>
                 <SectionTitle>Notes</SectionTitle>
-                <Grid templateColumns="150px 1fr">
-                  <GridItem rowSpan="1" colSpan="2">
-                    <Box m={4}>
-                      <Text>{notes?.notes}</Text>
-                    </Box>
-                  </GridItem>
-                  <GridItem rowSpan="1" colSpan="1">
-                    <Text>Updated At</Text>
-                  </GridItem>
-                  <GridItem rowSpan="1" colSpan="1">
-                    <Text>{notes?.updated_at}</Text>
-                  </GridItem>
-                </Grid>
+                <LastUpdateTag updatedAt={notes?.updated_at}>
+                  <Text>{notes?.notes}</Text>
+                </LastUpdateTag> 
               </Container>
             </Stack>
           </TabPanel>

@@ -16,7 +16,8 @@ import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
-import {Grid, GridItem, Text} from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
+import LastUpdateTag from '../components/LastUpdateTag';
 
 import {
   emailFields,
@@ -608,19 +609,9 @@ const Organization = (props) => {
                   <Button onClick={openNotesEdit}>Edit Notes</Button>
                 </Box>
                 <SectionTitle>Notes</SectionTitle>
-                <Grid templateColumns="150px 1fr">
-                  <GridItem rowSpan="1" colSpan="2">
-                    <Box m={4}>
-                      <Text>{notes?.notes}</Text>
-                    </Box>
-                  </GridItem>
-                  <GridItem rowSpan="1" colSpan="1">
-                    <Text>Updated At</Text>
-                  </GridItem>
-                  <GridItem rowSpan="1" colSpan="1">
-                    <Text>{notes?.updated_at}</Text>
-                  </GridItem>
-                </Grid>
+                <LastUpdateTag updatedAt={notes?.updated_at}>
+                  <Text>{notes?.notes}</Text>
+                </LastUpdateTag> 
               </Container>
               </div>
             </TabPanel>

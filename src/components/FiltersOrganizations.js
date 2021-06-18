@@ -10,7 +10,7 @@ import {
   Select,
   Stack,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
 import withOrganizations from './WithOrganizations';
@@ -121,8 +121,8 @@ const FiltersOrganizations = (props) => {
   const handleSearch = (ev) => {
     ev.preventDefault();
 
-    // const query = {name, properties, tags, tagLocale};
     const query = {name, properties, tags, tagLocale, lastVerified, lastUpdated, createdAt}
+
 
     if (serviceArea) {
       query.serviceArea = serviceArea;
@@ -147,11 +147,11 @@ const FiltersOrganizations = (props) => {
     updateQuery(query);
   };
   useEffect(() => {
-    handleNameChange(`"${orgSelection?.name}"` || '');
+    handleNameChange(`${orgSelection?.name}` || '');
   }, [orgSelection]);
 
   useEffect(() => {
-    handleNameChange(`"${orgQuery}"` || '');
+    handleNameChange(`${orgQuery}` || '');
   }, [orgQuery]);
   
   const tagsNames = tags.map((tag) => {
@@ -185,10 +185,10 @@ const FiltersOrganizations = (props) => {
           value={serviceArea}
         />
 
-        <Text>Verified Before:</Text>
+        <Text>Last Verified Before:</Text>
         <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
 
-        <Text>Updated Before:</Text>
+        <Text>Last Updated Before:</Text>
         <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
 
         <Text>Created Before:</Text>
@@ -260,7 +260,7 @@ const FiltersOrganizations = (props) => {
           <Button
             display="inline-block"
             onClick={handleSearch}
-            variantColor="blue"
+            colorScheme="blue"
           >
             Search
           </Button>

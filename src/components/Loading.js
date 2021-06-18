@@ -7,7 +7,7 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 const Loading = () => {
   return (

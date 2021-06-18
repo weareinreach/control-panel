@@ -2,13 +2,13 @@
 
 <!-- Describe your changes here -->
 
-- Asana ticket:
+## Asana ticket:
 
 ## PR Checklist
 
 <!-- Please validate your changes with the checklist below before marking for code review. -->
 
-- [ ] Assign @FJKhan as a reviewer.
+- [ ] Assign @FJKhan **and** @Alfredo-Moreira as reviewers.
 - [ ] If your PR is not a hotfix, is it targeted for `dev`? If your PR is a hotfix, is it targeted for `master`?
 - [ ] Unit and functional test coverage was added where applicable.
 - [ ] CI/CD passes for your PR.

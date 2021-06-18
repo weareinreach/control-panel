@@ -16,6 +16,7 @@ import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
+import {Grid, GridItem, Text} from '@chakra-ui/react';
 
 import {
   emailFields,
@@ -57,6 +58,7 @@ const Organization = (props) => {
     is_published,
     locations,
     name = 'Organization Name',
+    notes,
     owners,
     phones,
     photos,
@@ -361,6 +363,17 @@ const Organization = (props) => {
     (locations && locations[0]) ??
     null;
 
+  const openNotesEdit = () =>
+    openModal({
+      form: {fields: [{key: 'notes', label: 'Notes'}], initialValues: notes},
+      header: 'Edit Notes',
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const notes_data = {...values, updated_at: Date.now()};
+        updateFields({setLoading, setSuccess, setError, values: {notes: notes_data}});
+      }
+    });
+  
   if (loading) {
     return <Loading />;
   }
@@ -450,7 +463,6 @@ const Organization = (props) => {
                     {key: 'Created At', value: created_at},
                   ]}
                 />
-
                 <Container>
                   <SectionTitle>Associated Affiliates</SectionTitle>
                   <Table
@@ -590,7 +602,26 @@ const Organization = (props) => {
                   </Box>
                   <SectionTitle>Service Area Coverage</SectionTitle>
                   <ListServiceArea properties={properties} />
-                </Container>
+                </Container>=
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openNotesEdit}>Edit Notes</Button>
+                </Box>
+                <SectionTitle>Notes</SectionTitle>
+                <Grid templateColumns="150px 1fr">
+                  <GridItem rowSpan="1" colSpan="2">
+                    <Box m={4}>
+                      <Text>{notes?.notes}</Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem rowSpan="1" colSpan="1">
+                    <Text>Updated At</Text>
+                  </GridItem>
+                  <GridItem rowSpan="1" colSpan="1">
+                    <Text>{notes?.updated_at}</Text>
+                  </GridItem>
+                </Grid>
+              </Container>
               </div>
             </TabPanel>
             <TabPanel mt={5}>

@@ -410,6 +410,8 @@
       "key": "name",
       "label": "Platform",
       "type": "select",
+      "isRequired": true,
+      "placeholder": "Select a platform",
       "options": [
         {"value": "facebook", "label": "Facebook"
         },
@@ -421,7 +423,9 @@
     },
     {
       "key": "url",
-      "label": "Url"
+      "label": "Url",
+      "type": "url",
+      "isRequired": true
     }
   ]
 }

@@ -96,7 +96,6 @@ const Organization = (props) => {
       const {_id, ...restValues} = values;
       const itemIndex = newField.findIndex((item) => item._id === _id);
       const isExistingItem = _id && itemIndex !== -1;
-      console.log('key options: ', key, options);
       if (isEdit) {
         if (isExistingItem) {
           newField[itemIndex] = {...newField[itemIndex], ...restValues};
@@ -344,16 +343,16 @@ const Organization = (props) => {
       });
     };
 
-  const openSocialMediaForm = (profile = {}) => {
-    console.log('propsy: ', props);
+  const openSocialMediaForm = ({isEdit = false, isDelete = false, profile = {}}) => {
     return openModal({
       form: {
-        fields: socialMediaFields,
+        fields: isDelete ? null : socialMediaFields,
         initialValues: profile,
       },
-      header: profile?.url?.trim() !== '' ? `Edit Social Media profile`: `New Social Media Profile`,
+      header: isEdit ? `Edit Social Media profile`: isDelete ? `Delete Social Media profile` : `New Social Media Profile`,
+      isAlert: isDelete,
       onClose: closeModal,
-      onConfirm: updateListField('social_media'),
+      onConfirm: updateListField('social_media', {isEdit, isDelete}),
     });
   };
 
@@ -568,7 +567,7 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={() => openSocialMediaForm()}>
+                    <Button onClick={() => openSocialMediaForm({})}>
                       New Social Media Profile
                     </Button>
                   </Box>
@@ -579,9 +578,9 @@ const Organization = (props) => {
                     actions={[
                       {
                         label: 'Edit',
-                        onClick: openSocialMediaForm,
+                        onClick: (profile) => openSocialMediaForm({isEdit:true, profile}),
                       },
-                      {label: 'Delete'},
+                      {label: 'Delete', onClick: (profile) => openSocialMediaForm({isDelete: true, profile})},
                     ]}
                   />
                 </Container>

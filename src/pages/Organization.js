@@ -365,7 +365,7 @@ const Organization = (props) => {
 
   const openNotesEdit = () =>
     openModal({
-      form: {fields: [{key: 'notes', label: 'Notes'}], initialValues: notes},
+      form: {fields: [{key: 'notes', label: 'Notes', type: 'textarea'}], initialValues: notes},
       header: 'Edit Notes',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {

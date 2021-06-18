@@ -49,6 +49,7 @@ import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
 import {formatServiceInput, formatTags, removeWhitespace} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
+import { Grid, GridItem, Text } from '@chakra-ui/react';
 
 const {catalogUrl} = config;
 
@@ -92,6 +93,7 @@ const Service = (props) => {
     description_ES,
     slug_ES,
     name_ES,
+    notes
   } = service || {};
   const email = findItem(organization?.emails, email_id);
   const location = findItem(organization?.locations, location_id);
@@ -276,6 +278,16 @@ const Service = (props) => {
       onClose: closeModal,
       onConfirm: updateFields,
     });
+  const openNotesEdit = () =>
+    openModal({
+      form: {fields: [{key: 'notes', label: 'Notes', type: 'textarea'}], initialValues: notes},
+      header: 'Edit Notes',
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+        const notes_data = {...values, updated_at: Date.now()};
+        updateFields({setLoading, setSuccess, setError, values: {notes: notes_data}});
+      }
+    });
   const openOnCatalog = () => {
     const url = `${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`;
     const win = window.open(url, '_blank');
@@ -425,6 +437,25 @@ const Service = (props) => {
                 </Box>
                 <SectionTitle>Service Area Coverage</SectionTitle>
                 <ListServiceArea properties={properties} />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openNotesEdit}>Edit Notes</Button>
+                </Box>
+                <SectionTitle>Notes</SectionTitle>
+                <Grid templateColumns="150px 1fr">
+                  <GridItem rowSpan="1" colSpan="2">
+                    <Box m={4}>
+                      <Text>{notes?.notes}</Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem rowSpan="1" colSpan="1">
+                    <Text>Updated At</Text>
+                  </GridItem>
+                  <GridItem rowSpan="1" colSpan="1">
+                    <Text>{notes?.updated_at}</Text>
+                  </GridItem>
+                </Grid>
               </Container>
             </Stack>
           </TabPanel>

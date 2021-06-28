@@ -93,6 +93,7 @@ export const getOrgQueryUrls = (query) => {
     createdAt,
     createdAtEnd,
   } = query;
+
   let queryParam = '?';
 
   if (name) {

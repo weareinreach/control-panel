@@ -97,6 +97,7 @@ const FiltersOrganizations = (props) => {
   const [lastUpdatedEnd, setLastUpdatedEnd] = useState('');
   const [createdAt, setCreatedAt] = useState('');
   const [createdAtEnd, setCreatedAtEnd] = useState('');
+
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -223,6 +224,9 @@ const FiltersOrganizations = (props) => {
         <Text>Created At:</Text>
         <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
         <DateFieldPicker selected={createdAtEnd} onChange={setCreatedAtEnd} />
+
+        <Text>Created Before:</Text>
+        <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
 
         <Text>Publish Status:</Text>
         <Checkbox

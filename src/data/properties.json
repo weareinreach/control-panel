@@ -3395,6 +3395,12 @@
       "label": "community-undocumented",
       "description": "Opportunities that serve undocumented immigrants",
       "type": "checkbox"
+    },
+    {
+      "key": "community-unaccompanied-minors",
+      "label": "community-unaccompanied-minors",
+      "description": "Opportunities that serve unaccompanied minors",
+      "type": "checkbox"
     }
   ],
   "costProperties": [

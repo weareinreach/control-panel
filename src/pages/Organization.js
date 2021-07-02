@@ -13,9 +13,9 @@ import Helmet from '../components/Helmet';
 import {ListServiceArea} from '../components/ListProperties';
 import Loading from '../components/Loading';
 import Table, {KeyValueTable} from '../components/Table';
-import { Container, SectionTitle, Title } from '../components/styles';
+import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 
 import {
   emailFields,
@@ -23,10 +23,15 @@ import {
   organizationDetailsFields,
   phoneFields,
   scheduleFields,
+  socialMediaFields,
 } from '../data/fields.json';
 import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
-import {formatOrgInput, formatServiceInput, removeWhitespace } from '../utils/forms';
+import {
+  formatOrgInput,
+  formatServiceInput,
+  removeWhitespace,
+} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
 
 const {catalogUrl} = config;
@@ -37,11 +42,11 @@ const buttonGroupProps = {
 };
 
 const Organization = (props) => {
-  const { user } = useContext(ContextApp);
-  const { closeModal, openModal } = useContext(ContextFormModal);
-  const { orgId } = props?.match?.params;
+  const {user} = useContext(ContextApp);
+  const {closeModal, openModal} = useContext(ContextFormModal);
+  const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
-  const { data: organization, loading } = useAPIGet(orgPath);
+  const {data: organization, loading} = useAPIGet(orgPath);
 
   const {
     _id,
@@ -59,6 +64,7 @@ const Organization = (props) => {
     schedules,
     services,
     slug,
+    social_media,
     updated_at,
     verified_at,
     website,
@@ -66,9 +72,9 @@ const Organization = (props) => {
     description_ES,
     alert_message_ES,
     slug_ES,
-    venue_id
+    venue_id,
   } = organization || {};
-   const updateFields = ({ setLoading, setSuccess, setError, values }) => {
+  const updateFields = ({setLoading, setSuccess, setError, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -82,32 +88,33 @@ const Organization = (props) => {
         console.error(err);
       });
   };
-  const updateListField = (key, options) => ({
-    setLoading,
-    setSuccess,
-    setError,
-    values,
-  }) => {
-    const {isDelete, isEdit} = options || {};
-    const newField = [...(organization?.[key] || [])];
-    const {_id, ...restValues} = values;
-    const itemIndex = newField.findIndex((item) => item._id === _id);
-    const isExistingItem = _id && itemIndex !== -1;
-    console.log(key, options)
-    if (isEdit) {
-      if (isExistingItem) {
-        newField[itemIndex] = {...newField[itemIndex], ...restValues};
+  const updateListField =
+    (key, options) =>
+    ({setLoading, setSuccess, setError, values}) => {
+      const {isDelete, isEdit} = options || {};
+      const newField = [...(organization?.[key] || [])];
+      const {_id, ...restValues} = values;
+      const itemIndex = newField.findIndex((item) => item._id === _id);
+      const isExistingItem = _id && itemIndex !== -1;
+      if (isEdit) {
+        if (isExistingItem) {
+          newField[itemIndex] = {...newField[itemIndex], ...restValues};
+        }
+      } else if (isDelete) {
+        if (isExistingItem) {
+          newField.splice(itemIndex, 1);
+        }
+      } else {
+        newField.push(restValues);
       }
-    } else if (isDelete) {
-      if (isExistingItem) {
-        newField.splice(itemIndex, 1);
-      }
-    } else {
-      newField.push(restValues);
-    }
 
-    updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
-  };
+      updateFields({
+        setLoading,
+        setSuccess,
+        setError,
+        values: {[key]: newField},
+      });
+    };
   const goToServicePage = (service) => {
     window.location = `${orgPath}/services/${service._id}`;
   };
@@ -207,134 +214,152 @@ const Organization = (props) => {
           });
       },
     });
-  const openEmailForm = ({ isDelete, isDuplicate, isEdit } = {}) => (email) => {
-    console.log(email)
-    if (isDelete) {
-      return openModal({
-        form: {initialValues: email},
-        header: 'Delete Emails',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: updateListField('emails', {isDelete: true}),
-      });
-    }
+  const openEmailForm =
+    ({isDelete, isDuplicate, isEdit} = {}) =>
+    (email) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: email},
+          header: 'Delete Emails',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('emails', {isDelete: true}),
+        });
+      }
 
-    if (isEdit) {
-      return openModal({
-        form: {fields: emailFields, initialValues: email},
-        header: 'Edit Emails',
-        onClose: closeModal,
-        onConfirm: updateListField('emails', {isEdit: true}),
-      });
-    }
+      if (isEdit) {
+        return openModal({
+          form: {fields: emailFields, initialValues: email},
+          header: 'Edit Emails',
+          onClose: closeModal,
+          onConfirm: updateListField('emails', {isEdit: true}),
+        });
+      }
 
+      return openModal({
+        form: {
+          fields: emailFields,
+          initialValues: isDuplicate ? email : {show_on_organization: true},
+        },
+        header: 'New Emails',
+        onClose: closeModal,
+        onConfirm: updateListField('emails'),
+      });
+    };
+  const openLocationForm =
+    ({isDelete, isDuplicate, isEdit} = {}) =>
+    (location) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: location},
+          header: 'Delete Location',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('locations', {isDelete: true}),
+        });
+      }
+
+      if (isEdit) {
+        return openModal({
+          form: {fields: locationFields, initialValues: location},
+          header: 'Edit Location',
+          onClose: closeModal,
+          onConfirm: updateListField('locations', {isEdit: true}),
+        });
+      }
+
+      return openModal({
+        form: {
+          fields: locationFields,
+          initialValues: isDuplicate ? location : {show_on_organization: true},
+        },
+        header: 'New Location',
+        onClose: closeModal,
+        onConfirm: updateListField('locations'),
+      });
+    };
+  const openPhoneForm =
+    ({isDelete, isDuplicate, isEdit} = {}) =>
+    (phone) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: phone},
+          header: 'Delete Phone',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('phones', {isDelete: true}),
+        });
+      }
+
+      if (isEdit) {
+        return openModal({
+          form: {fields: phoneFields, initialValues: phone},
+          header: 'Edit Phone',
+          onClose: closeModal,
+          onConfirm: updateListField('phones', {isEdit: true}),
+        });
+      }
+
+      return openModal({
+        form: {
+          fields: phoneFields,
+          initialValues: isDuplicate ? phone : {show_on_organization: true},
+        },
+        header: 'New Phone',
+        onClose: closeModal,
+        onConfirm: updateListField('phones'),
+      });
+    };
+  const openScheduleForm =
+    ({isDelete, isDuplicate, isEdit} = {}) =>
+    (schedule) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: schedule},
+          header: 'Delete Schedule',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('schedules', {isDelete: true}),
+        });
+      }
+
+      if (isEdit) {
+        return openModal({
+          form: {fields: scheduleFields, initialValues: schedule},
+          header: 'Edit Schedule',
+          onClose: closeModal,
+          onConfirm: updateListField('schedules', {isEdit: true}),
+        });
+      }
+
+      return openModal({
+        form: {
+          fields: scheduleFields,
+          initialValues: isDuplicate ? schedule : {},
+        },
+        header: 'New Schedule',
+        onClose: closeModal,
+        onConfirm: updateListField('schedules'),
+      });
+    };
+
+  const openSocialMediaForm = ({isEdit = false, isDelete = false, profile = {}}) => {
     return openModal({
       form: {
-        fields: emailFields,
-        initialValues: isDuplicate ? email : {show_on_organization: true},
+        fields: isDelete ? null : socialMediaFields,
+        initialValues: profile,
       },
-      header: 'New Emails',
+      header: isEdit ? `Edit Social Media profile`: isDelete ? `Delete Social Media profile` : `New Social Media Profile`,
+      isAlert: isDelete,
       onClose: closeModal,
-      onConfirm: updateListField('emails'),
-    });
-  };
-  const openLocationForm = ({isDelete, isDuplicate, isEdit} = {}) => (
-    location
-  ) => {
-    if (isDelete) {
-      return openModal({
-        form: {initialValues: location},
-        header: 'Delete Location',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: updateListField('locations', {isDelete: true}),
-      });
-    }
-
-    if (isEdit) {
-      return openModal({
-        form: {fields: locationFields, initialValues: location},
-        header: 'Edit Location',
-        onClose: closeModal,
-        onConfirm: updateListField('locations', {isEdit: true}),
-      });
-    }
-
-    return openModal({
-      form: {
-        fields: locationFields,
-        initialValues: isDuplicate ? location : {show_on_organization: true},
-      },
-      header: 'New Location',
-      onClose: closeModal,
-      onConfirm: updateListField('locations'),
-    });
-  };
-  const openPhoneForm = ({isDelete, isDuplicate, isEdit} = {}) => (phone) => {
-    if (isDelete) {
-      return openModal({
-        form: {initialValues: phone},
-        header: 'Delete Phone',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: updateListField('phones', {isDelete: true}),
-      });
-    }
-
-    if (isEdit) {
-      return openModal({
-        form: {fields: phoneFields, initialValues: phone},
-        header: 'Edit Phone',
-        onClose: closeModal,
-        onConfirm: updateListField('phones', {isEdit: true}),
-      });
-    }
-
-    return openModal({
-      form: {
-        fields: phoneFields,
-        initialValues: isDuplicate ? phone : {show_on_organization: true},
-      },
-      header: 'New Phone',
-      onClose: closeModal,
-      onConfirm: updateListField('phones'),
-    });
-  };
-  const openScheduleForm = ({isDelete, isDuplicate, isEdit} = {}) => (
-    schedule
-  ) => {
-    if (isDelete) {
-      return openModal({
-        form: {initialValues: schedule},
-        header: 'Delete Schedule',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: updateListField('schedules', {isDelete: true}),
-      });
-    }
-
-    if (isEdit) {
-      return openModal({
-        form: {fields: scheduleFields, initialValues: schedule},
-        header: 'Edit Schedule',
-        onClose: closeModal,
-        onConfirm: updateListField('schedules', {isEdit: true}),
-      });
-    }
-
-    return openModal({
-      form: {
-        fields: scheduleFields,
-        initialValues: isDuplicate ? schedule : {},
-      },
-      header: 'New Schedule',
-      onClose: closeModal,
-      onConfirm: updateListField('schedules'),
+      onConfirm: updateListField('social_media', {isEdit, isDelete}),
     });
   };
 
-  
-  const primaryLocation = (locations && locations.find(it => it.is_primary)) ?? (locations && locations[0]) ?? null;
+  const primaryLocation =
+    (locations && locations.find((it) => it.is_primary)) ??
+    (locations && locations[0]) ??
+    null;
 
   if (loading) {
     return <Loading />;
@@ -344,212 +369,246 @@ const Organization = (props) => {
     return <NotFound />;
   }
 
-    return (
-      <>
-        <Helmet title={name} />
-        {!is_published && (
-          <Alert title="This organization is unpublished" type="warning" />
-        )}
-        <Box float="right">
-          <DropdownButton
-            buttonText="Select a language"
-            items={[
-              {
-                text: 'English',
-              },
-              {
-                text: 'Español',
-              },
-            ]}
-          />
-          <DropdownButton
-            buttonText="View on Catalog"
-            items={[
-              {
-                href: `${catalogUrl}/en_US/resource/${slug}`,
-                text: 'USA',
-              },
-              {
-                href: `${catalogUrl}/en_CA/resource/${slug}`,
-                text: 'Canada',
-              },
-              {
-                href: `${catalogUrl}/en_MX/resource/${slug}`,
-                text: 'Mexico (EN)',
-              },
-              {
-                href: `${catalogUrl}/es_MX/resource/${slug_ES}#googtrans(es)`,
-                text: 'Mexico (ES)',
-              },
-            ]}
-          />
-          <DropdownButton
-            buttonText="More"
-            items={[
-              {
-                onClick: openOrgVerify,
-                text: 'Mark Information Verified',
-              },
-              { onClick: openOrgDuplicate, text: 'Duplicate' },
-              ...(user.isAdminDataManager
-                ? [{ onClick: openOrgDelete, text: 'Delete' }]
-                : []),
-            ]}
-          />
-        </Box>
-        <Breadcrumbs organization={organization} />
-        <Title>{name}</Title>
-        <Stack marginTop={6}>
-          <Tabs variant="enclosed">
-            <TabList>
-              <Tab style={{boxShadow: 'none'}}>General</Tab>
-              <Tab style={{boxShadow: 'none'}}>Photos</Tab>
-            </TabList>
+  return (
+    <>
+      <Helmet title={name} />
+      {!is_published && (
+        <Alert title="This organization is unpublished" type="warning" />
+      )}
+      <Box float="right">
+        <DropdownButton
+          buttonText="Select a language"
+          items={[
+            {
+              text: 'English',
+            },
+            {
+              text: 'Español',
+            },
+          ]}
+        />
+        <DropdownButton
+          buttonText="View on Catalog"
+          items={[
+            {
+              href: `${catalogUrl}/en_US/resource/${slug}`,
+              text: 'US',
+            },
+            {
+              href: `${catalogUrl}/en_CA/resource/${slug}`,
+              text: 'Canada',
+            },
+            {
+              href: `${catalogUrl}/en_MX/resource/${slug}#googtrans(es)`,
+              text: 'MX',
+            },
+          ]}
+        />
+        <DropdownButton
+          buttonText="More"
+          items={[
+            {
+              onClick: openOrgVerify,
+              text: 'Mark Information Verified',
+            },
+            {onClick: openOrgDuplicate, text: 'Duplicate'},
+            ...(user.isAdminDataManager
+              ? [{onClick: openOrgDelete, text: 'Delete'}]
+              : []),
+          ]}
+        />
+      </Box>
+      <Breadcrumbs organization={organization} />
+      <Title>{name}</Title>
+      <Stack marginTop={6}>
+        <Tabs variant="enclosed">
+          <TabList>
+            <Tab style={{boxShadow: 'none'}}>General</Tab>
+            <Tab style={{boxShadow: 'none'}}>Photos</Tab>
+          </TabList>
           <TabPanels>
-            <TabPanel mt={ 5 }>
-                <div>
+            <TabPanel mt={5}>
+              <div>
                 <Box {...buttonGroupProps}>
                   <Button onClick={openDetailsEdit}>Edit Details</Button>
                 </Box>
                 <SectionTitle>General Details</SectionTitle>
                 <KeyValueTable
                   rows={[
-                    { key: 'ID', value: _id },
-                    { key: 'Website', value: website },
-                    { key: 'Website_ES', value: website_ES },
-                    { key: 'Description', value: description },
-                    { key: 'Description_ES', value: description_ES },
-                    { key: 'Alert Message', value: alert_message },
-                    { key: 'Alert Message_ES', value: alert_message_ES },
-                    { key: 'Slug', value: slug },
-                    { key: 'Slug_ES', value: slug_ES },
-                    { key: 'Is Published', value: is_published },
-                    { key: 'Last Verified', value: verified_at },
-                    { key: 'Updated At', value: updated_at },
-                    { key: 'Created At', value: created_at },
+                    {key: 'ID', value: _id},
+                    {key: 'Website', value: website},
+                    {key: 'Website_ES', value: website_ES},
+                    {key: 'Description', value: description},
+                    {key: 'Description_ES', value: description_ES},
+                    {key: 'Alert Message', value: alert_message},
+                    {key: 'Alert Message_ES', value: alert_message_ES},
+                    {key: 'Slug', value: slug},
+                    {key: 'Slug_ES', value: slug_ES},
+                    {key: 'Is Published', value: is_published},
+                    {key: 'Last Verified', value: verified_at},
+                    {key: 'Updated At', value: updated_at},
+                    {key: 'Created At', value: created_at},
                   ]}
                 />
 
-              <Container>
-                <SectionTitle>Associated Affiliates</SectionTitle>
-                <Table headers={[{ key: 'email', label: 'Email' }]} rows={owners} />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openNewService}>New Service</Button>
-                </Box>
-                <SectionTitle>Services</SectionTitle>
-                <Table
-                  actions={[{ label: 'View', onClick: goToServicePage }]}
-                  getRowLink={(service) => `${orgPath}/services/${service._id}`}
-                  headers={[
-                    { key: 'name', label: 'Name' },
-                    { key: 'updated_at', label: 'Last Updated' },
-                  ]}
-                  rows={services}
-                />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openLocationForm()}>New Address</Button>
-                </Box>
-                <SectionTitle>Addresses</SectionTitle>
-                <Table
-                  headers={locationFields}
-                  rows={locations}
-                  actions={[
-                    { label: 'Edit', onClick: openLocationForm({ isEdit: true }) },
-                    {
-                      label: 'Duplicate',
-                      onClick: openLocationForm({ isDuplicate: true }),
-                    },
-                    {
-                      label: 'Delete',
-                      onClick: openLocationForm({ isDelete: true }),
-                    },
-                  ]}
-                />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openScheduleForm()}>New Schedule</Button>
-                </Box>
-                <SectionTitle>Schedules</SectionTitle>
-                <Table
-                  headers={scheduleHeaders}
-                  rows={schedules}
-                  actions={[
-                    { label: 'Edit', onClick: openScheduleForm({ isEdit: true }) },
-                    {
-                      label: 'Duplicate',
-                      onClick: openScheduleForm({ isDuplicate: true }),
-                    },
-                    {
-                      label: 'Delete',
-                      onClick: openScheduleForm({ isDelete: true }),
-                    },
-                  ]}
-                />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openEmailForm()}>New Email</Button>
-                </Box>
-                <SectionTitle>Emails</SectionTitle>
-                <Table
-                  headers={emailFields}
-                  rows={emails}
-                  actions={[
-                    { label: 'Edit', onClick: openEmailForm({ isEdit: true }) },
-                    {
-                      label: 'Duplicate',
-                      onClick: openEmailForm({ isDuplicate: true }),
-                    },
-                    { label: 'Delete', onClick: openEmailForm({ isDelete: true }) },
-                  ]}
-                />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openPhoneForm()}>New Phone</Button>
-                </Box>
-                <SectionTitle>Phones</SectionTitle>
-                <Table
-                  headers={phoneFields}
-                  rows={phones}
-                  actions={[
-                    { label: 'Edit', onClick: openPhoneForm({ isEdit: true }) },
-                    {
-                      label: 'Duplicate',
-                      onClick: openPhoneForm({ isDuplicate: true }),
-                    },
-                    {
-                      label: 'Delete',
-                      onClick: openPhoneForm({ isDelete: true }),
-                    },
-                  ]}
-                />
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openCoverageEdit}>Edit Coverage</Button>
-                </Box>
-                <SectionTitle>Service Area Coverage</SectionTitle>
-                <ListServiceArea properties={properties} />
-              </Container>
+                <Container>
+                  <SectionTitle>Associated Affiliates</SectionTitle>
+                  <Table
+                    headers={[{key: 'email', label: 'Email'}]}
+                    rows={owners}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openNewService}>New Service</Button>
+                  </Box>
+                  <SectionTitle>Services</SectionTitle>
+                  <Table
+                    actions={[{label: 'View', onClick: goToServicePage}]}
+                    getRowLink={(service) =>
+                      `${orgPath}/services/${service._id}`
+                    }
+                    headers={[
+                      {key: 'name', label: 'Name'},
+                      {key: 'updated_at', label: 'Last Updated'},
+                    ]}
+                    rows={services}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openLocationForm()}>New Address</Button>
+                  </Box>
+                  <SectionTitle>Addresses</SectionTitle>
+                  <Table
+                    headers={locationFields}
+                    rows={locations}
+                    actions={[
+                      {
+                        label: 'Edit',
+                        onClick: openLocationForm({isEdit: true}),
+                      },
+                      {
+                        label: 'Duplicate',
+                        onClick: openLocationForm({isDuplicate: true}),
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: openLocationForm({isDelete: true}),
+                      },
+                    ]}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openScheduleForm()}>New Schedule</Button>
+                  </Box>
+                  <SectionTitle>Schedules</SectionTitle>
+                  <Table
+                    headers={scheduleHeaders}
+                    rows={schedules}
+                    actions={[
+                      {
+                        label: 'Edit',
+                        onClick: openScheduleForm({isEdit: true}),
+                      },
+                      {
+                        label: 'Duplicate',
+                        onClick: openScheduleForm({isDuplicate: true}),
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: openScheduleForm({isDelete: true}),
+                      },
+                    ]}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openEmailForm()}>New Email</Button>
+                  </Box>
+                  <SectionTitle>Emails</SectionTitle>
+                  <Table
+                    headers={emailFields}
+                    rows={emails}
+                    actions={[
+                      {label: 'Edit', onClick: openEmailForm({isEdit: true})},
+                      {
+                        label: 'Duplicate',
+                        onClick: openEmailForm({isDuplicate: true}),
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: openEmailForm({isDelete: true}),
+                      },
+                    ]}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openPhoneForm()}>New Phone</Button>
+                  </Box>
+                  <SectionTitle>Phones</SectionTitle>
+                  <Table
+                    headers={phoneFields}
+                    rows={phones}
+                    actions={[
+                      {label: 'Edit', onClick: openPhoneForm({isEdit: true})},
+                      {
+                        label: 'Duplicate',
+                        onClick: openPhoneForm({isDuplicate: true}),
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: openPhoneForm({isDelete: true}),
+                      },
+                    ]}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={() => openSocialMediaForm({})}>
+                      New Social Media Profile
+                    </Button>
+                  </Box>
+                  <SectionTitle>Social Media</SectionTitle>
+                  <Table
+                    headers={socialMediaFields}
+                    rows={social_media}
+                    actions={[
+                      {
+                        label: 'Edit',
+                        onClick: (profile) => openSocialMediaForm({isEdit:true, profile}),
+                      },
+                      {label: 'Delete', onClick: (profile) => openSocialMediaForm({isDelete: true, profile})},
+                    ]}
+                  />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openCoverageEdit}>Edit Coverage</Button>
+                  </Box>
+                  <SectionTitle>Service Area Coverage</SectionTitle>
+                  <ListServiceArea properties={properties} />
+                </Container>
               </div>
-              </TabPanel>
-              <TabPanel mt={5}>
-                <Box>
-                  <FormPhotos organizationId={orgId} location={primaryLocation} photos={photos} name={name} venue_id={venue_id} />
-                </Box>
-                  
-              </TabPanel>
+            </TabPanel>
+            <TabPanel mt={5}>
+              <Box>
+                <FormPhotos
+                  organizationId={orgId}
+                  location={primaryLocation}
+                  photos={photos}
+                  name={name}
+                  venue_id={venue_id}
+                />
+              </Box>
+            </TabPanel>
           </TabPanels>
-          </Tabs>
-        </Stack>
-      </>
-    );
+        </Tabs>
+      </Stack>
+    </>
+  );
 };
 
 Organization.propTypes = {

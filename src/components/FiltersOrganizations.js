@@ -225,9 +225,6 @@ const FiltersOrganizations = (props) => {
         <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
         <DateFieldPicker selected={createdAtEnd} onChange={setCreatedAtEnd} />
 
-        <Text>Created Before:</Text>
-        <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
-
         <Text>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

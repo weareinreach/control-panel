@@ -3854,6 +3854,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-mixteco",
+      "label": "lang-mixteco",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-mongolian",
       "label": "lang-mongolian",
       "type": "checkbox"

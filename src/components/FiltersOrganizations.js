@@ -10,6 +10,7 @@ import {
   Select,
   Stack,
   Text,
+  Switch,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
@@ -212,10 +213,19 @@ const FiltersOrganizations = (props) => {
         />
         <br />
 
-        <Text>Last Verified:</Text>
-        <Button display="inline" size="xs" onClick={setIsVerifiedDateRange}>
-          {isVerifiedDateRange ? 'Use verified before' : 'Use date range'}
-        </Button>
+        <Text>
+          Last Verified:
+          <span>
+            <Switch
+              ml={5}
+              size="sm"
+              id="verified-range"
+              onChange={setIsVerifiedDateRange}
+            />
+            {'  '}
+            Use Date Range
+          </span>
+        </Text>
         <Text fontSize="xs">
           {isVerifiedDateRange ? 'Start Date:' : 'Before:'}
           <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
@@ -232,10 +242,19 @@ const FiltersOrganizations = (props) => {
         )}
         <br />
 
-        <Text>Last Updated:</Text>
-        <Button size="xs" onClick={setIsUpdatedDateRange}>
-          {isUpdatedDateRange ? 'Use updated before' : 'Use date range'}
-        </Button>
+        <Text>
+          Last Updated:
+          <span>
+            <Switch
+              ml={5}
+              size="sm"
+              id="updated-range"
+              onChange={setIsUpdatedDateRange}
+            />
+            {'  '}
+            Use Date Range
+          </span>
+        </Text>
         <Text fontSize="xs">
           {isUpdatedDateRange ? 'Start Date:' : 'Before:'}
           <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
@@ -251,10 +270,19 @@ const FiltersOrganizations = (props) => {
         )}
         <br />
 
-        <Text>Created At:</Text>
-        <Button size="xs" onClick={setIsCreatedDateRange}>
-          {isCreatedDateRange ? 'Use created before' : 'Use date range'}
-        </Button>
+        <Text>
+          Created At:
+          <span>
+            <Switch
+              ml={5}
+              size="sm"
+              id="created-range"
+              onChange={setIsCreatedDateRange}
+            />
+            {'  '}
+            Use Date Range
+          </span>
+        </Text>
         <Text fontSize="xs">
           {isCreatedDateRange ? 'Start Date:' : 'Before:'}
           <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />

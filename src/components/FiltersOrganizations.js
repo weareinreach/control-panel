@@ -25,6 +25,7 @@ import {
 import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
 import DateFieldPicker from './DateFieldPicker';
+import {useToggle} from '../utils/hooks';
 
 const propertyList = [
   additionalInformationProperties,
@@ -97,6 +98,9 @@ const FiltersOrganizations = (props) => {
   const [lastUpdatedEnd, setLastUpdatedEnd] = useState('');
   const [createdAt, setCreatedAt] = useState('');
   const [createdAtEnd, setCreatedAtEnd] = useState('');
+  const [isVerifiedDateRange, setIsVerifiedDateRange] = useToggle(false);
+  const [isUpdatedDateRange, setIsUpdatedDateRange] = useToggle(false);
+  const [isCreatedDateRange, setIsCreatedDateRange] = useToggle(false);
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
@@ -206,24 +210,65 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
+        <br />
 
         <Text>Last Verified:</Text>
-        <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
-        <DateFieldPicker
-          selected={lastVerifiedEnd}
-          onChange={setLastVerifiedEnd}
-        />
+        <Button display="inline" size="xs" onClick={setIsVerifiedDateRange}>
+          {isVerifiedDateRange ? 'Use verified before' : 'Use date range'}
+        </Button>
+        <Text fontSize="xs">
+          {isVerifiedDateRange ? 'Start Date:' : 'Before:'}
+          <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
+        </Text>
+
+        {isVerifiedDateRange && (
+          <Text fontSize="xs">
+            End date:
+            <DateFieldPicker
+              selected={lastVerifiedEnd}
+              onChange={setLastVerifiedEnd}
+            />
+          </Text>
+        )}
+        <br />
 
         <Text>Last Updated:</Text>
-        <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
-        <DateFieldPicker
-          selected={lastUpdatedEnd}
-          onChange={setLastUpdatedEnd}
-        />
+        <Button size="xs" onClick={setIsUpdatedDateRange}>
+          {isUpdatedDateRange ? 'Use updated before' : 'Use date range'}
+        </Button>
+        <Text fontSize="xs">
+          {isUpdatedDateRange ? 'Start Date:' : 'Before:'}
+          <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
+        </Text>
+        {isUpdatedDateRange && (
+          <Text fontSize="xs">
+            End date:
+            <DateFieldPicker
+              selected={lastUpdatedEnd}
+              onChange={setLastUpdatedEnd}
+            />
+          </Text>
+        )}
+        <br />
 
         <Text>Created At:</Text>
-        <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
-        <DateFieldPicker selected={createdAtEnd} onChange={setCreatedAtEnd} />
+        <Button size="xs" onClick={setIsCreatedDateRange}>
+          {isCreatedDateRange ? 'Use created before' : 'Use date range'}
+        </Button>
+        <Text fontSize="xs">
+          {isCreatedDateRange ? 'Start Date:' : 'Before:'}
+          <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
+        </Text>
+        {isCreatedDateRange && (
+          <Text fontSize="xs">
+            End date:
+            <DateFieldPicker
+              selected={createdAtEnd}
+              onChange={setCreatedAtEnd}
+            />
+          </Text>
+        )}
+        <br />
 
         <Text>Publish Status:</Text>
         <Checkbox

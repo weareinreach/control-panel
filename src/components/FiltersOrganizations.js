@@ -223,7 +223,7 @@ const FiltersOrganizations = (props) => {
 
         {isVerifiedDateRange && (
           <Text fontSize="xs">
-            End date:
+            End Date:
             <DateFieldPicker
               selected={lastVerifiedEnd}
               onChange={setLastVerifiedEnd}
@@ -242,7 +242,7 @@ const FiltersOrganizations = (props) => {
         </Text>
         {isUpdatedDateRange && (
           <Text fontSize="xs">
-            End date:
+            End Date:
             <DateFieldPicker
               selected={lastUpdatedEnd}
               onChange={setLastUpdatedEnd}
@@ -261,7 +261,7 @@ const FiltersOrganizations = (props) => {
         </Text>
         {isCreatedDateRange && (
           <Text fontSize="xs">
-            End date:
+            End Date:
             <DateFieldPicker
               selected={createdAtEnd}
               onChange={setCreatedAtEnd}

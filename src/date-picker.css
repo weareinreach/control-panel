@@ -10,10 +10,9 @@
 
 .react-datepicker__input-container {
   font-size: 0.8rem;
-  margin-left: 1rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  height: 1.5rem;
+  height: 2rem;
   border-radius: 0.25rem;
   border: 1px solid;
   border-color: hsl(0, 0%, 80%);
@@ -118,10 +117,6 @@
   ul.react-datepicker__time-list
   li.react-datepicker__time-list-item--selected:hover {
   background: #2a69ac;
-}
-
-.react-datepicker__close-icon {
-  top: -2px;
 }
 
 .react-datepicker__close-icon::after {

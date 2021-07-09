@@ -4,14 +4,15 @@ import {FormControl} from '@chakra-ui/react';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../date-picker.css';
 
-const DateFieldPicker = ({onChange, selected}) => {
+const DateFieldPicker = ({onChange, selected, placeholderText}) => {
   return (
     <FormControl>
       <DatePicker
+        placeholderText={placeholderText}
         showPopperArrow={true}
         selected={selected}
         onChange={onChange}
-        isClearable={true}
+        isClearable={false}
       />
     </FormControl>
   );

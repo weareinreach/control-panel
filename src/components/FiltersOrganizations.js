@@ -212,92 +212,187 @@ const FiltersOrganizations = (props) => {
           value={serviceArea}
         />
         <br />
-
-        <Text>
-          Last Verified:
-          <span>
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text>Verified Date:</Text>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+              }}
+            >
+              <Text fontSize="xs">Use Date Range</Text>
+              <Switch
+                ml={2}
+                size="sm"
+                id="verified-range"
+                onChange={setIsVerifiedDateRange}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '.6rem',
+              marginBottom: '5px',
+            }}
+          >
+            <div style={{whiteSpace: 'nowrap', marginRight: '3px'}}>
+              {isVerifiedDateRange ? 'Start Date:' : 'Verified Before:'}
+            </div>
+            <DateFieldPicker
+              selected={lastVerified}
+              onChange={setLastVerified}
+              placeholderText={
+                isVerifiedDateRange
+                  ? 'Select start date'
+                  : 'Verified before date'
+              }
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '.6rem',
+            }}
+          >
+            {isVerifiedDateRange && (
+              <>
+                <div style={{whiteSpace: 'nowrap', marginRight: '3px'}}>
+                  End Date:
+                </div>
+                <DateFieldPicker
+                  selected={lastVerifiedEnd}
+                  onChange={setLastVerifiedEnd}
+                  placeholderText="Select end date"
+                />
+              </>
+            )}
+          </div>
+        </div>
+        {/* <span>
+          Verified Date:
+          <span style={{float: 'right', fontSize: '.8rem'}}>
+            Use Date Range
             <Switch
-              ml={5}
+              ml={2}
               size="sm"
               id="verified-range"
               onChange={setIsVerifiedDateRange}
             />
-            {'  '}
-            Use Date Range
           </span>
-        </Text>
-        <Text fontSize="xs">
-          {isVerifiedDateRange ? 'Start Date:' : 'Before:'}
-          <DateFieldPicker selected={lastVerified} onChange={setLastVerified} />
-        </Text>
-
+        </span>
+        <span
+          style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+        >
+          {isVerifiedDateRange ? 'Start Date:' : 'Verified Before:'}
+          <DateFieldPicker
+            selected={lastVerified}
+            onChange={setLastVerified}
+            placeholderText={
+              isVerifiedDateRange ? 'Select start date' : 'Verified before date'
+            }
+          />
+        </span>
         {isVerifiedDateRange && (
-          <Text fontSize="xs">
+          <span
+            style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+          >
             End Date:
             <DateFieldPicker
               selected={lastVerifiedEnd}
               onChange={setLastVerifiedEnd}
+              placeholderText="Select end date"
             />
-          </Text>
-        )}
+          </span>
+        )} */}
         <br />
-
-        <Text>
-          Last Updated:
-          <span>
+        <span>
+          Updated Date:
+          <span style={{float: 'right', fontSize: '.8rem'}}>
+            Use Date Range
             <Switch
-              ml={5}
+              ml={2}
               size="sm"
               id="updated-range"
               onChange={setIsUpdatedDateRange}
             />
-            {'  '}
-            Use Date Range
           </span>
-        </Text>
-        <Text fontSize="xs">
-          {isUpdatedDateRange ? 'Start Date:' : 'Before:'}
-          <DateFieldPicker selected={lastUpdated} onChange={setLastUpdated} />
-        </Text>
+        </span>
+        <span
+          style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+        >
+          {isUpdatedDateRange ? 'Start Date:' : 'Updated Before:'}
+          <DateFieldPicker
+            selected={lastUpdated}
+            onChange={setLastUpdated}
+            placeholderText={
+              isUpdatedDateRange ? 'Select start date' : 'Updated before date'
+            }
+          />
+        </span>
         {isUpdatedDateRange && (
-          <Text fontSize="xs">
+          <span
+            style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+          >
             End Date:
             <DateFieldPicker
               selected={lastUpdatedEnd}
               onChange={setLastUpdatedEnd}
+              placeholderText="Select end date"
             />
-          </Text>
+          </span>
         )}
         <br />
-
-        <Text>
-          Created At:
-          <span>
+        <span>
+          Created Date:
+          <span style={{float: 'right', fontSize: '.8rem'}}>
+            Use Date Range
             <Switch
-              ml={5}
+              ml={2}
               size="sm"
               id="created-range"
               onChange={setIsCreatedDateRange}
             />
-            {'  '}
-            Use Date Range
           </span>
-        </Text>
-        <Text fontSize="xs">
-          {isCreatedDateRange ? 'Start Date:' : 'Before:'}
-          <DateFieldPicker selected={createdAt} onChange={setCreatedAt} />
-        </Text>
+        </span>
+        <span
+          style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+        >
+          {isCreatedDateRange ? 'Start Date:' : 'Created Before:'}
+          <DateFieldPicker
+            selected={createdAt}
+            onChange={setCreatedAt}
+            placeholderText={
+              isCreatedDateRange ? 'Select start date' : 'Created before date'
+            }
+          />
+        </span>
         {isCreatedDateRange && (
-          <Text fontSize="xs">
+          <span
+            style={{display: 'flex', alignItems: 'center', fontSize: '.6rem'}}
+          >
             End Date:
             <DateFieldPicker
               selected={createdAtEnd}
               onChange={setCreatedAtEnd}
+              placeholderText="Select end date"
             />
-          </Text>
+          </span>
         )}
-        <br />
 
+        <br />
         <Text>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

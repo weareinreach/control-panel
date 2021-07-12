@@ -6,11 +6,13 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   Input,
   Select,
+  Spacer,
   Stack,
-  Text,
   Switch,
+  Text,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
@@ -211,44 +213,33 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
-        <br />
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
+
+        <Flex>
+          <Box>
             <Text>Verified Date:</Text>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
-              }}
-            >
-              <Text fontSize="xs">Use Date Range</Text>
-              <Switch
-                ml={2}
-                size="sm"
-                id="verified-range"
-                onChange={setIsVerifiedDateRange}
-              />
-            </div>
-          </div>
-          <div
+          </Box>
+          <Spacer />
+          <Box
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '.6rem',
-              marginBottom: '5px',
+              justifyContent: 'space-evenly',
             }}
           >
-            <div style={{whiteSpace: 'nowrap', marginRight: '3px'}}>
-              {isVerifiedDateRange ? 'Start Date:' : 'Verified Before:'}
-            </div>
+            <Text fontSize="xs">Use Date Range</Text>
+            <Switch
+              ml={2}
+              size="sm"
+              id="verified-range"
+              onChange={setIsVerifiedDateRange}
+            />
+          </Box>
+        </Flex>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Box fontSize="xs">
+            {isVerifiedDateRange ? 'Start Date:' : 'Verified Before:'}
+          </Box>
+          <Box>
             <DateFieldPicker
               selected={lastVerified}
               onChange={setLastVerified}
@@ -258,29 +249,20 @@ const FiltersOrganizations = (props) => {
                   : 'Verified before date'
               }
             />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '.6rem',
-            }}
-          >
-            {isVerifiedDateRange && (
-              <>
-                <div style={{whiteSpace: 'nowrap', marginRight: '3px'}}>
-                  End Date:
-                </div>
-                <DateFieldPicker
-                  selected={lastVerifiedEnd}
-                  onChange={setLastVerifiedEnd}
-                  placeholderText="Select end date"
-                />
-              </>
-            )}
-          </div>
-        </div>
+          </Box>
+        </Flex>
+        {isVerifiedDateRange && (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box fontSize="xs">End Date:</Box>
+            <Box>
+              <DateFieldPicker
+                selected={lastVerified}
+                onChange={setLastVerified}
+                placeholderText="Select end date"
+              />
+            </Box>
+          </Flex>
+        )}
         {/* <span>
           Verified Date:
           <span style={{float: 'right', fontSize: '.8rem'}}>

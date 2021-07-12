@@ -213,7 +213,7 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
-
+        <br />
         <Flex>
           <Box>
             <Text>Verified Date:</Text>
@@ -263,7 +263,7 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-
+        <br />
         <Flex>
           <Box>
             <Text>Updated Date:</Text>
@@ -311,7 +311,7 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-
+        <br />
         <Flex>
           <Box>
             <Text>Created Date:</Text>
@@ -359,7 +359,7 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-
+        <br />
         <Text>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

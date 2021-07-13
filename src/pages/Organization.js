@@ -17,7 +17,6 @@ import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
-import LastUpdateTag from '../components/LastUpdateTag';
 
 import {
   emailFields,
@@ -59,7 +58,7 @@ const Organization = (props) => {
     is_published,
     locations,
     name = 'Organization Name',
-    notes,
+    notes_log,
     owners,
     phones,
     photos,
@@ -364,17 +363,32 @@ const Organization = (props) => {
     (locations && locations[0]) ??
     null;
 
-  const openNotesEdit = () =>
-    openModal({
-      form: {fields: [{key: 'notes', label: 'Notes', type: 'textarea'}], initialValues: notes},
-      header: 'Edit Notes',
-      onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        const notes_data = {...values, updated_at: Date.now()};
-        updateFields({setLoading, setSuccess, setError, values: {notes: notes_data}});
+  const openNotesForm =
+    (isDelete = false) =>
+    (note) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: note},
+          header: 'Delete Note',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('notes_log', {isDelete: true}),
+        });
       }
-    });
-  
+
+      return openModal({
+        form: {
+          fields: [{key: 'note', label: 'Note', type: 'textarea'}],
+        },
+        header: 'New Note',
+        onClose: closeModal,
+        onConfirm: ({setLoading, setSuccess, setError, values}) => {
+          const notes_data = {...values, created_at: Date.now()};
+          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
+        }
+      });
+    };
+ 
   if (loading) {
     return <Loading />;
   }
@@ -603,17 +617,28 @@ const Organization = (props) => {
                   </Box>
                   <SectionTitle>Service Area Coverage</SectionTitle>
                   <ListServiceArea properties={properties} />
-                </Container>=
+                </Container>
+              </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openNotesEdit}>Edit Notes</Button>
+                  <Button onClick={openNotesForm()}>New Note</Button>
                 </Box>
                 <SectionTitle>Notes</SectionTitle>
-                <LastUpdateTag updatedAt={notes?.updated_at}>
-                  <Text>{notes?.notes}</Text>
-                </LastUpdateTag> 
+                <Table
+                  headers={[
+                    { "key": "note", "label": "Note" },
+                    { "key": "created_at", "label": "Created At" }
+                  ]}
+                  rows={notes_log}
+                  actions={[
+                    {
+                      label: 'Delete',
+                      onClick: openNotesForm(true),
+                    },
+                  ]}
+                />
               </Container>
-              </div>
+            </div>
             </TabPanel>
             <TabPanel mt={5}>
               <Box>

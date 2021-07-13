@@ -618,27 +618,26 @@ const Organization = (props) => {
                   <SectionTitle>Service Area Coverage</SectionTitle>
                   <ListServiceArea properties={properties} />
                 </Container>
-              </Container>
-              <Container>
-                <Box {...buttonGroupProps}>
-                  <Button onClick={openNotesForm()}>New Note</Button>
-                </Box>
-                <SectionTitle>Notes</SectionTitle>
-                <Table
-                  headers={[
-                    { "key": "note", "label": "Note" },
-                    { "key": "created_at", "label": "Created At" }
-                  ]}
-                  rows={notes_log}
-                  actions={[
-                    {
-                      label: 'Delete',
-                      onClick: openNotesForm(true),
-                    },
-                  ]}
-                />
-              </Container>
-            </div>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openNotesForm()}>New Note</Button>
+                  </Box>
+                  <SectionTitle>Notes</SectionTitle>
+                  <Table
+                    headers={[
+                      { "key": "note", "label": "Note" },
+                      { "key": "created_at", "label": "Created At" }
+                    ]}
+                    rows={notes_log}
+                    actions={[
+                      {
+                        label: 'Delete',
+                        onClick: openNotesForm(true),
+                      },
+                    ]}
+                  />
+                </Container>
+              </div>
             </TabPanel>
             <TabPanel mt={5}>
               <Box>

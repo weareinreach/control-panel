@@ -191,6 +191,17 @@ const FiltersOrganizations = (props) => {
     return subCategory || category;
   });
 
+  // Date field validators
+  const isDateInFuture = (date) => {
+    if (!date) {
+      return false;
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return !(date > today);
+  };
+
   return (
     <form onSubmit={handleSearch}>
       <SectionTitle>Filter Organizations</SectionTitle>
@@ -213,8 +224,7 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
-        <br />
-        <Flex>
+        <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text>Verified Date:</Text>
           </Box>
@@ -246,7 +256,7 @@ const FiltersOrganizations = (props) => {
               placeholderText={
                 isVerifiedDateRange
                   ? 'Select start date'
-                  : 'Verified before date'
+                  : 'Select verified date'
               }
             />
           </Box>
@@ -263,8 +273,7 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-        <br />
-        <Flex>
+        <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text>Updated Date:</Text>
           </Box>
@@ -294,7 +303,7 @@ const FiltersOrganizations = (props) => {
               selected={lastUpdated}
               onChange={setLastUpdated}
               placeholderText={
-                isUpdatedDateRange ? 'Select start date' : 'Updated before date'
+                isUpdatedDateRange ? 'Select start date' : 'Select updated date'
               }
             />
           </Box>
@@ -311,8 +320,7 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-        <br />
-        <Flex>
+        <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text>Created Date:</Text>
           </Box>
@@ -342,7 +350,7 @@ const FiltersOrganizations = (props) => {
               selected={createdAt}
               onChange={setCreatedAt}
               placeholderText={
-                isCreatedDateRange ? 'Select start date' : 'Created before date'
+                isCreatedDateRange ? 'Select start date' : 'Select created date'
               }
             />
           </Box>

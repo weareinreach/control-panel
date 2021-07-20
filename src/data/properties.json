@@ -3844,6 +3844,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-maya",
+      "label": "lang-maya",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-mexican-sign-language",
       "label": "lang-mexican-sign-language",
       "type": "checkbox"

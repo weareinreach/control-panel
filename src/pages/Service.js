@@ -49,6 +49,7 @@ import {CATALOG_API_URL, scheduleHeaders} from '../utils';
 import config from '../utils/config';
 import {formatServiceInput, formatTags, removeWhitespace} from '../utils/forms';
 import {useAPIGet} from '../utils/hooks';
+import { Text } from '@chakra-ui/react';
 
 const {catalogUrl} = config;
 
@@ -82,6 +83,7 @@ const Service = (props) => {
     is_published,
     location_id,
     name = 'Service Name',
+    notes_log,
     organization,
     phone_id,
     properties,
@@ -91,7 +93,7 @@ const Service = (props) => {
     updated_at,
     description_ES,
     slug_ES,
-    name_ES,
+    name_ES
   } = service || {};
   const email = findItem(organization?.emails, email_id);
   const location = findItem(organization?.locations, location_id);
@@ -276,6 +278,33 @@ const Service = (props) => {
       onClose: closeModal,
       onConfirm: updateFields,
     });
+        
+  const openNotesForm =
+    (isDelete = false) =>
+    (note) => {
+      if(isDelete){
+        return openModal({
+          form: {initialValues: note},
+          header: 'Delete Note',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('notes_log', {isDelete: true})
+        });
+      }
+
+      return openModal({
+        form: {
+          fields: [{key: 'note', label: 'Note', type: 'textarea'}]
+        },
+        header: 'New Note',
+        onClose: closeModal,
+        onConfirm: ({setLoading, setSuccess, setError, values}) => {
+          const notes_data = {...values, created_at: Date.now()};
+          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
+        }
+      });
+    }
+
   const openOnCatalog = () => {
     const url = `${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`;
     const win = window.open(url, '_blank');
@@ -425,6 +454,22 @@ const Service = (props) => {
                 </Box>
                 <SectionTitle>Service Area Coverage</SectionTitle>
                 <ListServiceArea properties={properties} />
+              </Container>
+              <Container>
+                <Box {...buttonGroupProps}>
+                  <Button onClick={openNotesForm()}>New Note</Button>
+                </Box>
+                <SectionTitle>Notes</SectionTitle>
+                <Table
+                  headers={[
+                    { "key": "note", "label": "Note" },
+                    {  "key": "created_at", "label": "Created At" }
+                  ]}
+                  rows={notes_log}
+                  actions={[
+                    { label: "Delete", onClick: openNotesForm(true) }
+                  ]}
+                />
               </Container>
             </Stack>
           </TabPanel>

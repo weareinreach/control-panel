@@ -29,6 +29,7 @@ import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
 import DateFieldPicker from './DateFieldPicker';
 import {useToggle} from '../utils/hooks';
+import {format, compareAsc} from 'date-fns';
 
 const propertyList = [
   additionalInformationProperties,
@@ -202,6 +203,18 @@ const FiltersOrganizations = (props) => {
     return !(date > today);
   };
 
+  const isDateOlderThan = (date1, date2) => {
+    if (!date1 || !date2) {
+      return false;
+    }
+    return !(date2 <= date1);
+  };
+
+  const handleChangeRaw = (date) => {
+    date.currentTarget.value = format(this.props.input.value, 'MM/dd/yyyy');
+    console.log(date);
+  };
+
   return (
     <form onSubmit={handleSearch}>
       <SectionTitle>Filter Organizations</SectionTitle>
@@ -251,8 +264,10 @@ const FiltersOrganizations = (props) => {
           </Box>
           <Box>
             <DateFieldPicker
+              id={lastVerified}
               selected={lastVerified}
               onChange={setLastVerified}
+              onChangeRaw={(e) => handleChangeRaw(e)}
               placeholderText={
                 isVerifiedDateRange
                   ? 'Select start date'
@@ -266,6 +281,7 @@ const FiltersOrganizations = (props) => {
             <Box fontSize="xs">End Date:</Box>
             <Box>
               <DateFieldPicker
+                id={lastVerifiedEnd}
                 selected={lastVerifiedEnd}
                 onChange={setLastVerifiedEnd}
                 placeholderText="Select end date"

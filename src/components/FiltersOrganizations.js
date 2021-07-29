@@ -139,8 +139,11 @@ const FiltersOrganizations = (props) => {
       tags,
       tagLocale,
       lastVerified,
+      lastVerifiedEnd,
       lastUpdated,
+      lastUpdatedEnd,
       createdAt,
+      createdAtEnd,
     };
 
     if (serviceArea) {
@@ -203,16 +206,8 @@ const FiltersOrganizations = (props) => {
     return !(date > today);
   };
 
-  const isDateOlderThan = (date1, date2) => {
-    if (!date1 || !date2) {
-      return false;
-    }
-    return !(date2 <= date1);
-  };
-
-  const handleChangeRaw = (date) => {
-    date.currentTarget.value = format(this.props.input.value, 'MM/dd/yyyy');
-    console.log(date);
+  const validate = {
+    date: (date) => isDateInFuture(date),
   };
 
   return (
@@ -265,9 +260,9 @@ const FiltersOrganizations = (props) => {
           <Box>
             <DateFieldPicker
               id={lastVerified}
+              maxDate={new Date()}
               selected={lastVerified}
               onChange={setLastVerified}
-              onChangeRaw={(e) => handleChangeRaw(e)}
               placeholderText={
                 isVerifiedDateRange
                   ? 'Select start date'
@@ -282,6 +277,8 @@ const FiltersOrganizations = (props) => {
             <Box>
               <DateFieldPicker
                 id={lastVerifiedEnd}
+                maxDate={new Date()}
+                minDate={lastVerified}
                 selected={lastVerifiedEnd}
                 onChange={setLastVerifiedEnd}
                 placeholderText="Select end date"
@@ -316,6 +313,7 @@ const FiltersOrganizations = (props) => {
           </Box>
           <Box>
             <DateFieldPicker
+              maxDate={new Date()}
               selected={lastUpdated}
               onChange={setLastUpdated}
               placeholderText={
@@ -329,6 +327,7 @@ const FiltersOrganizations = (props) => {
             <Box fontSize="xs">End Date:</Box>
             <Box>
               <DateFieldPicker
+                minDate={lastUpdated}
                 selected={lastUpdatedEnd}
                 onChange={setLastUpdatedEnd}
                 placeholderText="Select end date"
@@ -363,6 +362,7 @@ const FiltersOrganizations = (props) => {
           </Box>
           <Box>
             <DateFieldPicker
+              maxDate={new Date()}
               selected={createdAt}
               onChange={setCreatedAt}
               placeholderText={
@@ -376,6 +376,7 @@ const FiltersOrganizations = (props) => {
             <Box fontSize="xs">End Date:</Box>
             <Box>
               <DateFieldPicker
+                minDate={createdAt}
                 selected={createdAtEnd}
                 onChange={setCreatedAtEnd}
                 placeholderText="Select end date"
@@ -383,8 +384,8 @@ const FiltersOrganizations = (props) => {
             </Box>
           </Flex>
         )}
-        <br />
-        <Text>Publish Status:</Text>
+        {/* <br /> */}
+        <Text mt={[0, '2rem !important']}>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}
           onChange={handlePublishChange}

@@ -340,6 +340,10 @@
           "value": "CST"
         },
         {
+          "label": "CDT",
+          "value": "CDT"
+        },
+        {
           "label": "EST",
           "value": "EST"
         },

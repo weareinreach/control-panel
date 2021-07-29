@@ -63,6 +63,7 @@ export const scheduleHeaders = [
     options: [
       { label: 'AKST', value: 'AKST' },
       { label: 'AST', value: 'AST' },
+      { label: 'CDT', value: 'CDT' },
       { label: 'CST', value: 'CST' },
       { label: 'EST', value: 'EST' },
       { label: 'HST', value: 'HST' },

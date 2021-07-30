@@ -97,6 +97,7 @@ const FiltersOrganizations = (props) => {
   const [isPublished, setPublishedStatus] = useState(true);
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
+  const [lastVerifiedStart, setLastVerifiedStart] = useState('');
   const [lastVerifiedEnd, setLastVerifiedEnd] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
   const [lastUpdatedEnd, setLastUpdatedEnd] = useState('');
@@ -158,6 +159,10 @@ const FiltersOrganizations = (props) => {
       query.lastVerified = new Date(lastVerified).toISOString();
     }
 
+    if (lastVerifiedStart) {
+      query.lastVerifiedStart = new Date(lastVerifiedStart).toISOString();
+    }
+
     if (lastVerifiedEnd) {
       query.lastVerifiedEnd = new Date(lastVerifiedEnd).toISOString();
     }
@@ -195,19 +200,11 @@ const FiltersOrganizations = (props) => {
     return subCategory || category;
   });
 
-  // Date field validators
-  const isDateInFuture = (date) => {
-    if (!date) {
-      return false;
-    }
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return !(date > today);
-  };
-
-  const validate = {
-    date: (date) => isDateInFuture(date),
+  const handleVerifiedDateRange = (e) => {
+    setLastVerified('');
+    setLastVerifiedStart('');
+    setLastVerifiedEnd('');
+    setIsVerifiedDateRange(!isVerifiedDateRange);
   };
 
   return (
@@ -232,9 +229,12 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
+
+        {/* Start Date Pickers */}
+
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Verified Date:</Text>
+            <Text>Last Verified:</Text>
           </Box>
           <Spacer />
           <Box
@@ -249,43 +249,56 @@ const FiltersOrganizations = (props) => {
               ml={2}
               size="sm"
               id="verified-range"
-              onChange={setIsVerifiedDateRange}
+              onChange={handleVerifiedDateRange}
             />
           </Box>
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Box fontSize="xs">
-            {isVerifiedDateRange ? 'Start Date:' : 'Verified Before:'}
-          </Box>
-          <Box>
-            <DateFieldPicker
-              id={lastVerified}
-              maxDate={new Date()}
-              selected={lastVerified}
-              onChange={setLastVerified}
-              placeholderText={
-                isVerifiedDateRange
-                  ? 'Select start date'
-                  : 'Select verified date'
-              }
-            />
-          </Box>
-        </Flex>
-        {isVerifiedDateRange && (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Box fontSize="xs">End Date:</Box>
+        {isVerifiedDateRange ? (
+          <Flex alignItems="center" justifyContent="space-evenly">
+            <Box mr={2}>
+              <Text fontSize="xs">Start Date:</Text>
+              <DateFieldPicker
+                id={lastVerifiedStart}
+                maxDate={new Date()}
+                onChange={setLastVerifiedStart}
+                placeholderText={'Select start date'}
+                popperPlacement={'bottom-end'}
+                required={true}
+                selected={lastVerifiedStart}
+              />
+            </Box>
             <Box>
+              <Text fontSize="xs">End Date:</Text>
               <DateFieldPicker
                 id={lastVerifiedEnd}
+                minDate={lastVerifiedStart}
                 maxDate={new Date()}
-                minDate={lastVerified}
-                selected={lastVerifiedEnd}
                 onChange={setLastVerifiedEnd}
                 placeholderText="Select end date"
+                popperPlacement={'bottom-end'}
+                selected={lastVerifiedEnd}
+              />
+            </Box>
+          </Flex>
+        ) : (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box>
+              <Text fontSize="xs">Last verified before:</Text>
+            </Box>
+            <Box>
+              <DateFieldPicker
+                id={lastVerified}
+                maxDate={new Date()}
+                selected={lastVerified}
+                onChange={setLastVerified}
+                placeholderText={'Select verified date'}
+                popperPlacement={'bottom-end'}
               />
             </Box>
           </Flex>
         )}
+        {/* End Verified Date Picker */}
+
         <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text>Updated Date:</Text>

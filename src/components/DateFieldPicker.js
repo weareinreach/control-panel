@@ -5,26 +5,28 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../date-picker.css';
 
 const DateFieldPicker = ({
-  onChange,
-  selected,
-  placeholderText,
-  minDate,
-  maxDate,
-  required,
   disabled,
+  maxDate,
+  minDate,
+  onChange,
+  placeholderText,
+  popperPlacement,
+  required,
+  selected,
 }) => {
   return (
     <FormControl>
       <DatePicker
         disabled={disabled}
-        required={required}
+        isClearable={false}
         minDate={minDate}
         maxDate={maxDate}
-        placeholderText={placeholderText}
-        showPopperArrow={true}
-        selected={selected}
         onChange={onChange}
-        isClearable={false}
+        placeholderText={placeholderText}
+        selected={selected}
+        showPopperArrow={true}
+        popperPlacement={popperPlacement}
+        required={required}
       />
     </FormControl>
   );

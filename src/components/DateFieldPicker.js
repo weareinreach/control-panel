@@ -11,7 +11,6 @@ const DateFieldPicker = ({
   onChange,
   placeholderText,
   popperPlacement,
-  required,
   selected,
 }) => {
   return (
@@ -26,7 +25,6 @@ const DateFieldPicker = ({
         selected={selected}
         showPopperArrow={true}
         popperPlacement={popperPlacement}
-        required={required}
       />
     </FormControl>
   );

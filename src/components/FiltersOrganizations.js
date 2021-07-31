@@ -263,7 +263,6 @@ const FiltersOrganizations = (props) => {
                 onChange={setLastVerifiedStart}
                 placeholderText={'Select start date'}
                 popperPlacement={'bottom-end'}
-                required={true}
                 selected={lastVerifiedStart}
               />
             </Box>

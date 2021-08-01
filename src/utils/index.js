@@ -87,10 +87,13 @@ export const getOrgQueryUrls = (query) => {
     tagLocale,
     verified,
     lastVerified,
+    lastVerifiedStart,
     lastVerifiedEnd,
     lastUpdated,
+    lastUpdatedStart,
     lastUpdatedEnd,
     createdAt,
+    createdAtStart,
     createdAtEnd,
   } = query;
 
@@ -116,6 +119,10 @@ export const getOrgQueryUrls = (query) => {
     queryParam += `&lastVerified=${lastVerified}`;
   }
 
+  if (lastVerifiedStart) {
+    queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+  }
+
   if (lastVerifiedEnd) {
     queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
   }
@@ -124,12 +131,20 @@ export const getOrgQueryUrls = (query) => {
     queryParam += `&lastUpdated=${lastUpdated}`;
   }
 
+  if (lastUpdatedStart) {
+    queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+  }
+
   if (lastUpdatedEnd) {
     queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
   }
 
   if (createdAt) {
     queryParam += `&createdAt=${createdAt}`;
+  }
+
+  if (createdAtStart) {
+    queryParam += `&createdAtStart=${createdAtStart}`;
   }
 
   if (createdAtEnd) {

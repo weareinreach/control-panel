@@ -14,14 +14,14 @@ const cellCSS = ({theme}) => css`
   text-align: left;
   font-weight: 400;
   vertical-align: middle;
-  padding: ${theme.space[2]}};
+  padding: ${theme.space[2]};
 
   &:first-of-type {
-    padding-left: ${theme.space[4]}};
+    padding-left: ${theme.space[4]};
   }
 
   &:last-child {
-    padding-right: ${theme.space[4]}};
+    padding-right: ${theme.space[4]};
   }
 `;
 

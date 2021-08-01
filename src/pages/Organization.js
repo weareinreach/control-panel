@@ -16,6 +16,7 @@ import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 
 import {
   emailFields,
@@ -57,6 +58,7 @@ const Organization = (props) => {
     is_published,
     locations,
     name = 'Organization Name',
+    notes_log,
     owners,
     phones,
     photos,
@@ -361,6 +363,32 @@ const Organization = (props) => {
     (locations && locations[0]) ??
     null;
 
+  const openNotesForm =
+    (isDelete = false) =>
+    (note) => {
+      if (isDelete) {
+        return openModal({
+          form: {initialValues: note},
+          header: 'Delete Note',
+          isAlert: true,
+          onClose: closeModal,
+          onConfirm: updateListField('notes_log', {isDelete: true}),
+        });
+      }
+
+      return openModal({
+        form: {
+          fields: [{key: 'note', label: 'Note', type: 'textarea'}],
+        },
+        header: 'New Note',
+        onClose: closeModal,
+        onConfirm: ({setLoading, setSuccess, setError, values}) => {
+          const notes_data = {...values, created_at: Date.now()};
+          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
+        }
+      });
+    };
+ 
   if (loading) {
     return <Loading />;
   }
@@ -450,7 +478,6 @@ const Organization = (props) => {
                     {key: 'Created At', value: created_at},
                   ]}
                 />
-
                 <Container>
                   <SectionTitle>Associated Affiliates</SectionTitle>
                   <Table
@@ -590,6 +617,25 @@ const Organization = (props) => {
                   </Box>
                   <SectionTitle>Service Area Coverage</SectionTitle>
                   <ListServiceArea properties={properties} />
+                </Container>
+                <Container>
+                  <Box {...buttonGroupProps}>
+                    <Button onClick={openNotesForm()}>New Note</Button>
+                  </Box>
+                  <SectionTitle>Notes</SectionTitle>
+                  <Table
+                    headers={[
+                      { "key": "note", "label": "Note" },
+                      { "key": "created_at", "label": "Created At" }
+                    ]}
+                    rows={notes_log}
+                    actions={[
+                      {
+                        label: 'Delete',
+                        onClick: openNotesForm(true),
+                      },
+                    ]}
+                  />
                 </Container>
               </div>
             </TabPanel>

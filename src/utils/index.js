@@ -19,7 +19,7 @@ export const getSchedule = (start, end) => {
 };
 
 export const scheduleHeaders = [
-  { key: 'name', label: 'Name' },
+  {key: 'name', label: 'Name'},
   {
     key: 'monday',
     label: 'Monday',
@@ -74,11 +74,30 @@ export const scheduleHeaders = [
       { label: 'PST', value: 'PST' },
     ],
   },
-  { key: 'note', label: 'Note', type: 'textarea' },
+  {key: 'note', label: 'Note', type: 'textarea'},
 ];
 
 export const getOrgQueryUrls = (query) => {
-  const { name, page, pending, properties, serviceArea, tags, tagLocale, verified, lastVerified, lastUpdated, createdAt } = query;
+  const {
+    name,
+    page,
+    pending,
+    properties,
+    serviceArea,
+    tags,
+    tagLocale,
+    verified,
+    lastVerified,
+    lastVerifiedStart,
+    lastVerifiedEnd,
+    lastUpdated,
+    lastUpdatedStart,
+    lastUpdatedEnd,
+    createdAt,
+    createdAtStart,
+    createdAtEnd,
+  } = query;
+
   let queryParam = '?';
 
   if (name) {
@@ -101,12 +120,36 @@ export const getOrgQueryUrls = (query) => {
     queryParam += `&lastVerified=${lastVerified}`;
   }
 
+  if (lastVerifiedStart) {
+    queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+  }
+
+  if (lastVerifiedEnd) {
+    queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
+  }
+
   if (lastUpdated) {
     queryParam += `&lastUpdated=${lastUpdated}`;
   }
 
+  if (lastUpdatedStart) {
+    queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+  }
+
+  if (lastUpdatedEnd) {
+    queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
+  }
+
   if (createdAt) {
     queryParam += `&createdAt=${createdAt}`;
+  }
+
+  if (createdAtStart) {
+    queryParam += `&createdAtStart=${createdAtStart}`;
+  }
+
+  if (createdAtEnd) {
+    queryParam += `&createdAtEnd=${createdAtEnd}`;
   }
 
   if (serviceArea) {
@@ -142,7 +185,7 @@ export const getOrgQueryUrls = (query) => {
 };
 
 export const getServiceQueryUrls = (query) => {
-  const { serviceArea, verified } = query;
+  const {serviceArea, verified} = query;
   let queryParam = '?';
 
   if (verified) {
@@ -160,7 +203,7 @@ export const getServiceQueryUrls = (query) => {
 
 // TODO: add to utils and test
 export const getUserQueryUrls = (query) => {
-  const { page, type } = query;
+  const {page, type} = query;
   let queryParam = '?';
 
   if (page) {

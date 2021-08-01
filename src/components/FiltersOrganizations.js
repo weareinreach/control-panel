@@ -29,7 +29,6 @@ import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
 import DateFieldPicker from './DateFieldPicker';
 import {useToggle} from '../utils/hooks';
-import {format, compareAsc} from 'date-fns';
 
 const propertyList = [
   additionalInformationProperties,
@@ -100,8 +99,10 @@ const FiltersOrganizations = (props) => {
   const [lastVerifiedStart, setLastVerifiedStart] = useState('');
   const [lastVerifiedEnd, setLastVerifiedEnd] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
+  const [lastUpdatedStart, setLastUpdatedStart] = useState('');
   const [lastUpdatedEnd, setLastUpdatedEnd] = useState('');
   const [createdAt, setCreatedAt] = useState('');
+  const [createdAtStart, setCreatedAtStart] = useState('');
   const [createdAtEnd, setCreatedAtEnd] = useState('');
   const [isVerifiedDateRange, setIsVerifiedDateRange] = useToggle(false);
   const [isUpdatedDateRange, setIsUpdatedDateRange] = useToggle(false);
@@ -140,10 +141,13 @@ const FiltersOrganizations = (props) => {
       tags,
       tagLocale,
       lastVerified,
+      lastVerifiedStart,
       lastVerifiedEnd,
       lastUpdated,
+      lastUpdatedStart,
       lastUpdatedEnd,
       createdAt,
+      createdAtStart,
       createdAtEnd,
     };
 
@@ -200,11 +204,25 @@ const FiltersOrganizations = (props) => {
     return subCategory || category;
   });
 
-  const handleVerifiedDateRange = (e) => {
+  const handleVerifiedDateRange = () => {
     setLastVerified('');
     setLastVerifiedStart('');
     setLastVerifiedEnd('');
     setIsVerifiedDateRange(!isVerifiedDateRange);
+  };
+
+  const handleUpdatedDateRange = () => {
+    setLastUpdated('');
+    setLastUpdatedStart('');
+    setLastUpdatedEnd('');
+    setIsUpdatedDateRange(!isUpdatedDateRange);
+  };
+
+  const handleCreatedDateRange = () => {
+    setCreatedAt('');
+    setCreatedAtStart('');
+    setCreatedAtEnd('');
+    setIsCreatedDateRange(!isCreatedDateRange);
   };
 
   return (
@@ -229,8 +247,6 @@ const FiltersOrganizations = (props) => {
           placeholder="Search on a service area"
           value={serviceArea}
         />
-
-        {/* Start Date Pickers */}
 
         <Flex mt={[0, '2rem !important']}>
           <Box>
@@ -290,17 +306,15 @@ const FiltersOrganizations = (props) => {
                 maxDate={new Date()}
                 selected={lastVerified}
                 onChange={setLastVerified}
-                placeholderText={'Select verified date'}
+                placeholderText={'Select a date'}
                 popperPlacement={'bottom-end'}
               />
             </Box>
           </Flex>
         )}
-        {/* End Verified Date Picker */}
-
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Updated Date:</Text>
+            <Text>Last Updated:</Text>
           </Box>
           <Spacer />
           <Box
@@ -314,42 +328,57 @@ const FiltersOrganizations = (props) => {
             <Switch
               ml={2}
               size="sm"
-              id="updated-range"
-              onChange={setIsUpdatedDateRange}
+              id="verified-range"
+              onChange={handleUpdatedDateRange}
             />
           </Box>
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Box fontSize="xs">
-            {isUpdatedDateRange ? 'Start Date:' : 'Updated Before:'}
-          </Box>
-          <Box>
-            <DateFieldPicker
-              maxDate={new Date()}
-              selected={lastUpdated}
-              onChange={setLastUpdated}
-              placeholderText={
-                isUpdatedDateRange ? 'Select start date' : 'Select updated date'
-              }
-            />
-          </Box>
-        </Flex>
-        {isUpdatedDateRange && (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Box fontSize="xs">End Date:</Box>
-            <Box>
+        {isUpdatedDateRange ? (
+          <Flex alignItems="center" justifyContent="space-evenly">
+            <Box mr={2}>
+              <Text fontSize="xs">Start Date:</Text>
               <DateFieldPicker
-                minDate={lastUpdated}
-                selected={lastUpdatedEnd}
+                id={lastUpdatedStart}
+                maxDate={new Date()}
+                onChange={setLastUpdatedStart}
+                placeholderText={'Select start date'}
+                popperPlacement={'bottom-end'}
+                selected={lastUpdatedStart}
+              />
+            </Box>
+            <Box>
+              <Text fontSize="xs">End Date:</Text>
+              <DateFieldPicker
+                id={lastUpdatedEnd}
+                minDate={lastUpdatedStart}
+                maxDate={new Date()}
                 onChange={setLastUpdatedEnd}
                 placeholderText="Select end date"
+                popperPlacement={'bottom-end'}
+                selected={lastUpdatedEnd}
+              />
+            </Box>
+          </Flex>
+        ) : (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box>
+              <Text fontSize="xs">Last updated before:</Text>
+            </Box>
+            <Box>
+              <DateFieldPicker
+                id={lastUpdated}
+                maxDate={new Date()}
+                selected={lastUpdated}
+                onChange={setLastUpdated}
+                placeholderText={'Select a date'}
+                popperPlacement={'bottom-end'}
               />
             </Box>
           </Flex>
         )}
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Created Date:</Text>
+            <Text>Created At:</Text>
           </Box>
           <Spacer />
           <Box
@@ -363,40 +392,55 @@ const FiltersOrganizations = (props) => {
             <Switch
               ml={2}
               size="sm"
-              id="created-range"
-              onChange={setIsCreatedDateRange}
+              id="verified-range"
+              onChange={handleCreatedDateRange}
             />
           </Box>
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Box fontSize="xs">
-            {isCreatedDateRange ? 'Start Date:' : 'Created Before:'}
-          </Box>
-          <Box>
-            <DateFieldPicker
-              maxDate={new Date()}
-              selected={createdAt}
-              onChange={setCreatedAt}
-              placeholderText={
-                isCreatedDateRange ? 'Select start date' : 'Select created date'
-              }
-            />
-          </Box>
-        </Flex>
-        {isCreatedDateRange && (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Box fontSize="xs">End Date:</Box>
-            <Box>
+        {isCreatedDateRange ? (
+          <Flex alignItems="center" justifyContent="space-evenly">
+            <Box mr={2}>
+              <Text fontSize="xs">Start Date:</Text>
               <DateFieldPicker
-                minDate={createdAt}
-                selected={createdAtEnd}
+                id={createdAtStart}
+                maxDate={new Date()}
+                onChange={setCreatedAtStart}
+                placeholderText={'Select start date'}
+                popperPlacement={'bottom-end'}
+                selected={createdAtStart}
+              />
+            </Box>
+            <Box>
+              <Text fontSize="xs">End Date:</Text>
+              <DateFieldPicker
+                id={createdAtEnd}
+                minDate={createdAtStart}
+                maxDate={new Date()}
                 onChange={setCreatedAtEnd}
                 placeholderText="Select end date"
+                popperPlacement={'bottom-end'}
+                selected={createdAtEnd}
+              />
+            </Box>
+          </Flex>
+        ) : (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box>
+              <Text fontSize="xs">Created before:</Text>
+            </Box>
+            <Box>
+              <DateFieldPicker
+                id={createdAt}
+                maxDate={new Date()}
+                selected={createdAt}
+                onChange={setCreatedAt}
+                placeholderText={'Select a date'}
+                popperPlacement={'bottom-end'}
               />
             </Box>
           </Flex>
         )}
-        {/* <br /> */}
+
         <Text mt={[0, '2rem !important']}>Publish Status:</Text>
         <Checkbox
           isChecked={isPublished}

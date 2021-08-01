@@ -16,7 +16,7 @@ Container.propTypes = {
 };
 
 export const Layout = ({children, ...rest}) => (
-  <ChakraBox maxWidth="1400px" margin="auto" padding={4} {...rest}>
+  <ChakraBox maxWidth="1500px" margin="auto" padding={4} {...rest}>
     {children}
   </ChakraBox>
 );

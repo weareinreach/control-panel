@@ -3844,6 +3844,11 @@
       "type": "checkbox"
     },
     {
+      "key": "lang-maya",
+      "label": "lang-maya",
+      "type": "checkbox"
+    },
+    {
       "key": "lang-mexican-sign-language",
       "label": "lang-mexican-sign-language",
       "type": "checkbox"
@@ -3851,6 +3856,11 @@
     {
       "key": "lang-mien",
       "label": "lang-mien",
+      "type": "checkbox"
+    },
+    {
+      "key": "lang-mixteco",
+      "label": "lang-mixteco",
       "type": "checkbox"
     },
     {

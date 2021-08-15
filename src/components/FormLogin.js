@@ -50,7 +50,7 @@ const Login = () => {
   return (
     <Flex align="center" justify="center" padding={4}>
       <Box flex="1" padding={5} rounded="md" borderWidth="1px" maxWidth="400px">
-        <SectionTitle>Login</SectionTitle>
+        <SectionTitle data-test-id="form-login-title">Login</SectionTitle>
         <Stack paddingTop={4} spacing={4}>
           {isSuccess && (
             <Alert
@@ -66,13 +66,14 @@ const Login = () => {
               type="error"
             />
           )}
-          <Input placeholder="Email" onChange={setEmail} value={email} />
+          <Input data-test-id="login-form-email-input" placeholder="Email" onChange={setEmail} value={email} />
           <PasswordInput
             placeholder="Password"
             onChange={setPassword}
             value={password}
           />
           <Button
+            data-test-id="login-form-submit"
             isLoading={isLoading}
             onClick={loginUser}
             loadingText="Logging..."

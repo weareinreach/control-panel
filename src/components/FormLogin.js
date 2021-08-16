@@ -73,7 +73,7 @@ const Login = () => {
             value={password}
           />
           <Button
-            data-test-id="login-form-submit"
+            data-test-id="login-form-submit-button"
             isLoading={isLoading}
             onClick={loginUser}
             loadingText="Logging..."

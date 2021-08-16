@@ -26,10 +26,10 @@ Cypress.Commands.add('testLoginPageElements',(viewport)=>{
     });
 });
 
-Cypress.Commands.add('testLoginPageLoginActionBadCreds',(viewport,credentials)=>{
+Cypress.Commands.add('testLoginPageLoginActionBadCreds',(viewport,username,password)=>{
     cy.viewport(viewport);
-    cy.getElementByTestId('login-form-email-input').type(credentials.username);
-    cy.getElementByTestId('login-form-password-input').type(credentials.password);
+    cy.getElementByTestId('login-form-email-input').type(username);
+    cy.getElementByTestId('login-form-password-input').type(password);
     cy.getElementByTestId('password-input-show-button').click();
     cy.getElementByTestId('login-form-submit-button').click();
     //Verify Unable to Login Alert
@@ -47,6 +47,31 @@ Cypress.Commands.add('testLoginPageLoginActionBadCreds',(viewport,credentials)=>
     cy.getElementByTestId('alert-description').then($element=>{
         expect($element).to.be.visible;
         expect($element).contain('Please try again.');
+    });
+
+});
+
+Cypress.Commands.add('testLoginPageLoginActionGoodCreds',(viewport,username,password)=>{
+    cy.viewport(viewport);
+    cy.getElementByTestId('login-form-email-input').type(username);
+    cy.getElementByTestId('login-form-password-input').type(password);
+    cy.getElementByTestId('password-input-show-button').click();
+    cy.getElementByTestId('login-form-submit-button').click();
+    //Verify Unable to Login Alert
+    cy.getElementByTestId('alert-container').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('role','alert');
+    });
+    cy.getElementByTestId('alert-icon').then($element=>{
+        expect($element).to.be.visible;
+    });
+    cy.getElementByTestId('alert-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Success.');
+    });
+    cy.getElementByTestId('alert-description').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Redirecting to the portal');
     });
 
 });

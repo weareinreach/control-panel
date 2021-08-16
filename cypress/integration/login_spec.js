@@ -11,10 +11,10 @@ describe('Home Page Login Form Tests', () => {
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
-        cy.fixture('login_creds_good.json').as('user_good');
-        cy.fixture('login_creds_bad.json').as('user_bad');
+        cy.fixture('user_new.json').as('user_good');
     });
     afterEach(() => {
+        cy.deleteUsersIfExist();
     });
 
     viewports.forEach(viewport=>{
@@ -23,15 +23,15 @@ describe('Home Page Login Form Tests', () => {
                 cy.testLoginPageElements(viewport);
             });
             it('Testing Login Bad Creds',()=>{
-                cy.get('@user_bad').then(creds => {
-                    cy.testLoginPageLoginActionBadCreds(viewport,creds);
+                cy.testLoginPageLoginActionBadCreds(viewport,'bogusemail@gmail.com','password');
+            });
+            it('Testing Login Good Creds',()=>{
+                cy.get('@user_good').then(user => {
+                    cy.addUser(user).then(()=>{
+                        cy.testLoginPageLoginActionGoodCreds(viewport,user.email,user.password);
+                    });
                 });
             });
-            // it('Testing Login Good Creds',()=>{
-            //     cy.get('@user_good').then(creds => {
-            //         cy.testLoginPageLoginAction(viewport,creds);
-            //     });
-            // });
         });
     });
 });

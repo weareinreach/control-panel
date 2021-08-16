@@ -27,6 +27,12 @@ Cypress.Commands.add('getElementByTestId',(id_name =>{
     return cy.get(`[data-test-id=${id_name}]`);
 }));
 
+Cypress.Commands.add('login',(username,password)=>{
+    cy.getElementByTestId('login-form-email-input').type(username);
+    cy.getElementByTestId('login-form-password-input').type(password);
+    cy.getElementByTestId('login-form-submit-button').click();
+});
+
 // -------------- User Commands -----------------
 let compoundURL = null;
 

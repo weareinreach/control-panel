@@ -20,7 +20,7 @@ Cypress.Commands.add('testLoginPageElements',(viewport)=>{
         expect($element).to.be.visible;
         expect($element).to.have.attr('type','button');
     });
-    cy.getElementByTestId('login-form-submit-button').them($element=>{
+    cy.getElementByTestId('login-form-submit-button').then($element=>{
         expect($element).to.be.visible;
         expect($element).to.have.attr('type','button');
     });

@@ -14,7 +14,8 @@ const OrganizationAutocomplete = (props) => {
     handleBlurOrganizations,
     organizations,
     orgSelection,
-    orgQuery,
+    orgQuery
+
   } = props;
   const getSuggestionValue = (suggestion) => suggestion.name;
   const renderSuggestion = (suggestion, {orgQuery, isHighlighted}) => {

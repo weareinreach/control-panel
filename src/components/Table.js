@@ -60,7 +60,7 @@ const Table = (props) => {
   const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
 
   return (
-    <StyledTable>
+    <StyledTable data-test-id="table">
       {isKeyValue && (
         <colgroup>
           <col width="150" />
@@ -70,8 +70,8 @@ const Table = (props) => {
         <thead>
           <tr>
             {headers?.map(({key, label}) => (
-              <th key={key}>
-                <Text color="gray.500" fontSize="md" fontWeight="bold">
+              <th key={key} data-test-id="table-header">
+                <Text data-test-id="table-header-text" color="gray.500" fontSize="md" fontWeight="bold">
                   {label}
                 </Text>
               </th>
@@ -83,7 +83,7 @@ const Table = (props) => {
       <tbody>
         {rows?.map((row, rowIndex) => {
           return (
-            <tr key={rowIndex}>
+            <tr key={rowIndex} data-test-id="table-row">
               {headers?.map(({key, getValue}, keyIndex) => {
                 let value = row?.[key];
 
@@ -95,7 +95,7 @@ const Table = (props) => {
                   value = 'NO';
                 }
 
-                const children = <Text fontSize="md">{value}</Text>;
+                const children = <Text data-test-id="table-row-text" fontSize="md">{value}</Text>;
 
                 return (
                   <td key={keyIndex}>

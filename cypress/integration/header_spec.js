@@ -12,9 +12,9 @@ describe('Home Page Login Form Tests', () => {
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
-
     });
     afterEach(() => {
+        cy.deleteUsersIfExist();
     });
 
     viewports.forEach(viewport=>{

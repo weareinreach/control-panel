@@ -61,17 +61,17 @@ export const scheduleHeaders = [
     type: 'select',
     placeholder: 'Select a timezone',
     options: [
-      { label: 'AKST', value: 'AKST' },
-      { label: 'AST', value: 'AST' },
-      { label: 'CDT', value: 'CDT' },
-      { label: 'CST', value: 'CST' },
-      { label: 'EST', value: 'EST' },
-      { label: 'HST', value: 'HST' },
-      { label: 'MDT', value: 'MDT' },
-      { label: 'MST', value: 'MST' },
-      { label: 'NST', value: 'NST' },
-      { label: 'PDT', value: 'PDT' },
-      { label: 'PST', value: 'PST' },
+      {label: 'AKST', value: 'AKST'},
+      {label: 'AST', value: 'AST'},
+      {label: 'CDT', value: 'CDT'},
+      {label: 'CST', value: 'CST'},
+      {label: 'EST', value: 'EST'},
+      {label: 'HST', value: 'HST'},
+      {label: 'MDT', value: 'MDT'},
+      {label: 'MST', value: 'MST'},
+      {label: 'NST', value: 'NST'},
+      {label: 'PDT', value: 'PDT'},
+      {label: 'PST', value: 'PST'},
     ],
   },
   {key: 'note', label: 'Note', type: 'textarea'},
@@ -178,6 +178,7 @@ export const getOrgQueryUrls = (query) => {
     queryParam += `&tagLocale=${tagLocale}&tags=${tags.join(',')}`;
   }
 
+  console.log(`/organizations/count${queryParam === '?' ? '' : queryParam}`);
   return {
     organizations: `/organizations${queryParam === '?' ? '' : queryParam}`,
     count: `/organizations/count${queryParam === '?' ? '' : queryParam}`,

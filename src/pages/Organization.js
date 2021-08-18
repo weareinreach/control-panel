@@ -1,6 +1,6 @@
 import {delete as httpDelete, patch, post} from 'axios';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {Box, Button, Stack} from '@chakra-ui/react';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -16,7 +16,7 @@ import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import {Text} from '@chakra-ui/react';
 
 import {
   emailFields,
@@ -48,7 +48,7 @@ const Organization = (props) => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data: organization, loading} = useAPIGet(orgPath);
-
+  const [isSearch, setIsSearch] = useState(true);
   const {
     _id,
     alert_message,
@@ -345,13 +345,21 @@ const Organization = (props) => {
       });
     };
 
-  const openSocialMediaForm = ({isEdit = false, isDelete = false, profile = {}}) => {
+  const openSocialMediaForm = ({
+    isEdit = false,
+    isDelete = false,
+    profile = {},
+  }) => {
     return openModal({
       form: {
         fields: isDelete ? null : socialMediaFields,
         initialValues: profile,
       },
-      header: isEdit ? `Edit Social Media profile`: isDelete ? `Delete Social Media profile` : `New Social Media Profile`,
+      header: isEdit
+        ? `Edit Social Media profile`
+        : isDelete
+        ? `Delete Social Media profile`
+        : `New Social Media Profile`,
       isAlert: isDelete,
       onClose: closeModal,
       onConfirm: updateListField('social_media', {isEdit, isDelete}),
@@ -384,11 +392,16 @@ const Organization = (props) => {
         onClose: closeModal,
         onConfirm: ({setLoading, setSuccess, setError, values}) => {
           const notes_data = {...values, created_at: Date.now()};
-          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
-        }
+          updateListField('notes_log')({
+            setLoading,
+            setSuccess,
+            setError,
+            values: notes_data,
+          });
+        },
       });
     };
- 
+
   if (loading) {
     return <Loading />;
   }
@@ -404,6 +417,8 @@ const Organization = (props) => {
         <Alert title="This organization is unpublished" type="warning" />
       )}
       <Box float="right">
+        {isSearch && <Button>Back to search results</Button>}
+
         <DropdownButton
           buttonText="Select a language"
           items={[
@@ -605,9 +620,14 @@ const Organization = (props) => {
                     actions={[
                       {
                         label: 'Edit',
-                        onClick: (profile) => openSocialMediaForm({isEdit:true, profile}),
+                        onClick: (profile) =>
+                          openSocialMediaForm({isEdit: true, profile}),
                       },
-                      {label: 'Delete', onClick: (profile) => openSocialMediaForm({isDelete: true, profile})},
+                      {
+                        label: 'Delete',
+                        onClick: (profile) =>
+                          openSocialMediaForm({isDelete: true, profile}),
+                      },
                     ]}
                   />
                 </Container>
@@ -625,8 +645,8 @@ const Organization = (props) => {
                   <SectionTitle>Notes</SectionTitle>
                   <Table
                     headers={[
-                      { "key": "note", "label": "Note" },
-                      { "key": "created_at", "label": "Created At" }
+                      {key: 'note', label: 'Note'},
+                      {key: 'created_at', label: 'Created At'},
                     ]}
                     rows={notes_log}
                     actions={[

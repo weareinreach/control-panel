@@ -23,8 +23,10 @@ describe('Home Page Login Form Tests', () => {
                 cy.testHeaderElementsNoLogin(viewport);
             });
             it('Testing Header Elements After Login',()=>{
-                cy.get('@user_good').then(creds=>{
-                    cy.testHeaderElementsLogin(viewport,creds)
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.testHeaderElementsLogin(viewport,user);
+                    });
                 }); 
             });
         });

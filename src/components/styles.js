@@ -3,7 +3,7 @@ import React from 'react';
 import {Box as ChakraBox, Heading as ChakraHeading} from '@chakra-ui/react';
 
 export const Container = ({children, ...rest}) => (
-  <ChakraBox padding={5} rounded="md" borderWidth="1px" {...rest}>
+  <ChakraBox data-test-id="box" padding={5} rounded="md" borderWidth="1px" {...rest}>
     {children}
   </ChakraBox>
 );
@@ -16,7 +16,7 @@ Container.propTypes = {
 };
 
 export const Layout = ({children, ...rest}) => (
-  <ChakraBox maxWidth="1500px" margin="auto" padding={4} {...rest}>
+  <ChakraBox data-test-id="layout" maxWidth="1500px" margin="auto" padding={4} {...rest}>
     {children}
   </ChakraBox>
 );
@@ -29,7 +29,7 @@ Layout.propTypes = {
 };
 
 export const SectionTitle = ({children, ...rest}) => (
-  <ChakraHeading fontSize="xl" marginBottom={2} {...rest}>
+  <ChakraHeading data-test-id="section-title" fontSize="xl" marginBottom={2} {...rest}>
     {children}
   </ChakraHeading>
 );
@@ -42,7 +42,7 @@ SectionTitle.propTypes = {
 };
 
 export const Title = ({children, ...rest}) => (
-  <ChakraHeading fontSize="2xl" marginBottom={6} {...rest}>
+  <ChakraHeading data-test-id="title" fontSize="2xl" marginBottom={6} {...rest}>
     {children}
   </ChakraHeading>
 );

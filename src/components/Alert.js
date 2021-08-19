@@ -11,10 +11,10 @@ const Alert = (props) => {
   const {description, title, type} = props;
 
   return (
-    <ChakraAlert marginBottom={4} status={type}>
-      <AlertIcon />
-      {title && <AlertTitle mr={2}>{title}</AlertTitle>}
-      {description && <AlertDescription>{description}</AlertDescription>}
+    <ChakraAlert data-test-id="alert-container" marginBottom={4} status={type}>
+      <AlertIcon data-test-id="alert-icon"/>
+      {title && <AlertTitle mr={2} data-test-id="alert-title">{title}</AlertTitle>}
+      {description && <AlertDescription data-test-id="alert-description">{description}</AlertDescription>}
     </ChakraAlert>
   );
 };

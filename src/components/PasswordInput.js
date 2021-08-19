@@ -11,6 +11,7 @@ const PasswordInput = (props) => {
   return (
     <InputGroup size="md" {...rest}>
       <Input
+        data-test-id="login-form-password-input"
         pr="4.5rem"
         type={showPassword ? 'text' : 'password'}
         onChange={onChange}
@@ -19,7 +20,7 @@ const PasswordInput = (props) => {
         {...rest}
       />
       <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={toggleShowPassword}>
+        <Button h="1.75rem" size="sm" onClick={toggleShowPassword} data-test-id="password-input-show-button">
           {showPassword ? 'Hide' : 'Show'}
         </Button>
       </InputRightElement>

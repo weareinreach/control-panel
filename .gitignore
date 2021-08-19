@@ -26,3 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 .vscode/
 
+cypressCoverage
+cypress/videos
+cypress/screenshots
+reports

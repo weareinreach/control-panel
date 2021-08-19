@@ -276,7 +276,6 @@ const FiltersOrganizations = (props) => {
             <Box mr={2}>
               <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
               <DateFieldPicker
-                data-test-id="filter-start-date-field-picker"
                 id={lastVerifiedStart}
                 maxDate={new Date()}
                 onChange={setLastVerifiedStart}
@@ -288,7 +287,6 @@ const FiltersOrganizations = (props) => {
             <Box>
               <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
               <DateFieldPicker
-                data-test-id="filter-end-date-field-picker"
                 id={lastVerifiedEnd}
                 minDate={lastVerifiedStart}
                 maxDate={new Date()}
@@ -302,11 +300,10 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs" data-test-id="filter-last-verified-label">Last verified before:</Text>
+              <Text fontSize="xs" data-test-id="filter-last-verified-before-label">Last verified before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-last-verified">
               <DateFieldPicker
-                data-test-id="filter-last-verified-picker"
                 id={lastVerified}
                 maxDate={new Date()}
                 selected={lastVerified}
@@ -344,7 +341,6 @@ const FiltersOrganizations = (props) => {
             <Box mr={2}>
               <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
               <DateFieldPicker
-                data-test-id="filter-start-date-picker"
                 id={lastUpdatedStart}
                 maxDate={new Date()}
                 onChange={setLastUpdatedStart}
@@ -356,7 +352,6 @@ const FiltersOrganizations = (props) => {
             <Box>
               <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
               <DateFieldPicker
-                data-test-id="filter-end-date-picker"
                 id={lastUpdatedEnd}
                 minDate={lastUpdatedStart}
                 maxDate={new Date()}
@@ -372,9 +367,8 @@ const FiltersOrganizations = (props) => {
             <Box>
               <Text fontSize="xs" data-test-id="filter-last-updated-date-label">Last updated before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-last-updated">
               <DateFieldPicker
-                data-test-id="filter-last-updated-picker"
                 id={lastUpdated}
                 maxDate={new Date()}
                 selected={lastUpdated}
@@ -438,9 +432,8 @@ const FiltersOrganizations = (props) => {
             <Box>
               <Text fontSize="xs" data-test-id="filter-created-before-label">Created before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-created-before">
               <DateFieldPicker
-                data-test-id="filter-created-before-picker"
                 id={createdAt}
                 maxDate={new Date()}
                 selected={createdAt}

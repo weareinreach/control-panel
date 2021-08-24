@@ -50,7 +50,7 @@ const Stats = () => {
   return (
     <>
       <Helmet title="Stats" />
-      <Title>Stats</Title>
+      <Title data-test-id="stats-title">Stats</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
         <Box>
           {loading ? (
@@ -59,14 +59,14 @@ const Stats = () => {
             <>
               <Container>
                 <Box>
-                  <SectionTitle>Verified Organizations</SectionTitle>
-                  <Table headers={headers} rows={orgStats} />
+                  <SectionTitle data-test-id="stats-section-title-organizations">Verified Organizations</SectionTitle>
+                  <Table data-test-id="stats-table-organizations" headers={headers} rows={orgStats} />
                 </Box>
               </Container>
               <Container marginTop={8}>
                 <Box>
-                  <SectionTitle>Verified Services</SectionTitle>
-                  <Table headers={headers} rows={serviceStats} />
+                  <SectionTitle data-test-id="stats-section-title-services">Verified Services</SectionTitle>
+                  <Table data-test-id="stats-table-services" headers={headers} rows={serviceStats} />
                 </Box>
               </Container>
             </>

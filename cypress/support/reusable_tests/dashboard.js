@@ -31,6 +31,10 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
         expect($element).contain('Filter Organizations');
     });
     
+    cy.getElementByTestId('filter-org-input').then($element=>{
+        expect($element).to.be.visible;
+    });
+
     cy.getElementByTestId('filter-organizations-box').then($element=>{
         expect($element).to.be.visible;
     });
@@ -145,3 +149,32 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
 
     
 });
+
+
+Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('table-row').then($element=>{
+        cy.wrap($element[0]).click();
+    });
+});
+
+Cypress.Commands.add('testDashboardSearchForOrg',(viewport,creds,org)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('filter-org-input').type(org);
+    cy.getElementByTestId('filter-button-search').click({force:true});
+    cy.wait(1000);
+    cy.getElementByTestId('table-row-text').then($element=>{
+        cy.wrap($element).each(($el)=>{
+            const text =  $el.text()
+            if(text === org){
+                cy.wrap($el).click();
+            }
+        })
+    });
+    
+});
+

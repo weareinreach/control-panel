@@ -231,6 +231,7 @@ const FiltersOrganizations = (props) => {
       <Stack data-test-id="filter-organizations-box">
         <Text data-test-id="filter-name-label">Name:</Text>
         <OrganizationAutocomplete
+          data-test-id="filter-organization-input"
           setOrgSelection={setOrgSelection}
           setOrgQuery={setOrgQuery}
           onOrgFetchRequested={onOrgFetchRequested}

@@ -12,6 +12,7 @@ describe('Home Page Login Form Tests', () => {
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
+        cy.fixture('organization_search.json').as('organization');
     });
     afterEach(() => {
         cy.deleteUsersIfExist();
@@ -23,6 +24,22 @@ describe('Home Page Login Form Tests', () => {
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testDashboardElements(viewport,user);
+                });
+            });
+           });
+           it('Test Dashboard Actions Box1',()=>{
+            cy.get('@user_good').then(user => {
+                cy.addUser(user).then(()=>{
+                    cy.testDashboardClickOnOrg(viewport,user); 
+                });
+            });
+           });
+           it('Test Dashboard Actions Box2',()=>{
+            cy.get('@user_good').then(user => {
+                  cy.addUser(user).then(()=>{
+                   cy.get('@organization').then(org=>{
+                    cy.testDashboardSearchForOrg(viewport,user,org.organization);
+                   });
                 });
             });
            });

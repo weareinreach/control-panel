@@ -23,7 +23,7 @@ const OrganizationAutocomplete = (props) => {
     const parts = parse(suggestion.name, matches);
     return (
       <div selected={isHighlighted}>
-        <div>
+        <div data-test-id="organization-item">
           {parts.map((part, index) => {
             return part.highlight ? (
               <span key={index} style={{fontWeight: 300}}>
@@ -75,6 +75,7 @@ const OrganizationAutocomplete = (props) => {
     onChange: setOrgQuery,
   };
   return (
+    <div data-test-id="filter-org-input">
       <Autosuggest
         inputProps={inputProps}
         suggestions={organizations}
@@ -93,6 +94,7 @@ const OrganizationAutocomplete = (props) => {
           inputFocused: inputStyles.inputFocused
         }}
       />
+      </div>
   );
 };
 

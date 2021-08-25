@@ -16,6 +16,17 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
         expect($element).to.have.lengthOf(2);
     });
 
+    cy.getElementByTestId('table-header-text').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.lengthOf(4);
+        expect($element[0]).contain("Country");
+        expect($element[1]).contain("Count");
+    });
+
+    cy.getElementByTestId('table-row-text').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.lengthOf(16);
+    });
 
     cy.getElementByTestId('stats-section-title-services').then($element=>{
         expect($element).to.be.visible;
@@ -23,4 +34,4 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
     });
 
 
-})
+});

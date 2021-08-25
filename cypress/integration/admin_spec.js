@@ -20,10 +20,17 @@ describe('Home Page Login Form Tests', () => {
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-           it('Test Dashboard Elements',()=>{
+           it('Test Admin Elements',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
-                    cy.testStatsPageElements(viewport,user);
+                    cy.testAdminPageElements(viewport,user);
+                });
+            });
+           });
+           it('Test Admin Filter Users ',()=>{
+            cy.get('@user_good').then(user => {
+                cy.addUser(user).then(()=>{
+                    cy.testAdminFilterUsers(viewport,user);
                });
             });
            });

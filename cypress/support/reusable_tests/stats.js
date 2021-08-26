@@ -25,7 +25,7 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
 
     cy.getElementByTestId('table-row-text').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.lengthOf(16);
+        expect($element).to.have.length.greaterThan(2);
     });
 
     cy.getElementByTestId('stats-section-title-services').then($element=>{

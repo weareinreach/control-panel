@@ -80,7 +80,7 @@ Cypress.Commands.add('testAdminPageElements',(viewport,creds)=>{
 
     cy.getElementByTestId('pagination-page').then($element=>{
         expect($element).to.be.visible;
-    })
+    });
     
 });
 
@@ -115,7 +115,7 @@ Cypress.Commands.add('testAdminFilterUsers',(viewport,creds)=>{
     });
 });
 
-Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds,newuser)=>{
+Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
@@ -158,6 +158,37 @@ Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds,newu
         expect($element).to.have.attr('type','button');
         expect($element).contain('Save Changes');
     });
+});
 
+Cypress.Commands.add('testAdminFilterAddNewManagerAction',(viewport,creds,admin)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
 
-})
+    cy.getElementByTestId('header-admin-link').click();
+    cy.getElementByTestId('admin-users-new-manager').click();
+    
+    cy.getElementByTestId('name').type(admin.name);
+    cy.getElementByTestId('email').type(admin.email);
+    cy.getElementByTestId('isAdminDataManager').then($element=>{
+        cy.wrap($element.children()).click();
+    });
+
+    cy.getElementByTestId('modal-save-button').click();
+    cy.wait(500);
+    //Reload Page
+    cy.reload();
+    cy.getElementByTestId('table-row-text').then($element=>{
+        cy.wrap($element).each(($el)=>{
+            const text =  $el.text()
+            if(text === admin.name){
+                //Delete Admin
+                cy.getElementByTestId('table-row-action').then($element=>{
+                    cy.wrap($element[0]).click();
+                    cy.getElementByTestId('modal-save-button').click();
+                });
+            }
+        });
+    });
+
+    
+});

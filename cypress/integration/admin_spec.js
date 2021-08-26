@@ -13,6 +13,7 @@ describe('Home Page Login Form Tests', () => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
         cy.fixture('organization_search.json').as('organization');
+        cy.fixture('admin_new.json').as('admin');
     });
     afterEach(() => {
         cy.deleteUsersIfExist();
@@ -34,14 +35,15 @@ describe('Home Page Login Form Tests', () => {
                });
             });
            });
-           it('Test Adding New Manager',()=>{
+           it.only('Test Adding New Manager',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
-                    cy.testAdminFilterAddNewManagerElements(viewport,user,null);
-               });
+                    cy.get('@admin').then(admin=>{
+                        cy.testAdminFilterAddNewManagerAction(viewport,user,admin);
+                    });
+                });
             });
            });
         });
     });
-
 });

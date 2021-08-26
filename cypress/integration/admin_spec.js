@@ -27,10 +27,17 @@ describe('Home Page Login Form Tests', () => {
                 });
             });
            });
-           it('Test Admin Filter Users ',()=>{
+           it('Test Admin Filter Users',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testAdminFilterUsers(viewport,user);
+               });
+            });
+           });
+           it('Test Adding New Manager',()=>{
+            cy.get('@user_good').then(user => {
+                cy.addUser(user).then(()=>{
+                    cy.testAdminFilterAddNewManagerElements(viewport,user,null);
                });
             });
            });

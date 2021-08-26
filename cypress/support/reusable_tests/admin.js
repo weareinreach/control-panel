@@ -101,4 +101,63 @@ Cypress.Commands.add('testAdminFilterUsers',(viewport,creds)=>{
         expect($element).to.be.visible;
         expect($element).contain('Please refine your search');
     });
+    
+    cy.getElementByTestId('filter-users-search').select('dataManager');
+    cy.getElementByTestId('filter-users-search-button').click();
+    cy.wait(500)
+    //should be populated
+    cy.getElementByTestId('table').then($element=>{
+        expect($element).to.be.visible;
+    });
+    cy.getElementByTestId('table-row').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.length.greaterThan(1);
+    });
 });
+
+Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds,newuser)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('header-admin-link').click();
+    cy.getElementByTestId('admin-users-new-manager').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Data Manager');
+    });
+    cy.getElementByTestId('modal-close-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        expect($element.children()[1]).to.have.attr('name','name');
+        expect($element.children()[1]).to.have.attr('placeholder',"Enter the manager's name");
+        
+    });
+    cy.getElementByTestId('email').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Email');
+        expect($element.children()[1]).to.have.attr('name','email');
+        expect($element.children()[1]).to.have.attr('placeholder',"Enter the manager's email");
+    });
+
+    cy.getElementByTestId('isAdminDataManager').then($element=>{
+        expect($element).to.be.visible;
+    });
+
+    cy.getElementByTestId('modal-cancel-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Cancel');
+    });
+
+    cy.getElementByTestId('modal-save-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Save Changes');
+    });
+
+
+})

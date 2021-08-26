@@ -76,7 +76,7 @@
     "sourceMap": false,
     "instrument": false,
     "excludeAfterRemap": false,
-    "all": true,
+    "all": false,
     "include": [
       "**/src/*"
     ],

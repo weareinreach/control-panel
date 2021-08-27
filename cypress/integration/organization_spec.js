@@ -7,7 +7,7 @@
 //Test Suite
 describe('Home Page Login Form Tests', () => {
 
-    let viewports = [Cypress.env('desktop')];//,Cypress.env('tablet'),Cypress.env('mobile')];
+    let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
@@ -15,16 +15,16 @@ describe('Home Page Login Form Tests', () => {
         cy.fixture('organization_search.json').as('organization');
     });
     afterEach(() => {
-        //cy.deleteUsersIfExist();
+        cy.deleteUsersIfExist();
     });
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
             it('Testing Organization Page Elements',()=>{
                 cy.get('@user_good').then(user=>{
-                    //cy.addUser(user).then(()=>{
+                    cy.addUser(user).then(()=>{
                         cy.testOrganizationDetailsElements(viewport,user);
-                  //  });
+                    });
                 });
             });  
         });

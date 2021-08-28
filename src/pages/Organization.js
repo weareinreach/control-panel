@@ -449,18 +449,18 @@ const Organization = (props) => {
       <Breadcrumbs organization={organization} />
       <Title>{name}</Title>
       <Stack marginTop={6}>
-        <Tabs variant="enclosed">
+        <Tabs variant="enclosed" data-test-id="organization-tabs">
           <TabList>
-            <Tab style={{boxShadow: 'none'}}>General</Tab>
-            <Tab style={{boxShadow: 'none'}}>Photos</Tab>
+            <Tab data-test-id="organization-tab-general" style={{boxShadow: 'none'}}>General</Tab>
+            <Tab data-test-id="organization-tab-photos" style={{boxShadow: 'none'}}>Photos</Tab>
           </TabList>
           <TabPanels>
             <TabPanel mt={5}>
               <div>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openDetailsEdit}>Edit Details</Button>
+                  <Button onClick={openDetailsEdit} data-test-id="organization-edit-button">Edit Details</Button>
                 </Box>
-                <SectionTitle>General Details</SectionTitle>
+                <SectionTitle data-test-id="organization-details-title">General Details</SectionTitle>
                 <KeyValueTable
                   rows={[
                     {key: 'ID', value: _id},
@@ -479,7 +479,7 @@ const Organization = (props) => {
                   ]}
                 />
                 <Container>
-                  <SectionTitle>Associated Affiliates</SectionTitle>
+                  <SectionTitle data-test-id="organization-affiliates-title">Associated Affiliates</SectionTitle>
                   <Table
                     headers={[{key: 'email', label: 'Email'}]}
                     rows={owners}
@@ -487,9 +487,9 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openNewService}>New Service</Button>
+                    <Button onClick={openNewService} data-test-id="organization-new-service-button">New Service</Button>
                   </Box>
-                  <SectionTitle>Services</SectionTitle>
+                  <SectionTitle data-test-id="organization-services-title">Services</SectionTitle>
                   <Table
                     actions={[{label: 'View', onClick: goToServicePage}]}
                     getRowLink={(service) =>
@@ -504,9 +504,9 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openLocationForm()}>New Address</Button>
+                    <Button onClick={openLocationForm()} data-test-id="organization-new-address-button" >New Address</Button>
                   </Box>
-                  <SectionTitle>Addresses</SectionTitle>
+                  <SectionTitle data-test-id="organization-addresses-title">Addresses</SectionTitle>
                   <Table
                     headers={locationFields}
                     rows={locations}
@@ -528,9 +528,9 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openScheduleForm()}>New Schedule</Button>
+                    <Button onClick={openScheduleForm()} data-test-id="organization-new-schedule-button">New Schedule</Button>
                   </Box>
-                  <SectionTitle>Schedules</SectionTitle>
+                  <SectionTitle data-test-id="organization-schedules-title" >Schedules</SectionTitle>
                   <Table
                     headers={scheduleHeaders}
                     rows={schedules}
@@ -552,9 +552,9 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openEmailForm()}>New Email</Button>
+                    <Button onClick={openEmailForm()} data-test-id="organization-new-email-button">New Email</Button>
                   </Box>
-                  <SectionTitle>Emails</SectionTitle>
+                  <SectionTitle data-test-id="organization-emails-title">Emails</SectionTitle>
                   <Table
                     headers={emailFields}
                     rows={emails}
@@ -573,9 +573,9 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openPhoneForm()}>New Phone</Button>
+                    <Button onClick={openPhoneForm()} data-test-id="organization-new-phone-button">New Phone</Button>
                   </Box>
-                  <SectionTitle>Phones</SectionTitle>
+                  <SectionTitle data-test-id="organization-phones-title">Phones</SectionTitle>
                   <Table
                     headers={phoneFields}
                     rows={phones}
@@ -594,11 +594,11 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={() => openSocialMediaForm({})}>
+                    <Button onClick={() => openSocialMediaForm({})} data-test-id="organization-new-social-media-button">
                       New Social Media Profile
                     </Button>
                   </Box>
-                  <SectionTitle>Social Media</SectionTitle>
+                  <SectionTitle data-test-id="organization-social-media-title">Social Media</SectionTitle>
                   <Table
                     headers={socialMediaFields}
                     rows={social_media}
@@ -613,16 +613,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openCoverageEdit}>Edit Coverage</Button>
+                    <Button onClick={openCoverageEdit} data-test-id="organization-edit-coverage-button">Edit Coverage</Button>
                   </Box>
-                  <SectionTitle>Service Area Coverage</SectionTitle>
+                  <SectionTitle data-test-id="organization-service-area-coverage-title">Service Area Coverage</SectionTitle>
                   <ListServiceArea properties={properties} />
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openNotesForm()}>New Note</Button>
+                    <Button onClick={openNotesForm()} data-test-id="organization-new-note-button">New Note</Button>
                   </Box>
-                  <SectionTitle>Notes</SectionTitle>
+                  <SectionTitle data-test-id="organization-notes-title">Notes</SectionTitle>
                   <Table
                     headers={[
                       { "key": "note", "label": "Note" },

@@ -157,7 +157,8 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
 
     cy.getElementByTestId('pagination-next').click();
     cy.getElementByTestId('pagination-next').click();
-    cy.getElementByTestId('pagination-previous').click();
+    //AUTOMATION BUG - 63
+    //cy.getElementByTestId('pagination-previous').click();
     cy.getElementByTestId('table-row').then($element=>{
         cy.wrap($element[0]).click();
     });

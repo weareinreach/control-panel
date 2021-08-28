@@ -5,7 +5,7 @@
 //compound url
 
 //Test Suite
-describe('Home Page Login Form Tests', () => {
+describe('Header Form Tests', () => {
 
     let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 

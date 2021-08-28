@@ -24,8 +24,8 @@ const Breadcrumbs = (props) => {
       separator={<FaChevronDown />}
     >
       <BreadcrumbItem>
-        <BreadcrumbLink href="/">
-          <Text {...textProps}>Organizations</Text>
+        <BreadcrumbLink data-test-id="bread-crumbs-link" href="/">
+          <Text {...textProps} data-test-id="bread-crumbs-title">Organizations</Text>
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem>
@@ -33,7 +33,7 @@ const Breadcrumbs = (props) => {
           href={`/organizations/${organization?._id}`}
           isCurrentPage={!hasService}
         >
-          <Text {...textProps}>
+          <Text {...textProps} data-test-id="bread-crumbs-organization-name">
             {organization?.name || 'Organization Name'}
           </Text>
         </BreadcrumbLink>
@@ -41,7 +41,7 @@ const Breadcrumbs = (props) => {
       {hasService && (
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink href="#">
-            <Text {...textProps}>{service?.name || 'Service Name'}</Text>
+            <Text {...textProps} data-test-id="bread-crumbs-services-name">{service?.name || 'Service Name'}</Text>
           </BreadcrumbLink>
         </BreadcrumbItem>
       )}

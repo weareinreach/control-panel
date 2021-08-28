@@ -5,7 +5,7 @@
 //compound url
 
 //Test Suite
-describe('Home Page Login Form Tests', () => {
+describe('Admin Form Tests', () => {
 
     let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 
@@ -35,7 +35,7 @@ describe('Home Page Login Form Tests', () => {
                });
             });
            });
-           it.only('Test Adding New Manager',()=>{
+           it('Test Adding New Manager',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.get('@admin').then(admin=>{

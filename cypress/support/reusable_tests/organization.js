@@ -1,4 +1,4 @@
-Cypress.Commands.add('testOrganizationDetailsElements',(viewport,creds)=>{
+Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
@@ -139,9 +139,60 @@ Cypress.Commands.add('testOrganizationDetailsElements',(viewport,creds)=>{
         expect($element).to.be.visible;
         expect($element).contain('Notes');
     });
+});
 
+Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
 
+    cy.getElementByTestId('table-row').then($element=>{
+        cy.wrap($element[0]).click();
+    });
+
+    cy.getElementByTestId('organization-tab-photos').click();
     
+    cy.getElementByTestId('photos-form-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Photos');
+    });
 
+    cy.getElementByTestId('photos-form-approved-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Approved');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('photos-form-no-approved-photos-text').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('There are no approved photos for this organization.');
+    });
+
+    cy.getElementByTestId('photos-form-all-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('All');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('photos-form-all-button').click().then(()=>{
+        cy.getElementByTestId('photos-form-no-four-square-photos-text').then($element=>{
+            expect($element).to.be.visible;
+            expect($element).contain("We weren't able to find any FourSquare photos for this venue.")
+        });
+    });
+
+    cy.getElementByTestId('photos-form-select-photos').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Select Photos');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('photos-form-cancel-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Cancel');
+    });
 
 });

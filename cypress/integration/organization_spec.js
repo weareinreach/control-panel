@@ -20,10 +20,17 @@ describe('Organization Form Tests', () => {
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-            it('Testing Organization Page Elements',()=>{
+            it('Testing Organization Page General Elements',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
-                        cy.testOrganizationDetailsElements(viewport,user);
+                        cy.testOrganizationDetailsGeneralElements(viewport,user);
+                    });
+                });
+            }); 
+            it('Testing Organization Page Photo Elements',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.testOrganizationDetailsPhotosElements(viewport,user);
                     });
                 });
             });  

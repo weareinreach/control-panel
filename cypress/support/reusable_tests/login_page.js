@@ -73,5 +73,32 @@ Cypress.Commands.add('testLoginPageLoginActionGoodCreds',(viewport,username,pass
         expect($element).to.be.visible;
         expect($element).contain('Redirecting to the portal');
     });
+});
 
+Cypress.Commands.add('testLogOut',(viewport,username,password)=>{
+    cy.viewport(viewport);
+    cy.login(username,password);
+    //Verify Logged in
+    cy.getElementByTestId('layout').then($element =>{
+        expect($element).to.be.visible;
+    });
+    cy.getElementByTestId('header-home-link').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('href','/');
+        expect($element).contain('Home');
+    });
+    //LOG OUT
+    cy.getElementByTestId('drop-down-button-container').click().then(()=>{
+        cy.getElementByTestId('drop-down-item').then($element=>{
+            //second item on the dropdown
+            cy.wrap($element[1]).click();
+        });
+    });
+    //Wait for loggout
+    cy.wait(500);
+    //Verify Logged Out
+    cy.getElementByTestId('layout').then($element =>{
+        expect($element).to.be.visible;
+        expect($element).contain('Login');
+    });
 });

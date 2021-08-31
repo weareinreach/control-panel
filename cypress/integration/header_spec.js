@@ -11,14 +11,23 @@ describe('Home Page Login Form Tests', () => {
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
+        cy.fixture('user_new.json').as('user_good');
     });
     afterEach(() => {
+        cy.deleteUsersIfExist();
     });
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-            it('Testing Header Form Elements',() => {
+            it('Testing Header Elements',() => {
                 cy.testHeaderElementsNoLogin(viewport);
+            });
+            it('Testing Header Elements After Login',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.testHeaderElementsLogin(viewport,user);
+                    });
+                }); 
             });
         });
     });

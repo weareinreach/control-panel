@@ -32,6 +32,13 @@ describe('Home Page Login Form Tests', () => {
                     });
                 });
             });
+            it('Testing Logout',()=>{
+                cy.get('@user_good').then(user => {
+                    cy.addUser(user).then(()=>{
+                        cy.testLogOut(viewport,user.email,user.password);
+                    });
+                });
+            });
         });
     });
 });

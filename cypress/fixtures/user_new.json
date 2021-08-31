@@ -3,5 +3,6 @@
 	"name": "test automation user",
 	"email": "automation@gmail.com",
 	"age": "50",
-    "isDataManager":true
+    "isDataManager":true,
+    "isAdminDataManager":true
 }

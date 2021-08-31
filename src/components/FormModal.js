@@ -104,6 +104,7 @@ const FormModal = (props) => {
               formik.handleSubmit(e);
             }}
             colorScheme={isAlert ? 'red' : 'blue'}
+            data-test-id="modal-save-and-verify-button"
             >
 							Save and Verify
 						</Button>

@@ -3,6 +3,17 @@ Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>
     cy.login(creds.email,creds.password);
     cy.wait(1000);
 
+    cy.getElementByTestId('organization-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Organizations');
+    });
+
+    cy.getElementByTestId('organization-new-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('New Organization');
+    })
+
     cy.getElementByTestId('table-row').then($element=>{
         cy.wrap($element[0]).click();
     });
@@ -198,3 +209,103 @@ Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
     });
 
 });
+
+
+Cypress.Commands.add('testAddingOrganizationAction',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    cy.wait(1000);
+
+    cy.getElementByTestId('organization-new-button').click();
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Organization Name');
+        //Type name
+        expect($element.children()[1]).to.have.attr('name','name');
+        cy.wrap($element.children()[1]).type(organization.name);
+        //Save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+    //Edit Organization
+    cy.getElementByTestId('organization-edit-button').click();
+    
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        expect($element.children()[1]).to.have.attr('value',organization.name);
+    });
+
+    cy.getElementByTestId('name_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name_ES');
+        cy.wrap($element.children()[1]).type(organization.name_es)
+    });
+
+    cy.getElementByTestId('slug').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Slug');
+        expect($element.children()[2]).to.have.attr('value',organization.slug);
+    });
+
+    cy.getElementByTestId('slug_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Slug_ES');
+        cy.wrap($element.children()[2]).type(organization.slug_es);
+    });
+
+    cy.getElementByTestId('website').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Website');
+        cy.wrap($element.children()[1]).type(organization.website);
+    });
+
+    cy.getElementByTestId('website_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Website_ES');
+        cy.wrap($element.children()[1]).type(organization.website_es);
+    });
+
+    cy.getElementByTestId('description').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Description');
+        cy.wrap($element.children()[1]).type(organization.description);
+    });
+
+    cy.getElementByTestId('description_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Description_ES');
+        cy.wrap($element.children()[1]).type(organization.description_es);
+    });
+
+    cy.getElementByTestId('alert_message').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Alert Message');
+        cy.wrap($element.children()[1]).type(organization.alert_message);
+    });
+
+    cy.getElementByTestId('alert_message_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Alert Message_ES');
+        cy.wrap($element.children()[1]).type(organization.alert_message_es)
+    });
+
+    cy.getElementByTestId('is_published').then($element=>{
+        expect($element).to.be.visible;
+    });
+
+    //Save Org
+    cy.getElementByTestId('modal-save-button').click();
+    //Check Modal
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Verify Information for '+organization.name+'?')
+    });
+
+    cy.getElementByTestId('modal-save-and-verify-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Save and Verify');
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
+})

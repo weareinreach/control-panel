@@ -85,3 +85,36 @@ Cypress.Commands.add('deleteUser', (user_id) => {
 	});
 });
 
+// ------------ Organization Commands ------------------
+//Organizations
+Cypress.Commands.add('deleteOrgsIfExist', () => {
+	cy.log('Cleaning Orgs...');
+	compoundURL = Cypress.env('apiUrl').concat(
+		Cypress.env('version'),
+		Cypress.env('route_slug_organizations'),
+		'/surprisingly-unique-org-name'
+	);
+	cy.request({
+		method: 'GET',
+		url: compoundURL,
+		failOnStatusCode: false
+	}).then((response) => {
+		if (!response.body.notFound) {
+			cy.deleteOrgById(response.body._id);
+		}
+	});
+});
+
+
+//Delete Org by ID
+Cypress.Commands.add('deleteOrgById', (id) => {
+	compoundURL = Cypress.env('apiUrl').concat(
+		Cypress.env('version'),
+		Cypress.env('route_organizations'),
+		`/${id}`
+	);
+	cy.request({
+		method: 'DELETE',
+		url: compoundURL
+	});
+});

@@ -82,9 +82,9 @@ const Organizations = () => {
     <>
       <Helmet title="Organizations" />
       <Box float="right">
-        <Button onClick={openNewOrg}>New Organization</Button>
+        <Button data-test-id="organization-new-button" onClick={openNewOrg}>New Organization</Button>
       </Box>
-      <Title>Organizations</Title>
+      <Title data-test-id="organization-title">Organizations</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
         <Box>
           {loading ? (

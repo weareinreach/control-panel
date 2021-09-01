@@ -228,9 +228,10 @@ const FiltersOrganizations = (props) => {
   return (
     <form onSubmit={handleSearch}>
       <SectionTitle>Filter Organizations</SectionTitle>
-      <Stack>
-        <Text>Name:</Text>
+      <Stack data-test-id="filter-organizations-box">
+        <Text data-test-id="filter-name-label">Name:</Text>
         <OrganizationAutocomplete
+          data-test-id="filter-organization-input"
           setOrgSelection={setOrgSelection}
           setOrgQuery={setOrgQuery}
           onOrgFetchRequested={onOrgFetchRequested}
@@ -240,8 +241,9 @@ const FiltersOrganizations = (props) => {
           orgSelection={orgSelection}
           orgQuery={orgQuery}
         />
-        <Text>Service Area Coverage:</Text>
+        <Text data-test-id="filter-service-area-label" >Service Area Coverage:</Text>
         <Input
+          data-test-id="filter-service-area-input"
           onChange={handleServiceAreaChange}
           variant="filled"
           placeholder="Search on a service area"
@@ -250,9 +252,9 @@ const FiltersOrganizations = (props) => {
 
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Last Verified:</Text>
+            <Text data-test-id="filter-last-verified-label">Last Verified:</Text>
           </Box>
-          <Spacer />
+          <Spacer/>
           <Box
             style={{
               display: 'flex',
@@ -260,8 +262,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text fontSize="xs">Use Date Range</Text>
+            <Text  data-test-id="filter-use-date-range-label" fontSize="xs">Use Date Range</Text>
             <Switch
+              data-test-id="filter-last-verified-switch"
               ml={2}
               size="sm"
               id="verified-range"
@@ -272,7 +275,7 @@ const FiltersOrganizations = (props) => {
         {isVerifiedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text fontSize="xs">Start Date:</Text>
+              <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
               <DateFieldPicker
                 id={lastVerifiedStart}
                 maxDate={new Date()}
@@ -283,7 +286,7 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text fontSize="xs">End Date:</Text>
+              <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
               <DateFieldPicker
                 id={lastVerifiedEnd}
                 minDate={lastVerifiedStart}
@@ -298,9 +301,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs">Last verified before:</Text>
+              <Text fontSize="xs" data-test-id="filter-last-verified-before-label">Last verified before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-last-verified">
               <DateFieldPicker
                 id={lastVerified}
                 maxDate={new Date()}
@@ -314,7 +317,7 @@ const FiltersOrganizations = (props) => {
         )}
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Last Updated:</Text>
+            <Text data-test-id="filter-last-updated-label">Last Updated:</Text>
           </Box>
           <Spacer />
           <Box
@@ -324,8 +327,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text fontSize="xs">Use Date Range</Text>
+            <Text data-test-id="filter-use-date-range-label" fontSize="xs">Use Date Range</Text>
             <Switch
+              data-test-id="filter-last-updated-switch"
               ml={2}
               size="sm"
               id="verified-range"
@@ -336,7 +340,7 @@ const FiltersOrganizations = (props) => {
         {isUpdatedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text fontSize="xs">Start Date:</Text>
+              <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
               <DateFieldPicker
                 id={lastUpdatedStart}
                 maxDate={new Date()}
@@ -347,7 +351,7 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text fontSize="xs">End Date:</Text>
+              <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
               <DateFieldPicker
                 id={lastUpdatedEnd}
                 minDate={lastUpdatedStart}
@@ -362,9 +366,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs">Last updated before:</Text>
+              <Text fontSize="xs" data-test-id="filter-last-updated-date-label">Last updated before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-last-updated">
               <DateFieldPicker
                 id={lastUpdated}
                 maxDate={new Date()}
@@ -378,7 +382,7 @@ const FiltersOrganizations = (props) => {
         )}
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text>Created At:</Text>
+            <Text data-test-id="filter-created-label">Created At:</Text>
           </Box>
           <Spacer />
           <Box
@@ -388,8 +392,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text fontSize="xs">Use Date Range</Text>
+            <Text fontSize="xs" data-test-id="filter-date-range-label">Use Date Range</Text>
             <Switch
+              data-test-id="filter-date-range-switch"
               ml={2}
               size="sm"
               id="verified-range"
@@ -400,7 +405,7 @@ const FiltersOrganizations = (props) => {
         {isCreatedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text fontSize="xs">Start Date:</Text>
+              <Text fontSize="xs" data-test-id="filter-start-date-label">Start Date:</Text>
               <DateFieldPicker
                 id={createdAtStart}
                 maxDate={new Date()}
@@ -411,7 +416,7 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text fontSize="xs">End Date:</Text>
+              <Text fontSize="xs" data-test-id="filter-end-date-label">End Date:</Text>
               <DateFieldPicker
                 id={createdAtEnd}
                 minDate={createdAtStart}
@@ -426,9 +431,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs">Created before:</Text>
+              <Text fontSize="xs" data-test-id="filter-created-before-label">Created before:</Text>
             </Box>
-            <Box>
+            <Box data-test-id="date-field-picker-created-before">
               <DateFieldPicker
                 id={createdAt}
                 maxDate={new Date()}
@@ -441,16 +446,18 @@ const FiltersOrganizations = (props) => {
           </Flex>
         )}
 
-        <Text mt={[0, '2rem !important']}>Publish Status:</Text>
+        <Text mt={[0, '2rem !important']} data-test-id="filter-publish-status-label">Publish Status:</Text>
         <Checkbox
+          data-test-id="filter-publish-status-switch"
           isChecked={isPublished}
           onChange={handlePublishChange}
           type="checkbox"
         >
           Published
         </Checkbox>
-        <Text>Properties:</Text>
+        <Text data-test-id="filter-properties-label">Properties:</Text>
         <Select
+          data-test-id="filter-drop-down-property"
           onChange={handleSelect('properties')}
           variant="filled"
           placeholder="Select a property"
@@ -471,8 +478,9 @@ const FiltersOrganizations = (props) => {
             {key}
           </Checkbox>
         ))}
-        <Text>Tags:</Text>
+        <Text data-test-id="filter-tags-label">Tags:</Text>
         <Select
+          data-test-id="filter-drop-down-tags-country"
           onChange={setTagLocale}
           variant="filled"
           placeholder="Select a country"
@@ -483,6 +491,7 @@ const FiltersOrganizations = (props) => {
           <option value="mexico">Mexico</option>
         </Select>
         <Select
+         data-test-id="filter-drop-down-tags"
           onChange={handleSelect('tags')}
           variant="filled"
           placeholder="Select a tag"
@@ -505,6 +514,7 @@ const FiltersOrganizations = (props) => {
         ))}
         <Box textAlign="right">
           <Button
+            data-test-id="filter-button-search"
             display="inline-block"
             onClick={handleSearch}
             colorScheme="blue"

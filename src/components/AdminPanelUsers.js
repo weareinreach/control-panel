@@ -181,9 +181,9 @@ const AdminPanelUsers = (props) => {
   return (
     <>
       <Box float="right">
-        <Button onClick={openCreateModal}>New Manager</Button>
+        <Button data-test-id="admin-users-new-manager"onClick={openCreateModal}>New Manager</Button>
       </Box>
-      <Title>Data Managers</Title>
+      <Title data-test-id="admin-users-title">Data Managers</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
         <Box>
           {loading ? (
@@ -193,15 +193,15 @@ const AdminPanelUsers = (props) => {
                 <Container>
                   <Box>
                     {users?.data?.users?.length > 0 ? (
-                      <Table
+                      <Table 
                         actions={tableActions}
                         headers={tableHeaders}
                         rows={users?.data?.users}
                       />
                     ) : (
                         <Box textAlign="center" padding={4}>
-                          <SectionTitle>No results found.</SectionTitle>
-                          <Text>Please refine your search</Text>
+                          <SectionTitle data-test-id="admin-search-not-found-title">No results found.</SectionTitle>
+                          <Text data-test-id="admin-search-not-found-body">Please refine your search</Text>
                         </Box>
                       )}
                   </Box>

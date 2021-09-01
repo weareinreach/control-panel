@@ -17,19 +17,21 @@ const Pagination = (props) => {
   return (
     <Box marginTop={4}>
       <IconButton
+        data-test-id="pagination-previous"
         disabled={isFirstPage}
         onClick={getLastPage}
         icon={<FaChevronLeft/>}
         marginRight={2}
       />
       <IconButton
+        data-test-id="pagination-next"
         disabled={isLastPage}
         onClick={getNextPage}
         icon={<FaChevronRight/>}
         marginRight={4}
       />
       {totalPages !== 0 && (
-        <Text display="inline">
+        <Text display="inline" data-test-id="pagination-page">
           Page {currentPage} of {totalPages}.
         </Text>
       )}

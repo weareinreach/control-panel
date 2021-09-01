@@ -111,6 +111,7 @@ const Table = (props) => {
                 <td>
                   {actions?.map(({label, onClick}, index) => (
                     <ActioSpan
+                      data-test-id="table-row-action"
                       key={index}
                       as="span"
                       onClick={() => onClick(row)}

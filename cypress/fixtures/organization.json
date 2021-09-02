@@ -8,5 +8,35 @@
 	"website": "https://google.com",
 	"website_es":"https://google-es.com",
 	"alert_message":"Alert Message!!",
-	"alert_message_es":"Alert Message en espanol"
+	"alert_message_es":"Alert Message en espanol",
+	"services":[
+		{
+			"name":"New Service Added",
+			"slug":"new-service-added"
+		}
+	],
+	"locations":[
+		{
+			"name":"Name of location",
+			"name_ES":"name of location ES",
+			"unit":"Unit",
+			"address":"123 Random Street",
+			"city":"City Far Away",
+			"city_ES":"Ciudade Lejos",
+			"state_ES":"WY",
+			"country":"United States",
+			"country_ES":"Estados Unidos",
+			"is_primary":true,
+			"state":"WY",
+			"zip_code":"82901",
+			"show_on_organization":true,
+			"geolocation":{
+				"type":"Point",
+				"coordinates":[
+					"-122.423",
+					"37.776"
+				]
+			}
+		}
+	]
 }

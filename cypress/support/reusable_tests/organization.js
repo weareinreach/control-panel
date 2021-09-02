@@ -308,4 +308,127 @@ Cypress.Commands.add('testAddingOrganizationAction',(viewport,creds,organization
     //save
     cy.getElementByTestId('modal-save-button').click();
 
-})
+});
+
+Cypress.Commands.add('testAddingOrganizationServices',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    cy.wait(1000);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Add Service
+    cy.getElementByTestId('organization-new-service-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Service Name')
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Service Name');
+        cy.wrap($element.children()[1]).type(organization.services[0].name);
+        //Save
+        cy.getElementByTestId('modal-save-button').click();
+    })
+});
+
+
+
+Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    cy.wait(1000);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+    //Add Address
+    cy.getElementByTestId('organization-new-address-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Location')
+    })
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        cy.wrap($element.children()[1]).type(organization.locations[0].name);
+    });
+    cy.getElementByTestId('name_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name_ES');
+        cy.wrap($element.children()[1]).type(organization.locations[0].name_ES);
+    });
+    cy.getElementByTestId('unit').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Unit');
+        cy.wrap($element.children()[1]).type(organization.locations[0].unit);
+    });
+    cy.getElementByTestId('address').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Address');
+        cy.wrap($element.children()[1]).type(organization.locations[0].address);
+    });
+    cy.getElementByTestId('city').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('City');
+        cy.wrap($element.children()[1]).type(organization.locations[0].city);
+    });
+    cy.getElementByTestId('state').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('State');
+        cy.wrap($element.children()[1]).type(organization.locations[0].state);
+    });
+
+    cy.getElementByTestId('country').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Country');
+        cy.wrap($element.children()[1]).type(organization.locations[0].country);
+    });
+    cy.getElementByTestId('city_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('City_ES');
+        cy.wrap($element.children()[1]).type(organization.locations[0].city_ES);
+    });
+    cy.getElementByTestId('state_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('State_ES');
+        cy.wrap($element.children()[1]).type(organization.locations[0].state_ES);
+    });
+    cy.getElementByTestId('country_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Country_ES');
+        cy.wrap($element.children()[1]).type(organization.locations[0].country_ES);
+    });
+    cy.getElementByTestId('zip_code').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Zipcode');
+        cy.wrap($element.children()[1]).type(organization.locations[0].zip_code);
+    });
+    cy.getElementByTestId('lat').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Lat');
+        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[0]);
+    });
+    cy.getElementByTestId('long').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Long');
+        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[1]);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        expect($element).to.be.visible;
+        cy.wrap($element.children()[0]).click();
+    });
+    cy.getElementByTestId('show_on_organization').then($element=>{
+        expect($element).to.be.visible;
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
+});

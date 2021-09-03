@@ -31,6 +31,8 @@ Cypress.Commands.add('login',(username,password)=>{
     cy.getElementByTestId('login-form-email-input').type(username);
     cy.getElementByTestId('login-form-password-input').type(password);
     cy.getElementByTestId('login-form-submit-button').click();
+	 //Waiting for Response
+	 cy.intercept('/v1/organizations/**');
 });
 
 // -------------- User Commands -----------------

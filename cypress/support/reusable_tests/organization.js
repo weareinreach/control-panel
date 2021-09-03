@@ -1,7 +1,6 @@
 Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('organization-title').then($element=>{
         expect($element).to.be.visible;
@@ -156,7 +155,6 @@ Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>
 Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('table-row').then($element=>{
         cy.wrap($element[0]).click();
@@ -214,7 +212,6 @@ Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
 Cypress.Commands.add('testAddingOrganizationAction',(viewport,creds,organization)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('organization-new-button').click();
     cy.getElementByTestId('name').then($element=>{
@@ -313,7 +310,6 @@ Cypress.Commands.add('testAddingOrganizationAction',(viewport,creds,organization
 Cypress.Commands.add('testAddingOrganizationServices',(viewport,creds,organization)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('organization-new-button').click();
     //Add Org
@@ -342,7 +338,6 @@ Cypress.Commands.add('testAddingOrganizationServices',(viewport,creds,organizati
 Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organization)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('organization-new-button').click();
     //Add Org

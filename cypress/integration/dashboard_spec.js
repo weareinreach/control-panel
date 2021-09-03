@@ -27,14 +27,14 @@ describe('Home Page Dashboard Tests', () => {
                 });
             });
            });
-           it('Test Dashboard Actions Box1',()=>{
+           it('Test Dashboard Actions Organizations Table',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testDashboardClickOnOrg(viewport,user); 
                 });
             });
            });
-           it('Test Dashboard Actions Box2',()=>{
+           it('Test Dashboard Actions Filter Organizations',()=>{
             cy.get('@user_good').then(user => {
                   cy.addUser(user).then(()=>{
                    cy.get('@organization').then(org=>{

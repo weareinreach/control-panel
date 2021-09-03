@@ -2,14 +2,12 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.wait(1000);
-
     //Box 1
     cy.getElementByTestId('box').then($element=>{
         expect($element).to.be.visible;
         expect($element).to.have.length(2);
     });
-    cy.getElementByTestId('title').then($element=>{
+    cy.getElementByTestId('organization-title').then($element=>{
         expect($element).to.be.visible;
         expect($element).contain('Organizations');
     });
@@ -157,8 +155,6 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.wait(1000);
-
     cy.getElementByTestId('pagination-next').click();
     cy.getElementByTestId('pagination-next').click();
     //AUTOMATION BUG - 63
@@ -171,8 +167,6 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
 Cypress.Commands.add('testDashboardSearchForOrg',(viewport,creds,org)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-
-    cy.wait(1000);
 
     cy.getElementByTestId('filter-org-input').type(org);
     cy.getElementByTestId('filter-button-search').click({force:true});

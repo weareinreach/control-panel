@@ -1,7 +1,6 @@
 Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
 
     cy.getElementByTestId('header-stats-link').click();
     cy.getElementByTestId('stats-title').then($element=>{
@@ -33,6 +32,4 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
         expect($element).to.be.visible;
         expect($element).contain('Verified Services');
     });
-
-
 });

@@ -10,7 +10,7 @@ Cypress.Commands.add('testHeaderElementsNoLogin',(viewport)=>{
 Cypress.Commands.add('testHeaderElementsLogin',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-    cy.wait(1000);
+    
     cy.getElementByTestId('layout').then($element =>{
         expect($element).to.be.visible;
     });

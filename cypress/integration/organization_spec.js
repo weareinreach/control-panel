@@ -7,7 +7,7 @@
 //Test Suite
 describe('Organization Form Tests', () => {
 
-    let viewports = [Cypress.env('desktop')];//,Cypress.env('tablet'),Cypress.env('mobile')];
+    let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
@@ -15,7 +15,7 @@ describe('Organization Form Tests', () => {
         cy.fixture('organization.json').as('organization');
     });
     afterEach(() => {
-        //cy.deleteUsersIfExist();
+        cy.deleteUsersIfExist();
         cy.deleteOrgsIfExist();
     });
 
@@ -35,7 +35,7 @@ describe('Organization Form Tests', () => {
                     });
                 });
             }); 
-            it.only('Testing Adding Organization',()=>{
+            it('Testing Adding Organization',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                        cy.get('@organization').then(org=>{

@@ -83,7 +83,8 @@ Cypress.Commands.add('deleteUser', (user_id) => {
 	);
 	cy.request({
 		method: 'DELETE',
-		url: compoundURL
+		url: compoundURL,
+		failOnStatusCode:false
 	});
 });
 
@@ -117,6 +118,7 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 	);
 	cy.request({
 		method: 'DELETE',
-		url: compoundURL
+		url: compoundURL,
+		failOnStatusCode:false
 	});
 });

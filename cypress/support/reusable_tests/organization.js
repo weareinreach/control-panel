@@ -427,3 +427,140 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     //Save
     cy.getElementByTestId('modal-save-button').click();
 });
+
+
+Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Add Week Schedule
+    cy.getElementByTestId('organization-new-schedule-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Schedule');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].name);
+    });
+    cy.getElementByTestId('monday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Monday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].monday_start);
+    });
+    cy.getElementByTestId('monday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Monday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].monday_end);
+    });
+    cy.getElementByTestId('tuesday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Tuesday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].tuesday_start);
+    });
+    cy.getElementByTestId('tuesday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Tuesday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].tuesday_end);
+    });
+    cy.getElementByTestId('wednesday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Wednesday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].wednesday_start);
+    });
+    cy.getElementByTestId('wednesday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Wednesday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].wednesday_end);
+    });
+    cy.getElementByTestId('thursday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Thursday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].thursday_start);
+    });
+    cy.getElementByTestId('thursday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Thursday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].thursday_end);
+    });
+    cy.getElementByTestId('friday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Friday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].friday_start);
+    });
+    cy.getElementByTestId('friday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Friday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].friday_end);
+    });
+
+    cy.getElementByTestId('timezone').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Timezone');
+        cy.wrap($element.children().children()[0]).select(organization.schedules[0].timezone);
+    });
+
+    cy.getElementByTestId('note').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Note');
+        cy.wrap($element.children()[1]).type(organization.schedules[0].note);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
+    cy.intercept('/v1/organizations/**').then(()=>{
+        cy.wait(2000);
+    });
+
+    // Add Weekend Schedule
+    cy.getElementByTestId('organization-new-schedule-button').click();
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].name);
+    });
+
+    cy.getElementByTestId('saturday_start').scrollIntoView().then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Saturday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].saturday_start);
+    });
+    cy.getElementByTestId('saturday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Saturday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].saturday_end);
+    });
+    cy.getElementByTestId('sunday_start').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Sunday Start');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].sunday_start);
+    });
+    cy.getElementByTestId('sunday_end').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Sunday End');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].sunday_end);
+    });
+
+    cy.getElementByTestId('timezone').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Timezone');
+        cy.wrap($element.children().children()[0]).select(organization.schedules[1].timezone);
+    });
+
+    cy.getElementByTestId('note').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Note');
+        cy.wrap($element.children()[1]).type(organization.schedules[1].note);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
+});

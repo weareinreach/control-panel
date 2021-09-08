@@ -62,6 +62,15 @@ describe('Organization Form Tests', () => {
                     });
                 }); 
             }); 
+            it.only('Testing Adding Organization Addresses',()=>{
+                cy.get('@user_good').then(user=>{
+                   cy.addUser(user).then(()=>{
+                       cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationSchedules(viewport,user,org);
+                        });
+                    });
+                }); 
+            }); 
         });
     });
 });

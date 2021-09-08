@@ -38,5 +38,45 @@
 				]
 			}
 		}
+	],
+	"schedules":[
+		{
+			"name":"Clinic Week Hours",
+			"note":"Clinic hours for the weekdays. Monday through Friday",
+			"timezone":"MDT",
+			"monday_start":"09:00",
+			"monday_end":"16:00",
+			"tuesday_start":"09:00",
+			"tuesday_end":"16:00",
+			"wednesday_start":"09:00",
+			"wednesday_end":"16:00",
+			"thursday_start":"09:00",
+			"thursday_end":"16:00",
+			"friday_start":"09:00",
+			"friday_end":"16:00",
+			"saturday_start":"",
+			"saturday_end":"",
+			"sunday_start":"",
+			"sunday_end":""
+		},
+		{
+			"name":"Clinic Weekend Hours",
+			"note":"Clinic hours for the weekend. Saturday and Sunday Hours",
+			"timezone":"MDT",
+			"monday_start":"",
+			"monday_end":"",
+			"tuesday_start":"",
+			"tuesday_end":"",
+			"wednesday_start":"",
+			"wednesday_end":"",
+			"thursday_start":"",
+			"thursday_end":"",
+			"friday_start":"",
+			"friday_end":"",
+			"saturday_start":"10:00",
+			"saturday_end":"15:00",
+			"sunday_start":"10:00",
+			"sunday_end":"15:00"
+		}
 	]
 }

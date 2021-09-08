@@ -94,7 +94,7 @@ Cypress.Commands.add('testLogOut',(viewport,username,password)=>{
             cy.wrap($element[1]).click();
         });
     });
-    cy.wait(1000);
+    cy.wait(2000);
     //Verify Logged Out
     cy.getElementByTestId('layout').then($element =>{
         expect($element).to.be.visible;

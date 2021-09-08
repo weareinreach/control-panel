@@ -564,3 +564,55 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
     cy.getElementByTestId('modal-save-button').click();
 
 });
+
+
+Cypress.Commands.add('testAddingOrganizationEmail',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Add Email
+    cy.getElementByTestId('organization-new-email-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Emails');
+    });
+    cy.getElementByTestId('email').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Email');
+        cy.wrap($element.children()[1]).type(organization.emails[0].email);
+    });
+    cy.getElementByTestId('title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Title');
+        cy.wrap($element.children()[1]).type(organization.emails[0].title);
+    });
+    cy.getElementByTestId('title_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Title_ES');
+        cy.wrap($element.children()[1]).type(organization.emails[0].email);
+    });
+    cy.getElementByTestId('first_name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('First Name');
+        cy.wrap($element.children()[1]).type(organization.emails[0].first_name);
+    });
+    cy.getElementByTestId('last_name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Last Name');
+        cy.wrap($element.children()[1]).type(organization.emails[0].last_name);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        expect($element).to.be.visible;
+        cy.wrap($element.children()[0]).click();
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
+
+});

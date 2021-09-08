@@ -62,7 +62,7 @@ describe('Organization Form Tests', () => {
                     });
                 }); 
             }); 
-            it('Testing Adding Organization Addresses',()=>{
+            it('Testing Adding Organization Schedules',()=>{
                 cy.get('@user_good').then(user=>{
                    cy.addUser(user).then(()=>{
                        cy.get('@organization').then(org=>{
@@ -71,6 +71,16 @@ describe('Organization Form Tests', () => {
                     });
                 }); 
             }); 
+            it('Testing Adding Organization Email Addresses',()=>{
+                cy.get('@user_good').then(user=>{
+                   cy.addUser(user).then(()=>{
+                       cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationEmail(viewport,user,org);
+                        });
+                    });
+                }); 
+            }); 
+            
         });
     });
 });

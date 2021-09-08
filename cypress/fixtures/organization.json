@@ -9,6 +9,15 @@
 	"website_es":"https://google-es.com",
 	"alert_message":"Alert Message!!",
 	"alert_message_es":"Alert Message en espanol",
+	"emails":[
+		{
+			"email":"orgemail@organization.com",
+			"first_name":"Organization First",
+			"last_name":"Organization Last",
+			"title":"Primary Email Address",
+			"title_ES":"Email Addresses en espanol"
+		}
+	],
 	"services":[
 		{
 			"name":"New Service Added",

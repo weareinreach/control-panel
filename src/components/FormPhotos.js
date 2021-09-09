@@ -246,7 +246,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       case 'no-fourSquarePhotos-found':
         return (
           <Box>
-            <Text textAlign="center">
+            <Text textAlign="center" data-test-id="photos-form-no-four-square-photos-text">
               We weren't able to find any FourSquare photos for this venue.
             </Text>
           </Box>
@@ -254,7 +254,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
       case 'no-approved-found':
         return (
           <Box>
-            <Text textAlign="center">
+            <Text textAlign="center" data-test-id="photos-form-no-approved-photos-text">
               There are no approved photos for this organization.
             </Text>
           </Box>
@@ -286,8 +286,9 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
     <Box>
       <Box>
         <Flex align="start">
-          <SectionTitle mr={25}>Photos</SectionTitle>
+          <SectionTitle mr={25} data-test-id="photos-form-title">Photos</SectionTitle>
           <Button
+            data-test-id="photos-form-approved-button"
             borderTopRightRadius="0"
             borderBottomRightRadius="0"
             _hover={{backgroundColor: '#3A81C9', color: '#fff'}}
@@ -303,6 +304,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
             Approved
           </Button>
           <Button
+            data-test-id="photos-form-all-button"
             borderTopLeftRadius="0"
             borderBottomLeftRadius="0"
             _hover={{backgroundColor: '#3A81C9', color: '#fff'}}
@@ -320,6 +322,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
         </Flex>
         <Flex alignItems="flex-end" justifyContent="flex-end" mt={50} mb={50}>
           <Button
+            data-test-id="photos-form-cancel-button"
             bg="#F2D0D0"
             onClick={handleCancel}
             ml={3}
@@ -330,6 +333,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
           {editSelection && fourSquarePhotos.length > 0 ? (
             <div style={{display: 'flex'}}>
               <Button
+                data-test-id="photos-form-select-all-button"
                 onClick={toggleSelectAll}
                 ml={3}
                 style={!editSelection ? {display: 'none'} : buttonStyles}
@@ -338,6 +342,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
               </Button>
               {view !== 'approved' ? (
                 <Button
+                  data-test-id="photos-form-approve-selected-button"
                   ml={3}
                   style={!editSelection ? {display: 'none'} : buttonStyles}
                   onClick={() => handleApprovedPhotos(selectedPhotos)}
@@ -348,6 +353,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
                 </Button>
               ) : (
                 <Button
+                  data-test-id="photos-form-unapprove-selected-button"
                   ml={3}
                   style={!editSelection ? {display: 'none'} : buttonStyles}
                   onClick={onOpen}
@@ -360,6 +366,7 @@ const FormPhotos = ({photos, name, location, organizationId, venue_id}) => {
             </div>
           ) : (
             <Button
+              data-test-id="photos-form-select-photos"
               onClick={toggleEditSelection}
               style={buttonStyles}
               disabled={
@@ -419,7 +426,7 @@ const ApprovedModal = ({approvedRef, selectedPhotos, isOpen, onClose}) => {
             <Tada />
           </Flex>
           <Flex direction="column" justify="center" alignItems="center">
-            <Text>Photo(s) have been approved!</Text>
+            <Text data-test-id="photos-form-photos-approved-text">Photo(s) have been approved!</Text>
           </Flex>
         </ModalBody>
       </ModalContent>

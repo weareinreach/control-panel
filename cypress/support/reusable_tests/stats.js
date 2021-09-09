@@ -32,6 +32,4 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
         expect($element).to.be.visible;
         expect($element).contain('Verified Services');
     });
-
-
 });

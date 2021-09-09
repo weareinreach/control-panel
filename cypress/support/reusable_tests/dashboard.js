@@ -7,7 +7,7 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
         expect($element).to.be.visible;
         expect($element).to.have.length(2);
     });
-    cy.getElementByTestId('title').then($element=>{
+    cy.getElementByTestId('organization-title').then($element=>{
         expect($element).to.be.visible;
         expect($element).contain('Organizations');
     });
@@ -155,6 +155,10 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
+    cy.getElementByTestId('pagination-next').click();
+    cy.getElementByTestId('pagination-next').click();
+    //AUTOMATION BUG - 63
+    //cy.getElementByTestId('pagination-previous').click();
     cy.getElementByTestId('table-row').then($element=>{
         cy.wrap($element[0]).click();
     });

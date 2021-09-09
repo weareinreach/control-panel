@@ -5,7 +5,7 @@
 //compound url
 
 //Test Suite
-describe('Home Page Login Form Tests', () => {
+describe('Home Page Dashboard Tests', () => {
 
     let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 
@@ -27,14 +27,14 @@ describe('Home Page Login Form Tests', () => {
                 });
             });
            });
-           it('Test Dashboard Actions Box1',()=>{
+           it('Test Dashboard Actions Organizations Table',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testDashboardClickOnOrg(viewport,user); 
                 });
             });
            });
-           it('Test Dashboard Actions Box2',()=>{
+           it('Test Dashboard Actions Filter Organizations',()=>{
             cy.get('@user_good').then(user => {
                   cy.addUser(user).then(()=>{
                    cy.get('@organization').then(org=>{

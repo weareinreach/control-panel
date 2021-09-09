@@ -118,6 +118,9 @@ Cypress.Commands.add('testAdminFilterUsers',(viewport,creds)=>{
 Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
 
     cy.getElementByTestId('header-admin-link').click();
     cy.getElementByTestId('admin-users-new-manager').click();
@@ -163,6 +166,9 @@ Cypress.Commands.add('testAdminFilterAddNewManagerElements',(viewport,creds)=>{
 Cypress.Commands.add('testAdminFilterAddNewManagerAction',(viewport,creds,admin)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
 
     cy.getElementByTestId('header-admin-link').click();
     cy.getElementByTestId('admin-users-new-manager').click();
@@ -174,7 +180,6 @@ Cypress.Commands.add('testAdminFilterAddNewManagerAction',(viewport,creds,admin)
     });
 
     cy.getElementByTestId('modal-save-button').click();
-    cy.wait(500);
     //Reload Page
     cy.reload();
     cy.getElementByTestId('table-row-text').then($element=>{

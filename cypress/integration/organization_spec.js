@@ -79,8 +79,25 @@ describe('Organization Form Tests', () => {
                         });
                     });
                 }); 
+            });
+            it('Testing Adding Organization Phones',()=>{
+                cy.get('@user_good').then(user=>{
+                   cy.addUser(user).then(()=>{
+                       cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationPhone(viewport,user,org);
+                        });
+                    });
+                }); 
+            });
+            it('Testing Adding Social Media',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                             cy.testAddingOrganizationSocialMedia(viewport,user,org);
+                         });
+                     });
+                 });
             }); 
-            
         });
     });
 });

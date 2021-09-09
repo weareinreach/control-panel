@@ -616,3 +616,97 @@ Cypress.Commands.add('testAddingOrganizationEmail',(viewport,creds,organization)
     cy.getElementByTestId('modal-save-button').click();
 
 });
+
+Cypress.Commands.add('testAddingOrganizationPhone',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Add Phone
+    cy.getElementByTestId('organization-new-phone-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Phone');
+    });
+    cy.getElementByTestId('phone_type').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Phone Type');
+        cy.wrap($element.children()[1]).type(organization.phones[0].phone_type);
+    });
+    cy.getElementByTestId('phone_type_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Phone Type_ES');
+        cy.wrap($element.children()[1]).type(organization.phones[0].phone_type_ES);
+    });
+    cy.getElementByTestId('digits').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Digits');
+        cy.wrap($element.children()[1]).type(organization.phones[0].digits);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        expect($element).to.be.visible;
+        cy.wrap($element.children()[0]).click();
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
+});
+
+Cypress.Commands.add('testAddingOrganizationSocialMedia',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Social Media Profile');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Platform');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.social_media[0].name);
+        });
+    });
+    cy.getElementByTestId('url').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Url');
+        cy.wrap($element.children()[1]).type(organization.social_media[0].url);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
+});
+
+Cypress.Commands.add('testAddingOrganizationEditCoverage',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+    //Edit Coverage
+    cy.getElementByTestId('organization-edit-coverage-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Coverage');
+    });
+
+});

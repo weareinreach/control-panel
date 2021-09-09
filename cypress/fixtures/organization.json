@@ -9,6 +9,23 @@
 	"website_es":"https://google-es.com",
 	"alert_message":"Alert Message!!",
 	"alert_message_es":"Alert Message en espanol",
+	"social_media":[
+		{
+			"name":"facebook",
+			"url":"https://facebook.com/sample-organization"
+		},
+		{
+			"name":"instagram",
+			"url":"https://instagram.com/sample-organization"
+		}
+	],
+	"phones":[
+		{
+			"phone_type":"Office Phone Number",
+			"phone_type_ES":"Office Phone Number en ES",
+			"digits":"234-567-7892"
+		}
+	],
 	"emails":[
 		{
 			"email":"orgemail@organization.com",

@@ -8,6 +8,7 @@ const DropdownButton = (props) => {
   return (
     <Menu>
       <MenuButton
+        data-test-id="drop-down-button-container"
         as={Button}
         color="black"
         marginLeft="5px"
@@ -23,7 +24,7 @@ const DropdownButton = (props) => {
         {items?.map(({onClick, href, text}, key) => {
           const itemProps = href ? {as: 'a', href, target: '_blank'} : {onClick};
           return (
-            <MenuItem key={key} {...itemProps}>
+            <MenuItem data-test-id="drop-down-item" key={key} {...itemProps}>
               {text}
             </MenuItem>
           );

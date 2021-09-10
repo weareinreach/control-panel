@@ -31,10 +31,11 @@ const FiltersUsers = (props) => {
 
   return (
     <form onSubmit={handleSearch}>
-      <SectionTitle>Filter Users</SectionTitle>
+      <SectionTitle data-test-id="filter-users-title">Filter Users</SectionTitle>
       <Stack>
-        <Text>Type:</Text>
+        <Text data-test-id="filter-users-type">Type:</Text>
         <Select
+          data-test-id="filter-users-search"
           onChange={setType}
           variant="filled"
           placeholder="All Users"
@@ -46,6 +47,7 @@ const FiltersUsers = (props) => {
         </Select>
         <Box textAlign="right">
           <Button
+            data-test-id="filter-users-search-button"
             display="inline-block"
             onClick={handleSearch}
             colorScheme="blue"

@@ -1,9 +1,17 @@
 {
 	"integrationFolder": "cypress/integration",
 	"reporter": "mochawesome",
+	"video":false,
+	"chromeWebSecurity":false,
 	"reporterOptions": {
 		"overwrite": false,
 		"html": true,
 		"json": true
-	}
+	},
+	"retries":{
+        "runMode":3,
+        "openMode":0
+    },
+    "defaultCommandTimeout":10000,
+    "waitForAnimations":true
 }

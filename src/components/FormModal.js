@@ -60,7 +60,7 @@ const FormModal = (props) => {
   };
   const formFields = fields?.map(({key, ...rest}) => {
     return (
-      <FormField key={key} fieldKey={key} formik={formik} {...rest} />
+      <FormField data-test-id={key} key={key} fieldKey={key} formik={formik} {...rest} />
     );
   })
 
@@ -68,13 +68,14 @@ const FormModal = (props) => {
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{header}</ModalHeader>
-        <ModalCloseButton />
+        <ModalHeader data-test-id="modal-header">{header}</ModalHeader>
+        <ModalCloseButton data-test-id="modal-close-button"/>
         <ModalBody>
           <Stack spacing={4}>
-            {isSuccess && <Alert title="Success." type="success" />}
+            {isSuccess && <Alert data-test-id="modal-success" title="Success." type="success" />}
             {isError && (
               <Alert
+                data-test-id="modal-error"
                 description="Please try again."
                 title="Uh-Oh something went wrong."
                 type="error"
@@ -88,10 +89,11 @@ const FormModal = (props) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
+          <Button data-test-id="modal-cancel-button" disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
             Cancel
           </Button>
           <Button
+            data-test-id="modal-save-button"
             onClick={formik.handleSubmit}
             colorScheme={isAlert ? 'red' : 'blue'}
           >
@@ -102,6 +104,7 @@ const FormModal = (props) => {
               formik.handleSubmit(e);
             }}
             colorScheme={isAlert ? 'red' : 'blue'}
+            data-test-id="modal-save-and-verify-button"
             >
 							Save and Verify
 						</Button>

@@ -56,20 +56,21 @@ const Header = () => {
           {hasUser ? (
             <>
               <Box display="inline-block" width="75%">
-                <ChakraLink as={Link} fontSize="xl" to="/" mr={3}>
+                <ChakraLink data-test-id="header-home-link" as={Link} fontSize="xl" to="/" mr={3}>
                   Home
                 </ChakraLink>
                 {user?.isAdminDataManager && (
-                  <ChakraLink as={Link} fontSize="xl" to="/admin" mr={3}>
+                  <ChakraLink data-test-id="header-admin-link" as={Link} fontSize="xl" to="/admin" mr={3}>
                     Admin
                   </ChakraLink>
                 )}
-                <ChakraLink as={Link} fontSize="xl" to="/stats">
+                <ChakraLink data-test-id="header-stats-link" as={Link} fontSize="xl" to="/stats">
                     Stats
                 </ChakraLink>
               </Box>
-              <Box display="inline-block" textAlign="right" width="25%">
+              <Box display="inline-block" data-test-id="header-profile-box" textAlign="right" width="25%">
                 <DropdownButton
+                  data-test-
                   buttonProps={{
                     color: 'white',
                     backgroundColor: 'blue.500',

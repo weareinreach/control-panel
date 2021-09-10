@@ -19,8 +19,8 @@ const Admin = () => {
       <Helmet title="Admin" />
       <Tabs>
         <TabList marginBottom={4}>
-          <Tab>Users</Tab>
-          <Tab>Suggestions</Tab>
+          <Tab data-test-id="admin-tab-users">Users</Tab>
+          <Tab data-test-id="admin-tab-suggestions">Suggestions</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

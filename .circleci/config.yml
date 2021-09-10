@@ -4,6 +4,7 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+  codecov: codecov/codecov@1.1.3
 jobs:
   build:
     docker:
@@ -12,11 +13,11 @@ jobs:
     steps:
       - checkout
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-{{ checksum "package.json" }}
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v1-dependencies-
       - run: 
           name: Check Node Version
           command: node --version
@@ -31,6 +32,57 @@ jobs:
       - run:
           name: Compile Binary
           command: yarn build
+  
+  e2e:
+    docker:
+      - image: cypress/base:12
+        environment:
+          TERM: xterm
+    working_directory: ~/control-panel
+    steps:
+      - checkout
+      # Download and cache dependencies
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-{{ checksum "package.json" }}
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v1-dependencies-
+      - run: 
+          name: Check Node Version
+          command: node --version
+      - run:
+          name: Install Packages
+          command: npm install
+      - run:
+          name: Install NYC
+          command: npm i nyc
+      - run:
+          name: Install cypress
+          command: npm i cypress
+      #save cache for use next tests
+      - save_cache:
+         paths:
+          - node_modules
+          - "~./cache/Cypress"
+         key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: "Pre E2E Commands"
+          command: "yarn test:pre-e2e"
+      - run:
+          name: "E2E Automation"
+          command: "yarn test:e2e:ci"
+      - run:
+          name: "Show Coverage"
+          command: "yarn show-coverage"
+      - codecov/upload:
+          file: 'cypressCoverage/coverage-final.json'
+          flags: 'Integration'
+      - store_artifacts:
+          path: ./cypressCoverage
+          destination: E2E Coverage Reports
+      - store_artifacts:
+          path: "reports/"
+          destination: E2E Test Reports 
     
 
 workflows:
@@ -38,3 +90,4 @@ workflows:
   pull_request:
     jobs: 
       - build
+      - e2e

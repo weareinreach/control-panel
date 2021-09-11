@@ -124,7 +124,7 @@ const Organization = (props) => {
     openModal({
       children: FormCoverage,
       childrenProps: {properties},
-      header: 'CoverageEdit',
+      header: 'Edit Coverage',
       onClose: closeModal,
       onConfirm: updateFields,
     });

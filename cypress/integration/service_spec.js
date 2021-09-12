@@ -7,7 +7,7 @@
 //Test Suite
 describe('Organization Form Tests', () => {
 
-    let viewports = [Cypress.env('desktop')];//,Cypress.env('tablet'),Cypress.env('mobile')];
+    let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
@@ -25,7 +25,7 @@ describe('Organization Form Tests', () => {
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
-                            cy.testingServicesElements(viewport,user,org);
+                            cy.testingOrganizationServicesElements(viewport,user,org);
                         });
                     });
                 });
@@ -34,7 +34,7 @@ describe('Organization Form Tests', () => {
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
-                            cy.testAddingServicesDetails(viewport,user,org);
+                            cy.testAddingOrganizationServicesDetails(viewport,user,org);
                         });
                     });
                 });
@@ -43,7 +43,25 @@ describe('Organization Form Tests', () => {
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
-                            cy.testAddingOrganizationAccessInformation(viewport,user,org);
+                            cy.testAddingOrganizationServiceAccessInformation(viewport,user,org);
+                        });
+                    });
+                });
+            });
+            it('Testing Organization Service Edit Coverage',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServiceEditCoverage(viewport,user,org);
+                        });
+                    });
+                });
+            });
+            it.only('Testing Organization Service Notes',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServicesNotes(viewport,user,org);
                         });
                     });
                 });

@@ -221,11 +221,11 @@ const Service = (props) => {
       },
     });
   };
-  const openEditOrgField = (field, list) => () =>
+  const openEditOrgField = (field, list , name) => () =>
     openModal({
       children: FormOrganizationInfo,
       childrenProps: {field, fieldValue: service[field], list},
-      header: `Add field to ${name}`,
+      header: name,
       onClose: closeModal,
       onConfirm: updateFields,
     });
@@ -399,7 +399,8 @@ const Service = (props) => {
                   <Button
                     onClick={openEditOrgField(
                       'location_id',
-                      organization?.locations
+                      organization?.locations,
+                      'Edit Addresses'
                     )}
                     data-test-id="service-new-address-button"
                   >
@@ -416,7 +417,8 @@ const Service = (props) => {
                   <Button
                     onClick={openEditOrgField(
                       'schedule_id',
-                      organization?.schedules
+                      organization?.schedules,
+                      'Edit Schedules'
                     )}
                     data-test-id="service-new-schedule-button"
                   >
@@ -431,7 +433,7 @@ const Service = (props) => {
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('email_id', organization?.emails)}
+                    onClick={openEditOrgField('email_id', organization?.emails,'Edit Emails')}
                     data-test-id="service-new-email-button">
                     Edit Email
                   </Button>
@@ -442,7 +444,7 @@ const Service = (props) => {
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('phone_id', organization?.phones)}
+                    onClick={openEditOrgField('phone_id', organization?.phones,'Edit Phones')}
                    data-test-id="service-new-phone-button"
                    >
                     Edit Phone

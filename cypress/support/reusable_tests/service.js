@@ -32,10 +32,6 @@ Cypress.Commands.add('testingServicesElements',(viewport,creds,organization)=>{
     });
 
     //Test Service Details
-    cy.getElementByTestId('service-detail-title').then($element=>{
-        expect($element).to.be.visible;
-        expect($element).contain("Service Details");
-    });
     cy.getElementByTestId('service-new-instruction-button').then($element=>{
         expect($element).to.be.visible;
         expect($element).to.have.attr('type','button');
@@ -88,12 +84,12 @@ Cypress.Commands.add('testingServicesElements',(viewport,creds,organization)=>{
     });
     cy.getElementByTestId('service-coverage-title').then($element=>{
         expect($element).to.be.visible;
-        expect($element).contain("Phone");
+        expect($element).contain("Service Area Coverage");
     });
     cy.getElementByTestId('service-new-note-button').then($element=>{
         expect($element).to.be.visible;
         expect($element).to.have.attr('type','button');
-        expect($element).contain("New Notes");
+        expect($element).contain("New Note");
     });
     cy.getElementByTestId('service-note-title').then($element=>{
         expect($element).to.be.visible;
@@ -120,4 +116,104 @@ Cypress.Commands.add('testAddingServicesDetails',(viewport,creds,organization)=>
         cy.wrap($element).click();
     });
 
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name');
+        cy.wrap($element.children()[1]).type(organization.services[0].name);
+    });
+    cy.getElementByTestId('name_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Name_ES');
+        cy.wrap($element.children()[1]).type(organization.services[0].name_ES);
+    });
+    cy.getElementByTestId('slug').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Slug');
+        cy.wrap($element.children()[1]).type(organization.services[0].slug);
+    });
+    cy.getElementByTestId('slug_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Slug_ES');
+        cy.wrap($element.children()[1]).type(organization.services[0].slug_ES);
+    });
+    cy.getElementByTestId('description').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Description');
+        cy.wrap($element.children()[1]).type(organization.services[0].description);
+    });
+    cy.getElementByTestId('description_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Description_ES');
+        cy.wrap($element.children()[1]).type(organization.services[0].description_ES);
+    });
+     //save
+     cy.getElementByTestId('modal-save-button').click();
 });
+
+Cypress.Commands.add('testAddingOrganizationAccessInformation',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+    //Add Service
+    cy.addService(organization);
+
+    cy.getElementByTestId('table-row-action').click();
+
+    cy.getElementByTestId('service-new-instruction-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Instructions');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('access_type').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Type');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.services[0].access_instructions[0].access_type);
+        });
+    });
+    cy.getElementByTestId('access_value').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Value');
+        cy.wrap($element.children()[1]).type(organization.services[0].access_instructions[0].access_value);
+    });
+    cy.getElementByTestId('access_value_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Value_ES');
+        cy.wrap($element.children()[1]).type(organization.services[0].access_instructions[0].access_value_ES);
+    });
+    cy.getElementByTestId('instructions').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Instructions');
+        cy.wrap($element.children()[1]).type(organization.services[0].access_instructions[0].instructions);
+    });
+    cy.getElementByTestId('instructions_ES').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Instructions_ES');
+        cy.wrap($element.children()[1]).type(organization.services[0].access_instructions[0].instructions_ES);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+});
+
+Cypress.Commands.add('testAddingOrganizationAddress',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+    //Add Service
+    cy.addService(organization);
+
+    cy.getElementByTestId('table-row-action').click();
+
+    cy.getElementByTestId('service-new-address-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Address');
+        cy.wrap($element).click();
+    });
+
+    
+})

@@ -21,11 +21,29 @@ describe('Organization Form Tests', () => {
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-            it.only('Testing Organization Service Elements',()=>{
+            it('Testing Organization Service Elements',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
                             cy.testingServicesElements(viewport,user,org);
+                        });
+                    });
+                });
+            });
+            it('Testing Organization Service Details',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingServicesDetails(viewport,user,org);
+                        });
+                    });
+                });
+            });
+            it('Testing Organization New Access Information',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationAccessInformation(viewport,user,org);
                         });
                     });
                 });

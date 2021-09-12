@@ -37,6 +37,25 @@ Cypress.Commands.add('login',(username,password)=>{
 	 });
 });
 
+Cypress.Commands.add('addOrganization',(organization)=>{
+	cy.getElementByTestId('organization-new-button').click();
+    //Add Org
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.name);
+        cy.getElementByTestId('modal-save-button').click();
+    });
+});
+
+Cypress.Commands.add('addService',(organization)=>{
+	//Add Service
+    cy.getElementByTestId('organization-new-service-button').click();
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.services[0].name);
+        //Save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+});
+
 // -------------- User Commands -----------------
 let compoundURL = null;
 

@@ -57,7 +57,7 @@ describe('Organization Form Tests', () => {
                     });
                 });
             });
-            it.only('Testing Organization Service Notes',()=>{
+            it('Testing Organization Service Notes',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{

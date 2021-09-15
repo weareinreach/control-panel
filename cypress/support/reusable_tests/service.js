@@ -203,11 +203,19 @@ Cypress.Commands.add('testAddingOrganizationServiceAddress',(viewport,creds,orga
     cy.login(creds.email,creds.password);
 
     //Add Org
-    cyaddOrganization(organization);
+    cy.addOrganization(organization);
     //Add Service
     cy.addService(organization);
-
-    cy.getElementByTestId('table-row-action').click();
+   //cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    //Add Address
+    cy.addAddress(organization);
+   // cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    cy.scrollTo(0, 500)
+    cy.getElementByTestId('table-row-action').then($element=>{
+        cy.wrap($element[0]).click();
+    })
 
     cy.getElementByTestId('service-new-address-button').then($element=>{
         expect($element).to.be.visible;
@@ -218,7 +226,136 @@ Cypress.Commands.add('testAddingOrganizationServiceAddress',(viewport,creds,orga
     cy.getElementByTestId('modal-header').then($element=>{
         expect($element).to.be.visible;
         expect($element).contain('Edit Addresses');
+    });
+
+    cy.getElementByTestId('location_id').then($element=>{
+        cy.wrap($element.children()).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.locations[0].name);
+        }); 
+        //save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+});
+
+Cypress.Commands.add('testAddingOrganizationServiceSchedule',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+    //Add Service
+    cy.addService(organization);
+   //cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    //Add Address
+    cy.addSchedule(organization);
+   // cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    cy.scrollTo(0, 500)
+    cy.getElementByTestId('table-row-action').then($element=>{
+        cy.wrap($element[0]).click();
     })
+
+    cy.getElementByTestId('service-new-schedule-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Schedule');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Schedules');
+    });
+
+    cy.getElementByTestId('schedule_id').then($element=>{
+        cy.wrap($element.children()).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.schedules[0].name);
+        }); 
+        //save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+});
+
+Cypress.Commands.add('testAddingOrganizationServiceEmails',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+    //Add Service
+    cy.addService(organization);
+   //cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    //Add Address
+    cy.addEmail(organization);
+   // cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    cy.scrollTo(0, 500)
+    cy.getElementByTestId('table-row-action').then($element=>{
+        cy.wrap($element[0]).click();
+    });
+
+    cy.getElementByTestId('service-new-email-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Email');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Emails');
+    });
+
+    cy.getElementByTestId('email_id').then($element=>{
+        cy.wrap($element.children()).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.emails[0].email);
+        }); 
+        //save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
+});
+
+Cypress.Commands.add('testAddingOrganizationServicePhone',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+    //Add Service
+    cy.addService(organization);
+   //cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    //Add Address
+    cy.addPhone(organization);
+   // cy.intercept('/v1/organizations/**');
+    cy.wait(3000);
+    cy.scrollTo(0, 500)
+    cy.getElementByTestId('table-row-action').then($element=>{
+        cy.wrap($element[0]).click();
+    });
+
+    cy.getElementByTestId('service-new-phone-button').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Phone');
+        cy.wrap($element).click();
+    });
+
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Edit Phones');
+    });
+
+    cy.getElementByTestId('phone_id').then($element=>{
+        cy.wrap($element.children()).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.phones[0].phone_type);
+        }); 
+        //save
+        cy.getElementByTestId('modal-save-button').click();
+    });
+
 });
 
 Cypress.Commands.add('testAddingOrganizationServiceEditCoverage',(viewport,creds,organization)=>{

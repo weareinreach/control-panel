@@ -39,7 +39,7 @@ describe('Organization Form Tests', () => {
                     });
                 });
             });
-            it('Testing Organization New Access Information',()=>{
+            it('Testing Organization Service New Access Information',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
@@ -48,6 +48,46 @@ describe('Organization Form Tests', () => {
                     });
                 });
             });
+            it('Testing Organization Service New Address',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServiceAddress(viewport,user,org);
+                        });
+                    });
+                });
+            });
+
+            it('Testing Organization Service New Schedule',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServiceSchedule(viewport,user,org);
+                        });
+                    });
+                });
+            });
+
+            it('Testing Organization Service New Email',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServiceEmails(viewport,user,org);
+                        });
+                    });
+                });
+            });
+
+            it('Testing Organization Service New Phone',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                            cy.testAddingOrganizationServicePhone(viewport,user,org);
+                        });
+                    });
+                });
+            });
+
             it('Testing Organization Service Edit Coverage',()=>{
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{

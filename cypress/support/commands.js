@@ -51,9 +51,152 @@ Cypress.Commands.add('addService',(organization)=>{
     cy.getElementByTestId('organization-new-service-button').click();
     cy.getElementByTestId('name').then($element=>{
         cy.wrap($element.children()[1]).type(organization.services[0].name);
-        //Save
-        cy.getElementByTestId('modal-save-button').click();
     });
+	 //Save
+	 cy.getElementByTestId('modal-save-button').click();
+});
+
+Cypress.Commands.add('addAddress',(organization)=>{
+	//Add Address
+    cy.getElementByTestId('organization-new-address-button').click();
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].name);
+    });
+    cy.getElementByTestId('name_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].name_ES);
+    });
+    cy.getElementByTestId('unit').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].unit);
+    });
+    cy.getElementByTestId('address').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].address);
+    });
+    cy.getElementByTestId('city').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].city);
+    });
+    cy.getElementByTestId('state').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].state);
+    });
+
+    cy.getElementByTestId('country').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].country);
+    });
+    cy.getElementByTestId('city_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].city_ES);
+    });
+    cy.getElementByTestId('state_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].state_ES);
+    });
+    cy.getElementByTestId('country_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].country_ES);
+    });
+    cy.getElementByTestId('zip_code').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].zip_code);
+    });
+    cy.getElementByTestId('lat').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[0]);
+    });
+    cy.getElementByTestId('long').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[1]);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        cy.wrap($element.children()[0]).click();
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
+});
+
+
+Cypress.Commands.add('addSchedule',(organization)=>{
+	//Add Week Schedule
+    cy.getElementByTestId('organization-new-schedule-button').click();
+    cy.getElementByTestId('name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].name);
+    });
+    cy.getElementByTestId('monday_start').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].monday_start);
+    });
+    cy.getElementByTestId('monday_end').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].monday_end);
+    });
+    cy.getElementByTestId('tuesday_start').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].tuesday_start);
+    });
+    cy.getElementByTestId('tuesday_end').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].tuesday_end);
+    });
+    cy.getElementByTestId('wednesday_start').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].wednesday_start);
+    });
+    cy.getElementByTestId('wednesday_end').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].wednesday_end);
+    });
+    cy.getElementByTestId('thursday_start').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].thursday_start);
+    });
+    cy.getElementByTestId('thursday_end').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].thursday_end);
+    });
+    cy.getElementByTestId('friday_start').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].friday_start);
+    });
+    cy.getElementByTestId('friday_end').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].friday_end);
+    });
+
+    cy.getElementByTestId('timezone').then($element=>{
+        cy.wrap($element.children().children()[0]).select(organization.schedules[0].timezone);
+    });
+
+    cy.getElementByTestId('note').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.schedules[0].note);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+});
+
+Cypress.Commands.add('addEmail',(organization)=>{
+	//Add Email
+    cy.getElementByTestId('organization-new-email-button').click();
+    cy.getElementByTestId('email').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.emails[0].email);
+    });
+    cy.getElementByTestId('title').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.emails[0].title);
+    });
+    cy.getElementByTestId('title_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.emails[0].email);
+    });
+    cy.getElementByTestId('first_name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.emails[0].first_name);
+    });
+    cy.getElementByTestId('last_name').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.emails[0].last_name);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        cy.wrap($element.children()[0]).click();
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
+});
+
+Cypress.Commands.add('addPhone',(organization)=>{
+	//Add Phone
+    cy.getElementByTestId('organization-new-phone-button').click();
+    cy.getElementByTestId('phone_type').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.phones[0].phone_type);
+    });
+    cy.getElementByTestId('phone_type_ES').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.phones[0].phone_type_ES);
+    });
+    cy.getElementByTestId('digits').then($element=>{
+        cy.wrap($element.children()[1]).type(organization.phones[0].digits);
+    });
+    cy.getElementByTestId('is_primary').then($element=>{
+        cy.wrap($element.children()[0]).click();
+    });
+    //Save
+    cy.getElementByTestId('modal-save-button').click();
 });
 
 // -------------- User Commands -----------------

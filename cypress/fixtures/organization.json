@@ -9,6 +9,7 @@
 	"website_es":"https://google-es.com",
 	"alert_message":"Alert Message!!",
 	"alert_message_es":"Alert Message en espanol",
+	"notes":"This are the notes for the organization",
 	"social_media":[
 		{
 			"name":"facebook",

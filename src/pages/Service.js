@@ -164,14 +164,14 @@ const Service = (props) => {
     openModal({
       children: FormCoverage,
       childrenProps: {properties},
-      header: 'CoverageEdit',
+      header: 'Edit Coverage',
       onClose: closeModal,
       onConfirm: updateFields,
     });
   const openDetailsEdit = () =>
     openModal({
       form: {fields: serviceDetailsFields, initialValues: service},
-      header: 'DetailsEdit',
+      header: 'Edit Details',
       onClose: closeModal,
       onConfirm: openOrgVerify
     });

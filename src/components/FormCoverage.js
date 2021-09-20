@@ -57,10 +57,10 @@ const FormField = ({label, children, isOptional}) => {
       }
     `}>
       <FormLabel>
-        <span>{label}</span>
+        <span data-test-id="coverage-form-label">{label}</span>
         {isOptional && <OptionalTag>&#40;Optional&#41;</OptionalTag>}
       </FormLabel>
-      <div className="form-field-children">
+      <div className="form-field-children" data-test-id="coverage-form-child">
         {children}
       </div>
     </FormControl>
@@ -275,12 +275,15 @@ const ServiceAreaForm = (props) => {
 
   return (
     <FormSection>
-      <h1>New Coverage Area</h1>
+      <h1 data-test-id="coverage-form-area">New Coverage Area</h1>
       <FormField label="Country">
-        <Select options={countryOptions}
+        <div data-test-id="coverage-form-select-country">
+        <Select 
+                options={countryOptions}
                 onChange={onChangeCountry}
                 value={country}
                 placeholder="Select a country" />
+          </div>
       </FormField>
       {nextField}
     </FormSection>
@@ -321,10 +324,11 @@ const ExistingCoverageAreas = ({existingProperties, locationFields, updateProper
   };
   return (
     <FormSection>
-      <h1>Coverage Areas</h1>
+      <h1 data-test-id="coverage-form-header">Coverage Areas</h1>
       <CheckboxList>
         {propertyKeys?.map((key) => (
           <Checkbox
+            data-test-id={key}
             key={key}
             isChecked={true}
             onChange={() => removeProperty(key)}

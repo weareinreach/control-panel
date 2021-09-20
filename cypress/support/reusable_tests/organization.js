@@ -311,12 +311,8 @@ Cypress.Commands.add('testAddingOrganizationServices',(viewport,creds,organizati
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Service
     cy.getElementByTestId('organization-new-service-button').click();
@@ -339,12 +335,9 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
+
     //Add Address
     cy.getElementByTestId('organization-new-address-button').click();
     cy.getElementByTestId('modal-header').then($element=>{
@@ -433,12 +426,8 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Week Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();
@@ -570,12 +559,8 @@ Cypress.Commands.add('testAddingOrganizationEmail',(viewport,creds,organization)
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Email
     cy.getElementByTestId('organization-new-email-button').click();
@@ -621,12 +606,8 @@ Cypress.Commands.add('testAddingOrganizationPhone',(viewport,creds,organization)
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Phone
     cy.getElementByTestId('organization-new-phone-button').click();
@@ -661,12 +642,8 @@ Cypress.Commands.add('testAddingOrganizationSocialMedia',(viewport,creds,organiz
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Social Media
     cy.getElementByTestId('organization-new-social-media-button').click();
@@ -695,12 +672,8 @@ Cypress.Commands.add('testAddingOrganizationEditCoverage',(viewport,creds,organi
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Edit Coverage
     cy.getElementByTestId('organization-edit-coverage-button').click();
@@ -786,12 +759,8 @@ Cypress.Commands.add('testAddingOrganizationNotes',(viewport,creds,organization)
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Notes
     cy.getElementByTestId('organization-new-note-button').click();
@@ -805,7 +774,7 @@ Cypress.Commands.add('testAddingOrganizationNotes',(viewport,creds,organization)
         expect($element).contain('Note');
         cy.wrap($element).type(organization.notes)
     });
-    
+
     //save
     cy.getElementByTestId('modal-save-button').click();
 

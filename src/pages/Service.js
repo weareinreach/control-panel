@@ -221,11 +221,11 @@ const Service = (props) => {
       },
     });
   };
-  const openEditOrgField = (field, list) => () =>
+  const openEditOrgField = (field, list , name) => () =>
     openModal({
       children: FormOrganizationInfo,
       childrenProps: {field, fieldValue: service[field], list},
-      header: `Add field to ${name}`,
+      header: name,
       onClose: closeModal,
       onConfirm: updateFields,
     });
@@ -341,21 +341,21 @@ const Service = (props) => {
         />
       </Box>
       <Breadcrumbs organization={organization} service={service} />
-      <Title>{name}</Title>
+      <Title data-test-id="service-title">{name}</Title>
       <Tabs marginTop={6}>
         <TabList>
-          <Tab>Service Details</Tab>
-          <Tab>Properties</Tab>
-          <Tab>Tags</Tab>
+          <Tab data-test-id="service-tab-details">Service Details</Tab>
+          <Tab data-test-id="service-tab-properties">Properties</Tab>
+          <Tab data-test-id="service-tab-tags">Tags</Tab>
         </TabList>
         <TabPanels>
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openDetailsEdit}>Edit Details</Button>
+                  <Button onClick={openDetailsEdit} data-test-id="service-details-button">Edit Details</Button>
                 </Box>
-                <SectionTitle>Service Details</SectionTitle>
+                <SectionTitle data-test-id="service-detail-title">Service Details</SectionTitle>
                 <KeyValueTable
                   rows={[
                     {key: 'ID', value: _id},
@@ -375,9 +375,9 @@ const Service = (props) => {
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openAccessForm()}>New Instructions</Button>
+                  <Button onClick={openAccessForm()} data-test-id="service-new-instruction-button">New Instructions</Button>
                 </Box>
-                <SectionTitle>Access Instructions</SectionTitle>
+                <SectionTitle data-test-id="service-instruction-title">Access Instructions</SectionTitle>
                 <Table
                   headers={accessInstructionFields}
                   rows={access_instructions}
@@ -399,13 +399,15 @@ const Service = (props) => {
                   <Button
                     onClick={openEditOrgField(
                       'location_id',
-                      organization?.locations
+                      organization?.locations,
+                      'Edit Addresses'
                     )}
+                    data-test-id="service-new-address-button"
                   >
                     Edit Address
                   </Button>
                 </Box>
-                <SectionTitle>Address</SectionTitle>
+                <SectionTitle data-test-id="service-address-title">Address</SectionTitle>
                 {location && (
                   <Table headers={locationFields} rows={[location]} />
                 )}
@@ -415,13 +417,15 @@ const Service = (props) => {
                   <Button
                     onClick={openEditOrgField(
                       'schedule_id',
-                      organization?.schedules
+                      organization?.schedules,
+                      'Edit Schedules'
                     )}
+                    data-test-id="service-new-schedule-button"
                   >
                     Edit Schedule
                   </Button>
                 </Box>
-                <SectionTitle>Schedule</SectionTitle>
+                <SectionTitle data-test-id="service-schedule-title">Schedule</SectionTitle>
                 {schedule && (
                   <Table headers={scheduleHeaders} rows={[schedule]} />
                 )}
@@ -429,37 +433,38 @@ const Service = (props) => {
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('email_id', organization?.emails)}
-                  >
+                    onClick={openEditOrgField('email_id', organization?.emails,'Edit Emails')}
+                    data-test-id="service-new-email-button">
                     Edit Email
                   </Button>
                 </Box>
-                <SectionTitle>Email</SectionTitle>
+                <SectionTitle data-test-id="service-email-title">Email</SectionTitle>
                 {email && <Table headers={emailFields} rows={[email]} />}
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('phone_id', organization?.phones)}
-                  >
+                    onClick={openEditOrgField('phone_id', organization?.phones,'Edit Phones')}
+                   data-test-id="service-new-phone-button"
+                   >
                     Edit Phone
                   </Button>
                 </Box>
-                <SectionTitle>Phone</SectionTitle>
+                <SectionTitle data-test-id="service-phone-title">Phone</SectionTitle>
                 {phone && <Table headers={phoneFields} rows={[phone]} />}
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openCoverageEdit}>Edit Coverage</Button>
+                  <Button onClick={openCoverageEdit} data-test-id="service-edit-coverage-button">Edit Coverage</Button>
                 </Box>
-                <SectionTitle>Service Area Coverage</SectionTitle>
+                <SectionTitle data-test-id="service-coverage-title">Service Area Coverage</SectionTitle>
                 <ListServiceArea properties={properties} />
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openNotesForm()}>New Note</Button>
+                  <Button onClick={openNotesForm()} data-test-id="service-new-note-button">New Note</Button>
                 </Box>
-                <SectionTitle>Notes</SectionTitle>
+                <SectionTitle data-test-id="service-note-title">Notes</SectionTitle>
                 <Table
                   headers={[
                     { "key": "note", "label": "Note" },
@@ -476,21 +481,21 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack space={4}>
               <Box {...buttonGroupProps} float="none" textAlign="right">
-                <Button onClick={openEditProperties}>Edit Properties</Button>
+                <Button onClick={openEditProperties} data-test-id="service-edit-properties-button">Edit Properties</Button>
               </Box>
               <Container>
-                <SectionTitle>Cost Properties</SectionTitle>
+                <SectionTitle data-test-id="service-cost-properties-title">Cost Properties</SectionTitle>
                 <ListProperties list={costProperties} properties={properties} />
               </Container>
               <Container>
-                <SectionTitle>Community Properties</SectionTitle>
+                <SectionTitle data-test-id="service-community-title">Community Properties</SectionTitle>
                 <ListProperties
                   list={communityProperties}
                   properties={properties}
                 />
               </Container>
               <Container>
-                <SectionTitle>
+                <SectionTitle data-test-id="service-requirements-title">
                   Eligibility / Requirement Properties
                 </SectionTitle>
                 <ListProperties
@@ -499,14 +504,14 @@ const Service = (props) => {
                 />
               </Container>
               <Container>
-                <SectionTitle>Language Properties</SectionTitle>
+                <SectionTitle data-test-id="service-language-title">Language Properties</SectionTitle>
                 <ListProperties
                   list={languageProperties}
                   properties={properties}
                 />
               </Container>
               <Container>
-                <SectionTitle>Additional Information Properties</SectionTitle>
+                <SectionTitle data-test-id="service-additional-title">Additional Information Properties</SectionTitle>
                 <ListProperties
                   list={additionalInformationProperties}
                   properties={properties}
@@ -518,29 +523,29 @@ const Service = (props) => {
             <Stack spacing={4}>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openEditTags('united_states')}>
+                  <Button onClick={openEditTags('united_states')} data-test-id="service-us-tags-button">
                     Edit Tags
                   </Button>
                 </Box>
-                <SectionTitle>United States Tags</SectionTitle>
+                <SectionTitle data-test-id="service-us-title">United States Tags</SectionTitle>
                 {serviceTags?.united_states ? (
                   <ListTags items={serviceTags.united_states} />
                 ) : null}
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openEditTags('canada')}>Edit Tags</Button>
+                  <Button onClick={openEditTags('canada')} data-test-id="service-canada-tags-button">Edit Tags</Button>
                 </Box>
-                <SectionTitle>Canada Tags</SectionTitle>
+                <SectionTitle data-test-id="service-canada-title">Canada Tags</SectionTitle>
                 {serviceTags?.canada ? (
                   <ListTags items={serviceTags.canada} />
                 ) : null}
               </Container>
               <Container>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openEditTags('mexico')}>Edit Tags</Button>
+                  <Button onClick={openEditTags('mexico')} data-test-id="service-mexico-tags-button">Edit Tags</Button>
                 </Box>
-                <SectionTitle>Mexico Tags</SectionTitle>
+                <SectionTitle data-test-id="service-mexico-title">Mexico Tags</SectionTitle>
                 {serviceTags?.mexico ? (
                   <ListTags items={serviceTags.mexico} />
                 ) : null}

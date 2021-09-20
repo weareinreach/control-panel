@@ -39,7 +39,20 @@
 	"services":[
 		{
 			"name":"New Service Added",
-			"slug":"new-service-added"
+			"name_ES":"New Service en Espanol",
+			"slug":"new-service-added",
+			"slug_ES":"new-service-added-es",
+			"description":"Test organizations Description",
+			"description_ES":"Test organizations Description en espanol",
+			"access_instructions":[
+				{
+					"access_type":"phone",
+					"access_value":"123-543-9900",
+					"access_value_ES":"123-543-9900",
+					"instructions":"Call for an appointment",
+					"instructions_ES":"Call for an appointment ES"
+				}
+			]
 		}
 	],
 	"locations":[

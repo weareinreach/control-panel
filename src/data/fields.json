@@ -344,6 +344,10 @@
           "value": "CDT"
         },
         {
+          "label": "EDT",
+          "value": "EDT"
+        },
+        {
           "label": "EST",
           "value": "EST"
         },

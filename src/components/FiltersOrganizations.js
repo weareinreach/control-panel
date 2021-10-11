@@ -187,7 +187,10 @@ const FiltersOrganizations = (props) => {
       query.createdAtEnd = new Date(createdAtEnd).toISOString();
     }
 
+    console.log(query);
     updateQuery(query);
+    localStorage.removeItem('searchQuery');
+    localStorage.setItem('searchQuery', JSON.stringify(query));
   };
 
   useEffect(() => {

@@ -42,6 +42,10 @@ const buttonGroupProps = {
   float: ' right',
 };
 
+const goBack = () => {
+  console.log('Back');
+};
+
 const Organization = (props) => {
   const {user} = useContext(ContextApp);
   const {closeModal, openModal} = useContext(ContextFormModal);
@@ -416,9 +420,8 @@ const Organization = (props) => {
       {!is_published && (
         <Alert title="This organization is unpublished" type="warning" />
       )}
+      {isSearch && <Button onClick={goBack}>Back to search results</Button>}
       <Box float="right">
-        {isSearch && <Button>Back to search results</Button>}
-
         <DropdownButton
           buttonText="Select a language"
           items={[

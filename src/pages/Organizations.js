@@ -1,31 +1,31 @@
-import { post } from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Grid, Text } from '@chakra-ui/react';
+import {post} from 'axios';
+import React, {useContext, useEffect, useState} from 'react';
+import {Box, Button, Grid, Text} from '@chakra-ui/react';
 
-import { ContextFormModal } from '../components/ContextFormModal';
+import {ContextFormModal} from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
-import { Container, SectionTitle, Title } from '../components/styles';
-import { CATALOG_API_URL, getOrgQueryUrls } from '../utils';
-import { formatOrgInput } from '../utils/forms';
-import { useAPIGet } from '../utils/hooks';
+import {Container, SectionTitle, Title} from '../components/styles';
+import {CATALOG_API_URL, getOrgQueryUrls} from '../utils';
+import {formatOrgInput} from '../utils/forms';
+import {useAPIGet} from '../utils/hooks';
 
 const headers = [
-  { key: 'name', label: 'Name' },
-  { key: 'updated_at', label: 'Last Updated' },
+  {key: 'name', label: 'Name'},
+  {key: 'updated_at', label: 'Last Updated'},
 ];
 
-const initialQuery = { page: 1, name: '', properties: '' };
+const initialQuery = {page: 1, name: '', properties: ''};
 const initialUrls = getOrgQueryUrls(initialQuery);
 
 const Organizations = () => {
   const totalCount = useAPIGet(initialUrls.count);
   const organizations = useAPIGet(initialUrls.organizations);
   const count = useAPIGet(initialUrls.count);
-  const { closeModal, openModal } = useContext(ContextFormModal);
+  const {closeModal, openModal} = useContext(ContextFormModal);
   const [query, setQuery] = useState(initialQuery);
   const loading =
     count?.loading || organizations?.loading || totalCount?.loading;
@@ -33,20 +33,20 @@ const Organizations = () => {
     window.location = `/organizations/${org._id}`;
   };
   const getLastPage = () => {
-    setQuery({ ...query, page: query.page - 1 });
+    setQuery({...query, page: query.page - 1});
   };
   const getNextPage = () => {
-    setQuery({ ...query, page: query.page + 1 });
+    setQuery({...query, page: query.page + 1});
   };
   const newQuery = (params) => {
-    setQuery({ page: 1, ...params });
+    setQuery({page: 1, ...params});
   };
   const openNewOrg = () =>
     openModal({
-      form: { fields: [{ key: 'name', label: 'Organization Name' }] },
+      form: {fields: [{key: 'name', label: 'Organization Name'}]},
       header: 'New Organization Name',
       onClose: closeModal,
-      onConfirm: ({ setLoading, setSuccess, setError, values }) => {
+      onConfirm: ({setLoading, setSuccess, setError, values}) => {
         const newOrg = formatOrgInput(values);
         const url = `${CATALOG_API_URL}/organizations`;
 
@@ -54,7 +54,7 @@ const Organizations = () => {
 
         setLoading();
         post(url, newOrg)
-          .then(({ data }) => {
+          .then(({data}) => {
             setSuccess();
 
             window.location = `/organizations/${data?.organization?._id}`;
@@ -78,6 +78,10 @@ const Organizations = () => {
     return <Loading />;
   }
 
+  console.log(organizations.data);
+  localStorage.removeItem('searchResults');
+  localStorage.setItem('searchResults', JSON.stringify(organizations.data));
+
   return (
     <>
       <Helmet title="Organizations" />
@@ -90,38 +94,38 @@ const Organizations = () => {
           {loading ? (
             <Loading />
           ) : (
-              <>
-                <Container>
-                  <Box>
-                    {organizations?.data?.organizations?.length > 0 ? (
-                      <Table
-                        actions={[{ label: 'View', onClick: goToOrgPage }]}
-                        getRowLink={(org) => `/organizations/${org._id}`}
-                        headers={headers}
-                        rows={organizations.data.organizations}
-                      />
-                    ) : (
-                        <Box textAlign="center" padding={4}>
-                          <SectionTitle>No results found.</SectionTitle>
-                          <Text>Please refine your search</Text>
-                        </Box>
-                      )}
-                  </Box>
-                </Container>
-                <Pagination
-                  currentPage={query?.page}
-                  getLastPage={getLastPage}
-                  getNextPage={getNextPage}
-                  renderAdditionalStats={() => (
-                    <Text display="inline" marginLeft={2}>
-                      {count?.data?.count} of {totalCount?.data?.count}{' '}
-                    organizations.
-                    </Text>
+            <>
+              <Container>
+                <Box>
+                  {organizations?.data?.organizations?.length > 0 ? (
+                    <Table
+                      actions={[{label: 'View', onClick: goToOrgPage}]}
+                      getRowLink={(org) => `/organizations/${org._id}`}
+                      headers={headers}
+                      rows={organizations.data.organizations}
+                    />
+                  ) : (
+                    <Box textAlign="center" padding={4}>
+                      <SectionTitle>No results found.</SectionTitle>
+                      <Text>Please refine your search</Text>
+                    </Box>
                   )}
-                  totalPages={count?.data?.pages}
-                />
-              </>
-            )}
+                </Box>
+              </Container>
+              <Pagination
+                currentPage={query?.page}
+                getLastPage={getLastPage}
+                getNextPage={getNextPage}
+                renderAdditionalStats={() => (
+                  <Text display="inline" marginLeft={2}>
+                    {count?.data?.count} of {totalCount?.data?.count}{' '}
+                    organizations.
+                  </Text>
+                )}
+                totalPages={count?.data?.pages}
+              />
+            </>
+          )}
         </Box>
         <Container height="fit-content">
           <Filters query={query} updateQuery={newQuery} />

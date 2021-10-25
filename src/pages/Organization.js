@@ -76,7 +76,7 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
-  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+  const updateFields = ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -86,13 +86,15 @@ const Organization = (props) => {
         window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
+        const {message} = err?.response?.data;
         setError();
+        setErrorMessage(message ?? null);
         console.error(err);
       });
   };
   const updateListField =
     (key, options) =>
-    ({setLoading, setSuccess, setError, values}) => {
+    ({setLoading, setSuccess, setError, setErrorMessage, values }) => {
       const {isDelete, isEdit} = options || {};
       const newField = [...(organization?.[key] || [])];
       const {_id, ...restValues} = values;
@@ -114,6 +116,7 @@ const Organization = (props) => {
         setLoading,
         setSuccess,
         setError,
+        setErrorMessage,
         values: {[key]: newField},
       });
     };

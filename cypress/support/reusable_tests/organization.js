@@ -338,6 +338,10 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     //Add Org
     cy.addOrganization(organization);
 
+    // Register intercepts
+    cy.intercept({method:'GET', url:'/v1/organizations/*'}).as('loadOrg');
+    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('saveAddress');
+
     //Add Address
     cy.getElementByTestId('organization-new-address-button').click();
     cy.getElementByTestId('modal-header').then($element=>{
@@ -419,6 +423,10 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     });
     //Save
     cy.getElementByTestId('modal-save-button').click();
+    cy.wait('@saveAddress');
+    cy.wait('@loadOrg');
+    // Assert address has been added
+    cy.getElementByTestId('table-row-text').contains(organization.locations[0].name).should('be.visible')
 });
 
 
@@ -428,6 +436,10 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
 
     //Add Org
     cy.addOrganization(organization);
+
+     // Register intercepts
+    cy.intercept({method:'GET', url:'/v1/organizations/*'}).as('loadOrg');
+    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('@saveSchedule');
 
     //Add Week Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();
@@ -505,9 +517,8 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
     //save
     cy.getElementByTestId('modal-save-button').click();
 
-    cy.intercept('/v1/organizations/**').then(()=>{
-        cy.wait(2000);
-    });
+    cy.wait('@saveSchedule');
+    cy.wait('@loadOrg');
 
     // Add Weekend Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();

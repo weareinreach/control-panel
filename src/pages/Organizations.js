@@ -78,7 +78,9 @@ const Organizations = () => {
     return <Loading />;
   }
 
-  console.log(count);
+  console.log(organizations.data);
+  localStorage.removeItem('searchResults');
+  localStorage.setItem('searchResults', JSON.stringify(organizations.data));
 
   return (
     <>

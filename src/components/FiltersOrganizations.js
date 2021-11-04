@@ -194,8 +194,10 @@ const FiltersOrganizations = (props) => {
     if (createdAtEnd) {
       query.createdAtEnd = new Date(createdAtEnd).toISOString();
     }
-    updateQuery(query);
+
     console.log(query);
+    updateQuery(query);
+    localStorage.removeItem('searchQuery');
     localStorage.setItem('searchQuery', JSON.stringify(query));
   };
 
@@ -434,13 +436,9 @@ const FiltersOrganizations = (props) => {
         {isCreatedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-<<<<<<< Updated upstream
-              <Text fontSize="xs">Start Date:</Text>
-=======
               <Text fontSize="xs" data-test-id="filter-start-date-label">
                 Start Date:
               </Text>
->>>>>>> Stashed changes
               <DateFieldPicker
                 id={createdAtStart}
                 maxDate={new Date()}
@@ -451,13 +449,9 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-<<<<<<< Updated upstream
-              <Text fontSize="xs">End Date:</Text>
-=======
               <Text fontSize="xs" data-test-id="filter-end-date-label">
                 End Date:
               </Text>
->>>>>>> Stashed changes
               <DateFieldPicker
                 id={createdAtEnd}
                 minDate={createdAtStart}
@@ -472,13 +466,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-<<<<<<< Updated upstream
-              <Text fontSize="xs">Created before:</Text>
-=======
               <Text fontSize="xs" data-test-id="filter-created-before-label">
                 Created before:
               </Text>
->>>>>>> Stashed changes
             </Box>
             <Box>
               <DateFieldPicker
@@ -493,16 +483,12 @@ const FiltersOrganizations = (props) => {
           </Flex>
         )}
 
-<<<<<<< Updated upstream
-        <Text mt={[0, '2rem !important']}>Publish Status:</Text>
-=======
         <Text
           mt={[0, '2rem !important']}
           data-test-id="filter-publish-status-label"
         >
           Publish Status:
         </Text>
->>>>>>> Stashed changes
         <Checkbox
           isChecked={isPublished}
           onChange={handlePublishChange}
@@ -544,10 +530,7 @@ const FiltersOrganizations = (props) => {
           <option value="mexico">Mexico</option>
         </Select>
         <Select
-<<<<<<< Updated upstream
-=======
           data-test-id="filter-drop-down-tags"
->>>>>>> Stashed changes
           onChange={handleSelect('tags')}
           variant="filled"
           placeholder="Select a tag"

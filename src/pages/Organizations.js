@@ -79,7 +79,6 @@ const Organizations = () => {
   }
 
   console.log(organizations.data);
-  localStorage.removeItem('searchResults');
   localStorage.setItem('searchResults', JSON.stringify(organizations.data));
 
   return (

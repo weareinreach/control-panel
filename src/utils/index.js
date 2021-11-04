@@ -178,7 +178,7 @@ export const getOrgQueryUrls = (query) => {
     queryParam += `&tagLocale=${tagLocale}&tags=${tags.join(',')}`;
   }
 
-  console.log(`/organizations/count${queryParam === '?' ? '' : queryParam}`);
+  // console.log(`/organizations/count${queryParam === '?' ? '' : queryParam}`);
   return {
     organizations: `/organizations${queryParam === '?' ? '' : queryParam}`,
     count: `/organizations/count${queryParam === '?' ? '' : queryParam}`,

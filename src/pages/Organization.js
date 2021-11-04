@@ -17,6 +17,7 @@ import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 import {Text} from '@chakra-ui/react';
+import {useHistory} from 'react-router-dom';
 
 import {
   emailFields,
@@ -40,10 +41,6 @@ const {catalogUrl} = config;
 const buttonGroupProps = {
   marginBottom: 4,
   float: ' right',
-};
-
-const goBack = () => {
-  console.log('Back');
 };
 
 const Organization = (props) => {
@@ -124,7 +121,6 @@ const Organization = (props) => {
   const goToServicePage = (service) => {
     window.location = `${orgPath}/services/${service._id}`;
   };
-  const goBack = () => {};
   const openCoverageEdit = () =>
     openModal({
       children: FormCoverage,
@@ -415,13 +411,23 @@ const Organization = (props) => {
     return <NotFound />;
   }
 
+  const BackButton = () => {
+    let history = useHistory();
+
+    return (
+      <Button onClick={() => console.log(history.location, history.search)}>
+        Back to Search Results
+      </Button>
+    );
+  };
+
   return (
     <>
       <Helmet title={name} />
       {!is_published && (
         <Alert title="This organization is unpublished" type="warning" />
       )}
-      {isSearch && <Button onClick={goBack}>Back to search results</Button>}
+      {isSearch && <BackButton />}
       <Box float="right">
         <DropdownButton
           buttonText="Select a language"
@@ -465,7 +471,7 @@ const Organization = (props) => {
           ]}
         />
       </Box>
-      {/* <Button onClick={goBack} /> */}
+
       <Breadcrumbs organization={organization} />
       <Title>{name}</Title>
       <Stack marginTop={6}>

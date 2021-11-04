@@ -197,8 +197,6 @@ const FiltersOrganizations = (props) => {
 
     console.log(query);
     updateQuery(query);
-    localStorage.removeItem('searchQuery');
-    localStorage.setItem('searchQuery', JSON.stringify(query));
   };
 
   useEffect(() => {

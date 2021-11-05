@@ -439,7 +439,7 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
 
      // Register intercepts
     cy.intercept({method:'GET', url:'/v1/organizations/*'}).as('loadOrg');
-    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('@saveSchedule');
+    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('saveSchedule');
 
     //Add Week Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();

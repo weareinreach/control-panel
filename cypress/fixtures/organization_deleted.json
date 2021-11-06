@@ -22,7 +22,15 @@
 			"title_ES":"Email Addresses en espanol"
 		}
 	],
-	"services":[],
+	"services":[
+		{
+			"name": "Test Service Name",
+			"description": "This is a test service description",
+			"slug": "surprisingly-unique-test-service-name",
+			"is_deleted":true
+		}
+		
+	],
 	"locations":[],
 	"schedules":[]
 }

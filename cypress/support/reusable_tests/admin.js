@@ -322,9 +322,6 @@ Cypress.Commands.add('testAdminTrashBinViewOrganizationOrService',(viewport,cred
                 cy.get($element).contains(`View Deleted ${option}`).then($element=>{
                     cy.wrap($element).click();
                 });
-                cy.location().should(($loc) => {
-                    expect($loc.pathname).to.eq(`/organizations/${org._id}`);
-                });
             });
         }
     });

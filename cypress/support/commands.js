@@ -230,7 +230,8 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
 			//Regular User
 			if (
 				user.email === 'automation@gmail.com' ||
-				user.email === 'automation-updated@gmail.com'
+				user.email === 'automation-updated@gmail.com' ||
+                user.email === 'automation-1@gmail.com'
 			) {
 				cy.deleteUser(user._id);
 			}

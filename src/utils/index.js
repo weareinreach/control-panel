@@ -65,6 +65,7 @@ export const scheduleHeaders = [
       { label: 'AST', value: 'AST' },
       { label: 'CDT', value: 'CDT' },
       { label: 'CST', value: 'CST' },
+      { label: 'EDT', value: 'EDT' },
       { label: 'EST', value: 'EST' },
       { label: 'HST', value: 'HST' },
       { label: 'MDT', value: 'MDT' },

@@ -291,7 +291,7 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 //Add Org
 Cypress.Commands.add('addOrg', (org) => {
     //change this to ApiUrl when done
-	compoundURL = Cypress.env('localUrl').concat(
+	compoundURL = Cypress.env('apiUrl').concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations')
 	);

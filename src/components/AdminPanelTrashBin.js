@@ -116,14 +116,14 @@ if(deletedOrgs?.loading || deletedServices?.loading){
 
 return (
         <>
-        <Title>Trash Bin</Title>
+        <Title data-test-id="admin-trash-bin-title">Trash Bin</Title>
         <Stack spacing={4}>
             <Container>
-                <SectionTitle>Deleted Organizations</SectionTitle>
+                <SectionTitle data-test-id="admin-trash-bin-organizations-section-title">Deleted Organizations</SectionTitle>
                 {deletedOrgs?.length > 0 ? (
                     <Table actions={[
                         {
-                            label: 'View Organization',
+                            label: 'View Deleted Organization',
                             onClick: (organization) => openOrganizationOrService(organization?._id),
                         },
                         {
@@ -143,15 +143,15 @@ return (
                     rows={deletedOrgs}
                 />
                 ) : (
-                    <Text>No Organizations listed for deletion at this time</Text>
+                    <Text data-test-id="admin-trash-bin-organizations-empty-state">No Organizations listed for deletion at this time</Text>
                 )}
             </Container>
             <Container>
-                <SectionTitle>Deleted Services</SectionTitle>
+                <SectionTitle data-test-id="admin-trash-bin-services-section-title">Deleted Services</SectionTitle>
                 {reducedDeletedServices?.length > 0 ? (
                     <Table actions={[
                         {
-                            label: 'View Organization',
+                            label: 'View Deleted Service Organization',
                             onClick: (service) => openOrganizationOrService(service?.organization?._id)
                         },
                         {
@@ -172,7 +172,7 @@ return (
                     rows={reducedDeletedServices}
                     />
                     ) : (
-                        <Text>No Organization Services listed for deletion at this time</Text>
+                        <Text data-test-id="admin-trash-bin-services-empty-state">No Organization Services listed for deletion at this time</Text>
                 )}
             </Container>
         </Stack>

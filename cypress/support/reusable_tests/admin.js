@@ -1,3 +1,4 @@
+
 Cypress.Commands.add('testAdminPageElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
@@ -87,31 +88,40 @@ Cypress.Commands.add('testAdminPageElements',(viewport,creds)=>{
 Cypress.Commands.add('testAdminFilterUsers',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
-
+    var type = 'lawyer';
     cy.getElementByTestId('header-admin-link').click();
-    cy.getElementByTestId('filter-users-search').select('lawyer');
+    cy.getElementByTestId('filter-users-search').select(type);
+    //Intercept Results
+    cy.intercept(`/v1/users/count?&page=1&type=${type}`, req => {
+        delete req.headers['if-none-match']
+      }).as('usersCount');
     cy.getElementByTestId('filter-users-search-button').click();
-    //Should be empty
-    cy.getElementByTestId('admin-search-not-found-title').then($element=>{
-        expect($element).to.be.visible;
-        expect($element).contain('No results found.');
-    });
 
-    cy.getElementByTestId('admin-search-not-found-body').then($element=>{
-        expect($element).to.be.visible;
-        expect($element).contain('Please refine your search');
-    });
+    cy.wait('@usersCount');
+
+    cy.get('@usersCount').then(interception=>{
+        if(interception.response.body.count>0){
+            //should be populated
+            cy.getElementByTestId('table').then($element=>{
+                expect($element).to.be.visible;
+            });
+            cy.getElementByTestId('table-row').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).to.have.length.greaterThan(1);
+            });           
+        }else{
+            //Should be empty
+            cy.getElementByTestId('admin-search-not-found-title').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).contain('No results found.');
+            });
+
+            cy.getElementByTestId('admin-search-not-found-body').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).contain('Please refine your search');
+            });
     
-    cy.getElementByTestId('filter-users-search').select('dataManager');
-    cy.getElementByTestId('filter-users-search-button').click();
-    cy.wait(500)
-    //should be populated
-    cy.getElementByTestId('table').then($element=>{
-        expect($element).to.be.visible;
-    });
-    cy.getElementByTestId('table-row').then($element=>{
-        expect($element).to.be.visible;
-        expect($element).to.have.length.greaterThan(1);
+        }
     });
 });
 
@@ -193,7 +203,212 @@ Cypress.Commands.add('testAdminFilterAddNewManagerAction',(viewport,creds,admin)
                 });
             }
         });
+    });  
+});
+
+Cypress.Commands.add('testAdminTrashBinElements',(viewport,creds)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
+
+    
+    //Intercept
+    cy.intercept('/v1/organizations?deleted=true').as('deletedOrganizations');
+    cy.intercept('/v1/organizations?serviceDeleted=true').as('deletedOrgServices');
+    //Click
+    cy.getElementByTestId('header-admin-link').click();
+     
+    cy.wait(['@deletedOrganizations','@deletedOrgServices'])
+    
+    cy.getElementByTestId('admin-tab-trash-bin').click();
+
+    cy.get('@deletedOrganizations').then(interception =>{
+        if(!interception.response.body.organizations.length){
+           //Test Empty State
+            cy.getElementByTestId('admin-trash-bin-organizations-empty-state').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).contain('No Organizations listed for deletion at this time');
+            })
+       }else{
+           //Test non empty state
+           cy.getElementByTestId('table').then($element=>{
+               expect($element).to.be.visible;
+           });
+           cy.getElementByTestId('table-row').then($element=>{
+               expect($element).to.be.visible;
+               expect($element).to.have.length.greaterThan(1);
+           });
+
+           cy.getElementByTestId('table-header').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).to.have.length.greaterThan(1);
+           });
+       }
+    });
+
+    cy.get('@deletedOrgServices').then((interception =>{
+        if(!interception.response.body.organizations.length){
+            //Test Empty State
+            cy.log(interception.response.body.organizations)
+             cy.getElementByTestId('admin-trash-bin-services-empty-state').then($element=>{
+                 expect($element).to.be.visible;
+                 expect($element).contain('No Organization Services listed for deletion at this time');
+             })
+        }else{
+            //Test non empty state
+            cy.getElementByTestId('table').then($element=>{
+                expect($element).to.be.visible;
+            });
+
+            cy.getElementByTestId('table-header').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).to.have.length.greaterThan(1);
+            });
+
+            cy.getElementByTestId('table-row').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).to.have.length.greaterThan(1);
+            });
+        }
+    }));
+
+    cy.getElementByTestId('admin-trash-bin-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Trash Bin');
+    });
+
+    cy.getElementByTestId('admin-trash-bin-organizations-section-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Deleted Organizations');
+    });
+
+    cy.getElementByTestId('admin-trash-bin-services-section-title').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Deleted Services');
     });
 
     
 });
+
+
+Cypress.Commands.add('testAdminTrashBinViewOrganizationOrService',(viewport,creds,option,org)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
+
+    
+    //Intercept
+    cy.intercept('/v1/organizations?deleted=true').as('deletedOrganizations');
+    cy.intercept('/v1/organizations?serviceDeleted=true').as('deletedOrgServices');
+    //Click
+    cy.getElementByTestId('header-admin-link').click();
+     
+    cy.wait(['@deletedOrganizations','@deletedOrgServices'])
+    
+    cy.getElementByTestId('admin-tab-trash-bin').click();
+
+    cy.get('@deletedOrganizations').then(interception =>{
+        if(interception.response.body.organizations.length){
+           cy.getElementByTestId('table').then($element=>{
+                expect($element).to.be.visible;
+            });
+            cy.getElementByTestId('table-row-action').then($element=>{
+                expect($element).to.be.visible;
+                //Table row actions counts all elements across tabs
+                cy.get($element).contains(`View Deleted ${option}`).then($element=>{
+                    cy.wrap($element).click();
+                });
+                cy.location().should(($loc) => {
+                    expect($loc.pathname).to.eq(`/organizations/${org._id}`);
+                });
+            });
+        }
+    });
+});
+
+
+Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization',(viewport,creds,action)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
+
+    
+    //Intercept
+    cy.intercept('/v1/organizations?deleted=true').as('deletedOrganizations');
+    cy.intercept('/v1/organizations?serviceDeleted=true').as('deletedOrgServices');
+    //Click
+    cy.getElementByTestId('header-admin-link').click();
+     
+    cy.wait(['@deletedOrganizations','@deletedOrgServices'])
+    
+    cy.getElementByTestId('admin-tab-trash-bin').click();
+
+    cy.get('@deletedOrganizations').then(interception =>{
+        if(interception.response.body.organizations.length){
+           cy.getElementByTestId('table').then($element=>{
+                expect($element).to.be.visible;
+            });
+            cy.getElementByTestId('table-row-action').then($element=>{
+                expect($element).to.be.visible;
+                //Table row actions counts all elements across tabs
+                cy.get($element).contains(`${action} Organization`).click();
+                cy.getElementByTestId('modal-save-button').then($element=>{
+                    expect($element).to.be.visible;
+                    expect($element).contain('Save Changes');
+                    expect($element).to.have.attr('type','button');
+                    cy.wrap($element).click();
+                })
+            });
+        }
+    });
+});
+
+Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreServices',(viewport,creds,action)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    
+     //Waiting for Response
+     cy.intercept('/v1/organizations/**');
+
+    
+    //Intercept
+    cy.intercept('/v1/organizations?deleted=true').as('deletedOrganizations');
+    cy.intercept('/v1/organizations?serviceDeleted=true').as('deletedOrgServices');
+    //Click
+    cy.getElementByTestId('header-admin-link').click();
+     
+    cy.wait(['@deletedOrganizations','@deletedOrgServices'])
+    
+    cy.getElementByTestId('admin-tab-trash-bin').click();
+
+    cy.get('@deletedOrgServices').then(interception =>{
+        if(interception.response.body.organizations.length){
+            if(interception.response.body.organizations.length){
+                //Test non empty state
+              cy.getElementByTestId('table').then($element=>{
+                   expect($element).to.be.visible;
+               });
+
+               cy.getElementByTestId('table-row-action').then($element=>{
+                expect($element).to.be.visible;
+                //Table row actions counts all elements across tabs
+                cy.get($element).contains(`${action} Service`).click();
+                cy.getElementByTestId('modal-save-button').then($element=>{
+                    expect($element).to.be.visible;
+                    expect($element).contain('Save Changes');
+                    expect($element).to.have.attr('type','button');
+                    cy.wrap($element).click();
+                })
+            });
+           }
+        }
+    }); 
+});
+
+

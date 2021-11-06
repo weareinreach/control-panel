@@ -286,3 +286,18 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 		failOnStatusCode:false
 	});
 });
+
+
+//Add Org
+Cypress.Commands.add('addOrg', (org) => {
+    //change this to ApiUrl when done
+	compoundURL = Cypress.env('localUrl').concat(
+		Cypress.env('version'),
+		Cypress.env('route_organizations')
+	);
+	cy.request({
+		method: 'POST',
+		url: compoundURL,
+		body: org
+	});
+});

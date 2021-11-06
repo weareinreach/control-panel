@@ -10,7 +10,7 @@
 	"alert_message":"Alert Message!!",
 	"alert_message_es":"Alert Message en espanol",
 	"notes":"This are the notes for the organization",
-	"is_deleted":false,
+    "is_deleted":true,
 	"social_media":[
 		{
 			"name":"facebook",
@@ -45,7 +45,25 @@
 			"slug_ES":"new-service-added-es",
 			"description":"Test organizations Description",
 			"description_ES":"Test organizations Description en espanol",
-			"is_deleted":false,
+            "is_deleted":false,
+			"access_instructions":[
+				{
+					"access_type":"phone",
+					"access_value":"123-543-9900",
+					"access_value_ES":"123-543-9900",
+					"instructions":"Call for an appointment",
+					"instructions_ES":"Call for an appointment ES"
+				}
+			]
+		},
+		{
+			"name":"New Service Added 2",
+			"name_ES":"New Service en Espanol 2",
+			"slug":"new-service-added-2",
+			"slug_ES":"new-service-added-es-2",
+			"description":"Test organizations Description 2",
+			"description_ES":"Test organizations Description en espanol 2",
+            "is_deleted":true,
 			"access_instructions":[
 				{
 					"access_type":"phone",

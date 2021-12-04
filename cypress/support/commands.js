@@ -291,7 +291,6 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 
 //Add Org
 Cypress.Commands.add('addOrg', (org) => {
-    //change this to ApiUrl when done
 	compoundURL = Cypress.env('apiUrl').concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations')
@@ -302,3 +301,59 @@ Cypress.Commands.add('addOrg', (org) => {
 		body: org
 	});
 });
+
+//Update Org
+Cypress.Commands.add('updateOrg', (org) => {
+    cy.log(org)
+	compoundURL = Cypress.env('apiUrl').concat(
+		Cypress.env('version'),
+		Cypress.env('route_organizations'),
+        `/${org._id}`
+	);
+	cy.request({
+		method: 'PATCH',
+		url: compoundURL,
+		body: org
+	});
+});
+
+
+Cypress.Commands.add('setOrgsOrServicesDeletedState',(query,state)=>{
+    //Get Orgs Or Services that are marked deleted
+    compoundURL = Cypress.env('apiUrl').concat(
+        Cypress.env('version'),
+        Cypress.env('route_organizations'),
+        query
+    );
+    cy.request({
+        method: 'GET',
+        url: compoundURL
+    }).then(response =>{
+        //Only act if there are organizations
+        if(response.body.organizations.length > 0){
+            response.body.organizations.forEach(org =>{
+                let updatedOrg = org;
+                switch(query){
+                    case Cypress.env('deleted_orgs_query_param'):
+                        //Org is deleted set to state
+                        updatedOrg.is_deleted = state;
+                    break;
+                    case Cypress.env('deleted_services_query_param'):
+                        //Org services is deleted set to state
+                        updatedOrg.services.forEach(service =>{
+                            service.is_deleted = state;
+                        });
+                    break;
+                    default:
+                        throw new Error(`Only accept query as: ${Cypress.env('deleted_orgs_query_param')} or ${Cypress.env('deleted_services_query_param')} as variables`);
+
+                }
+                cy.updateOrg(updatedOrg);
+            });
+        }
+    })
+
+});
+
+
+

@@ -45,17 +45,27 @@ describe('Admin Form Tests', () => {
                 });
             });
            });
-           it('Test Trash Bin Elements',()=>{
+           it('Test Trash Bin Elements Empty',()=>{
                cy.get('@user_good').then(user =>{
                    cy.addUser(user).then(()=>{
-                       cy.get('@organization_deleted').then((organization)=>{
-                            cy.addOrg(organization).then(()=>{
-                                cy.testAdminTrashBinElements(viewport,user);
-                            });
-                       });
+                     //Clear deleted orgs and services
+                     cy.setOrgsOrServicesDeletedState(Cypress.env('deleted_orgs_query_param'),false);
+                     cy.setOrgsOrServicesDeletedState(Cypress.env('deleted_services_query_param'),false);
+                     cy.testAdminTrashBinElements(viewport,user,'empty');
+                    });
                    });
                });
-           });
+           it('Test Trash Bin Elements Non Empty',()=>{
+            cy.get('@user_good').then(user =>{
+                cy.addUser(user).then(()=>{
+                    cy.get('@organization_deleted').then((organization)=>{
+                         cy.addOrg(organization).then(()=>{
+                             cy.testAdminTrashBinElements(viewport,user,'non-empty');
+                         });
+                    });
+                });
+            });
+        });
            it('Test Trash Bin View Deleted Organization',()=>{
             cy.get('@user_good').then(user =>{
                 cy.addUser(user).then(()=>{

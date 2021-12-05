@@ -24,6 +24,7 @@ const FormModal = (props) => {
     children,
     childrenProps,
     form,
+    message,
     header,
     isAlert,
     isOpen,
@@ -63,6 +64,11 @@ const FormModal = (props) => {
       <FormField data-test-id={key} key={key} fieldKey={key} formik={formik} {...rest} />
     );
   })
+  const displayMessage = (message) => {
+    return (
+      <Text>{message}</Text>
+    )
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
@@ -84,6 +90,7 @@ const FormModal = (props) => {
             {isAlert && (
               <Text>Are you sure? You can't undo this action afterwards.</Text>
             )}
+            {displayMessage(message)}
             {children && children({...childrenProps, formik, updateField})}
             {formFields}
           </Stack>
@@ -123,6 +130,7 @@ FormModal.propTypes = {
   childrenProps: PropTypes.shape(),
   form: PropTypes.shape(),
   header: PropTypes.string,
+  message: PropTypes.string,
   isAlert: PropTypes.bool,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,

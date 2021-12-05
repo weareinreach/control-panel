@@ -17,10 +17,12 @@ const AdminPanelTrashbin = (props) => {
         (result,org) => {
             //eslint-disable-next-line
             org?.services?.forEach((service) => {
+                if (service.is_deleted){
                     result.push({...service,org:{
                         name:org.name,
                         id:org._id
                     }});
+                }
             });
             return result;
         },
@@ -31,13 +33,14 @@ const AdminPanelTrashbin = (props) => {
 const openOrganizationOrService = (id,serviceId) => {
     window.location = `/organizations/${id}${serviceId?`/services/${serviceId}` : ''}`;
 };
-const openModalRestoreOrg = (Organization) => {
+const openModalRestoreOrg = (organization) => {
     
     openModal({
         header:'Restore Organization',
         onClose: closeModal,
+        message:`${organization.name}`,
         onConfirm:({setLoading,setSuccess,setError}) =>{
-            const url = `${CATALOG_API_URL}/organizations/${Organization._id}`;
+            const url = `${CATALOG_API_URL}/organizations/${organization._id}`;
             setLoading();
             patch(url,{is_deleted:false}).then(()=>{
                 window.location.reload();
@@ -51,13 +54,14 @@ const openModalRestoreOrg = (Organization) => {
     })
 }
 
-const openModalDeleteOrg = (Organization) => {
+const openModalDeleteOrg = (organization) => {
 
     openModal({
-        header:'Permanently delete Organization',
+        header:'Permanently Delete Organization',
         onClose: closeModal,
+        message:`${organization.name}`,
         onConfirm:({setLoading,setSuccess,setError}) =>{
-            const url = `${CATALOG_API_URL}/organizations/${Organization._id}`;
+            const url = `${CATALOG_API_URL}/organizations/${organization._id}`;
             setLoading();
             httpDelete(url).then(()=>{
                 window.location.reload();
@@ -75,6 +79,7 @@ const openModalRestoreOrgService = (id,service) =>{
     openModal({
         header:'Restore Organization Service',
         onClose: closeModal,
+        message:`${service.name}`,
         onConfirm:({setLoading,setSuccess,setError}) =>{
             const url = `${CATALOG_API_URL}/organizations/${id}/services/${service._id}`;
             setLoading();
@@ -93,8 +98,9 @@ const openModalRestoreOrgService = (id,service) =>{
 
 const openModalDeleteOrgService = (id,service) => {
     openModal({
-        header:'Permanently delete Organization Service',
+        header:'Permanently Delete Organization Service',
         onClose: closeModal,
+        message:`${service.name}`,
         onConfirm:({setLoading,setSuccess,setError}) =>{
             const url = `${CATALOG_API_URL}/organizations/${id}/services/${service._id}`;
             setLoading();
@@ -123,7 +129,7 @@ return (
                 {deletedOrgs?.length > 0 ? (
                     <Table actions={[
                         {
-                            label: 'View Deleted Organization',
+                            label: 'View Organization',
                             onClick: (organization) => openOrganizationOrService(organization?._id),
                         },
                         {
@@ -151,7 +157,7 @@ return (
                 {reducedDeletedServices?.length > 0 ? (
                     <Table actions={[
                         {
-                            label: 'View Deleted Service Organization',
+                            label: 'View Organization',
                             onClick: (service) => openOrganizationOrService(service?.org.id)
                         },
                         {
@@ -165,7 +171,7 @@ return (
                     ]}
                     headers={[
                         {key: 'org', label: 'Organization Name', 
-                        getValue: (organization)=> organization?.name},
+                        getValue: (organization)=> organization?.org?.name},
                         {key:'service', label: 'Service Name',
                         getValue: (organization)=> organization?.name}
                     ]}

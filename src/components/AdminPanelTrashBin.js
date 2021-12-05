@@ -17,19 +17,19 @@ const AdminPanelTrashbin = (props) => {
         (result,org) => {
             //eslint-disable-next-line
             org?.services?.forEach((service) => {
-                if (service.is_deleted){
-                    result.push({...service,organization:org});
-                }
+                    result.push({...service,org:{
+                        name:org.name,
+                        id:org._id
+                    }});
             });
             return result;
         },
         []
     );
 
-
 //functions
 const openOrganizationOrService = (id,serviceId) => {
-    window.location = `/organizations/${id}${serviceId ? `/services/${serviceId}` : ''}`;
+    window.location = `/organizations/${id}${serviceId?`/services/${serviceId}` : ''}`;
 };
 const openModalRestoreOrg = (Organization) => {
     
@@ -71,12 +71,12 @@ const openModalDeleteOrg = (Organization) => {
     })
 };
 
-const openModalRestoreOrgService = (Organization,service) =>{
+const openModalRestoreOrgService = (id,service) =>{
     openModal({
         header:'Restore Organization Service',
         onClose: closeModal,
         onConfirm:({setLoading,setSuccess,setError}) =>{
-            const url = `${CATALOG_API_URL}/organizations/${Organization._id}/services/${service._id}`;
+            const url = `${CATALOG_API_URL}/organizations/${id}/services/${service._id}`;
             setLoading();
             patch(url,{is_deleted:false}).then(()=>{
                 window.location.reload();
@@ -91,12 +91,12 @@ const openModalRestoreOrgService = (Organization,service) =>{
 }
 
 
-const openModalDeleteOrgService = (Organization,service) => {
+const openModalDeleteOrgService = (id,service) => {
     openModal({
         header:'Permanently delete Organization Service',
         onClose: closeModal,
         onConfirm:({setLoading,setSuccess,setError}) =>{
-            const url = `${CATALOG_API_URL}/organizations/${Organization._id}/services/${service._id}`;
+            const url = `${CATALOG_API_URL}/organizations/${id}/services/${service._id}`;
             setLoading();
             httpDelete(url).then(()=>{
                 window.location.reload();
@@ -152,20 +152,20 @@ return (
                     <Table actions={[
                         {
                             label: 'View Deleted Service Organization',
-                            onClick: (service) => openOrganizationOrService(service?.organization?._id)
+                            onClick: (service) => openOrganizationOrService(service?.org.id)
                         },
                         {
                             label: 'Delete Service',
-                            onClick: (service) => openModalDeleteOrgService(service?.organization,service)
+                            onClick: (service) => openModalDeleteOrgService(service?.org.id,service)
                         },
                         {
                             label: 'Restore Service',
-                            onClick: (service) => openModalRestoreOrgService(service?.organization,service)
+                            onClick: (service) => openModalRestoreOrgService(service?.org.id,service)
                         },
                     ]}
                     headers={[
                         {key: 'org', label: 'Organization Name', 
-                        getValue: (organization)=> organization?.organization?.name},
+                        getValue: (organization)=> organization?.name},
                         {key:'service', label: 'Service Name',
                         getValue: (organization)=> organization?.name}
                     ]}

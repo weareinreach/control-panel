@@ -392,7 +392,6 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
 
             cy.get('@deletedOrgServices').then(interception => {
                 if (interception.response.body.organizations.length) {
-                    if (interception.response.body.organizations.length) {
                         //Test non empty state
                         cy.getElementByTestId('table').then($element => {
                             expect($element).to.be.visible;
@@ -410,6 +409,5 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
                             })
                         });
                     }
-                }
             });
         });

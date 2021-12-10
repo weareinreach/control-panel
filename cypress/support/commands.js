@@ -227,17 +227,17 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
 	}).then((response) => {
 		let usersArray = response.body.users;
 		usersArray.forEach((user) => {
-			//Regular User
-			if (
-				user.email === 'automation@gmail.com' ||
-				user.email === 'automation-updated@gmail.com' ||
-                user.email === 'automation-1@gmail.com'
-			) {
-				cy.deleteUser(user._id);
-			}
-		});
-	});
-});
+			// eslint-disable-next-line default-case
+			switch(user.email){
+                case 'automation@gmail.com':
+                case 'automation-updated@gmail.com':
+                case 'automation-1@gmail.com':
+                case 'automation-data@gmail.com':
+                    cy.deleteUser(user._id);
+                break;
+            }
+        })})});
+           
 
 //Delete User
 Cypress.Commands.add('deleteUser', (user_id) => {

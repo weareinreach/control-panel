@@ -66,7 +66,7 @@ const FormModal = (props) => {
   })
   const displayMessage = (message) => {
     return (
-      <Text>{message}</Text>
+      <Text data-test-id="modal-message">{message}</Text>
     )
   }
 

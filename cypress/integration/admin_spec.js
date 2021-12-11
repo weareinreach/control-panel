@@ -95,7 +95,7 @@ describe('Admin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganizationOrService(viewport,user,'Organization',createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,6,createdOrgResponse.body.organization);
                          });
                     });
                 });
@@ -106,7 +106,7 @@ describe('Admin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganizationOrService(viewport,user,'Organization',createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,3,createdOrgResponse.body.organization);
                          });
                     });
                 });

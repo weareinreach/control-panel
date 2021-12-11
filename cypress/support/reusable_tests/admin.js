@@ -300,13 +300,12 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
 });
 
 
-Cypress.Commands.add('testAdminTrashBinViewOrganizationOrService', (viewport, creds, option, org) => {
+Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds,number, org) => {
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
     //Waiting for Response
     cy.intercept('/v1/organizations/**');
-
 
     //Intercept
     cy.intercept('/v1/organizations?deleted=true').as('deletedOrganizations');
@@ -326,14 +325,16 @@ Cypress.Commands.add('testAdminTrashBinViewOrganizationOrService', (viewport, cr
             cy.getElementByTestId('table-row-action').then($element => {
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
-                cy.get($element).contains(`View ${option}`).then($element => {
+                cy.get($element[$element.length-number]).contains(`View Organization`).then($element => {
                     cy.wrap($element).click();
+                    cy.location().should($loc=>{
+                        expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)
+                    })
                 });
             });
         }
     });
 });
-
 
 Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization', (viewport, creds, action) => {
     cy.viewport(viewport);

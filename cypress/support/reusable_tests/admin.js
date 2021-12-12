@@ -85,42 +85,46 @@ Cypress.Commands.add('testAdminPageElements', (viewport, creds) => {
 });
 
 Cypress.Commands.add('testAdminFilterUsers', (viewport, creds) => {
+    //All possible Users
+    let userTypes = Cypress.env('userTypes');
+
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
-    var type = 'lawyer';
-    cy.getElementByTestId('header-admin-link').click();
-    cy.getElementByTestId('filter-users-search').select(type);
-    //Intercept Results
-    cy.intercept(`/v1/users/count?&page=1&type=${type}`, req => {
-        delete req.headers['if-none-match']
-    }).as('usersCount');
-    cy.getElementByTestId('filter-users-search-button').click();
+    userTypes.forEach(type => {
+        cy.getElementByTestId('header-admin-link').click();
+        cy.getElementByTestId('filter-users-search').select(type);
+        //Intercept Results
+        cy.intercept(`/v1/users/count?&page=1&type=${type}`, req => {
+            delete req.headers['if-none-match']
+        }).as('usersCount');
+        cy.getElementByTestId('filter-users-search-button').click();
 
-    cy.wait('@usersCount');
+        cy.wait('@usersCount');
 
-    cy.get('@usersCount').then(interception => {
-        if (interception.response.body.count > 0) {
-            //should be populated
-            cy.getElementByTestId('table').then($element => {
-                expect($element).to.be.visible;
-            });
-            cy.getElementByTestId('table-row').then($element => {
-                expect($element).to.be.visible;
-                expect($element).to.have.length.greaterThan(1);
-            });
-        } else {
-            //Should be empty
-            cy.getElementByTestId('admin-search-not-found-title').then($element => {
-                expect($element).to.be.visible;
-                expect($element).contain('No results found.');
-            });
+        cy.get('@usersCount').then(interception => {
+            if (interception.response.body.count > 0) {
+                //should be populated
+                cy.getElementByTestId('table').then($element => {
+                    expect($element).to.be.visible;
+                });
+                cy.getElementByTestId('table-row').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).to.have.length.greaterThan(1);
+                });
+            } else {
+                //Should be empty
+                cy.getElementByTestId('admin-search-not-found-title').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('No results found.');
+                });
 
-            cy.getElementByTestId('admin-search-not-found-body').then($element => {
-                expect($element).to.be.visible;
-                expect($element).contain('Please refine your search');
-            });
+                cy.getElementByTestId('admin-search-not-found-body').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Please refine your search');
+                });
 
-        }
+            }
+        });
     });
 });
 
@@ -300,7 +304,7 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
 });
 
 
-Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds,number, org) => {
+Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, number, org) => {
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
@@ -325,9 +329,9 @@ Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds,numbe
             cy.getElementByTestId('table-row-action').then($element => {
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
-                cy.get($element[$element.length-number]).contains(`View Organization`).then($element => {
+                cy.get($element[$element.length - number]).contains(`View Organization`).then($element => {
                     cy.wrap($element).click();
-                    cy.location().should($loc=>{
+                    cy.location().should($loc => {
                         expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)
                     })
                 });
@@ -420,7 +424,7 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreServices', (viewport, cred
     });
 });
 
-Cypress.Commands.add('testDataManagerSoftDeleteOrganization',(viewport,creds,org)=>{
+Cypress.Commands.add('testDataManagerSoftDeleteOrganization', (viewport, creds, org) => {
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
@@ -432,26 +436,28 @@ Cypress.Commands.add('testDataManagerSoftDeleteOrganization',(viewport,creds,org
     cy.intercept('/v1/organizations/**').as('organizations');
     cy.wait('@organizations');
 
-    cy.getElementByTestId('drop-down-button-container').then($element=>{
+    cy.getElementByTestId('drop-down-button-container').then($element => {
         expect($element[3]).to.be.visible;
         expect($element[3]).contain("More");
-        cy.wrap($element[3]).click().then(()=>{
-            cy.getElementByTestId('drop-down-item').then($element=>{
+        cy.wrap($element[3]).click().then(() => {
+            cy.getElementByTestId('drop-down-item').then($element => {
                 expect($element[9]).to.be.visible;
                 expect($element[9]).contain("Delete");
-                cy.wrap($element[9]).click({force:true});
-                cy.getElementByTestId('modal-save-button').then($element=>{
+                cy.wrap($element[9]).click({
+                    force: true
+                });
+                cy.getElementByTestId('modal-save-button').then($element => {
                     expect($element).to.be.visible;
                     cy.wrap($element).click();
-            });
+                });
             })
         })
-        
+
     })
-        
+
 })
 
-Cypress.Commands.add('testDataManagerSoftDeleteService',(viewport,creds,org)=>{
+Cypress.Commands.add('testDataManagerSoftDeleteService', (viewport, creds, org) => {
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
@@ -465,21 +471,23 @@ Cypress.Commands.add('testDataManagerSoftDeleteService',(viewport,creds,org)=>{
     cy.intercept('/v1/organizations/**').as('organizations');
     cy.wait('@organizations');
 
-    cy.getElementByTestId('drop-down-button-container').then($element=>{
+    cy.getElementByTestId('drop-down-button-container').then($element => {
         expect($element[1]).to.be.visible;
         expect($element[1]).contain("More");
-        cy.wrap($element[1]).click().then(()=>{
-            cy.getElementByTestId('drop-down-item').then($element=>{
+        cy.wrap($element[1]).click().then(() => {
+            cy.getElementByTestId('drop-down-item').then($element => {
                 expect($element[3]).to.be.visible;
                 expect($element[3]).contain("Delete");
-                cy.wrap($element[3]).click({force:true});
-                cy.getElementByTestId('modal-save-button').then($element=>{
+                cy.wrap($element[3]).click({
+                    force: true
+                });
+                cy.getElementByTestId('modal-save-button').then($element => {
                     expect($element).to.be.visible;
                     cy.wrap($element).click();
-            });
+                });
             });
         });
-        
+
     });
-        
+
 });

@@ -94,10 +94,10 @@ Cypress.Commands.add('testLogOut',(viewport,username,password)=>{
             cy.wrap($element[1]).click();
         });
     });
-    cy.intercept('/login');
+    cy.wait(1000)
     //Verify Logged Out
-    // cy.getElementByTestId('form-login-title').then($element =>{
-    //     expect($element).to.be.visible;
-    //     expect($element).contain('Login');
-    // });
+    cy.getElementByTestId('form-login-title').then($element =>{
+        expect($element).to.be.visible;
+        expect($element).contain('Login');
+    });
 });

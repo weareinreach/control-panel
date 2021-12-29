@@ -215,6 +215,11 @@
       "key": "is_published",
       "label": "Is Published",
       "type": "checkbox"
+    },
+    {
+      "key": "is_deleted",
+      "label": "Is Deleted",
+      "type": "checkbox"
     }
   ],
   "passwordFields": [
@@ -411,6 +416,11 @@
       "key": "description_ES",
       "label": "Description_ES",
       "type": "textarea"
+    },
+    {
+      "key": "is_deleted",
+      "label": "Is Deleted",
+      "type": "checkbox"
     }
   ],
   "socialMediaFields": [

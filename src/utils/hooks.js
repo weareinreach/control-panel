@@ -62,6 +62,7 @@ const STATE_SUCCESS = 'SUCCESS';
  */
 export const useStatus = (initalStatus) => {
   const [status, setStatus] = useState(initalStatus);
+  const [errorMessage, setErrorMessage] = useState('');
   const isError = status === STATE_ERROR;
   const isLoading = status === STATE_IN_PROGRESS;
   const isSuccess = status === STATE_SUCCESS;
@@ -76,6 +77,8 @@ export const useStatus = (initalStatus) => {
     setError,
     setLoading,
     setSuccess,
+    errorMessage,
+    setErrorMessage
   };
 };
 

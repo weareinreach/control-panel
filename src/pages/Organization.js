@@ -56,6 +56,7 @@ const Organization = (props) => {
     description,
     emails,
     is_published,
+    is_deleted,
     locations,
     name = 'Organization Name',
     notes_log,
@@ -76,7 +77,7 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
-  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+  const updateFields = ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -86,13 +87,15 @@ const Organization = (props) => {
         window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
+        const {message} = err?.response?.data;
         setError();
+        setErrorMessage(message ?? null);
         console.error(err);
       });
   };
   const updateListField =
     (key, options) =>
-    ({setLoading, setSuccess, setError, values}) => {
+    ({setLoading, setSuccess, setError, setErrorMessage, values }) => {
       const {isDelete, isEdit} = options || {};
       const newField = [...(organization?.[key] || [])];
       const {_id, ...restValues} = values;
@@ -114,6 +117,7 @@ const Organization = (props) => {
         setLoading,
         setSuccess,
         setError,
+        setErrorMessage,
         values: {[key]: newField},
       });
     };
@@ -136,9 +140,22 @@ const Organization = (props) => {
       onConfirm: ({setLoading, setSuccess, setError}) => {
         const url = `${CATALOG_API_URL}${orgPath}`;
 
-        console.log('DELETE:', url);
-
         setLoading();
+
+        //If Data Manager and Not Admin Soft delete
+        if(user.isDataManager && !user.isAdminDataManager){
+          patch(url,{is_deleted:true}).then(() => {
+            setSuccess();
+            window.location = `/organizations`;
+          })
+          .catch((err) => {
+            setError();
+            console.error(err);
+          });
+        };
+        
+       //If Admin Perma Delete
+       if(user.isAdminDataManager){
         httpDelete(url)
           .then(() => {
             setSuccess();
@@ -148,7 +165,9 @@ const Organization = (props) => {
             setError();
             console.error(err);
           });
-      },
+      }
+    }
+
     });
   const openOrgDuplicate = () =>
     openModal({
@@ -440,7 +459,7 @@ const Organization = (props) => {
               text: 'Mark Information Verified',
             },
             {onClick: openOrgDuplicate, text: 'Duplicate'},
-            ...(user.isAdminDataManager
+            ...(user.isDataManager
               ? [{onClick: openOrgDelete, text: 'Delete'}]
               : []),
           ]}
@@ -473,6 +492,7 @@ const Organization = (props) => {
                     {key: 'Slug', value: slug},
                     {key: 'Slug_ES', value: slug_ES},
                     {key: 'Is Published', value: is_published},
+                    {key: 'Is Deleted', value: is_deleted},
                     {key: 'Last Verified', value: verified_at},
                     {key: 'Updated At', value: updated_at},
                     {key: 'Created At', value: created_at},

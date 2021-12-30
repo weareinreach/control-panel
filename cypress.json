@@ -13,5 +13,6 @@
         "openMode":0
     },
     "defaultCommandTimeout":10000,
-    "waitForAnimations":true
+    "waitForAnimations":true,
+	"watchForFileChanges": false
 }

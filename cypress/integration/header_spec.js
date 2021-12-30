@@ -7,7 +7,7 @@
 //Test Suite
 describe('Header Form Tests', () => {
 
-    let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
+    let viewports = [Cypress.env('desktop')];
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));

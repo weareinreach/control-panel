@@ -81,6 +81,7 @@ const Service = (props) => {
     description,
     email_id,
     is_published,
+    is_deleted,
     location_id,
     name = 'Service Name',
     notes_log,
@@ -184,7 +185,20 @@ const Service = (props) => {
         const url = `${CATALOG_API_URL}${servicePath}`;
 
         setLoading();
-        httpDelete(url)
+        //If Data Manager and Not Admin Soft delete
+        if(user.isDataManager && !user.isAdminDataManager){
+          patch(url,{is_deleted:true}).then(() => {
+            setSuccess();
+            window.location = `/organizations/${orgId}`;
+          })
+          .catch((err) => {
+            setError();
+            console.error(err);
+          });
+        }
+        //If Admin Perma Delete
+        if(user.isAdminDataManager){
+          httpDelete(url)
           .then(() => {
             setSuccess();
             window.location = `/organizations/${orgId}`;
@@ -193,6 +207,8 @@ const Service = (props) => {
             setError();
             console.error(err);
           });
+        }
+        
       },
     });
   const openServiceDuplicate = () => {
@@ -334,7 +350,7 @@ const Service = (props) => {
           buttonText="More"
           items={[
             {onClick: openServiceDuplicate, text: 'Duplicate'},
-            ...(user.isAdminDataManager
+            ...(user.isDataManager
               ? [{onClick: openServiceDelete, text: 'Delete'}]
               : []),
           ]}
@@ -370,6 +386,7 @@ const Service = (props) => {
                     // {key: 'Is Published', value: is_published},
                     {key: 'Updated At', value: updated_at},
                     {key: 'Created At', value: created_at},
+                    {key: 'Is Deleted', value: is_deleted},
                   ]}
                 />
               </Container>

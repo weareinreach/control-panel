@@ -7,7 +7,7 @@
 //Test Suite
 describe('Organization Form Tests', () => {
 
-    let viewports = [Cypress.env('desktop'),Cypress.env('tablet'),Cypress.env('mobile')];
+    let viewports = [Cypress.env('desktop')];
 
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
@@ -97,7 +97,26 @@ describe('Organization Form Tests', () => {
                          });
                      });
                  });
-            }); 
+            });
+            it('Testing Edit Coverage',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                             cy.testAddingOrganizationEditCoverage(viewport,user,org);
+                         });
+                     });
+                 });
+            });
+            it('Testing Adding Notes',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organization').then(org=>{
+                             cy.testAddingOrganizationNotes(viewport,user,org);
+                         });
+                     });
+                 });
+            });
+
         });
     });
 });

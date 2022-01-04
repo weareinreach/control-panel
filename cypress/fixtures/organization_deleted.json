@@ -1,0 +1,36 @@
+{
+	"name": "Surprisingly Unique Org Name",
+	"name_es":"Same name in spanish",
+	"description": "Test organizations Description",
+	"description_es":"Test organizations Description in spanish",
+	"slug": "surprisingly-unique-org-name",
+	"slug_es":"surprisingly-unique-org-name-es",
+	"website": "https://google.com",
+	"website_es":"https://google-es.com",
+	"alert_message":"Alert Message!!",
+	"alert_message_es":"Alert Message en espanol",
+	"notes":"This are the notes for the organization",
+    "is_deleted":true,
+	"social_media":[],
+	"phones":[],
+	"emails":[
+		{
+			"email":"orgemail@organization.com",
+			"first_name":"Organization First",
+			"last_name":"Organization Last",
+			"title":"Primary Email Address",
+			"title_ES":"Email Addresses en espanol"
+		}
+	],
+	"services":[
+		{
+			"name": "Test Service Name",
+			"description": "This is a test service description",
+			"slug": "surprisingly-unique-test-service-name",
+			"is_deleted":true
+		}
+		
+	],
+	"locations":[],
+	"schedules":[]
+}

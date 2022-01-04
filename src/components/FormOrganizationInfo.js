@@ -13,6 +13,7 @@ const FormOrganizationInfo = (props) => {
   };
 
   return (
+    <div data-test-id={field}>
     <Select
       onChange={handleSelect}
       variant="filled"
@@ -35,6 +36,7 @@ const FormOrganizationInfo = (props) => {
         );
       })}
     </Select>
+    </div>
   );
 };
 

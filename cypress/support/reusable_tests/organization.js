@@ -311,12 +311,8 @@ Cypress.Commands.add('testAddingOrganizationServices',(viewport,creds,organizati
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Service
     cy.getElementByTestId('organization-new-service-button').click();
@@ -339,12 +335,13 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
+
+    // Register intercepts
+    cy.intercept({method:'GET', url:'/v1/organizations/*'}).as('loadOrg');
+    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('saveAddress');
+
     //Add Address
     cy.getElementByTestId('organization-new-address-button').click();
     cy.getElementByTestId('modal-header').then($element=>{
@@ -426,6 +423,10 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     });
     //Save
     cy.getElementByTestId('modal-save-button').click();
+    cy.wait('@saveAddress');
+    cy.wait('@loadOrg');
+    // Assert address has been added
+    cy.getElementByTestId('table-row-text').contains(organization.locations[0].name).should('be.visible')
 });
 
 
@@ -433,12 +434,12 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
+
+     // Register intercepts
+    cy.intercept({method:'GET', url:'/v1/organizations/*'}).as('loadOrg');
+    cy.intercept({method:'PATCH', url:'/v1/organizations/*'}).as('saveSchedule');
 
     //Add Week Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();
@@ -516,9 +517,8 @@ Cypress.Commands.add('testAddingOrganizationSchedules',(viewport,creds,organizat
     //save
     cy.getElementByTestId('modal-save-button').click();
 
-    cy.intercept('/v1/organizations/**').then(()=>{
-        cy.wait(2000);
-    });
+    cy.wait('@saveSchedule');
+    cy.wait('@loadOrg');
 
     // Add Weekend Schedule
     cy.getElementByTestId('organization-new-schedule-button').click();
@@ -570,12 +570,8 @@ Cypress.Commands.add('testAddingOrganizationEmail',(viewport,creds,organization)
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Email
     cy.getElementByTestId('organization-new-email-button').click();
@@ -621,12 +617,8 @@ Cypress.Commands.add('testAddingOrganizationPhone',(viewport,creds,organization)
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Phone
     cy.getElementByTestId('organization-new-phone-button').click();
@@ -661,12 +653,8 @@ Cypress.Commands.add('testAddingOrganizationSocialMedia',(viewport,creds,organiz
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Add Social Media
     cy.getElementByTestId('organization-new-social-media-button').click();
@@ -695,12 +683,8 @@ Cypress.Commands.add('testAddingOrganizationEditCoverage',(viewport,creds,organi
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('organization-new-button').click();
     //Add Org
-    cy.getElementByTestId('name').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.name);
-        cy.getElementByTestId('modal-save-button').click();
-    });
+    cy.addOrganization(organization);
 
     //Edit Coverage
     cy.getElementByTestId('organization-edit-coverage-button').click();
@@ -709,4 +693,100 @@ Cypress.Commands.add('testAddingOrganizationEditCoverage',(viewport,creds,organi
         expect($element).contain('Edit Coverage');
     });
 
+    cy.getElementByTestId('coverage-form-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Coverage Areas');
+    });
+
+    cy.getElementByTestId('coverage-form-area').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Coverage Area');
+    });
+
+    cy.getElementByTestId('coverage-form-label').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Country');
+    });
+
+    cy.getElementByTestId('coverage-form-select-country').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Select a country');
+        cy.wrap($element).type('United States{enter}');
+    });
+
+    cy.getElementByTestId('coverage-form-label').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.lengthOf(3);
+        expect($element[1]).contain('National');
+    });
+
+    cy.getElementByTestId('coverage-form-child').then($element=>{
+        expect($element).to.be.visible;
+        expect($element[1]).contain('check this field only if the org/service is able to help people located anywhere in the country.');
+        cy.wrap($element[1]).click();
+    });
+
+    cy.getElementByTestId('coverage-form-label').then($element=>{
+        expect($element).to.be.visible;
+        expect($element[2]).contain('State');
+    });
+
+    cy.getElementByTestId('coverage-form-child').then($element=>{
+        expect($element).to.be.visible;
+        expect($element[2]).contain('Select a State')
+        cy.wrap($element[2]).type('Wyoming{enter}');
+    });
+
+    cy.getElementByTestId('coverage-form-label').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.lengthOf(6);
+        expect($element[3]).contain('City');
+    });
+
+    cy.getElementByTestId('coverage-form-child').then($element=>{
+        expect($element).to.be.visible;
+        expect($element[3]).contain('Select a City')
+        cy.wrap($element[3]).type('Casper{enter}');
+    });
+
+    cy.getElementByTestId('coverage-form-label').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).to.have.lengthOf(6);
+        expect($element[4]).contain('County');
+    });
+
+    cy.getElementByTestId('coverage-form-child').then($element=>{
+        expect($element).to.be.visible;
+        expect($element[4]).contain('Select a County')
+        cy.wrap($element[4]).type('Natrona{enter}');
+    });
+
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
 });
+
+Cypress.Commands.add('testAddingOrganizationNotes',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+
+    //Add Notes
+    cy.getElementByTestId('organization-new-note-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Note');
+    });
+
+    cy.getElementByTestId('note').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Note');
+        cy.wrap($element).type(organization.notes)
+    });
+
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+
+})

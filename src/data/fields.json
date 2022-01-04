@@ -147,11 +147,13 @@
     },
     {
       "key": "lat",
-      "label": "Lat"
+      "label": "Latitude",
+      "isRequired": true
     },
     {
       "key": "long",
-      "label": "Long"
+      "label": "Longitude",
+      "isRequired": true
     },
     {
       "key": "is_primary",
@@ -214,6 +216,11 @@
     {
       "key": "is_published",
       "label": "Is Published",
+      "type": "checkbox"
+    },
+    {
+      "key": "is_deleted",
+      "label": "Is Deleted",
       "type": "checkbox"
     }
   ],
@@ -411,6 +418,11 @@
       "key": "description_ES",
       "label": "Description_ES",
       "type": "textarea"
+    },
+    {
+      "key": "is_deleted",
+      "label": "Is Deleted",
+      "type": "checkbox"
     }
   ],
   "socialMediaFields": [

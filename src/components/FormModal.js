@@ -24,6 +24,7 @@ const FormModal = (props) => {
     children,
     childrenProps,
     form,
+    message,
     header,
     isAlert,
     isOpen,
@@ -39,13 +40,15 @@ const FormModal = (props) => {
     setError,
     setLoading,
     setSuccess,
+    errorMessage,
+    setErrorMessage
   } = useStatus();
   const {fields, initialValues} = buildForm(form);
   const onSubmit = (values) => {
     if (values.isVerify) {
-      onVerify({setLoading, setSuccess, setError, values});
+      onVerify({setLoading, setSuccess, setError, setErrorMessage, values});
     } else {
-      onConfirm({setLoading, setSuccess, setError, values});
+      onConfirm({setLoading, setSuccess, setError, setErrorMessage, values});
     }
   };   
   const formik = useFormik({
@@ -63,6 +66,11 @@ const FormModal = (props) => {
       <FormField data-test-id={key} key={key} fieldKey={key} formik={formik} {...rest} />
     );
   })
+  const displayMessage = (message) => {
+    return (
+      <Text data-test-id="modal-message">{message}</Text>
+    )
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
@@ -76,7 +84,7 @@ const FormModal = (props) => {
             {isError && (
               <Alert
                 data-test-id="modal-error"
-                description="Please try again."
+                description={errorMessage ?? `Please try again.`}
                 title="Uh-Oh something went wrong."
                 type="error"
               />
@@ -84,6 +92,7 @@ const FormModal = (props) => {
             {isAlert && (
               <Text>Are you sure? You can't undo this action afterwards.</Text>
             )}
+            {displayMessage(message)}
             {children && children({...childrenProps, formik, updateField})}
             {formFields}
           </Stack>
@@ -123,6 +132,7 @@ FormModal.propTypes = {
   childrenProps: PropTypes.shape(),
   form: PropTypes.shape(),
   header: PropTypes.string,
+  message: PropTypes.string,
   isAlert: PropTypes.bool,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,

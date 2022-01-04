@@ -22,6 +22,7 @@ import './reusable_tests/dashboard';
 import './reusable_tests/stats';
 import './reusable_tests/admin';
 import './reusable_tests/organization';
+import './reusable_tests/service';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

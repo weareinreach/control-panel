@@ -45,8 +45,7 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: password
           MONGO_INITDB_DATABASE: asylum-connect
     steps:
-      - checkout:
-          path: ~/control-panel
+      - checkout
       - run:
           name: Pull API code
           command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git

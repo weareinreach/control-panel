@@ -44,9 +44,9 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: user
           MONGO_INITDB_ROOT_PASSWORD: password
           MONGO_INITDB_DATABASE: asylum-connect
-    working_directory: ~/control-panel
     steps:
-      - checkout
+      - checkout:
+          path: ~/control-panel
       - run:
           name: Pull API code
           command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git
@@ -66,7 +66,7 @@ jobs:
           command: cd catalog-api && yarn install && yarn add cwd
       - run:
           name: "Seed Docker DB"
-          command: cd catalog-api && yarn --cwd catalog-api seed-docker-db
+          command: cd catalog-api && yarn seed-docker-db
       # Download and cache dependencies
       # - restore_cache:
       #     keys:

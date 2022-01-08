@@ -45,7 +45,8 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: password
           MONGO_INITDB_DATABASE: asylum-connect
     steps:
-      - checkout
+      - checkout:
+          path: ~/control-panel
       - run:
           name: Pull API code
           command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git
@@ -62,7 +63,7 @@ jobs:
            EOF
       - run:
           name: Install API Packages
-          command: cd catalog-api && yarn install && yarn add cwd
+          command: cd catalog-api && yarn install
       - run:
           name: "Seed Docker DB"
           command: cd catalog-api && yarn seed-docker-db
@@ -94,6 +95,9 @@ jobs:
           - catalog-api/node_modules
           - "~./cache/Cypress"
          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: "LS"
+          command: "ls"
       - run:
           name: "Pre E2E Commands"
           command: "cd control-panel && yarn test:pre-e2e"

@@ -67,6 +67,9 @@ jobs:
       - run:
           name: "Seed Docker DB"
           command: cd catalog-api && yarn seed-docker-db
+      - run:
+          name: Instantiate API
+          command: cd catalog-api && yarn pre-e2e-test
       # Download and cache dependencies
       # - restore_cache:
       #     keys:
@@ -77,37 +80,38 @@ jobs:
           name: Check Node Version
           command: node --version
       - run:
-          name: Install Packages
-          command: npm install
+          name: Install Control Panel Packages
+          command: cd control-panel && npm install
       - run:
-          name: Install NYC
-          command: npm i nyc
+          name: Install Control Panel NYC
+          command: cd control-panel && npm i nyc
       - run:
           name: Install cypress
-          command: npm i cypress
+          command: cd control-panel && npm i cypress
       #save cache for use next tests
       - save_cache:
          paths:
-          - node_modules
+          - control-panel/node_modules
+          - catalog-api/node_modules
           - "~./cache/Cypress"
          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: "Pre E2E Commands"
-          command: "yarn test:pre-e2e"
+          command: "cd control-panel && yarn test:pre-e2e"
       - run:
           name: "E2E Automation"
-          command: "yarn test:e2e:ci"
+          command: "cd control-panel && yarn test:e2e:ci"
       - run:
           name: "Show Coverage"
-          command: "yarn show-coverage"
+          command: "cd control-panel && yarn show-coverage"
       - codecov/upload:
-          file: 'cypressCoverage/coverage-final.json'
+          file: 'control-panel/cypressCoverage/coverage-final.json'
           flags: 'Integration'
       - store_artifacts:
-          path: ./cypressCoverage
+          path: ./control-panel/cypressCoverage
           destination: E2E Coverage Reports
       - store_artifacts:
-          path: "reports/"
+          path: "control-panel/reports/"
           destination: E2E Test Reports 
     
 

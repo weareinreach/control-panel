@@ -7,6 +7,7 @@ const base = {
 
 const local = {
   apiDomain: 'http://localhost:8080',
+  apiBasePath: '/v1',
 };
 
 const prod = {

@@ -38,6 +38,12 @@ jobs:
       - image: cypress/base:16.5.0
         environment:
           TERM: xterm
+      ## MongoDB 
+      - image: mongo:4.4.10
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: user
+          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_DATABASE: asylum-connect
     working_directory: ~/control-panel
     steps:
       - checkout
@@ -45,8 +51,22 @@ jobs:
           name: Pull API code
           command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git
       - run: 
-          name: Check ls
-          command: ls
+          name: Create API Env File
+          command: |
+           cd catalog-api && cat \<< EOF > ./.env
+           MAILGUN_API_KEY=$MAILGUN_API_KEY
+           MAILGUN_DOMAIN=$MAILGUN_DOMAIN
+           DB_URI=$DB_URI_STAGING
+           ENV=TEST
+           SHEETS_API_KEY=$SHEETS_API_KEY
+           TEST_DB_URI=$TEST_DB_URI
+           EOF
+      - run:
+          name: Install API Packages
+          command: cd catalog-api && yarn install
+      - run:
+          name: "Seed Docker DB"
+          command: cd catalog-api && yarn seed-docker-db
       # Download and cache dependencies
       # - restore_cache:
       #     keys:

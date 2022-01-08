@@ -40,10 +40,10 @@ jobs:
           TERM: xterm
     working_directory: ~/control-panel
     steps:
+      - checkout
       - run:
           name: Pull API code
           command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git
-      - checkout
       - run: 
           name: Check ls
           command: ls

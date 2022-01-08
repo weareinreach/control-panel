@@ -80,6 +80,9 @@ jobs:
           name: Check Node Version
           command: node --version
       - run:
+          name: "LS"
+          command: "ls"
+      - run:
           name: Install Control Panel Packages
           command: cd control-panel && npm install
       - run:
@@ -95,9 +98,7 @@ jobs:
           - catalog-api/node_modules
           - "~./cache/Cypress"
          key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: "LS"
-          command: "ls"
+      
       - run:
           name: "Pre E2E Commands"
           command: "cd control-panel && yarn test:pre-e2e"

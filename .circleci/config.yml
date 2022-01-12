@@ -74,9 +74,6 @@ jobs:
           name: Check Node Version
           command: node --version
       - run:
-          name: "LS"
-          command: "ls"
-      - run:
           name: Install Control Panel Packages
           command: cd control-panel && yarn install
       - run:

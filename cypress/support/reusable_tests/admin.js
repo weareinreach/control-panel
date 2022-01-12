@@ -491,3 +491,24 @@ Cypress.Commands.add('testDataManagerSoftDeleteService', (viewport, creds, org) 
     });
 
 });
+
+Cypress.Commands.add('testViewOrganizationFromAffiliatePending',(viewport,creds,org)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email, creds.password);
+
+    cy.intercept('/v1/suggestions').as('suggestions');
+    cy.getElementByTestId('header-admin-link').click();
+    //wait for Response
+    cy.wait('@suggestions');
+    cy.getElementByTestId('admin-tab-suggestions').click();
+
+    cy.contains("Pending Affiliates").then($element=>{
+        cy.get($element).children().contains(org.owners[0].email).then($elementChildren=>{
+            cy.log($elementChildren)
+           // expect($elementChildren).contain(org.owners[0].email);
+            //Get sibling element
+            
+        })
+    })
+    
+})

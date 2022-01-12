@@ -233,6 +233,7 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
                 case 'automation-updated@gmail.com':
                 case 'automation-1@gmail.com':
                 case 'automation-data@gmail.com':
+                case 'automation-owner@gmail.com':
                     cy.deleteUser(user._id);
                 break;
             }
@@ -355,5 +356,12 @@ Cypress.Commands.add('setOrgsOrServicesDeletedState',(query,state)=>{
 
 });
 
+Cypress.Commands.add('createOwnerObject',(user)=>{
+    return {
+        isApproved:false,
+        userId:user._id,
+        email:user.email
+    }
+});
 
 

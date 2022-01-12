@@ -496,19 +496,23 @@ Cypress.Commands.add('testViewOrganizationFromAffiliatePending',(viewport,creds,
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
-    cy.intercept('/v1/suggestions').as('suggestions');
+    cy.intercept('/v1/organizations?pendingOwnership=true').as('pendingOwners');
     cy.getElementByTestId('header-admin-link').click();
     //wait for Response
-    cy.wait('@suggestions');
-    cy.getElementByTestId('admin-tab-suggestions').click();
-
-    cy.contains("Pending Affiliates").then($element=>{
-        cy.get($element).children().contains(org.owners[0].email).then($elementChildren=>{
-            cy.log($elementChildren)
-           // expect($elementChildren).contain(org.owners[0].email);
-            //Get sibling element
+    cy.wait('@pendingOwners').then(intercept=>{
+        cy.getElementByTestId('admin-tab-suggestions').click();
+        //test filled
+        if(intercept.response.body.organizations.length > 0){
+            cy.contains("Pending Affiliates").then($element=>{
+                cy.get($element).children().contains(org.owners[0].email).then($elementChildren=>{
+                cy.log($elementChildren)
+                 // expect($elementChildren).contain(org.owners[0].email);
+                //Get sibling element
             
-        })
-    })
+            });
+        });
+        }
+
+    });
     
 })

@@ -13,6 +13,7 @@ import {useAPIGet} from '../utils/hooks';
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const orgOwners = useAPIGet(`/organizations?pendingOwnership=true`);
+  console.log(orgOwners);
   const suggestedOrgs = useAPIGet(`/organizations?pending=true`);
   const suggestions = useAPIGet(`/suggestions`);
   const openOrganization = (id, serviceId) => {
@@ -28,11 +29,11 @@ const AdminPanelSuggestions = (props) => {
           result.push({...owner, organization: org});
         }
       });
-
       return result;
     },
     []
   );
+
   const openModalApprovalOwner = (owner) =>
     openModal({
       header: 'Accept the request for affiliation',

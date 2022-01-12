@@ -2,8 +2,8 @@
   "name": "asylum-connect-admin-control-panel",
   "private": true,
   "scripts": {
-    "local": "REACT_APP_APP_ENV=local npm run start",
-    "local-background": "pm2 --name Control-Panel start npm -- start",
+    "local": "REACT_APP_APP_ENV=TEST npm run start",
+    "local-background": "REACT_APP_APP_ENV=TEST pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",
     "start": "react-app-rewired -r @cypress/instrument-cra start",

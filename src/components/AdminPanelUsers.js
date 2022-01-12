@@ -160,15 +160,8 @@ const AdminPanelUsers = (props) => {
     ...(queryType === USER_TYPE_SEEKER ? [] : []),
   ];
 
-  console.log('render query', query);
-
   useEffect(() => {
     const urls = getUserQueryUrls(query);
-
-    console.log('useEffect query', query);
-
-    console.log('useEffect urls', urls);
-
     users.fetchUrl(urls.users);
     count.fetchUrl(urls.count);
     // eslint-disable-next-line react-hooks/exhaustive-deps

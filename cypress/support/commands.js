@@ -23,6 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+let backendUrl = Cypress.env('environment') == "TEST" ? Cypress.env('localUrl') : Cypress.env('apiUrl');
+
 Cypress.Commands.add('getElementByTestId',(id_name =>{
     return cy.get(`[data-test-id=${id_name}]`);
 }));
@@ -204,7 +206,7 @@ let compoundURL = null;
 
 //Add User
 Cypress.Commands.add('addUser', (user_data) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users')
 	);
@@ -217,7 +219,7 @@ Cypress.Commands.add('addUser', (user_data) => {
 
 Cypress.Commands.add('deleteUsersIfExist', () => {
 	cy.log('Cleaning Users...');
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users')
 	);
@@ -242,7 +244,7 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
 
 //Delete User
 Cypress.Commands.add('deleteUser', (user_id) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users'),
 		`/${user_id}`
@@ -258,7 +260,7 @@ Cypress.Commands.add('deleteUser', (user_id) => {
 //Organizations
 Cypress.Commands.add('deleteOrgsIfExist', () => {
 	cy.log('Cleaning Orgs...');
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_slug_organizations'),
 		'/surprisingly-unique-org-name'
@@ -277,7 +279,7 @@ Cypress.Commands.add('deleteOrgsIfExist', () => {
 
 //Delete Org by ID
 Cypress.Commands.add('deleteOrgById', (id) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations'),
 		`/${id}`
@@ -292,7 +294,7 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 
 //Add Org
 Cypress.Commands.add('addOrg', (org) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations')
 	);
@@ -306,7 +308,7 @@ Cypress.Commands.add('addOrg', (org) => {
 //Update Org
 Cypress.Commands.add('updateOrg', (org) => {
     cy.log(org)
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations'),
         `/${org._id}`
@@ -321,7 +323,7 @@ Cypress.Commands.add('updateOrg', (org) => {
 
 Cypress.Commands.add('setOrgsOrServicesDeletedState',(query,state)=>{
     //Get Orgs Or Services that are marked deleted
-    compoundURL = Cypress.env('apiUrl').concat(
+    compoundURL = backendUrl.concat(
         Cypress.env('version'),
         Cypress.env('route_organizations'),
         query

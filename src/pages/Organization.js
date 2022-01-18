@@ -664,7 +664,7 @@ const Organization = (props) => {
                 <FormPhotos
                   organizationId={orgId}
                   location={primaryLocation}
-                  photos={photos}
+                  photos={photos ? photos : []}
                   name={name}
                   venue_id={venue_id}
                 />

@@ -30,3 +30,4 @@ cypressCoverage
 cypress/videos
 cypress/screenshots
 reports
+mochawesome-report

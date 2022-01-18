@@ -143,6 +143,7 @@ const AdminPanelSuggestions = (props) => {
           <SectionTitle>Pending Affiliates</SectionTitle>
           {pendingOwners?.length > 0 ? (
             <Table
+              dataTestId='pending-affiliates-table'
               actions={[
                 {
                   label: 'View Organization',
@@ -176,6 +177,7 @@ const AdminPanelSuggestions = (props) => {
           <SectionTitle>Suggested Edits</SectionTitle>
           {suggestions?.data?.length > 0 ? (
             <Table
+              dataTestId='suggested-edits-table'
               actions={[
                 {
                   label: 'View Organization',

@@ -16,7 +16,7 @@ const prod = {
 };
 
 const env = process.env.REACT_APP_APP_ENV;
-
+console.log( `Environment Selected: ${env}`)
 export default {
   ...base,
   ...(env === 'TEST' ? local : {}),

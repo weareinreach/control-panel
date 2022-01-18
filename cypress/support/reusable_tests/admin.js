@@ -492,7 +492,7 @@ Cypress.Commands.add('testDataManagerSoftDeleteService', (viewport, creds, org) 
 
 });
 
-Cypress.Commands.add('testViewOrganizationFromAffiliatePending',(viewport,creds,org)=>{
+Cypress.Commands.add('testAffiliatePendingElements',(viewport,creds,org)=>{
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
@@ -502,17 +502,16 @@ Cypress.Commands.add('testViewOrganizationFromAffiliatePending',(viewport,creds,
     cy.wait('@pendingOwners').then(intercept=>{
         cy.getElementByTestId('admin-tab-suggestions').click();
         //test filled
-        if(intercept.response.body.organizations.length > 0){
-            cy.contains("Pending Affiliates").then($element=>{
-                cy.get($element).children().contains(org.owners[0].email).then($elementChildren=>{
-                cy.log($elementChildren)
-                 // expect($elementChildren).contain(org.owners[0].email);
-                //Get sibling element
-            
-            });
-        });
-        }
+        let response = intercept.response.body;
+        if(response.organizations.length > 0){
+            cy.contains(response.organizations[0].owners[0].email);
 
+            cy.contains(response.organizations[0].owners[0].email);
+            cy.contains(response.organizations[0].name);
+        }else{
+            cy.contains("No pending affiliates at this time");
+        }
     });
-    
-})
+});
+
+//Cypress.Commands.add('testViewOrganizationFromAffiliatePending')

@@ -307,7 +307,6 @@ Cypress.Commands.add('addOrg', (org) => {
 
 //Update Org
 Cypress.Commands.add('updateOrg', (org) => {
-    cy.log(org)
 	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations'),
@@ -365,5 +364,57 @@ Cypress.Commands.add('createOwnerObject',(user)=>{
         email:user.email
     }
 });
+
+Cypress.Commands.add('createSuggestionObject',(orgId,userEmail,suggestion)=>{
+    suggestion.organizationId = orgId;
+    suggestion.userEmail = userEmail;
+    return suggestion;
+});
+
+Cypress.Commands.add('addSuggestion',suggestion =>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions')
+	);
+	cy.request({
+		method: 'POST',
+		url: compoundURL,
+		body: {suggestions:[suggestion]}
+	});
+    
+});
+
+Cypress.Commands.add('deleteSuggestionsIfExists',()=>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions'),
+		'/automation@gmail.com'
+	);
+	cy.request({
+		method: 'GET',
+		url: compoundURL,
+		failOnStatusCode: false
+	}).then((response) => {
+       if(response.body.length>0){
+           response.body.forEach(suggestion =>{
+               cy.deleteSuggestion(suggestion._id);
+           });
+       }
+	});
+});
+
+Cypress.Commands.add('deleteSuggestion',(id)=>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions'),
+		`/${id}`
+	);
+	cy.request({
+		method: 'DELETE',
+		url: compoundURL,
+		failOnStatusCode:false
+	});
+
+})
 
 

@@ -31,12 +31,12 @@
       "Legal hotlines"
     ],
     "Medical": [
-      "Medical clinics",
-      "Women's health",
+      "Dental care",
       "HIV and sexual health",
-      "Trans health",
+      "Medical clinics",
+      "OBGYN services",
       "Physical evaluations for refugee claim",
-      "Dental care"
+      "Trans health"
     ],
     "Mental Health": [
       "Hotlines",
@@ -87,9 +87,9 @@
       "Dental care",
       "HIV and sexual health",
       "Medical clinics",
-      "Physical evaluations for asylum claim",
-      "Trans health",
-      "Women's health"
+      "OBGYN services",
+      "Physical evaluations for refugee claim",
+      "Trans health"
     ],
     "Mental Health": [
       "Hotlines",
@@ -144,9 +144,9 @@
       "Dental care",
       "HIV and sexual health",
       "Medical clinics",
-      "Physical evaluations for asylum claim",
-      "Trans health",
-      "Women's health"
+      "OBGYN services",
+      "Physical evaluations for refugee claim",
+      "Trans health"
     ],
     "Mental Health": [
       "Hotlines",

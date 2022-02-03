@@ -51,10 +51,10 @@ jobs:
       - jq/install
       - run:
           name: Get API branch to pull
-          command: export BRANCH=$(jq '.api_ci_branch' control-panel/cypress.env.json)
+          command: echo $(jq '.api_ci_branch' control-panel/cypress.env.json)
       - run:
           name: Pull API code
-          command: git clone --branch $BRANCH https://github.com/asylum-connect/catalog-api.git
+          command: git clone --branch $(jq '.api_ci_branch' control-panel/cypress.env.json) https://github.com/asylum-connect/catalog-api.git
       - run: 
           name: Create API Env File
           command: |

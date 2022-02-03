@@ -96,13 +96,10 @@ Cypress.Commands.add('addAddress',(organization)=>{
         cy.wrap($element.children()[1]).type(organization.locations[0].zip_code);
     });
     cy.getElementByTestId('lat').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[0]);
+        cy.wrap($element.children()[1]).type(organization.locations[0].lat);
     });
     cy.getElementByTestId('long').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[1]);
-    });
-    cy.getElementByTestId('is_primary').then($element=>{
-        cy.wrap($element.children()[0]).click();
+        cy.wrap($element.children()[1]).type(organization.locations[0].long);
     });
     //Save
     cy.getElementByTestId('modal-save-button').click();

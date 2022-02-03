@@ -187,6 +187,7 @@ const AdminPanelUsers = (props) => {
                   <Box>
                     {users?.data?.users?.length > 0 ? (
                       <Table 
+                        tableDataTestId='admin-users-table'
                         actions={tableActions}
                         headers={tableHeaders}
                         rows={users?.data?.users}

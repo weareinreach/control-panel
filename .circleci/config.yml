@@ -48,8 +48,14 @@ jobs:
       - checkout:
           path: control-panel
       - run:
+          name:  Install jq
+          command: apt-get update && apt-get install jq
+      - run:
+          name: Get API branch to pull
+          command: export BRANCH=$(jq '.api_ci_branch' control-panel/cypress.env.json)
+      - run:
           name: Pull API code
-          command: git clone --branch dev https://github.com/asylum-connect/catalog-api.git
+          command: git clone --branch $BRANCH https://github.com/asylum-connect/catalog-api.git
       - run: 
           name: Create API Env File
           command: |
@@ -88,7 +94,7 @@ jobs:
           command: "cd control-panel && yarn test:pre-e2e"
       - run:
           name: "E2E Automation"
-          command: "cd control-panel && yarn test:e2e:ci"
+          command: "cd control-panel && yarn test:e2e:ci:local"
       - run:
           name: "Show Coverage"
           command: "cd control-panel && yarn show-coverage"

@@ -86,9 +86,11 @@
 			"state_ES":"WY",
 			"country":"United States",
 			"country_ES":"Estados Unidos",
-			"is_primary":true,
+			"is_primary":false,
 			"state":"WY",
 			"zip_code":"82901",
+			"lat":"37.776",
+			"long":"-122.423",
 			"show_on_organization":true,
 			"geolocation":{
 				"type":"Point",

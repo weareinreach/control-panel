@@ -13,7 +13,7 @@ Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>
         expect($element).contain('New Organization');
     })
 
-    cy.getElementByTestId('table-row').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 
@@ -156,7 +156,7 @@ Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('table-row').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 

@@ -49,25 +49,26 @@ Cypress.Commands.add('testAdminPageElements', (viewport, creds) => {
         expect($element).contain('Search');
     });
 
-    cy.getElementByTestId('table').then($element => {
+    cy.getElementByTestId('admin-users-table').then($element => {
         expect($element).to.be.visible;
     });
 
     cy.getElementByTestId('table-header').then($element => {
         expect($element).to.be.visible;
-        expect($element).to.have.lengthOf(2);
     });
 
-    cy.getElementByTestId('table-header-text').then($element => {
+    cy.getElementByTestId('table-header-text-name').then($element => {
         expect($element).to.be.visible;
-        expect($element).to.have.lengthOf(2);
-        expect($element[0]).contain('Name');
-        expect($element[1]).contain('Email');
+        expect($element).contain('Name');
+        
+    });
+    cy.getElementByTestId('table-header-text-email').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain('Email');
     });
 
-    cy.getElementByTestId('table-row').then($element => {
+    cy.getElementByTestId('table-row-text-0-name').then($element => {
         expect($element).to.be.visible;
-        expect($element).to.have.length.greaterThan(1);
     });
 
     cy.getElementByTestId('pagination-previous').then($element => {
@@ -104,12 +105,12 @@ Cypress.Commands.add('testAdminFilterUsers', (viewport, creds) => {
         cy.get('@usersCount').then(interception => {
             if (interception.response.body.count > 0) {
                 //should be populated
-                cy.getElementByTestId('table').then($element => {
+                cy.getElementByTestId('admin-users-table').then($element => {
                     expect($element).to.be.visible;
                 });
-                cy.getElementByTestId('table-row').then($element => {
+                cy.getElementByTestId('table-row-text-0-name').then($element => {
                     expect($element).to.be.visible;
-                    expect($element).to.have.length.greaterThan(1);
+                    expect($element).to.have.lengthOf(1);
                 });
             } else {
                 //Should be empty
@@ -195,17 +196,9 @@ Cypress.Commands.add('testAdminFilterAddNewManagerAction', (viewport, creds, adm
     cy.getElementByTestId('modal-save-button').click();
     //Reload Page
     cy.reload();
-    cy.getElementByTestId('table-row-text').then($element => {
-        cy.wrap($element).each(($el) => {
-            const text = $el.text()
-            if (text === admin.name) {
-                //Delete Admin
-                cy.getElementByTestId('table-row-action').then($element => {
-                    cy.wrap($element[0]).click();
-                    cy.getElementByTestId('modal-save-button').click();
-                });
-            }
-        });
+    cy.getElementByTestId('table-row-action-0-delete').then($element => {
+        cy.wrap($element[0]).click();
+        cy.getElementByTestId('modal-save-button').click();
     });
 });
 
@@ -239,17 +232,15 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
                 break;
             case 'non-empty':
                 //Test non empty state
-                cy.getElementByTestId('table').then($element => {
+                cy.getElementByTestId('admin-trash-bin-table-orgs').then($element => {
                     expect($element).to.be.visible;
                 });
-                cy.getElementByTestId('table-row').then($element => {
+                cy.getElementByTestId('table-row-text-0-org').then($element => {
                     expect($element).to.be.visible;
-                    expect($element).to.have.length.greaterThan(1);
                 });
 
                 cy.getElementByTestId('table-header').then($element => {
                     expect($element).to.be.visible;
-                    expect($element).to.have.length.greaterThan(1);
                 });
                 break;
         }
@@ -268,7 +259,7 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
                 break;
             case 'non-empty':
                 //Test non empty state
-                cy.getElementByTestId('table').then($element => {
+                cy.getElementByTestId('admin-trash-bin-table-services').then($element => {
                     expect($element).to.be.visible;
                 });
 
@@ -277,9 +268,8 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
                     expect($element).to.have.length.greaterThan(1);
                 });
 
-                cy.getElementByTestId('table-row').then($element => {
+                cy.getElementByTestId('table-row-text-0-org').then($element => {
                     expect($element).to.be.visible;
-                    expect($element).to.have.length.greaterThan(1);
                 });
                 break;
         }
@@ -323,18 +313,15 @@ Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, numb
 
     cy.get('@deletedOrganizations').then(interception => {
         if (interception.response.body.organizations.length) {
-            cy.getElementByTestId('table').then($element => {
+            cy.getElementByTestId('admin-trash-bin-table-orgs').then($element => {
                 expect($element).to.be.visible;
             });
-            cy.getElementByTestId('table-row-action').then($element => {
-                expect($element).to.be.visible;
-                //Table row actions counts all elements across tabs
-                cy.get($element[$element.length - number]).contains(`View Organization`).then($element => {
-                    cy.wrap($element).click();
-                    cy.location().should($loc => {
-                        expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)
-                    })
-                });
+            cy.getElementByTestId('table-row-action-0-view-organization').then($element => {
+                cy.expect($element).to.be.visible;
+                cy.wrap($element[1]).click();
+                cy.location().should($loc => {
+                    expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)
+                })
             });
         }
     });
@@ -360,13 +347,13 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization', (viewport, 
 
     cy.get('@deletedOrganizations').then(interception => {
         if (interception.response.body.organizations.length) {
-            cy.getElementByTestId('table').then($element => {
+            cy.getElementByTestId('admin-trash-bin-table-orgs').then($element => {
                 expect($element).to.be.visible;
             });
-            cy.getElementByTestId('table-row-action').then($element => {
+            cy.getElementByTestId('table-row-action-1-delete-organization').then($element => {
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
-                cy.get($element).contains(`${action} Organization`).click();
+                cy.get($element).contains('Delete Organization').click();
                 cy.getElementByTestId('modal-message').then($element => {
                     expect($element).to.be.visible;
                 });
@@ -402,11 +389,11 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreServices', (viewport, cred
     cy.get('@deletedOrgServices').then(interception => {
         if (interception.response.body.organizations.length) {
             //Test non empty state
-            cy.getElementByTestId('table').then($element => {
+            cy.getElementByTestId('admin-trash-bin-table-services').then($element => {
                 expect($element).to.be.visible;
             });
-
-            cy.getElementByTestId('table-row-action').then($element => {
+            let element = action === 'Restore' ? 'table-row-action-2-restore-service':'table-row-action-1-delete-service'
+            cy.getElementByTestId(element).then($element => {
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
                 cy.get($element).contains(`${action} Service`).click();

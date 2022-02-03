@@ -4,7 +4,7 @@
 //compound url
 
 //Test Suite
-describe('Admin Form Tests', () => {
+describe('Admin Suggestions Form Tests', () => {
 
     let viewports = [Cypress.env('desktop')];
 
@@ -16,14 +16,14 @@ describe('Admin Form Tests', () => {
         cy.fixture('suggested_edit.json').as('suggested_edit');
     });
     afterEach(() => {
-        cy.deleteSuggestionsIfExists();
-        cy.deleteUsersIfExist();
+       cy.deleteSuggestionsIfExists();
+       cy.deleteUsersIfExist();
         cy.deleteOrgsIfExist();
     });
 
     viewports.forEach(viewport => {
         context(`Testing the ${viewport} Version of the application`, () => {
-            it('Test Suggestions Affiliate Pending - With pending affiliates', () => {
+            it('Test Suggestions Elements', () => {
                 cy.get('@user_owner').then(owner => {
                     cy.get('@user_good').then(user => {
                         cy.addUser(user).then(() => {
@@ -33,7 +33,7 @@ describe('Admin Form Tests', () => {
                                         //Add Pending Onwner
                                         org.owners.push(ownerObject);
                                         cy.addOrg(org).then(createdOrganization => {
-                                            cy.testAffiliatePendingElements(viewport, user, createdOrganization.body.organization);
+                                            cy.testAdminSuggestionElements(viewport, user, owner,createdOrganization.body.organization);
                                         });
                                     });
                                 });
@@ -42,13 +42,13 @@ describe('Admin Form Tests', () => {
                     });
                 });
             });
-            it('Test Suggestions Affiliate Pending - With no pending affiliates',()=>{
-                cy.get('@user_good').then(user => {
-                    cy.addUser(user).then(() => {
-                            cy.testAffiliatePendingElements(viewport, user, null);
-                    });
-                });
-            });
+            // it('Test Suggestions Affiliate Pending - With no pending affiliates',()=>{
+            //     cy.get('@user_good').then(user => {
+            //         cy.addUser(user).then(() => {
+            //                 cy.testAffiliatePendingElements(viewport, user, null);
+            //         });
+            //     });
+            // });
             // it.only('Test Suggestion Suggested Edits - With Suggested Edits',()=>{
             //     cy.get('@user_good').then(user => {
             //         cy.addUser(user).then((createdUser)=>{

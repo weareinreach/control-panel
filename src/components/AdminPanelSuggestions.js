@@ -143,7 +143,7 @@ const AdminPanelSuggestions = (props) => {
           <SectionTitle>Pending Affiliates</SectionTitle>
           {pendingOwners?.length > 0 ? (
             <Table
-              dataTestId='pending-affiliates-table'
+              tableDataTestId='pending-affiliates-table'
               actions={[
                 {
                   label: 'View Organization',
@@ -170,14 +170,14 @@ const AdminPanelSuggestions = (props) => {
               rows={pendingOwners}
             />
           ) : (
-            <Text>No pending affiliates at this time</Text>
+            <Text data-test-id='pending-affiliates-text' >No pending affiliates at this time</Text>
           )}
         </Container>
         <Container>
           <SectionTitle>Suggested Edits</SectionTitle>
           {suggestions?.data?.length > 0 ? (
             <Table
-              dataTestId='suggested-edits-table'
+            tableDataTestId='suggested-edits-table'
               actions={[
                 {
                   label: 'View Organization',
@@ -200,13 +200,14 @@ const AdminPanelSuggestions = (props) => {
               rows={suggestions.data}
             />
           ) : (
-            <Text>No suggested edits at this time</Text>
+            <Text data-test-id="suggested-edits-text">No suggested edits at this time</Text>
           )}
         </Container>
         <Container>
           <SectionTitle>Suggested Organizations</SectionTitle>
           {suggestedOrgs?.data?.organizations?.length > 0 ? (
             <Table
+              tableDataTestId='suggested-organizations-table'
               actions={[
                 {label: 'View', onClick: (org) => openOrganization(org?._id)},
               ]}
@@ -214,7 +215,7 @@ const AdminPanelSuggestions = (props) => {
               rows={suggestedOrgs.data.organizations}
             />
           ) : (
-            <Text>No suggested organizations at this time</Text>
+            <Text data-test-id="suggested-organizations-text">No suggested organizations at this time</Text>
           )}
         </Container>
       </Stack>

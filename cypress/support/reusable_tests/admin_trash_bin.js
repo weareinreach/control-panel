@@ -115,6 +115,7 @@ Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, numb
             });
             cy.getElementByTestId('table-row-action-0-view-organization').then($element => {
                 cy.expect($element).to.be.visible;
+                
                 cy.wrap($element[1]).click();
                 cy.location().should($loc => {
                     expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)

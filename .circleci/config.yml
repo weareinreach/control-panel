@@ -76,11 +76,12 @@ jobs:
           name: "Seed Docker DB"
           command: cd catalog-api && yarn seed-docker-db
       - run:
-          name: Instantiate API
-          command: cd catalog-api && yarn dev-background
-      - run:
           name: Install Control Panel Packages
           command: cd control-panel && yarn install
+      - run:
+          name: Instantiate API
+          command: (cd catalog-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
+      
     #   - run:
     #       name: Install Control Panel NYC
     #       command: cd control-panel && yarn add nyc
@@ -88,12 +89,12 @@ jobs:
     #       name: Install cypress
     #       command: cd control-panel && yarn add cypress
       #save cache for use next tests
-      - run:
-          name: "Pre E2E Commands"
-          command: "cd control-panel && yarn test:pre-e2e"
-      - run:
-          name: "E2E Automation"
-          command: "cd control-panel && yarn test:e2e:ci:local"
+    #   - run:
+    #       name: "Pre E2E Commands"
+    #       command: "cd control-panel && yarn test:pre-e2e"
+    #   - run:
+    #       name: "E2E Automation"
+    #       command: "cd control-panel && yarn test:e2e:ci:local"
       - run:
           name: "Show Coverage"
           command: "cd control-panel && yarn show-coverage"

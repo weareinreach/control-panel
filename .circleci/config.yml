@@ -47,9 +47,9 @@ jobs:
     steps:
       - checkout:
           path: control-panel
-    #   - run:
-    #       name:  Install jq
-    #       command: sudo apt-get install jq
+      - run:
+          name:  Install jq
+          command: apt-get install jq
       - run:
           name: Get API branch to pull
           command: export BRANCH=$(jq '.api_ci_branch' control-panel/cypress.env.json)

@@ -49,8 +49,11 @@ jobs:
       - checkout:
           path: control-panel
       - jq/install
+      - run: 
+          name: Check Node Version
+          command: node --version
       - run:
-          name: Get API branch to pull
+          name: Print API branch
           command: echo "Pulling branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) from catalog-api"
       - run:
           name: Pull API code
@@ -74,19 +77,16 @@ jobs:
           command: cd catalog-api && yarn seed-docker-db
       - run:
           name: Instantiate API
-          command: cd catalog-api && yarn pre-e2e-test
-      - run: 
-          name: Check Node Version
-          command: node --version
+          command: cd catalog-api && yarn dev-background
       - run:
           name: Install Control Panel Packages
           command: cd control-panel && yarn install
-      - run:
-          name: Install Control Panel NYC
-          command: cd control-panel && yarn add nyc
-      - run:
-          name: Install cypress
-          command: cd control-panel && yarn add cypress
+    #   - run:
+    #       name: Install Control Panel NYC
+    #       command: cd control-panel && yarn add nyc
+    #   - run:
+    #       name: Install cypress
+    #       command: cd control-panel && yarn add cypress
       #save cache for use next tests
       - run:
           name: "Pre E2E Commands"

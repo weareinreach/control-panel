@@ -79,7 +79,7 @@ jobs:
           name: Install Control Panel Packages
           command: cd control-panel && yarn install
       - run:
-          name: Instantiate API
+          name: Instantiate API And Run E2E tests
           command: (cd catalog-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
       
     #   - run:

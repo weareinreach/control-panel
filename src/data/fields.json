@@ -147,11 +147,13 @@
     },
     {
       "key": "lat",
-      "label": "Lat"
+      "label": "Latitude",
+      "isRequired": true
     },
     {
       "key": "long",
-      "label": "Long"
+      "label": "Longitude",
+      "isRequired": true
     },
     {
       "key": "is_primary",

@@ -11,7 +11,7 @@ const Alert = (props) => {
   const {description, title, type} = props;
 
   return (
-    <ChakraAlert data-test-id="alert-container" marginBottom={4} status={type}>
+    <ChakraAlert data-test-id="alert-container" marginBottom={4} status={type} flexDirection="column">
       <AlertIcon data-test-id="alert-icon"/>
       {title && <AlertTitle mr={2} data-test-id="alert-title">{title}</AlertTitle>}
       {description && <AlertDescription data-test-id="alert-description">{description}</AlertDescription>}

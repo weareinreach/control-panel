@@ -77,7 +77,7 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
-  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+  const updateFields = ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -87,13 +87,15 @@ const Organization = (props) => {
         window.location = `/organizations/${orgId}`;
       })
       .catch((err) => {
+        const {message} = err?.response?.data;
         setError();
-        console.error(err);
+        setErrorMessage(message ?? null);
+        console.log(err);
       });
   };
   const updateListField =
     (key, options) =>
-    ({setLoading, setSuccess, setError, values}) => {
+    ({setLoading, setSuccess, setError, setErrorMessage, values }) => {
       const {isDelete, isEdit} = options || {};
       const newField = [...(organization?.[key] || [])];
       const {_id, ...restValues} = values;
@@ -115,6 +117,7 @@ const Organization = (props) => {
         setLoading,
         setSuccess,
         setError,
+        setErrorMessage,
         values: {[key]: newField},
       });
     };
@@ -134,7 +137,7 @@ const Organization = (props) => {
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
+      onConfirm: ({setLoading, setSuccess, setError,setErrorMessage}) => {
         const url = `${CATALOG_API_URL}${orgPath}`;
 
         setLoading();
@@ -146,8 +149,10 @@ const Organization = (props) => {
             window.location = `/organizations`;
           })
           .catch((err) => {
+            const {message} = err?.response?.data;
             setError();
-            console.error(err);
+            setErrorMessage(message ?? null);
+            console.log(err);
           });
         };
         
@@ -159,8 +164,10 @@ const Organization = (props) => {
             window.location = '/organizations';
           })
           .catch((err) => {
+            const {message} = err?.response?.data;
             setError();
-            console.error(err);
+            setErrorMessage(message ?? null);
+            console.log(err);
           });
       }
     }
@@ -171,7 +178,7 @@ const Organization = (props) => {
       form: {fields: [{key: 'name', label: 'name'}]},
       header: 'Duplicate Organization',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
         const url = `${CATALOG_API_URL}/organizations`;
         const organization = formatOrgInput(values);
 
@@ -184,8 +191,10 @@ const Organization = (props) => {
             window.location = `/organizations/${id}`;
           })
           .catch((err) => {
+            const {message} = err?.response?.data;
             setError();
-            console.error(err);
+            setErrorMessage(message ?? null);
+            console.log(err);
           });
       },
     });
@@ -193,13 +202,13 @@ const Organization = (props) => {
     openModal({
       header: `Verify Information for ${name}?`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        updateFields({setLoading, setSuccess, setError, values});
+      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
+        updateFields({setLoading, setSuccess, setError, setErrorMessage, values});
       },
-      onVerify: ({setLoading, setSuccess, setError, values}) => {
+      onVerify: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
         values = {...values, verified_at: Date.now()};
 
-        updateFields({setLoading, setSuccess, setError, values});
+        updateFields({setLoading, setSuccess, setError, setErrorMessage, values});
       },
     });
   const openDetailsEdit = () =>
@@ -214,7 +223,7 @@ const Organization = (props) => {
       form: {fields: [{key: 'name', label: 'Service Name', isRequired: true}]},
       header: 'New Service Name',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({setLoading, setSuccess, setError,setErrorMessage, values}) => {
         const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
         const service = formatServiceInput(values);
 
@@ -227,8 +236,10 @@ const Organization = (props) => {
             window.location.reload();
           })
           .catch((err) => {
+            const {message} = err?.response?.data;
             setError();
-            console.error(err);
+            setErrorMessage(message ?? null);
+            console.log(err);
           });
       },
     });
@@ -661,7 +672,7 @@ const Organization = (props) => {
                 <FormPhotos
                   organizationId={orgId}
                   location={primaryLocation}
-                  photos={photos}
+                  photos={photos ? photos : []}
                   name={name}
                   venue_id={venue_id}
                 />

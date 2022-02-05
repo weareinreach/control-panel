@@ -72,7 +72,7 @@ describe('Admin Trash Bin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganization(viewport,user,6,createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,"org",createdOrgResponse.body.organization);
                          });
                     });
                 });
@@ -83,7 +83,7 @@ describe('Admin Trash Bin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganization(viewport,user,3,createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,"service",createdOrgResponse.body.organization);
                          });
                     });
                 });

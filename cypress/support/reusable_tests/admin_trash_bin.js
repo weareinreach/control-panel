@@ -48,7 +48,6 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
         switch (state) {
             case 'empty':
                 //Test Empty State
-                cy.log(interception.response.body.organizations)
                 cy.getElementByTestId('admin-trash-bin-services-empty-state').then($element => {
                     expect($element).to.be.visible;
                     expect($element).contain('No Organization Services listed for deletion at this time');
@@ -91,7 +90,7 @@ Cypress.Commands.add('testAdminTrashBinElements', (viewport, creds, state) => {
 });
 
 
-Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, number, org) => {
+Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, type, org) => {
     cy.viewport(viewport);
     cy.login(creds.email, creds.password);
 
@@ -104,7 +103,10 @@ Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, numb
     //Click
     cy.getElementByTestId('header-admin-link').click();
 
-    cy.wait(['@deletedOrganizations', '@deletedOrgServices'])
+    cy.wait(['@deletedOrganizations', '@deletedOrgServices']).then(interceptions =>{
+        
+
+    let view_deleted_org =  interceptions[0].response.body.organizations.length - (type === "org"? 1 : -(interceptions[1].response.body.organizations.length -1)) 
 
     cy.getElementByTestId('admin-tab-trash-bin').click();
 
@@ -113,16 +115,18 @@ Cypress.Commands.add('testAdminTrashBinViewOrganization', (viewport, creds, numb
             cy.getElementByTestId('admin-trash-bin-table-orgs').then($element => {
                 expect($element).to.be.visible;
             });
-            cy.getElementByTestId('table-row-action-0-view-organization').then($element => {
+            cy.getElementByTestId('table-row-action-0-view-organization').filter(':visible').then($element => {
                 cy.expect($element).to.be.visible;
-                
-                cy.wrap($element[1]).click();
+                cy.wrap($element[view_deleted_org]).click();
                 cy.location().should($loc => {
-                    expect($loc.pathname).to.be.eq(`/organizations/${org._id}`)
+                    expect($loc.pathname).to.be.eq(`/organizations/${org._id}`);
                 })
             });
         }
     });
+    });
+
+    
 });
 
 Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization', (viewport, creds, action) => {
@@ -139,8 +143,7 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization', (viewport, 
     //Click
     cy.getElementByTestId('header-admin-link').click();
 
-    cy.wait(['@deletedOrganizations', '@deletedOrgServices'])
-
+    cy.wait(['@deletedOrganizations', '@deletedOrgServices']);
     cy.getElementByTestId('admin-tab-trash-bin').click();
 
     cy.get('@deletedOrganizations').then(interception => {

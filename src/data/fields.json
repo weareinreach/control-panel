@@ -68,6 +68,25 @@
       "type": "checkbox"
     }
   ],
+  "adminFieldsView": [
+    {
+      "key": "name",
+      "label": "Name"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "age",
+      "label": "Age"
+    },
+    {
+      "key": "isAdminDataManager",
+      "label": "Admin Data Manager",
+      "type": "checkbox"
+    }
+  ],
   "emailFields": [
     {
       "key": "email",

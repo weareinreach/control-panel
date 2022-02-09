@@ -8,7 +8,7 @@ import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
 import { Container, SectionTitle, Title } from './styles';
-import { adminFields } from '../data/fields.json';
+import { adminFields, adminFieldsView } from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -59,6 +59,27 @@ const AdminPanelUsers = (props) => {
             setError();
           });
       },
+    });
+  const openViewModal = (selectedManager) =>
+    openModal({
+      form: {
+        fields: adminFieldsView,
+        initialValues: {
+          name: selectedManager?.name,
+          email: selectedManager?.email,
+          location: selectedManager?.currentLocation,
+          age: selectedManager?.age,
+          country: selectedManager?.countryOfOrigin,
+          ethnicity: selectedManager?.ethnicityRace,
+          'LGBTQ+ identity': selectedManager?.sogIdentity,
+          'immigration status': selectedManager?.immigrationStatus,
+          isAdminDataManager: selectedManager?.isAdminDataManager,
+          isDataManager: selectedManager?.isDataManager,
+        },
+      },
+      header: 'View Data Manager',
+      onClose: closeModal,
+      includeFooter: false
     });
   const openEditModal = (selectedManager) =>
     openModal({
@@ -134,6 +155,7 @@ const AdminPanelUsers = (props) => {
   const tableActions = [
     ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
       ? [
+        { label: 'View', onClick: openViewModal },
         { label: 'Edit', onClick: openEditModal },
         { label: 'Revoke', onClick: openRemoveModal },
       ]
@@ -146,6 +168,9 @@ const AdminPanelUsers = (props) => {
   const tableHeaders = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
+    { key: 'age', label: 'Age' },
+    { key: 'countryOfOrigin', label: 'Country' },
+    { key: 'immigrationStatus', label: 'Immigration' },
     ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
       ? [
         {

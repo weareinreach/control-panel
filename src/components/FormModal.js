@@ -32,6 +32,7 @@ const FormModal = (props) => {
     onConfirm,
     onVerify,
     size = 'lg',
+    includeFooter = true,
   } = props;
   const {
     isError,
@@ -97,28 +98,37 @@ const FormModal = (props) => {
             {formFields}
           </Stack>
         </ModalBody>
-        <ModalFooter>
-          <Button data-test-id="modal-cancel-button" disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
-            Cancel
-          </Button>
-          <Button
-            data-test-id="modal-save-button"
-            onClick={formik.handleSubmit}
-            colorScheme={isAlert ? 'red' : 'blue'}
-          >
-            Save Changes
-          </Button>
-          {onVerify && <Button ml={2} onClick={(e) => {
-              formik.setFieldValue('isVerify', true, false);
-              formik.handleSubmit(e);
-            }}
-            colorScheme={isAlert ? 'red' : 'blue'}
-            data-test-id="modal-save-and-verify-button"
-            >
-							Save and Verify
-						</Button>
-          }
-        </ModalFooter>
+        {includeFooter && (
+          <ModalFooter>
+            <Button data-test-id="modal-cancel-button" disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
+              Cancel
+            </Button>
+            <Button
+              data-test-id="modal-save-button"
+              onClick={formik.handleSubmit}
+              colorScheme={isAlert ? 'red' : 'blue'}
+            >
+              Save Changes
+            </Button>
+            {onVerify && <Button ml={2} onClick={(e) => {
+                formik.setFieldValue('isVerify', true, false);
+                formik.handleSubmit(e);
+              }}
+              colorScheme={isAlert ? 'red' : 'blue'}
+              data-test-id="modal-save-and-verify-button"
+              >
+  							Save and Verify
+  						</Button>
+            }
+          </ModalFooter>
+        )}
+        {!includeFooter && (
+          <ModalFooter>
+            <Button data-test-id="modal-cancel-button" disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
+              Close
+            </Button>
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   );

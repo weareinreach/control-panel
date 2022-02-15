@@ -35,6 +35,16 @@ jobs:
           command: yarn build
   
   e2e:
+    parameters:
+        group:
+             type: integer
+             default: 1
+        group_name:
+              type: string
+              default: group
+    environment:
+      GROUP: << parameters.group >>
+      GROUP_NAME: << parameters.group_name >>
     docker:
       - image: cypress/base:16.5.0
         environment:
@@ -81,26 +91,12 @@ jobs:
       - run:
           name: Instantiate API And Run E2E tests
           command: (cd catalog-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
-      
-    #   - run:
-    #       name: Install Control Panel NYC
-    #       command: cd control-panel && yarn add nyc
-    #   - run:
-    #       name: Install cypress
-    #       command: cd control-panel && yarn add cypress
-      #save cache for use next tests
-    #   - run:
-    #       name: "Pre E2E Commands"
-    #       command: "cd control-panel && yarn test:pre-e2e"
-    #   - run:
-    #       name: "E2E Automation"
-    #       command: "cd control-panel && yarn test:e2e:ci:local"
       - run:
           name: "Show Coverage"
           command: "cd control-panel && yarn show-coverage"
       - codecov/upload:
           file: 'control-panel/cypressCoverage/coverage-final.json'
-          flags: 'Integration'
+          flags: Integration-${GROUP}
       - store_artifacts:
           path: ./control-panel/cypressCoverage
           destination: E2E Coverage Reports
@@ -114,4 +110,15 @@ workflows:
   pull_request:
     jobs: 
       - build
-      - e2e
+      - e2e:
+          group: 1
+          group_name: group1
+      - e2e: 
+          group: 2
+          group_name: group2
+      - e2e:
+          group: 3
+          group_name: group3
+      - e2e:
+          group: 4
+          group_name: group4

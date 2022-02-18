@@ -46,8 +46,9 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds,owner,org)=>{
             });
         }
     });
-    cy.wait('@pending-orgs').then(response=>{
-        if(response.response.body.organizations.length>0){
+
+    cy.wait('@suggestions').then(response=>{
+        if(response.response.body.length>0){
             cy.getElementByTestId('suggested-edits-table').then($element=>{
                 expect($element).to.be.visible;
             });
@@ -76,24 +77,7 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds,owner,org)=>{
                 expect($element.length).to.be.greaterThan(0);
             });
         }else{
-            cy.getElementByTestId('suggested-edits-text').then($element=>{
-                expect($element).to.be.visible;
-                expect($element).contain('No suggested edits at this time');
-            });
-        }
-       
-    });;
-    cy.wait('@suggestions').then(response=>{
-        if(response.response.body.length>0){
-            cy.getElementByTestId('suggested-organizations-table').then($element=>{
-                expect($element).to.be.visible;
-            });
-            cy.getElementByTestId('table-header-text-name').then($element=>{
-                expect($element).to.be.visible;
-                expect($element).contain('Name');                
-            });
-        }else{
-            cy.getElementByTestId('suggested-edits-text').then($element=>{
+            cy.getElementByTestId('suggested-organizations-text').then($element=>{
                 expect($element).to.be.visible;
                 expect($element).contain('No suggested organizations at this time');
             });
@@ -101,8 +85,21 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds,owner,org)=>{
        
     });;
 
+    cy.wait('@pending-orgs').then(response=>{
+        if(response.response.body.organizations.length>0){
+            cy.getElementByTestId('suggested-edits-table').then($element=>{
+                expect($element).to.be.visible;
+            });
+        }else{
+            cy.scrollTo('bottom');
+            cy.getElementByTestId('suggested-organizations-text').then($element=>{
+                expect($element).to.be.visible;
+                expect($element).contain('No suggested organizations at this time');
+            });
+        }
+       
+    });;
     
-
     cy.getElementByTestId('section-title').then($element=>{
         expect($element).to.be.visible;
         expect($element).to.be.lengthOf(3);

@@ -7,6 +7,7 @@ const base = {
 
 const local = {
   apiDomain: 'http://localhost:8080',
+  apiBasePath: '/v1',
 };
 
 const prod = {
@@ -15,9 +16,9 @@ const prod = {
 };
 
 const env = process.env.REACT_APP_APP_ENV;
-
+console.log( `Environment Selected: ${env}`)
 export default {
   ...base,
-  ...(env === 'local' ? local : {}),
+  ...(env === 'TEST' ? local : {}),
   ...(env === 'production' ? prod : {}),
 };

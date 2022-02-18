@@ -4,7 +4,7 @@
 //compound url
 
 //Test Suite
-describe('Admin Form Tests', () => {
+describe('Admin Trash Bin Form Tests', () => {
 
     let viewports = [Cypress.env('desktop')];
 
@@ -23,29 +23,6 @@ describe('Admin Form Tests', () => {
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-           it('Test Admin Elements',()=>{
-            cy.get('@user_good').then(user => {
-                cy.addUser(user).then(()=>{
-                    cy.testAdminPageElements(viewport,user);
-                });
-            });
-           });
-           it('Test Admin Filter Users',()=>{
-            cy.get('@user_good').then(user => {
-                cy.addUser(user).then(()=>{
-                    cy.testAdminFilterUsers(viewport,user);
-               });
-            });
-           });
-           it('Test Adding New Manager',()=>{
-            cy.get('@user_good').then(user => {
-                cy.addUser(user).then(()=>{
-                    cy.get('@admin').then(admin=>{
-                        cy.testAdminFilterAddNewManagerAction(viewport,user,admin);
-                    });
-                });
-            });
-           });
            it('Test Soft Deleting Organization',()=>{
                cy.get('@admin_data_manager').then(user=>{
                    cy.addUser(user).then(()=>{
@@ -95,7 +72,7 @@ describe('Admin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganization(viewport,user,6,createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,"org",createdOrgResponse.body.organization);
                          });
                     });
                 });
@@ -106,7 +83,7 @@ describe('Admin Form Tests', () => {
                 cy.addUser(user).then(()=>{
                     cy.get('@organization_deleted').then(organization=>{
                          cy.addOrg(organization).then((createdOrgResponse)=>{
-                             cy.testAdminTrashBinViewOrganization(viewport,user,3,createdOrgResponse.body.organization);
+                             cy.testAdminTrashBinViewOrganization(viewport,user,"service",createdOrgResponse.body.organization);
                          });
                     });
                 });

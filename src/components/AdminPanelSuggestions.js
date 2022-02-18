@@ -13,6 +13,7 @@ import {useAPIGet} from '../utils/hooks';
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const orgOwners = useAPIGet(`/organizations?pendingOwnership=true`);
+  console.log(orgOwners);
   const suggestedOrgs = useAPIGet(`/organizations?pending=true`);
   const suggestions = useAPIGet(`/suggestions`);
   const openOrganization = (id, serviceId) => {
@@ -28,11 +29,11 @@ const AdminPanelSuggestions = (props) => {
           result.push({...owner, organization: org});
         }
       });
-
       return result;
     },
     []
   );
+
   const openModalApprovalOwner = (owner) =>
     openModal({
       header: 'Accept the request for affiliation',
@@ -142,6 +143,7 @@ const AdminPanelSuggestions = (props) => {
           <SectionTitle>Pending Affiliates</SectionTitle>
           {pendingOwners?.length > 0 ? (
             <Table
+              tableDataTestId='pending-affiliates-table'
               actions={[
                 {
                   label: 'View Organization',
@@ -168,13 +170,14 @@ const AdminPanelSuggestions = (props) => {
               rows={pendingOwners}
             />
           ) : (
-            <Text>No pending affiliates at this time</Text>
+            <Text data-test-id='pending-affiliates-text' >No pending affiliates at this time</Text>
           )}
         </Container>
         <Container>
           <SectionTitle>Suggested Edits</SectionTitle>
           {suggestions?.data?.length > 0 ? (
             <Table
+            tableDataTestId='suggested-edits-table'
               actions={[
                 {
                   label: 'View Organization',
@@ -197,13 +200,14 @@ const AdminPanelSuggestions = (props) => {
               rows={suggestions.data}
             />
           ) : (
-            <Text>No suggested edits at this time</Text>
+            <Text data-test-id="suggested-edits-text">No suggested edits at this time</Text>
           )}
         </Container>
         <Container>
           <SectionTitle>Suggested Organizations</SectionTitle>
           {suggestedOrgs?.data?.organizations?.length > 0 ? (
             <Table
+              tableDataTestId='suggested-organizations-table'
               actions={[
                 {label: 'View', onClick: (org) => openOrganization(org?._id)},
               ]}
@@ -211,7 +215,7 @@ const AdminPanelSuggestions = (props) => {
               rows={suggestedOrgs.data.organizations}
             />
           ) : (
-            <Text>No suggested organizations at this time</Text>
+            <Text data-test-id="suggested-organizations-text">No suggested organizations at this time</Text>
           )}
         </Container>
       </Stack>

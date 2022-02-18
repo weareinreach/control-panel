@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@1.1.3
+  jq: circleci/jq@2.2.0
 jobs:
   build:
     docker:
@@ -38,50 +39,73 @@ jobs:
       - image: cypress/base:16.5.0
         environment:
           TERM: xterm
-    working_directory: ~/control-panel
+      ## MongoDB 
+      - image: mongo:4.4.10
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: user
+          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_DATABASE: asylum-connect
     steps:
-      - checkout
-      # Download and cache dependencies
-      # - restore_cache:
-      #     keys:
-      #     - v1-dependencies-{{ checksum "package.json" }}
-      #     # fallback to using the latest cache if no exact match is found
-      #     - v1-dependencies-
+      - checkout:
+          path: control-panel
+      - jq/install
       - run: 
           name: Check Node Version
           command: node --version
       - run:
-          name: Install Packages
-          command: npm install
+          name: Print API branch
+          command: echo "Pulling branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) from catalog-api"
       - run:
-          name: Install NYC
-          command: npm i nyc
+          name: Pull API code
+          command: git clone --branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) https://github.com/asylum-connect/catalog-api.git
+      - run: 
+          name: Create API Env File
+          command: |
+           cd catalog-api && cat \<< EOF > ./.env
+           MAILGUN_API_KEY=$MAILGUN_API_KEY
+           MAILGUN_DOMAIN=$MAILGUN_DOMAIN
+           DB_URI=$DB_URI_STAGING
+           ENV=TEST
+           SHEETS_API_KEY=$SHEETS_API_KEY
+           TEST_DB_URI=$TEST_DB_URI
+           EOF
       - run:
-          name: Install cypress
-          command: npm i cypress
+          name: Install API Packages
+          command: cd catalog-api && yarn install
+      - run:
+          name: "Seed Docker DB"
+          command: cd catalog-api && yarn seed-docker-db
+      - run:
+          name: Install Control Panel Packages
+          command: cd control-panel && yarn install
+      - run:
+          name: Instantiate API And Run E2E tests
+          command: (cd catalog-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
+      
+    #   - run:
+    #       name: Install Control Panel NYC
+    #       command: cd control-panel && yarn add nyc
+    #   - run:
+    #       name: Install cypress
+    #       command: cd control-panel && yarn add cypress
       #save cache for use next tests
-      - save_cache:
-         paths:
-          - node_modules
-          - "~./cache/Cypress"
-         key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: "Pre E2E Commands"
-          command: "yarn test:pre-e2e"
-      - run:
-          name: "E2E Automation"
-          command: "yarn test:e2e:ci"
+    #   - run:
+    #       name: "Pre E2E Commands"
+    #       command: "cd control-panel && yarn test:pre-e2e"
+    #   - run:
+    #       name: "E2E Automation"
+    #       command: "cd control-panel && yarn test:e2e:ci:local"
       - run:
           name: "Show Coverage"
-          command: "yarn show-coverage"
+          command: "cd control-panel && yarn show-coverage"
       - codecov/upload:
-          file: 'cypressCoverage/coverage-final.json'
+          file: 'control-panel/cypressCoverage/coverage-final.json'
           flags: 'Integration'
       - store_artifacts:
-          path: ./cypressCoverage
+          path: ./control-panel/cypressCoverage
           destination: E2E Coverage Reports
       - store_artifacts:
-          path: "reports/"
+          path: "control-panel/reports/"
           destination: E2E Test Reports 
     
 

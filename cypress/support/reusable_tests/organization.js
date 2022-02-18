@@ -13,7 +13,7 @@ Cypress.Commands.add('testOrganizationDetailsGeneralElements',(viewport,creds)=>
         expect($element).contain('New Organization');
     })
 
-    cy.getElementByTestId('table-row').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 
@@ -156,7 +156,7 @@ Cypress.Commands.add('testOrganizationDetailsPhotosElements',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('table-row').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 
@@ -407,12 +407,12 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     cy.getElementByTestId('lat').then($element=>{
         expect($element).to.be.visible;
         expect($element.children()[0]).contain('Lat');
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[0]);
+        cy.wrap($element.children()[1]).type(organization.locations[0].lat);
     });
     cy.getElementByTestId('long').then($element=>{
         expect($element).to.be.visible;
         expect($element.children()[0]).contain('Long');
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[1]);
+        cy.wrap($element.children()[1]).type(organization.locations[0].long);
     });
     cy.getElementByTestId('is_primary').then($element=>{
         expect($element).to.be.visible;
@@ -426,7 +426,7 @@ Cypress.Commands.add('testAddingOrganizationAddresses',(viewport,creds,organizat
     cy.wait('@saveAddress');
     cy.wait('@loadOrg');
     // Assert address has been added
-    cy.getElementByTestId('table-row-text').contains(organization.locations[0].name).should('be.visible')
+    cy.getElementByTestId('table-row-text-0-name').contains(organization.locations[0].name).should('be.visible')
 });
 
 

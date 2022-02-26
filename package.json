@@ -15,7 +15,7 @@
     "test:pre-e2e": "rm -R -f ./mochawesome-report && rm -R -f ./.nyc_output && rm -R -f ./cypressCoverage && rm -R -f ./reports",
     "test:e2e": "start-server-and-test 'nyc yarn start' http://localhost:3000 'yarn cypress:open'",
     "test:e2e:local": "start-server-and-test 'nyc yarn local' http://localhost:3000 'yarn cypress:open'",
-    "test:e2e:ci": "start-server-and-test 'nyc yarn start' http://localhost:3000 'yarn cypress:run'",
+    "test:e2e:ci": "start-server-and-test 'nyc yarn local' http://localhost:3000 'yarn cypress:run'",
     "test:e2e:ci:local": "start-server-and-test 'nyc yarn local' http://localhost:3000 'yarn cypress:run --record --group $GROUP_NAME --key 51ed68ee-a168-44a2-89eb-53f60be9a77f --spec 'cypress/integration/group${GROUP}/**/*''",
     "show-coverage": "npx nyc report --reporter json --reporter=text"
   },

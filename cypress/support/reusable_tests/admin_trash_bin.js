@@ -155,7 +155,7 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreOrganization', (viewport, 
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
                 cy.get($element).contains('Delete Organization').click();
-                cy.getElementByTestId('modal-message').then($element => {
+                cy.getElementByTestId('modal-message-custom').then($element => {
                     expect($element).to.be.visible;
                 });
                 cy.getElementByTestId('modal-save-button').then($element => {
@@ -198,7 +198,7 @@ Cypress.Commands.add('testAdminTrashBinDeleteOrRestoreServices', (viewport, cred
                 expect($element).to.be.visible;
                 //Table row actions counts all elements across tabs
                 cy.get($element).contains(`${action} Service`).click();
-                cy.getElementByTestId('modal-message').then($element => {
+                cy.getElementByTestId('modal-message-custom').then($element => {
                     expect($element).to.be.visible;
                 });
                 cy.getElementByTestId('modal-save-button').then($element => {

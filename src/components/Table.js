@@ -71,7 +71,7 @@ const Table = (props) => {
           <tr>
             {headers?.map(({key, label}) => (
               <th key={key} data-test-id="table-header">
-                <Text data-test-id={`table-header-text-${key}`} color="gray.500" fontSize="md" fontWeight="bold">
+                <Text data-test-id={`table-header-text-${key.toLowerCase().replace(".","-")}`} color="gray.500" fontSize="md" fontWeight="bold">
                   {label}
                 </Text>
               </th>
@@ -95,7 +95,7 @@ const Table = (props) => {
                   value = 'NO';
                 }
 
-                const children = <Text data-test-id={`table-row-text-${rowIndex}-${key.toLowerCase()}`} fontSize="md">{value}</Text>;
+                const children = <Text data-test-id={`table-row-text-${rowIndex}-${key.toLowerCase().replace(".","-")}`} fontSize="md">{value}</Text>;
 
                 return (
                   <td key={keyIndex}>

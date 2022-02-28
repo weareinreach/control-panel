@@ -79,7 +79,7 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds)=>{
                 expect($element).to.be.visible;
             });
         }else{
-            cy.scrollTo('bottom');
+            cy.scrollTo('bottom',{ensureScrollable: false});
             cy.getElementByTestId('suggested-organizations-text').then($element=>{
                 expect($element).to.be.visible;
                 expect($element).contain('No suggested organizations at this time');
@@ -174,16 +174,13 @@ Cypress.Commands.add('testViewDeclineSuggest',(viewport,creds,org,suggestion,vie
     cy.login(creds.email,creds.password);
     cy.intercept('/v1/suggestions').as('suggestions');
     cy.getElementByTestId('header-admin-link').click();
+    
 
     cy.wait('@suggestions').then(response=>{
-        cy.getElementByTestId('admin-tab-suggestions').click();
         let responseObject = response.response;
-        if(responseObject.statusCode !==304){
-            //Clear then test
-            for(let i=0;i<responseObject.body.length;i++){
-                cy.log(responseObject.body[i]);
-                cy.deleteSuggestion(responseObject.body[i]._id);
-            }
+        for(let i=0;i<responseObject.body.length;i++){
+            cy.log(responseObject.body[i]);
+            cy.deleteSuggestion(responseObject.body[i]._id);
         }
         cy.addSuggestion(suggestion).then(()=>{
             cy.reload(true);
@@ -206,7 +203,7 @@ Cypress.Commands.add('testViewDeclineSuggest',(viewport,creds,org,suggestion,vie
             let elementAction = view ? 'table-row-action-0-view-organization' : 'table-row-action-1-decline';
             let elementText = view ? 'View Organization' : 'Decline';
 
-            cy.getElementByTestId(elementAction).then($element=>{
+            cy.getElementByTestId(elementAction).filter(':visible').then($element=>{
                 expect($element).to.be.visible;
                 expect($element).contain(elementText);
                 cy.wrap($element).click().then(()=>{

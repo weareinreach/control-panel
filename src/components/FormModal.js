@@ -68,7 +68,7 @@ const FormModal = (props) => {
   })
   const displayMessage = (message) => {
     return (
-      <Text data-test-id="modal-message">{message}</Text>
+      <Text data-test-id="modal-message-custom">{message}</Text>
     )
   }
 
@@ -90,7 +90,7 @@ const FormModal = (props) => {
               />
             )}
             {isAlert && (
-              <Text>Are you sure? You can't undo this action afterwards.</Text>
+              <Text data-test-id="modal-message">Are you sure? You can't undo this action afterwards.</Text>
             )}
             {displayMessage(message)}
             {children && children({...childrenProps, formik, updateField})}

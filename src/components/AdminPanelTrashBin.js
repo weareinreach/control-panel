@@ -147,6 +147,7 @@ return (
                     }
                     ]}
                     rows={deletedOrgs}
+                    tableDataTestId='admin-trash-bin-table-orgs'
                 />
                 ) : (
                     <Text data-test-id="admin-trash-bin-organizations-empty-state">No Organizations listed for deletion at this time</Text>
@@ -176,6 +177,7 @@ return (
                         getValue: (organization)=> organization?.name}
                     ]}
                     rows={reducedDeletedServices}
+                    tableDataTestId="admin-trash-bin-table-services"
                     />
                     ) : (
                         <Text data-test-id="admin-trash-bin-services-empty-state">No Organization Services listed for deletion at this time</Text>

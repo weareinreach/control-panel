@@ -12,10 +12,12 @@ describe('Home Page Dashboard Tests', () => {
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
-        cy.fixture('organization_search.json').as('organization');
+        cy.fixture('organization.json').as('organization');
     });
     afterEach(() => {
         cy.deleteUsersIfExist();
+        cy.deleteOrgsIfExist();
+
     });
 
     viewports.forEach(viewport=>{
@@ -38,7 +40,7 @@ describe('Home Page Dashboard Tests', () => {
             cy.get('@user_good').then(user => {
                   cy.addUser(user).then(()=>{
                    cy.get('@organization').then(org=>{
-                    cy.testDashboardSearchForOrg(viewport,user,org.organization);
+                    cy.testDashboardSearchForOrg(viewport,user,org);
                    });
                 });
             });

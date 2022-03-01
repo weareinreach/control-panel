@@ -7,7 +7,7 @@ Cypress.Commands.add('testingOrganizationServicesElements',(viewport,creds,organ
     //Add Service
     cy.addService(organization);
 
-    cy.getElementByTestId('table-row-action').click();
+    cy.getElementByTestId('table-row-text-0-name').click();
 
     //Test header elements
     cy.getElementByTestId('service-title').then($element=>{
@@ -107,7 +107,7 @@ Cypress.Commands.add('testAddingOrganizationServicesDetails',(viewport,creds,org
     //Add Service
     cy.addService(organization);
 
-    cy.getElementByTestId('table-row-action').click();
+    cy.getElementByTestId('table-row-text-0-name').click();
 
 
     cy.getElementByTestId('service-details-button').then($element=>{
@@ -159,7 +159,7 @@ Cypress.Commands.add('testAddingOrganizationServiceAccessInformation',(viewport,
     //Add Service
     cy.addService(organization);
 
-    cy.getElementByTestId('table-row-action').click();
+    cy.getElementByTestId('table-row-text-0-name').click();
 
     cy.getElementByTestId('service-new-instruction-button').then($element=>{
         expect($element).to.be.visible;
@@ -213,7 +213,7 @@ Cypress.Commands.add('testAddingOrganizationServiceAddress',(viewport,creds,orga
    // cy.intercept('/v1/organizations/**');
     cy.wait(3000);
     cy.scrollTo(0, 500)
-    cy.getElementByTestId('table-row-action').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     })
 
@@ -253,7 +253,7 @@ Cypress.Commands.add('testAddingOrganizationServiceSchedule',(viewport,creds,org
    // cy.intercept('/v1/organizations/**');
     cy.wait(3000);
     cy.scrollTo(0, 500)
-    cy.getElementByTestId('table-row-action').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     })
 
@@ -293,7 +293,7 @@ Cypress.Commands.add('testAddingOrganizationServiceEmails',(viewport,creds,organ
    // cy.intercept('/v1/organizations/**');
     cy.wait(3000);
     cy.scrollTo(0, 500)
-    cy.getElementByTestId('table-row-action').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 
@@ -333,7 +333,7 @@ Cypress.Commands.add('testAddingOrganizationServicePhone',(viewport,creds,organi
    // cy.intercept('/v1/organizations/**');
     cy.wait(3000);
     cy.scrollTo(0, 500)
-    cy.getElementByTestId('table-row-action').then($element=>{
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 
@@ -367,7 +367,7 @@ Cypress.Commands.add('testAddingOrganizationServiceEditCoverage',(viewport,creds
     //Add Service
     cy.addService(organization);
 
-    cy.getElementByTestId('table-row-action').click();
+    cy.getElementByTestId('table-row-text-0-name').click();
 
     cy.getElementByTestId('service-edit-coverage-button').then($element=>{
         expect($element).to.be.visible;

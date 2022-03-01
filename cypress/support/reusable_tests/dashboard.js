@@ -11,18 +11,19 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
         expect($element).to.be.visible;
         expect($element).contain('Organizations');
     });
-    cy.getElementByTestId('table').then($element=>{
+    cy.getElementByTestId('dashboard-table').then($element=>{
         expect($element).to.be.visible;
     });
-    cy.getElementByTestId('table-header-text').then($element=>{
+    cy.getElementByTestId('table-header-text-name').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.length(2);
-        expect($element[0]).contain('Name');
-        expect($element[1]).contain('Last Updated');
+        expect($element).contain('Name');
     });
-    cy.getElementByTestId('table-row').then($element=>{
+    cy.getElementByTestId('table-header-text-updated_at').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.length(20);
+        expect($element).contain('Last Updated');
+    });
+    cy.getElementByTestId('table-row-0').then($element=>{
+        expect($element).to.be.visible;
     });
 
     //Box 2
@@ -155,10 +156,10 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
-    cy.getElementByTestId('pagination-next').click();
-    cy.getElementByTestId('pagination-next').click();
-    cy.getElementByTestId('pagination-previous').click();
-    cy.getElementByTestId('table-row').then($element=>{
+    // cy.getElementByTestId('pagination-next').click();
+    // cy.getElementByTestId('pagination-next').click();
+    // cy.getElementByTestId('pagination-previous').click();
+    cy.getElementByTestId('table-row-text-0-name').then($element=>{
         cy.wrap($element[0]).click();
     });
 });
@@ -166,18 +167,15 @@ Cypress.Commands.add('testDashboardClickOnOrg',(viewport,creds)=>{
 Cypress.Commands.add('testDashboardSearchForOrg',(viewport,creds,org)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
+    cy.addOrganization(org);
 
-    cy.getElementByTestId('filter-org-input').type(org);
+    cy.getElementByTestId('bread-crumbs-title').click();
+    cy.wait(2000);
+
+    cy.getElementByTestId('filter-org-input').type(org.name);
     cy.getElementByTestId('filter-button-search').click({force:true});
     cy.wait(1000);
-    cy.getElementByTestId('table-row-text').then($element=>{
-        cy.wrap($element).each(($el)=>{
-            const text =  $el.text()
-            if(text === org){
-                cy.wrap($el).click();
-            }
-        })
-    });
+    cy.getElementByTestId('table-row-text-0-name').click();
     
 });
 

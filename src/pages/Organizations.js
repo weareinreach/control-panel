@@ -99,6 +99,7 @@ const Organizations = () => {
                         getRowLink={(org) => `/organizations/${org._id}`}
                         headers={headers}
                         rows={organizations.data.organizations}
+                        tableDataTestId="dashboard-table"
                       />
                     ) : (
                         <Box textAlign="center" padding={4}>

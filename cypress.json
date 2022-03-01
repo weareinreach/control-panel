@@ -14,5 +14,6 @@
     },
     "defaultCommandTimeout":10000,
     "waitForAnimations":true,
-	"watchForFileChanges": false
+	"watchForFileChanges": false,
+	"projectId":"mhd29m"
 }

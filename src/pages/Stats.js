@@ -60,7 +60,7 @@ const Stats = () => {
               <Container>
                 <Box>
                   <SectionTitle data-test-id="stats-section-title-organizations">Verified Organizations</SectionTitle>
-                  <Table data-test-id="stats-table-organizations" headers={headers} rows={orgStats} />
+                  <Table tableDataTestId="stats-table-organizations" headers={headers} rows={orgStats} />
                 </Box>
               </Container>
               <Container marginTop={8}>

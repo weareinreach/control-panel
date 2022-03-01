@@ -23,6 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+let backendUrl = Cypress.env('environment') == "TEST" ? Cypress.env('localUrl') : Cypress.env('apiUrl');
+
 Cypress.Commands.add('getElementByTestId',(id_name =>{
     return cy.get(`[data-test-id=${id_name}]`);
 }));
@@ -94,13 +96,10 @@ Cypress.Commands.add('addAddress',(organization)=>{
         cy.wrap($element.children()[1]).type(organization.locations[0].zip_code);
     });
     cy.getElementByTestId('lat').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[0]);
+        cy.wrap($element.children()[1]).type(organization.locations[0].lat);
     });
     cy.getElementByTestId('long').then($element=>{
-        cy.wrap($element.children()[1]).type(organization.locations[0].geolocation.coordinates[1]);
-    });
-    cy.getElementByTestId('is_primary').then($element=>{
-        cy.wrap($element.children()[0]).click();
+        cy.wrap($element.children()[1]).type(organization.locations[0].long);
     });
     //Save
     cy.getElementByTestId('modal-save-button').click();
@@ -204,7 +203,7 @@ let compoundURL = null;
 
 //Add User
 Cypress.Commands.add('addUser', (user_data) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users')
 	);
@@ -217,7 +216,7 @@ Cypress.Commands.add('addUser', (user_data) => {
 
 Cypress.Commands.add('deleteUsersIfExist', () => {
 	cy.log('Cleaning Users...');
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users')
 	);
@@ -233,6 +232,7 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
                 case 'automation-updated@gmail.com':
                 case 'automation-1@gmail.com':
                 case 'automation-data@gmail.com':
+                case 'automation-owner@gmail.com':
                     cy.deleteUser(user._id);
                 break;
             }
@@ -241,7 +241,7 @@ Cypress.Commands.add('deleteUsersIfExist', () => {
 
 //Delete User
 Cypress.Commands.add('deleteUser', (user_id) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_users'),
 		`/${user_id}`
@@ -257,7 +257,7 @@ Cypress.Commands.add('deleteUser', (user_id) => {
 //Organizations
 Cypress.Commands.add('deleteOrgsIfExist', () => {
 	cy.log('Cleaning Orgs...');
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_slug_organizations'),
 		'/surprisingly-unique-org-name'
@@ -276,7 +276,7 @@ Cypress.Commands.add('deleteOrgsIfExist', () => {
 
 //Delete Org by ID
 Cypress.Commands.add('deleteOrgById', (id) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations'),
 		`/${id}`
@@ -291,7 +291,7 @@ Cypress.Commands.add('deleteOrgById', (id) => {
 
 //Add Org
 Cypress.Commands.add('addOrg', (org) => {
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations')
 	);
@@ -304,8 +304,7 @@ Cypress.Commands.add('addOrg', (org) => {
 
 //Update Org
 Cypress.Commands.add('updateOrg', (org) => {
-    cy.log(org)
-	compoundURL = Cypress.env('apiUrl').concat(
+	compoundURL = backendUrl.concat(
 		Cypress.env('version'),
 		Cypress.env('route_organizations'),
         `/${org._id}`
@@ -320,7 +319,7 @@ Cypress.Commands.add('updateOrg', (org) => {
 
 Cypress.Commands.add('setOrgsOrServicesDeletedState',(query,state)=>{
     //Get Orgs Or Services that are marked deleted
-    compoundURL = Cypress.env('apiUrl').concat(
+    compoundURL = backendUrl.concat(
         Cypress.env('version'),
         Cypress.env('route_organizations'),
         query
@@ -355,5 +354,64 @@ Cypress.Commands.add('setOrgsOrServicesDeletedState',(query,state)=>{
 
 });
 
+Cypress.Commands.add('createOwnerObject',(user)=>{
+    return {
+        isApproved:false,
+        userId:user._id,
+        email:user.email
+    }
+});
+
+Cypress.Commands.add('createSuggestionObject',(orgId,userEmail,suggestion)=>{
+    suggestion.organizationId = orgId;
+    suggestion.userEmail = userEmail;
+    return suggestion;
+});
+
+Cypress.Commands.add('addSuggestion',suggestion =>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions')
+	);
+	cy.request({
+		method: 'POST',
+		url: compoundURL,
+		body: {suggestions:[suggestion]}
+	});
+    
+});
+
+Cypress.Commands.add('deleteSuggestionsIfExists',()=>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions'),
+		'/automation@gmail.com'
+	);
+	cy.request({
+		method: 'GET',
+		url: compoundURL,
+		failOnStatusCode: false
+	}).then((response) => {
+       if(response.body.length>0){
+           response.body.forEach(suggestion =>{
+               cy.deleteSuggestion(suggestion._id);
+           });
+       }
+	});
+});
+
+Cypress.Commands.add('deleteSuggestion',(id)=>{
+    compoundURL = backendUrl.concat(
+		Cypress.env('version'),
+		Cypress.env('route_suggestions'),
+		`/${id}`
+	);
+	cy.request({
+		method: 'DELETE',
+		url: compoundURL,
+		failOnStatusCode:false
+	});
+
+})
 
 

@@ -57,10 +57,10 @@ const ActioSpan = styled(Text)`
 `;
 
 const Table = (props) => {
-  const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows} = props;
+  const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows, tableDataTestId} = props;
 
   return (
-    <StyledTable data-test-id="table">
+    <StyledTable data-test-id={tableDataTestId}>
       {isKeyValue && (
         <colgroup>
           <col width="150" />
@@ -71,7 +71,7 @@ const Table = (props) => {
           <tr>
             {headers?.map(({key, label}) => (
               <th key={key} data-test-id="table-header">
-                <Text data-test-id="table-header-text" color="gray.500" fontSize="md" fontWeight="bold">
+                <Text data-test-id={`table-header-text-${key.toLowerCase().replace(".","-")}`} color="gray.500" fontSize="md" fontWeight="bold">
                   {label}
                 </Text>
               </th>
@@ -83,7 +83,7 @@ const Table = (props) => {
       <tbody>
         {rows?.map((row, rowIndex) => {
           return (
-            <tr key={rowIndex} data-test-id="table-row">
+            <tr key={rowIndex} data-test-id={`table-row-${rowIndex}`}>
               {headers?.map(({key, getValue}, keyIndex) => {
                 let value = row?.[key];
 
@@ -95,7 +95,7 @@ const Table = (props) => {
                   value = 'NO';
                 }
 
-                const children = <Text data-test-id="table-row-text" fontSize="md">{value}</Text>;
+                const children = <Text data-test-id={`table-row-text-${rowIndex}-${key.toLowerCase().replace(".","-")}`} fontSize="md">{value}</Text>;
 
                 return (
                   <td key={keyIndex}>
@@ -111,7 +111,7 @@ const Table = (props) => {
                 <td>
                   {actions?.map(({label, onClick}, index) => (
                     <ActioSpan
-                      data-test-id="table-row-action"
+                      data-test-id={`table-row-action-${index}-${label.replace(/\s+/g, '-').toLowerCase()}`}
                       key={index}
                       as="span"
                       onClick={() => onClick(row)}
@@ -136,6 +136,7 @@ Table.propTypes = {
   hideHeaders: PropTypes.bool,
   isKeyValue: PropTypes.bool,
   rows: PropTypes.arrayOf(PropTypes.shape()),
+  tableDataTestId:PropTypes.string,
 };
 
 export default Table;

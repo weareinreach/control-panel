@@ -12,7 +12,6 @@ describe('Home Page Login Form Tests', () => {
     beforeEach(() => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
-        cy.fixture('organization_search.json').as('organization');
     });
     afterEach(() => {
         cy.deleteUsersIfExist();

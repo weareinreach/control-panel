@@ -8,7 +8,7 @@ import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
-import {adminFields} from '../data/fields.json';
+import {adminFields, userDetailsFields} from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -133,30 +133,23 @@ const AdminPanelUsers = (props) => {
   const openDetailModal = (selectedManager) =>
     openModal({
       form: {
-        fields: adminFields,
+        fields: userDetailsFields,
         initialValues: {
           name: selectedManager?.name,
           email: selectedManager?.email,
+          age: selectedManager?.age,
+          ethnicityRace: selectedManager?.ethnicityRace,
+          immigrationStatus: selectedManager?.immigrationStatus,
+          sogIdentity: selectedManager?.sogIdentity,
 
           isAdminDataManager: selectedManager?.isAdminDataManager,
+          isProfessional: selectedManager?.isProfessional,
         },
       },
       header: 'Data Manager Details',
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
-
-        setLoading();
-        get(url, values)
-          .then(() => {
-            window.location.reload();
-            setSuccess();
-          })
-          .catch((err) => {
-            console.error('An error occured while displaying user details.');
-            console.error(err);
-            setError();
-          });
+        console.log(selectedManager);
       },
     });
   const queryType = query?.type;

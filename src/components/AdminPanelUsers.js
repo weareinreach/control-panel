@@ -138,17 +138,20 @@ const AdminPanelUsers = (props) => {
           name: selectedManager?.name,
           email: selectedManager?.email,
           age: selectedManager?.age,
+          countryOfOrigin: selectedManager?.countryOfOrigin,
           ethnicityRace: selectedManager?.ethnicityRace,
           immigrationStatus: selectedManager?.immigrationStatus,
           sogIdentity: selectedManager?.sogIdentity,
+          orgType: selectedManager?.orgType,
 
+          updatedAt: selectedManager?.updated_at,
           isAdminDataManager: selectedManager?.isAdminDataManager,
           isProfessional: selectedManager?.isProfessional,
         },
       },
       header: 'Data Manager Details',
       onClose: closeModal,
-      // onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      // onConfirm: () => {
       //   console.log(selectedManager);
       // },
     });

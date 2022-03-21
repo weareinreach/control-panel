@@ -148,9 +148,9 @@ const AdminPanelUsers = (props) => {
       },
       header: 'Data Manager Details',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
-        console.log(selectedManager);
-      },
+      // onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      //   console.log(selectedManager);
+      // },
     });
   const queryType = query?.type;
   const tableActions = [

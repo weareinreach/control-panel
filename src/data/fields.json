@@ -461,6 +461,10 @@
       "label": "Age"
     },
     {
+      "key": "countryOfOrigin",
+      "label": "Country of Origin"
+    },
+    {
       "key": "ethnicityRace",
       "label": "Ethnicity"
     },
@@ -471,6 +475,14 @@
     {
       "key": "sogIdentity",
       "label": "Identity"
+    },
+    {
+      "key": "orgType",
+      "label": "Org Type"
+    },
+    {
+      "key": "updatedAt",
+      "label": "Last Updated"
     },
     {
       "key": "isAdminDataManager",

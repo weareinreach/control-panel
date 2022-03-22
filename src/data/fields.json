@@ -448,13 +448,11 @@
   "userDetailsFields": [
     {
       "key": "name",
-      "label": "Name",
-      "placeholder": "Enter the manager's name"
+      "label": "Name"
     },
     {
       "key": "email",
-      "label": "Email",
-      "placeholder": "Enter the manager's email"
+      "label": "Email"
     },
     {
       "key": "age",
@@ -463,6 +461,10 @@
     {
       "key": "countryOfOrigin",
       "label": "Country of Origin"
+    },
+    {
+      "key": "currentLocation",
+      "label": "Current Location"
     },
     {
       "key": "ethnicityRace",
@@ -478,7 +480,11 @@
     },
     {
       "key": "orgType",
-      "label": "Org Type"
+      "label": "Organization Type"
+    },
+    {
+      "key": "catalogType",
+      "label": "Catalog Type"
     },
     {
       "key": "updatedAt",

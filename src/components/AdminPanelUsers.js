@@ -139,11 +139,12 @@ const AdminPanelUsers = (props) => {
           email: selectedManager?.email,
           age: selectedManager?.age,
           countryOfOrigin: selectedManager?.countryOfOrigin,
+          currentLocation: selectedManager?.currentLocation,
           ethnicityRace: selectedManager?.ethnicityRace,
           immigrationStatus: selectedManager?.immigrationStatus,
           sogIdentity: selectedManager?.sogIdentity,
           orgType: selectedManager?.orgType,
-
+          catalogType: selectedManager?.catalogType,
           updatedAt: selectedManager?.updated_at,
           isAdminDataManager: selectedManager?.isAdminDataManager,
           isProfessional: selectedManager?.isProfessional,

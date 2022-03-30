@@ -60,7 +60,7 @@ Cypress.Commands.add('testAdminPageElements', (viewport, creds) => {
     cy.getElementByTestId('table-header-text-name').then($element => {
         expect($element).to.be.visible;
         expect($element).contain('Name');
-        
+
     });
     cy.getElementByTestId('table-header-text-email').then($element => {
         expect($element).to.be.visible;
@@ -195,8 +195,80 @@ Cypress.Commands.add('testAdminFilterAddNewManagerAction', (viewport, creds, adm
     cy.getElementByTestId('modal-save-button').click();
     //Reload Page
     cy.reload();
-    cy.getElementByTestId('table-row-action-0-delete').then($element => {
+    cy.getElementByTestId('table-row-action-1-delete').then($element => {
         cy.wrap($element[0]).click();
         cy.getElementByTestId('modal-save-button').click();
+    });
+});
+
+Cypress.Commands.add('testAdminViewUserDetails', (viewport, creds) => {
+    cy.viewport(viewport);
+    cy.login(creds.email, creds.password);
+
+    //Waiting for Response
+    cy.intercept('/v1/users**').as('users');
+
+    cy.getElementByTestId('header-admin-link').click();
+    cy.wait('@users').then(response => {
+            //There are users
+            cy.getElementByTestId('table-row-action-0-view').then($element => {
+                cy.wrap($element[0]).click();
+                cy.getElementByTestId('modal-header').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Data Manager Details');
+                });
+                cy.getElementByTestId('name').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Name');
+                });
+                cy.getElementByTestId('email').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Email');
+                });
+                cy.getElementByTestId('age').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Age');
+                });
+                cy.getElementByTestId('countryOfOrigin').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Country of Origin');
+                });
+                cy.getElementByTestId('currentLocation').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Current Location');
+                });
+                cy.getElementByTestId('ethnicityRace').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Ethnicity');
+                });
+                cy.getElementByTestId('immigrationStatus').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Immigration Status');
+                });
+                cy.getElementByTestId('sogIdentity').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Identity');
+                });
+                cy.getElementByTestId('orgType').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Organization Type');
+                });
+                cy.getElementByTestId('catalogType').scrollIntoView().then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Catalog Type');
+                });
+                cy.getElementByTestId('updatedAt').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Last Updated');
+                });
+                cy.getElementByTestId('isAdminDataManager').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Admin Data Manager');
+                });
+                cy.getElementByTestId('isProfessional').then($element => {
+                    expect($element).to.be.visible;
+                    expect($element).contain('Professional');
+                });
+            });
     });
 });

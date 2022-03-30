@@ -41,46 +41,56 @@ const FormModal = (props) => {
     setLoading,
     setSuccess,
     errorMessage,
-    setErrorMessage
+    setErrorMessage,
   } = useStatus();
   const {fields, initialValues} = buildForm(form);
-  const onSubmit = (values) => {
-    if (values.isVerify) {
-      onVerify({setLoading, setSuccess, setError, setErrorMessage, values});
-    } else {
-      onConfirm({setLoading, setSuccess, setError, setErrorMessage, values});
-    }
-  };   
-  const formik = useFormik({
-    initialValues: {
-      ...initialValues,
-      isVerify: false,
-    },
-    onSubmit,
-  });
+  const onSubmit = (values) => {
+    if (values.isVerify) {
+      onVerify({setLoading, setSuccess, setError, setErrorMessage, values});
+    } else {
+      onConfirm({setLoading, setSuccess, setError, setErrorMessage, values});
+    }
+  };
+  const formik = useFormik({
+    initialValues: {
+      ...initialValues,
+      isVerify: false,
+    },
+    onSubmit,
+  });
   const updateField = (field, value) => {
     formik.setFieldValue(field, value);
   };
   const formFields = fields?.map(({key, ...rest}) => {
     return (
-      <FormField data-test-id={key} key={key} fieldKey={key} formik={formik} {...rest} />
+      <FormField
+        data-test-id={key}
+        key={key}
+        fieldKey={key}
+        formik={formik}
+        {...rest}
+      />
     );
-  })
+  });
   const displayMessage = (message) => {
-    return (
-      <Text data-test-id="modal-message-custom">{message}</Text>
-    )
-  }
+    return <Text data-test-id="modal-message-custom">{message}</Text>;
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader data-test-id="modal-header">{header}</ModalHeader>
-        <ModalCloseButton data-test-id="modal-close-button"/>
+        <ModalCloseButton data-test-id="modal-close-button" />
         <ModalBody>
           <Stack spacing={4}>
-            {isSuccess && <Alert data-test-id="modal-success" title="Success." type="success" />}
+            {isSuccess && (
+              <Alert
+                data-test-id="modal-success"
+                title="Success."
+                type="success"
+              />
+            )}
             {isError && (
               <Alert
                 data-test-id="modal-error"
@@ -90,7 +100,9 @@ const FormModal = (props) => {
               />
             )}
             {isAlert && (
-              <Text data-test-id="modal-message">Are you sure? You can't undo this action afterwards.</Text>
+              <Text data-test-id="modal-message">
+                Are you sure? You can't undo this action afterwards.
+              </Text>
             )}
             {displayMessage(message)}
             {children && children({...childrenProps, formik, updateField})}
@@ -98,26 +110,37 @@ const FormModal = (props) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button data-test-id="modal-cancel-button" disabled={isLoading} mr={2} onClick={onClose} variant="ghost">
+          <Button
+            data-test-id="modal-cancel-button"
+            disabled={isLoading}
+            mr={2}
+            onClick={onClose}
+            variant="ghost"
+          >
             Cancel
           </Button>
-          <Button
-            data-test-id="modal-save-button"
-            onClick={formik.handleSubmit}
-            colorScheme={isAlert ? 'red' : 'blue'}
-          >
-            Save Changes
-          </Button>
-          {onVerify && <Button ml={2} onClick={(e) => {
-              formik.setFieldValue('isVerify', true, false);
-              formik.handleSubmit(e);
-            }}
-            colorScheme={isAlert ? 'red' : 'blue'}
-            data-test-id="modal-save-and-verify-button"
-            >
-							Save and Verify
-						</Button>
-          }
+          {onConfirm && (
+            <Button
+              data-test-id="modal-save-button"
+              onClick={formik.handleSubmit}
+              colorScheme={isAlert ? 'red' : 'blue'}
+            >
+              Save Changes
+            </Button>
+          )}
+          {onVerify && (
+            <Button
+              ml={2}
+              onClick={(e) => {
+                formik.setFieldValue('isVerify', true, false);
+                formik.handleSubmit(e);
+              }}
+              colorScheme={isAlert ? 'red' : 'blue'}
+              data-test-id="modal-save-and-verify-button"
+            >
+              Save and Verify
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

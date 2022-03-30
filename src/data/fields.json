@@ -433,12 +433,9 @@
       "isRequired": true,
       "placeholder": "Select a platform",
       "options": [
-        {"value": "facebook", "label": "Facebook"
-        },
-        {"value": "instagram", "label": "Instagram"
-        },
-        {"value": "twitter", "label": "Twitter"
-        }
+        {"value": "facebook", "label": "Facebook"},
+        {"value": "instagram", "label": "Instagram"},
+        {"value": "twitter", "label": "Twitter"}
       ]
     },
     {
@@ -446,6 +443,62 @@
       "label": "Url",
       "type": "url",
       "isRequired": true
+    }
+  ],
+  "userDetailsFields": [
+    {
+      "key": "name",
+      "label": "Name"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "age",
+      "label": "Age"
+    },
+    {
+      "key": "countryOfOrigin",
+      "label": "Country of Origin"
+    },
+    {
+      "key": "currentLocation",
+      "label": "Current Location"
+    },
+    {
+      "key": "ethnicityRace",
+      "label": "Ethnicity"
+    },
+    {
+      "key": "immigrationStatus",
+      "label": "Immigration Status"
+    },
+    {
+      "key": "sogIdentity",
+      "label": "Identity"
+    },
+    {
+      "key": "orgType",
+      "label": "Organization Type"
+    },
+    {
+      "key": "catalogType",
+      "label": "Catalog Type"
+    },
+    {
+      "key": "updatedAt",
+      "label": "Last Updated"
+    },
+    {
+      "key": "isAdminDataManager",
+      "label": "Admin Data Manager",
+      "type": "checkbox"
+    },
+    {
+      "key": "isProfessional",
+      "label": "Professional",
+      "type": "checkbox"
     }
   ]
 }

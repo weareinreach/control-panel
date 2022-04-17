@@ -59,7 +59,7 @@ return(
             <Container>
               <Box>
                 <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations National Reach</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgStats} />
+                <Table tableDataTestId="stats-national-services-table-organizations" headers={headers} rows={orgStats} />
               </Box>
             </Container>
             <Container marginTop={8}>

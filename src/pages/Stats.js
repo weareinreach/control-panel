@@ -6,6 +6,7 @@ import StatsPanelVerified from '../components/StatsPanelVerified';
 import UnauthorizedPage from '../components/UnauthorizedPage';
 import StatsPanelNationalServices from '../components/StatsPanelNationalServices';
 import StatsPanelByState from '../components/StatsPanelByState';
+import StatsPanelByCategory from '../components/StatsPanelByCategory';
 
 
 /**
@@ -29,6 +30,7 @@ const Stats = () => {
          <Tab data-test-id="stats-1">Verified</Tab>
          <Tab data-test-id="stats-2">National Reach</Tab>
          <Tab data-test-id="stats-3">By State</Tab>
+         <Tab data-test-id="stats-4">By Category</Tab>
          </TabList>
         <TabPanels>
           <TabPanel>
@@ -39,6 +41,9 @@ const Stats = () => {
           </TabPanel>
           <TabPanel>
             <StatsPanelByState />
+          </TabPanel>
+          <TabPanel>
+            <StatsPanelByCategory />
           </TabPanel>
         </TabPanels>
       </Tabs>

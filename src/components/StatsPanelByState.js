@@ -64,7 +64,7 @@ useEffect(() => {
 
 return(
     <>
-    <Title data-test-id="stats-national-services-title">By State</Title>
+    <Title data-test-id="stats-by-state-title">By State</Title>
     <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
       <Box>
         {loading ? (
@@ -73,30 +73,38 @@ return(
           <>
             <Container>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State In United States</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgUnitedStatesStats} />
+                <SectionTitle data-test-id="stats-by-state-us-organizations">Organizations By State In United States</SectionTitle>
+                <Table tableDataTestId="stats-by-state-us-table-organizations" headers={headers} rows={orgUnitedStatesStats} />
               </Box>
+            </Container>
+            <Container marginTop={8}>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State In Mexico</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgMexicosStats} />
+                <SectionTitle data-test-id="stats-by-state-mexico-organizations">Organizations By State In Mexico</SectionTitle>
+                <Table tableDataTestId="stats-by-state-mexico-table-organizations" headers={headers} rows={orgMexicosStats} />
               </Box>
+            </Container>
+            <Container  marginTop={8}>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State in Canada</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgCanadaStats} />
+                <SectionTitle data-test-id="stats-by-state-canada-organizations">Organizations By State in Canada</SectionTitle>
+                <Table tableDataTestId="stats-by-state-canada-table-organizations" headers={headers} rows={orgCanadaStats} />
               </Box>
             </Container>
             <Container marginTop={8}>
             <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State In United States</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={serviceUnitedStatesStats} />
+                <SectionTitle data-test-id="stats-by-state-us-services">Services By State In United States</SectionTitle>
+                <Table tableDataTestId="stats-by-state-us-table-services" headers={headers} rows={serviceUnitedStatesStats} />
               </Box>
+            </Container>
+            <Container marginTop={8}>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State In Mexico</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={servicMexicoStats} />
+                <SectionTitle data-test-id="stats-by-state-mexico-services">Services By State In Mexico</SectionTitle>
+                <Table tableDataTestId="stats-by-state-mexico-table-services" headers={headers} rows={servicMexicoStats} />
               </Box>
+            </Container>
+            <Container marginTop={8}>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State in Canada</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={serviceCanadaStats} />
+                <SectionTitle data-test-id="stats-by-state-canada-services">Services By State in Canada</SectionTitle>
+                <Table tableDataTestId="stats-by-state-canada-table-services" headers={headers} rows={serviceCanadaStats} />
               </Box>
             </Container>
           </>

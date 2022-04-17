@@ -26,9 +26,9 @@ const Stats = () => {
       <Helmet title="Stats" />
       <Tabs>
          <TabList marginBottom={4}>
-         <Tab data-test-id="stats-1">Stats 1</Tab>
-         <Tab data-test-id="stats-2">Stats 2</Tab>
-         <Tab data-test-id="stats-3">Stats 3</Tab>
+         <Tab data-test-id="stats-1">Verified</Tab>
+         <Tab data-test-id="stats-2">National Reach</Tab>
+         <Tab data-test-id="stats-3">By State</Tab>
          </TabList>
         <TabPanels>
           <TabPanel>

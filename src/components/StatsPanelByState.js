@@ -24,27 +24,42 @@ const StatsPanelByState = (props)=>{
 const loading = false;
 
 
-const [orgStats, setOrgStats] = useState([]);
-const [serviceStats, setserviceStats] = useState([]);
+const [orgUnitedStatesStats, setUSOrgStats] = useState([]);
+const [orgMexicosStats, setMexicoOrgStats] = useState([]);
+const [orgCanadaStats, setCanadaOrgStats] = useState([]);
+const [serviceUnitedStatesStats, setUSserviceStats] = useState([]);
+const [servicMexicoStats,setMexicoserviceStats ] = useState([]);
+const [serviceCanadaStats, setCanadaserviceStats] = useState([]);
 
-async function getStats(query, setStateFunction) {
-  const promises = await countryList.map(async ({country, tag}) => {
+
+function formatState(state){
+   //Separate hypens
+   let words = (state.replace(/-/g,' ')).split(" ");
+   for(let i=0;i < words.length;i++){
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+   }
+   //join them
+   return words.join(" ");
+}
+
+async function getStats(query, tag, setStateFunction) {
     let url = `${CATALOG_API_URL}/reporting/${tag}/${query}`;
     const {data} = await get(url);
-    return {
-        state: data.result[1].state,
-        count: data.result[1].count
-    };
-  });
-  const res = await Promise.all(promises);
-  const total = res.map((item) => item.count).reduce((a, b) => a + b, 0);
-  setStateFunction(res.concat([{country: 'total', count: total}]));
+    let res = data[tag];
+    //Format names
+    res.map((item) => {item.state = formatState(item.state)});
+    const total = res.map((item) => item.count).reduce((a, b) => a + b, 0);
+    setStateFunction(res.concat([{state: 'total', count: total}]));
 }
 
 
 useEffect(() => {
-    getStats('orgsByState', setOrgStats);
-    getStats('servicesByState', setserviceStats);
+    getStats('orgsByState','united-states',setUSOrgStats);
+    getStats('orgsByState','mexico',setMexicoOrgStats);
+    getStats('orgsByState','canada',setCanadaOrgStats);
+    getStats('servicesByState','united-states',setUSserviceStats);
+    getStats('servicesByState','mexico',setMexicoserviceStats);
+    getStats('servicesByState','canada',setCanadaserviceStats);
   }, []);
 
 return(
@@ -58,14 +73,30 @@ return(
           <>
             <Container>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State</SectionTitle>
-                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgStats} />
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State In United States</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgUnitedStatesStats} />
+              </Box>
+              <Box>
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State In Mexico</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgMexicosStats} />
+              </Box>
+              <Box>
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Organizations By State in Canada</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={orgCanadaStats} />
               </Box>
             </Container>
             <Container marginTop={8}>
+            <Box>
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State In United States</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={serviceUnitedStatesStats} />
+              </Box>
               <Box>
-                <SectionTitle data-test-id="stats-national-services-section-title-services">Services By State</SectionTitle>
-                <Table data-test-id="stats-national-services-table-services" headers={headers} rows={serviceStats} />
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State In Mexico</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={servicMexicoStats} />
+              </Box>
+              <Box>
+                <SectionTitle data-test-id="stats-national-services-section-title-organizations">Services By State in Canada</SectionTitle>
+                <Table tableDataTestId="stats-verified-table-organizations" headers={headers} rows={serviceCanadaStats} />
               </Box>
             </Container>
           </>

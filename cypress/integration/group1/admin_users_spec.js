@@ -46,6 +46,15 @@ describe('Admin Users Form Tests', () => {
                 });
             });
            });
+           it('Test Adding View User Details',()=>{
+            cy.get('@user_good').then(user => {
+                cy.addUser(user).then(()=>{
+                    cy.get('@admin').then(admin=>{
+                        cy.testAdminViewUserDetails(viewport,user,admin);
+                    });
+                });
+            });
+           });
           
         });
     });

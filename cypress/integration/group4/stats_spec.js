@@ -19,10 +19,17 @@ describe('Home Page Login Form Tests', () => {
 
     viewports.forEach(viewport=>{
         context(`Testing the ${viewport} Version of the application`,()=>{
-           it('Test Dashboard Elements',()=>{
+           it('Test Stats Elements',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testStatsPageElements(viewport,user);
+               });
+            });
+           });
+           it('Test States Tabs',()=>{
+            cy.get('@user_good').then(user => {
+                cy.addUser(user).then(()=>{
+                    cy.testStatsTabs(viewport,user);
                });
             });
            });

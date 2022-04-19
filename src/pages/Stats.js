@@ -27,10 +27,10 @@ const Stats = () => {
       <Helmet title="Stats" />
       <Tabs>
          <TabList marginBottom={4}>
-         <Tab data-test-id="stats-1">Verified</Tab>
-         <Tab data-test-id="stats-2">National Reach</Tab>
-         <Tab data-test-id="stats-3">By State</Tab>
-         <Tab data-test-id="stats-4">By Category</Tab>
+         <Tab data-test-id="stats-verified-tab">Verified</Tab>
+         <Tab data-test-id="stats-national-reach-tab">National Reach</Tab>
+         <Tab data-test-id="stats-by-state-tab">By State</Tab>
+         <Tab data-test-id="stats-by-category-tab">By Category</Tab>
          </TabList>
         <TabPanels>
           <TabPanel>

@@ -75,3 +75,28 @@ Cypress.Commands.add('testStatsPageElements',(viewport,creds)=>{
         expect($element).contain('Verified Services');
     });
 });
+
+Cypress.Commands.add('testStatsTabs',(viewport,creds)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+    cy.getElementByTestId('header-stats-link').click();
+    cy.getElementByTestId('stats-verified-tab').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain("Verified");
+    });
+    cy.getElementByTestId('stats-national-reach-tab').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain("National Reach");
+        cy.wrap($element).click();
+    });
+    cy.getElementByTestId('stats-by-state-tab').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain("By State");
+        cy.wrap($element).click();
+    });
+    cy.getElementByTestId('stats-by-category-tab').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain("By Category");
+        cy.wrap($element).click();
+    });
+});

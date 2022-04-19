@@ -45,7 +45,7 @@ function formatState(state){
 async function getStats(query, tag, setStateFunction) {
     let url = `${CATALOG_API_URL}/reporting/${tag}/${query}`;
     const {data} = await get(url);
-    let res = data[tag];
+    let res = data.result;
     //Format names
     res.map((item) => {item.state = formatState(item.state)});
     const total = res.map((item) => item.count).reduce((a, b) => a + b, 0);

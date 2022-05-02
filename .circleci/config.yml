@@ -13,12 +13,6 @@ jobs:
     working_directory: ~/control-panel
     steps:
       - checkout
-      # Download and cache dependencies
-      # - restore_cache:
-      #     keys:
-      #     - v1-dependencies-{{ checksum "package.json" }}
-      #     # fallback to using the latest cache if no exact match is found
-      #     - v1-dependencies-
       - run: 
           name: Check Node Version
           command: node --version
@@ -97,28 +91,121 @@ jobs:
       - codecov/upload:
           file: 'control-panel/cypressCoverage/coverage-final.json'
           flags: Integration-${GROUP}
+      - run:
+          environment:
+            GROUP: << parameters.group >>
+          name: "Generate Report"
+          command: "cd control-panel && yarn report:lcov"
       - store_artifacts:
-          path: ./control-panel/cypressCoverage
-          destination: E2E Coverage Reports
-      - store_artifacts:
-          path: "control-panel/reports/"
-          destination: E2E Test Reports 
-    
+          path: ./control-panel/lcov<< parameters.group >>/lcov.info
+          destination: lcov<< parameters.group >>.info
+
+  sonar:
+    docker:
+      - image: cypress/base:16.5.0
+    steps:
+      - checkout
+      #Install dependencies
+      - run: 
+         name: "Install dependencies"
+         command: yarn add lcov-result-merger axios --dev
+      #Download artifacts
+      - run:
+          name: "Download reports"
+          command: cd .circleci && node getLcovReports.js
+      - run: 
+         name: "Merge Records"
+         command: ./node_modules/.bin/lcov-result-merger 'lcov-*.info' 'merged-lcov.info'
+      - sonarcloud/scan  
 
 workflows:
   version: 1
+  development:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: dev
+      - e2e:
+         name: e2e-1
+         group: 1
+         group_name: group1
+         filters:
+            branches:
+              only: dev
+      - e2e:
+         name: e2e-2
+         group: 2
+         group_name: group2
+         filters:
+            branches:
+              only: dev
+      - e2e:
+         name: e2e-3
+         group: 3
+         group_name: group3
+         filters:
+            branches:
+              only: dev
+      - e2e:
+         name: e2e-4
+         group: 4
+         group_name: group4
+         filters:
+            branches:
+              only: dev
+      - sonar:
+          context: SonarCloud
+          requires:
+            - e2e-1
+            - e2e-2
+            - e2e-3
+            - e2e-4
+          filters:
+            branches:
+              only: dev
+  
   pull_request:
     jobs: 
-      - build
+      - build:
+          filters:
+            branches:
+              ignore: [main,dev]
       - e2e:
+          name: e2e-1
           group: 1
           group_name: group1
+          filters:
+            branches:
+              ignore: [main,dev]
       - e2e: 
+          name: e2e-2
           group: 2
           group_name: group2
+          filters:
+            branches:
+              ignore: [main,dev]
       - e2e:
+          name: e2e-3
           group: 3
           group_name: group3
+          filters:
+            branches:
+              ignore: [main,dev]
       - e2e:
+          name: e2e-4
           group: 4
           group_name: group4
+          filters:
+            branches:
+              ignore: [main,dev]            
+      - sonar:
+          context: SonarCloud
+          requires:
+            - e2e-1
+            - e2e-2
+            - e2e-3
+            - e2e-4
+          filters:
+            branches:
+              ignore: [main,dev]

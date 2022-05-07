@@ -31,10 +31,9 @@
       "Legal hotlines"
     ],
     "Medical": [
-      "Dental care",
+      "Abortion Services",
       "COVID-19 services",
-      "Medical clinics",
-      "Women's health",
+      "Dental care",
       "HIV and sexual health",
       "Medical clinics",
       "OBGYN services",
@@ -87,6 +86,7 @@
       "Name and gender change"
     ],
     "Medical": [
+      "Abortion Services",
       "COVID-19 services",
       "Dental care",
       "HIV and sexual health",
@@ -145,6 +145,7 @@
     ],
     "Mail": [],
     "Medical": [
+      "Abortion Services",
       "COVID-19 services",
       "Dental care",
       "HIV and sexual health",

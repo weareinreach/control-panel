@@ -1,21 +1,34 @@
 import {delete as httpDelete, get, post} from 'axios';
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Stack, Text} from '@chakra-ui/react';
 
 import {ContextFormModal} from '../components/ContextFormModal';
 import Loading from '../components/Loading';
+import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
-import {CATALOG_API_URL} from '../utils';
+import { CATALOG_API_URL, getOrgQueryUrls } from '../utils';
 import {useAPIGet} from '../utils/hooks';
 
+const initialQuery = { page: 1, pending: true };
+const initialUrls = getOrgQueryUrls(initialQuery);
 
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   const orgOwners = useAPIGet(`/organizations?pendingOwnership=true`);
-  console.log(orgOwners);
-  const suggestedOrgs = useAPIGet(`/organizations?pending=true`);
+  const suggestedOrgs = useAPIGet(initialUrls.organizations);
+  const count = useAPIGet(initialUrls.count);
+  const [query, setQuery] = useState(initialQuery);
+
   const suggestions = useAPIGet(`/suggestions`);
+
+  const getLastPage = () => {
+    setQuery({ ...query, page: query.page - 1 });
+  };
+  const getNextPage = () => {
+    setQuery({ ...query, page: query.page + 1 });
+  };
+
   const openOrganization = (id, serviceId) => {
     window.location = `/organizations/${id}${
       serviceId ? `/services/${serviceId}` : ''
@@ -131,6 +144,13 @@ const AdminPanelSuggestions = (props) => {
       },
     });
 
+  useEffect(() => {
+    const urls = getOrgQueryUrls(query);
+    suggestedOrgs.fetchUrl(urls.organizations);
+    count.fetchUrl(urls.count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
   if (orgOwners?.loading || suggestedOrgs?.loading || suggestions?.loading) {
     return <Loading />;
   }
@@ -204,7 +224,7 @@ const AdminPanelSuggestions = (props) => {
           )}
         </Container>
         <Container>
-          <SectionTitle>Suggested Organizations</SectionTitle>
+          <SectionTitle>Suggested Organizations ({count?.data?.count})</SectionTitle>
           {suggestedOrgs?.data?.organizations?.length > 0 ? (
             <Table
               tableDataTestId='suggested-organizations-table'
@@ -217,6 +237,12 @@ const AdminPanelSuggestions = (props) => {
           ) : (
             <Text data-test-id="suggested-organizations-text">No suggested organizations at this time</Text>
           )}
+            <Pagination
+              currentPage={query?.page}
+              getLastPage={getLastPage}
+              getNextPage={getNextPage}
+              totalPages={count?.data?.pages}
+            />
         </Container>
       </Stack>
     </>

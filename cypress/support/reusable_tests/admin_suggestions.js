@@ -6,7 +6,7 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds)=>{
 
     //Intercept
     cy.intercept('/v1/organizations?pendingOwnership=true').as('pending-affiliates');
-    cy.intercept('/v1/organizations?pending=true').as('pending-orgs');
+    cy.intercept('/v1/organizations?&page=1&pending=true').as('pending-orgs');
     cy.intercept('/v1/suggestions').as('suggestions');
 
     cy.getElementByTestId('header-admin-link').click();

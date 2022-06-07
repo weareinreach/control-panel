@@ -435,7 +435,8 @@
       "options": [
         {"value": "facebook", "label": "Facebook"},
         {"value": "instagram", "label": "Instagram"},
-        {"value": "twitter", "label": "Twitter"}
+        {"value": "twitter", "label": "Twitter"},
+        {"value": "youtube", "label": "YouTube"}
       ]
     },
     {

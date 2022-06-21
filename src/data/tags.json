@@ -135,13 +135,19 @@
     ],
     "Legal": [
       "Asylum application",
+      "Citizenship",
       "Crime and discrimination",
       "Deferred Action for Childhood Arrivals (DACA)",
       "Deportation or removal",
+      "Employment Authorization",
+      "Family Petitions",
       "Immigration detention",
       "Legal hotlines",
       "Name and gender change",
-      "Special Immigrant Juvenile Status (SIJS)"
+      "Residency",
+      "Special Immigrant Juvenile Status (SIJS)",
+      "T Visa",
+      "U Visa"
     ],
     "Mail": [],
     "Medical": [

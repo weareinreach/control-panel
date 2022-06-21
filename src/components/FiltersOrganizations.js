@@ -1,7 +1,7 @@
 import _omit from 'lodash/omit';
 import _reduce from 'lodash/reduce';
 import _sortBy from 'lodash/sortBy';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   Box,
   Button,
@@ -14,6 +14,20 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react';
+import {CATALOG_API_URL, scheduleHeaders} from '../utils';
+import config from '../utils/config';
+import {
+  formatOrgInput,
+  formatServiceInput,
+  removeWhitespace,
+} from '../utils/forms';
+import {delete as httpDelete, patch, post} from 'axios';
+import {useAPIGet} from '../utils/hooks';
+import {ContextApp} from '../components/ContextApp';
+import {ContextFormModal} from '../components/ContextFormModal';
+import {ListServiceArea} from '../components/ListProperties';
+import FormCoverage from '../components/FormCoverage';
+import {Container} from '../components/styles';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
 import withOrganizations from './WithOrganizations';
@@ -29,6 +43,11 @@ import tagData from '../data/tags.json';
 import {useInputChange} from '../utils/hooks';
 import DateFieldPicker from './DateFieldPicker';
 import {useToggle} from '../utils/hooks';
+
+const buttonGroupProps = {
+  marginBottom: 4,
+  float: ' right',
+};
 
 const propertyList = [
   additionalInformationProperties,
@@ -78,6 +97,7 @@ const tagList = _reduce(
 );
 
 const FiltersOrganizations = (props) => {
+  const {closeModal, openModal} = useContext(ContextFormModal);
   const {
     updateQuery,
     setOrgSelection,
@@ -88,7 +108,9 @@ const FiltersOrganizations = (props) => {
     organizations,
     orgSelection,
     orgQuery,
+    coverageAreaProperties,
   } = props;
+
   const [name, handleNameChange] = useState('');
   const [serviceArea, handleServiceAreaChange] = useInputChange();
   const [tagLocale, setTagLocale] = useInputChange('united_states');
@@ -107,6 +129,104 @@ const FiltersOrganizations = (props) => {
   const [isVerifiedDateRange, setIsVerifiedDateRange] = useToggle(false);
   const [isUpdatedDateRange, setIsUpdatedDateRange] = useToggle(false);
   const [isCreatedDateRange, setIsCreatedDateRange] = useToggle(false);
+
+  const nothing = () => {
+    console.log(coverageAreaProperties);
+  };
+
+  /*
+  const {orgId} = props?.match?.params;
+  const orgPath = `/organizations/${orgId}`;
+  const {data: organization, loading} = useAPIGet(orgPath);
+
+  const {
+    _id,
+    alert_message,
+    created_at,
+    description,
+    emails,
+    is_published,
+    is_deleted,
+    locations,
+    orgname = 'Organization Name',
+    notes_log,
+    owners,
+    phones,
+    photos,
+    orgproperties,
+    schedules,
+    services,
+    slug,
+    social_media,
+    updated_at,
+    verified_at,
+    website,
+    website_ES,
+    description_ES,
+    alert_message_ES,
+    slug_ES,
+    venue_id,
+  } = organization || {};
+
+  const updateFields = ({
+    setLoading,
+    setSuccess,
+    setError,
+    setErrorMessage,
+    values,
+  }) => {
+    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
+    removeWhitespace(values);
+    setLoading();
+    patch(url, values)
+      .then(({data}) => {
+        setSuccess();
+        window.location = `/organizations/${orgId}`;
+      })
+      .catch((err) => {
+        const {message} = err?.response?.data;
+        setError();
+        setErrorMessage(message ?? null);
+        console.log(err);
+      });
+  };
+  const updateListField =
+    (key, options) =>
+    ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
+      const {isDelete, isEdit} = options || {};
+      const newField = [...(organization?.[key] || [])];
+      const {_id, ...restValues} = values;
+      const itemIndex = newField.findIndex((item) => item._id === _id);
+      const isExistingItem = _id && itemIndex !== -1;
+      if (isEdit) {
+        if (isExistingItem) {
+          newField[itemIndex] = {...newField[itemIndex], ...restValues};
+        }
+      } else if (isDelete) {
+        if (isExistingItem) {
+          newField.splice(itemIndex, 1);
+        }
+      } else {
+        newField.push(restValues);
+      }
+
+      updateFields({
+        setLoading,
+        setSuccess,
+        setError,
+        setErrorMessage,
+        values: {[key]: newField},
+      });
+    };
+*/
+  const openCoverageEdit = () =>
+    openModal({
+      children: FormCoverage,
+      childrenProps: {coverageAreaProperties},
+      header: 'Select Service Area',
+      onClose: closeModal,
+      onConfirm: nothing,
+    });
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
@@ -241,20 +361,28 @@ const FiltersOrganizations = (props) => {
           orgSelection={orgSelection}
           orgQuery={orgQuery}
         />
-        <Text data-test-id="filter-service-area-label" >Service Area Coverage:</Text>
-        <Input
-          data-test-id="filter-service-area-input"
-          onChange={handleServiceAreaChange}
-          variant="filled"
-          placeholder="Search on a service area"
-          value={serviceArea}
-        />
+        <Text data-test-id="filter-service-area-label">
+          Service Area Coverage:
+        </Text>
+
+        <div>
+          <Button
+            onClick={openCoverageEdit}
+            data-test-id="organization-edit-coverage-button"
+          >
+            Select Coverage Areas
+          </Button>
+          {coverageAreaProperties}
+          <ListServiceArea properties={coverageAreaProperties} />
+        </div>
 
         <Flex mt={[0, '2rem !important']}>
           <Box>
-            <Text data-test-id="filter-last-verified-label">Last Verified:</Text>
+            <Text data-test-id="filter-last-verified-label">
+              Last Verified:
+            </Text>
           </Box>
-          <Spacer/>
+          <Spacer />
           <Box
             style={{
               display: 'flex',
@@ -262,7 +390,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text  data-test-id="filter-use-date-range-label" fontSize="xs">Use Date Range</Text>
+            <Text data-test-id="filter-use-date-range-label" fontSize="xs">
+              Use Date Range
+            </Text>
             <Switch
               data-test-id="filter-last-verified-switch"
               ml={2}
@@ -275,7 +405,9 @@ const FiltersOrganizations = (props) => {
         {isVerifiedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
+              <Text data-test-id="filter-start-date-label" fontSize="xs">
+                Start Date:
+              </Text>
               <DateFieldPicker
                 id={lastVerifiedStart}
                 maxDate={new Date()}
@@ -286,7 +418,9 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
+              <Text data-test-id="filter-end-date-label" fontSize="xs">
+                End Date:
+              </Text>
               <DateFieldPicker
                 id={lastVerifiedEnd}
                 minDate={lastVerifiedStart}
@@ -301,7 +435,12 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs" data-test-id="filter-last-verified-before-label">Last verified before:</Text>
+              <Text
+                fontSize="xs"
+                data-test-id="filter-last-verified-before-label"
+              >
+                Last verified before:
+              </Text>
             </Box>
             <Box data-test-id="date-field-picker-last-verified">
               <DateFieldPicker
@@ -327,7 +466,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text data-test-id="filter-use-date-range-label" fontSize="xs">Use Date Range</Text>
+            <Text data-test-id="filter-use-date-range-label" fontSize="xs">
+              Use Date Range
+            </Text>
             <Switch
               data-test-id="filter-last-updated-switch"
               ml={2}
@@ -340,7 +481,9 @@ const FiltersOrganizations = (props) => {
         {isUpdatedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text data-test-id="filter-start-date-label" fontSize="xs">Start Date:</Text>
+              <Text data-test-id="filter-start-date-label" fontSize="xs">
+                Start Date:
+              </Text>
               <DateFieldPicker
                 id={lastUpdatedStart}
                 maxDate={new Date()}
@@ -351,7 +494,9 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text data-test-id="filter-end-date-label" fontSize="xs">End Date:</Text>
+              <Text data-test-id="filter-end-date-label" fontSize="xs">
+                End Date:
+              </Text>
               <DateFieldPicker
                 id={lastUpdatedEnd}
                 minDate={lastUpdatedStart}
@@ -366,7 +511,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs" data-test-id="filter-last-updated-date-label">Last updated before:</Text>
+              <Text fontSize="xs" data-test-id="filter-last-updated-date-label">
+                Last updated before:
+              </Text>
             </Box>
             <Box data-test-id="date-field-picker-last-updated">
               <DateFieldPicker
@@ -392,7 +539,9 @@ const FiltersOrganizations = (props) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <Text fontSize="xs" data-test-id="filter-date-range-label">Use Date Range</Text>
+            <Text fontSize="xs" data-test-id="filter-date-range-label">
+              Use Date Range
+            </Text>
             <Switch
               data-test-id="filter-date-range-switch"
               ml={2}
@@ -405,7 +554,9 @@ const FiltersOrganizations = (props) => {
         {isCreatedDateRange ? (
           <Flex alignItems="center" justifyContent="space-evenly">
             <Box mr={2}>
-              <Text fontSize="xs" data-test-id="filter-start-date-label">Start Date:</Text>
+              <Text fontSize="xs" data-test-id="filter-start-date-label">
+                Start Date:
+              </Text>
               <DateFieldPicker
                 id={createdAtStart}
                 maxDate={new Date()}
@@ -416,7 +567,9 @@ const FiltersOrganizations = (props) => {
               />
             </Box>
             <Box>
-              <Text fontSize="xs" data-test-id="filter-end-date-label">End Date:</Text>
+              <Text fontSize="xs" data-test-id="filter-end-date-label">
+                End Date:
+              </Text>
               <DateFieldPicker
                 id={createdAtEnd}
                 minDate={createdAtStart}
@@ -431,7 +584,9 @@ const FiltersOrganizations = (props) => {
         ) : (
           <Flex alignItems="center" justifyContent="space-between">
             <Box>
-              <Text fontSize="xs" data-test-id="filter-created-before-label">Created before:</Text>
+              <Text fontSize="xs" data-test-id="filter-created-before-label">
+                Created before:
+              </Text>
             </Box>
             <Box data-test-id="date-field-picker-created-before">
               <DateFieldPicker
@@ -446,7 +601,12 @@ const FiltersOrganizations = (props) => {
           </Flex>
         )}
 
-        <Text mt={[0, '2rem !important']} data-test-id="filter-publish-status-label">Publish Status:</Text>
+        <Text
+          mt={[0, '2rem !important']}
+          data-test-id="filter-publish-status-label"
+        >
+          Publish Status:
+        </Text>
         <Checkbox
           data-test-id="filter-publish-status-switch"
           isChecked={isPublished}
@@ -491,7 +651,7 @@ const FiltersOrganizations = (props) => {
           <option value="mexico">Mexico</option>
         </Select>
         <Select
-         data-test-id="filter-drop-down-tags"
+          data-test-id="filter-drop-down-tags"
           onChange={handleSelect('tags')}
           variant="filled"
           placeholder="Select a tag"

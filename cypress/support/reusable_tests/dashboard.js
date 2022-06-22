@@ -52,7 +52,8 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
 
     cy.getElementByTestId('filter-service-area-coverage-button').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.attr('button','Select Service Areas');
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Select Service Areas');
     });
 
     cy.getElementByTestId('filter-last-verified-label').then($element=>{

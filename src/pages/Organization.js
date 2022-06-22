@@ -16,7 +16,7 @@ import Table, {KeyValueTable} from '../components/Table';
 import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import {Text} from '@chakra-ui/react';
 
 import {
   emailFields,
@@ -77,7 +77,13 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
-  const updateFields = ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
+  const updateFields = ({
+    setLoading,
+    setSuccess,
+    setError,
+    setErrorMessage,
+    values,
+  }) => {
     const url = `${CATALOG_API_URL}/organizations/${orgId}`;
     removeWhitespace(values);
     setLoading();
@@ -95,7 +101,7 @@ const Organization = (props) => {
   };
   const updateListField =
     (key, options) =>
-    ({setLoading, setSuccess, setError, setErrorMessage, values }) => {
+    ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
       const {isDelete, isEdit} = options || {};
       const newField = [...(organization?.[key] || [])];
       const {_id, ...restValues} = values;
@@ -137,48 +143,54 @@ const Organization = (props) => {
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError,setErrorMessage}) => {
+      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage}) => {
         const url = `${CATALOG_API_URL}${orgPath}`;
 
         setLoading();
 
         //If Data Manager and Not Admin Soft delete
-        if(user.isDataManager && !user.isAdminDataManager){
-          patch(url,{is_deleted:true}).then(() => {
-            setSuccess();
-            window.location = `/organizations`;
-          })
-          .catch((err) => {
-            const {message} = err?.response?.data;
-            setError();
-            setErrorMessage(message ?? null);
-            console.log(err);
-          });
-        };
-        
-       //If Admin Perma Delete
-       if(user.isAdminDataManager){
-        httpDelete(url)
-          .then(() => {
-            setSuccess();
-            window.location = '/organizations';
-          })
-          .catch((err) => {
-            const {message} = err?.response?.data;
-            setError();
-            setErrorMessage(message ?? null);
-            console.log(err);
-          });
-      }
-    }
+        if (user.isDataManager && !user.isAdminDataManager) {
+          patch(url, {is_deleted: true})
+            .then(() => {
+              setSuccess();
+              window.location = `/organizations`;
+            })
+            .catch((err) => {
+              const {message} = err?.response?.data;
+              setError();
+              setErrorMessage(message ?? null);
+              console.log(err);
+            });
+        }
 
+        //If Admin Perma Delete
+        if (user.isAdminDataManager) {
+          httpDelete(url)
+            .then(() => {
+              setSuccess();
+              window.location = '/organizations';
+            })
+            .catch((err) => {
+              const {message} = err?.response?.data;
+              setError();
+              setErrorMessage(message ?? null);
+              console.log(err);
+            });
+        }
+      },
     });
   const openOrgDuplicate = () =>
     openModal({
       form: {fields: [{key: 'name', label: 'name'}]},
       header: 'Duplicate Organization',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
+      onConfirm: ({
+        setLoading,
+        setSuccess,
+        setError,
+        setErrorMessage,
+        values,
+      }) => {
         const url = `${CATALOG_API_URL}/organizations`;
         const organization = formatOrgInput(values);
 
@@ -202,13 +214,37 @@ const Organization = (props) => {
     openModal({
       header: `Verify Information for ${name}?`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
-        updateFields({setLoading, setSuccess, setError, setErrorMessage, values});
+      onConfirm: ({
+        setLoading,
+        setSuccess,
+        setError,
+        setErrorMessage,
+        values,
+      }) => {
+        updateFields({
+          setLoading,
+          setSuccess,
+          setError,
+          setErrorMessage,
+          values,
+        });
       },
-      onVerify: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
+      onVerify: ({
+        setLoading,
+        setSuccess,
+        setError,
+        setErrorMessage,
+        values,
+      }) => {
         values = {...values, verified_at: Date.now()};
 
-        updateFields({setLoading, setSuccess, setError, setErrorMessage, values});
+        updateFields({
+          setLoading,
+          setSuccess,
+          setError,
+          setErrorMessage,
+          values,
+        });
       },
     });
   const openDetailsEdit = () =>
@@ -223,7 +259,13 @@ const Organization = (props) => {
       form: {fields: [{key: 'name', label: 'Service Name', isRequired: true}]},
       header: 'New Service Name',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError,setErrorMessage, values}) => {
+      onConfirm: ({
+        setLoading,
+        setSuccess,
+        setError,
+        setErrorMessage,
+        values,
+      }) => {
         const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
         const service = formatServiceInput(values);
 
@@ -372,13 +414,21 @@ const Organization = (props) => {
       });
     };
 
-  const openSocialMediaForm = ({isEdit = false, isDelete = false, profile = {}}) => {
+  const openSocialMediaForm = ({
+    isEdit = false,
+    isDelete = false,
+    profile = {},
+  }) => {
     return openModal({
       form: {
         fields: isDelete ? null : socialMediaFields,
         initialValues: profile,
       },
-      header: isEdit ? `Edit Social Media profile`: isDelete ? `Delete Social Media profile` : `New Social Media Profile`,
+      header: isEdit
+        ? `Edit Social Media profile`
+        : isDelete
+        ? `Delete Social Media profile`
+        : `New Social Media Profile`,
       isAlert: isDelete,
       onClose: closeModal,
       onConfirm: updateListField('social_media', {isEdit, isDelete}),
@@ -411,11 +461,16 @@ const Organization = (props) => {
         onClose: closeModal,
         onConfirm: ({setLoading, setSuccess, setError, values}) => {
           const notes_data = {...values, created_at: Date.now()};
-          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
-        }
+          updateListField('notes_log')({
+            setLoading,
+            setSuccess,
+            setError,
+            values: notes_data,
+          });
+        },
       });
     };
- 
+
   if (loading) {
     return <Loading />;
   }
@@ -478,16 +533,33 @@ const Organization = (props) => {
       <Stack marginTop={6}>
         <Tabs variant="enclosed" data-test-id="organization-tabs">
           <TabList>
-            <Tab data-test-id="organization-tab-general" style={{boxShadow: 'none'}}>General</Tab>
-            <Tab data-test-id="organization-tab-photos" style={{boxShadow: 'none'}}>Photos</Tab>
+            <Tab
+              data-test-id="organization-tab-general"
+              style={{boxShadow: 'none'}}
+            >
+              General
+            </Tab>
+            <Tab
+              data-test-id="organization-tab-photos"
+              style={{boxShadow: 'none'}}
+            >
+              Photos
+            </Tab>
           </TabList>
           <TabPanels>
             <TabPanel mt={5}>
               <div>
                 <Box {...buttonGroupProps}>
-                  <Button onClick={openDetailsEdit} data-test-id="organization-edit-button">Edit Details</Button>
+                  <Button
+                    onClick={openDetailsEdit}
+                    data-test-id="organization-edit-button"
+                  >
+                    Edit Details
+                  </Button>
                 </Box>
-                <SectionTitle data-test-id="organization-details-title">General Details</SectionTitle>
+                <SectionTitle data-test-id="organization-details-title">
+                  General Details
+                </SectionTitle>
                 <KeyValueTable
                   rows={[
                     {key: 'ID', value: _id},
@@ -507,7 +579,9 @@ const Organization = (props) => {
                   ]}
                 />
                 <Container>
-                  <SectionTitle data-test-id="organization-affiliates-title">Associated Affiliates</SectionTitle>
+                  <SectionTitle data-test-id="organization-affiliates-title">
+                    Associated Affiliates
+                  </SectionTitle>
                   <Table
                     headers={[{key: 'email', label: 'Email'}]}
                     rows={owners}
@@ -515,9 +589,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openNewService} data-test-id="organization-new-service-button">New Service</Button>
+                    <Button
+                      onClick={openNewService}
+                      data-test-id="organization-new-service-button"
+                    >
+                      New Service
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-services-title">Services</SectionTitle>
+                  <SectionTitle data-test-id="organization-services-title">
+                    Services
+                  </SectionTitle>
                   <Table
                     actions={[{label: 'View', onClick: goToServicePage}]}
                     getRowLink={(service) =>
@@ -532,9 +613,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openLocationForm()} data-test-id="organization-new-address-button" >New Address</Button>
+                    <Button
+                      onClick={openLocationForm()}
+                      data-test-id="organization-new-address-button"
+                    >
+                      New Address
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-addresses-title">Addresses</SectionTitle>
+                  <SectionTitle data-test-id="organization-addresses-title">
+                    Addresses
+                  </SectionTitle>
                   <Table
                     headers={locationFields}
                     rows={locations}
@@ -556,9 +644,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openScheduleForm()} data-test-id="organization-new-schedule-button">New Schedule</Button>
+                    <Button
+                      onClick={openScheduleForm()}
+                      data-test-id="organization-new-schedule-button"
+                    >
+                      New Schedule
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-schedules-title" >Schedules</SectionTitle>
+                  <SectionTitle data-test-id="organization-schedules-title">
+                    Schedules
+                  </SectionTitle>
                   <Table
                     headers={scheduleHeaders}
                     rows={schedules}
@@ -580,9 +675,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openEmailForm()} data-test-id="organization-new-email-button">New Email</Button>
+                    <Button
+                      onClick={openEmailForm()}
+                      data-test-id="organization-new-email-button"
+                    >
+                      New Email
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-emails-title">Emails</SectionTitle>
+                  <SectionTitle data-test-id="organization-emails-title">
+                    Emails
+                  </SectionTitle>
                   <Table
                     headers={emailFields}
                     rows={emails}
@@ -601,9 +703,16 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openPhoneForm()} data-test-id="organization-new-phone-button">New Phone</Button>
+                    <Button
+                      onClick={openPhoneForm()}
+                      data-test-id="organization-new-phone-button"
+                    >
+                      New Phone
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-phones-title">Phones</SectionTitle>
+                  <SectionTitle data-test-id="organization-phones-title">
+                    Phones
+                  </SectionTitle>
                   <Table
                     headers={phoneFields}
                     rows={phones}
@@ -622,39 +731,63 @@ const Organization = (props) => {
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={() => openSocialMediaForm({})} data-test-id="organization-new-social-media-button">
+                    <Button
+                      onClick={() => openSocialMediaForm({})}
+                      data-test-id="organization-new-social-media-button"
+                    >
                       New Social Media Profile
                     </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-social-media-title">Social Media</SectionTitle>
+                  <SectionTitle data-test-id="organization-social-media-title">
+                    Social Media
+                  </SectionTitle>
                   <Table
                     headers={socialMediaFields}
                     rows={social_media}
                     actions={[
                       {
                         label: 'Edit',
-                        onClick: (profile) => openSocialMediaForm({isEdit:true, profile}),
+                        onClick: (profile) =>
+                          openSocialMediaForm({isEdit: true, profile}),
                       },
-                      {label: 'Delete', onClick: (profile) => openSocialMediaForm({isDelete: true, profile})},
+                      {
+                        label: 'Delete',
+                        onClick: (profile) =>
+                          openSocialMediaForm({isDelete: true, profile}),
+                      },
                     ]}
                   />
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openCoverageEdit} data-test-id="organization-edit-coverage-button">Edit Coverage</Button>
+                    <Button
+                      onClick={openCoverageEdit}
+                      data-test-id="organization-edit-coverage-button"
+                    >
+                      Edit Coverage
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-service-area-coverage-title">Service Area Coverage</SectionTitle>
+                  <SectionTitle data-test-id="organization-service-area-coverage-title">
+                    Service Area Coverage
+                  </SectionTitle>
                   <ListServiceArea properties={properties} />
                 </Container>
                 <Container>
                   <Box {...buttonGroupProps}>
-                    <Button onClick={openNotesForm()} data-test-id="organization-new-note-button">New Note</Button>
+                    <Button
+                      onClick={openNotesForm()}
+                      data-test-id="organization-new-note-button"
+                    >
+                      New Note
+                    </Button>
                   </Box>
-                  <SectionTitle data-test-id="organization-notes-title">Notes</SectionTitle>
+                  <SectionTitle data-test-id="organization-notes-title">
+                    Notes
+                  </SectionTitle>
                   <Table
                     headers={[
-                      { "key": "note", "label": "Note" },
-                      { "key": "created_at", "label": "Created At" }
+                      {key: 'note', label: 'Note'},
+                      {key: 'created_at', label: 'Created At'},
                     ]}
                     rows={notes_log}
                     actions={[

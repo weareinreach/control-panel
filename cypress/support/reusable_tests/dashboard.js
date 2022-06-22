@@ -47,12 +47,13 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
 
     cy.getElementByTestId('filter-service-area-label').then($element=>{
         expect($element).to.be.visible;
-        expect($element).contain('Service Area Coverage:');
+        expect($element).contain('Service Areas:');
     });
 
-    cy.getElementByTestId('filter-service-area-input').then($element=>{
+    cy.getElementByTestId('filter-service-area-coverage-button').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.attr('placeholder','Search on a service area');
+        expect($element).to.have.attr('type','button');
+        expect($element).contain('Select Service Areas');
     });
 
     cy.getElementByTestId('filter-last-verified-label').then($element=>{

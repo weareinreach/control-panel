@@ -33,6 +33,7 @@ const FormModal = (props) => {
     onVerify,
     size = 'lg',
   } = props;
+
   const {
     isError,
     isLoading,

@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import {css} from '@emotion/react';
 import _omit from 'lodash/omit';
 import _drop from 'lodash/drop';
 import _mapKeys from 'lodash/mapKeys';
@@ -41,21 +41,23 @@ const CheckboxList = styled.div`
 
 const FormField = ({label, children, isOptional}) => {
   return (
-    <FormControl css={css`
-      margin-top: 5px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      & > label {
-        display:inline-flex;
-        min-width: 200px;
-        flex-shrink: 0;
+    <FormControl
+      css={css`
+        margin-top: 5px;
+        margin-bottom: 15px;
+        display: flex;
         align-items: center;
-      }
-      & > .form-field-children {
-        width: 100%;
-      }
-    `}>
+        & > label {
+          display: inline-flex;
+          min-width: 200px;
+          flex-shrink: 0;
+          align-items: center;
+        }
+        & > .form-field-children {
+          width: 100%;
+        }
+      `}
+    >
       <FormLabel>
         <span data-test-id="coverage-form-label">{label}</span>
         {isOptional && <OptionalTag>&#40;Optional&#41;</OptionalTag>}
@@ -64,17 +66,25 @@ const FormField = ({label, children, isOptional}) => {
         {children}
       </div>
     </FormControl>
-  )
-}
+  );
+};
 
-const USStateOptions = _values(USStates).map(state => ({value: state, label: state}));
-const CanadianProvinceOptions = _values(CanadianProvinces).map(province => ({value: province.name, label: province.name}));
-const USCountyOptions = areaCoverageProperties.filter(prop => prop.startsWith('service-county'));
+const USStateOptions = _values(USStates).map((state) => ({
+  value: state,
+  label: state,
+}));
+const CanadianProvinceOptions = _values(CanadianProvinces).map((province) => ({
+  value: province.name,
+  label: province.name,
+}));
+const USCountyOptions = areaCoverageProperties.filter((prop) =>
+  prop.startsWith('service-county')
+);
 const NormalizedUSCityNames = _mapKeys(USCities, (value, key) => {
   return key.toLowerCase();
 });
 
-function countyToLabel(state, county){
+function countyToLabel(state, county) {
   const prefix = 'service-county-' + state;
   return _capitalize(county.slice(prefix.length).split('-').join(' ').trim());
 }
@@ -85,36 +95,46 @@ const USPicker = (props) => {
   const [city, setCity] = useState(null);
   const [county, setCounty] = useState(null);
   const [town, setTown] = useState(null);
-  const cityOptions = NormalizedUSCityNames[state?.value?.toLowerCase()]?.map(city => ({value: city, label: city})) ?? [];
-  const countyOptions = USCountyOptions.filter(county => {
-    return county.startsWith(`service-county-${state?.value.toLowerCase().split(' ').join('-')}`);
-  }).map(county => {
+  const cityOptions =
+    NormalizedUSCityNames[state?.value?.toLowerCase()]?.map((city) => ({
+      value: city,
+      label: city,
+    })) ?? [];
+  const countyOptions = USCountyOptions.filter((county) => {
+    return county.startsWith(
+      `service-county-${state?.value.toLowerCase().split(' ').join('-')}`
+    );
+  }).map((county) => {
     return {
       value: countyToLabel(state?.value, county),
-      label: countyToLabel(state?.value, county)
+      label: countyToLabel(state?.value, county),
     };
   });
   return (
     <>
       <FormField label="National">
         <Checkbox
-          key='national'
+          key="national"
           onChange={(e) => {
             onChange('national', e.target.checked);
           }}
         >
-          check this field only if the org/service is able to help people located anywhere in the country.
+          check this field only if the org/service is able to help people
+          located anywhere in the country.
         </Checkbox>
       </FormField>
       <FormField label="State">
-        <Select options={USStateOptions}
-                onChange={(option) => {
-                  setState(option);
-                  onChange('state', option?.value);
-                }}
-                value={state} placeholder="Select a State" />
+        <Select
+          options={USStateOptions}
+          onChange={(option) => {
+            setState(option);
+            onChange('state', option?.value);
+          }}
+          value={state}
+          placeholder="Select a State"
+        />
       </FormField>
-      {state &&
+      {state && (
         <>
           <FormField label="City">
             <Creatable
@@ -125,7 +145,8 @@ const USPicker = (props) => {
                 onChange('city', option?.value);
               }}
               value={city}
-              placeholder="Select a City" />
+              placeholder="Select a City"
+            />
           </FormField>
           <FormField label="County" isOptional>
             <Creatable
@@ -136,16 +157,21 @@ const USPicker = (props) => {
                 onChange('county', option?.value);
               }}
               value={county}
-              placeholder="Select a County" />
+              placeholder="Select a County"
+            />
           </FormField>
           <FormField label="Town" isOptional>
-            <Input type="text" value={town} onChange={event => {
-              setTown(event.target.value);
-              onChange('town', event.target.value);
-            }} />
+            <Input
+              type="text"
+              value={town}
+              onChange={(event) => {
+                setTown(event.target.value);
+                onChange('town', event.target.value);
+              }}
+            />
           </FormField>
         </>
-      }
+      )}
     </>
   );
 };
@@ -153,19 +179,25 @@ const USPicker = (props) => {
 const CanadianPicker = ({onChange}) => {
   const [province, setProvince] = useState(null);
   const [city, setCity] = useState(null);
-  const cityOptions = _sortBy(CanadianCities.filter(city => city.admin === province?.value).map(city => {
-    return {label: city.city, value: city.city}
-  }), option => option.label);
+  const cityOptions = _sortBy(
+    CanadianCities.filter((city) => city.admin === province?.value).map(
+      (city) => {
+        return {label: city.city, value: city.city};
+      }
+    ),
+    (option) => option.label
+  );
   return (
     <>
       <FormField label="National">
         <Checkbox
-          key='national'
+          key="national"
           onChange={(e) => {
             onChange('national', e.target.checked);
           }}
         >
-          check this field only if the org/service is able to help people located anywhere in the country.
+          check this field only if the org/service is able to help people
+          located anywhere in the country.
         </Checkbox>
       </FormField>
       <FormField label="Province">
@@ -173,13 +205,14 @@ const CanadianPicker = ({onChange}) => {
           isClearable
           options={CanadianProvinceOptions}
           onChange={(option) => {
-            setProvince(option)
+            setProvince(option);
             onChange('state', option?.value);
           }}
           value={province}
-          placeholder="Select a Province" />
+          placeholder="Select a Province"
+        />
       </FormField>
-      {province &&
+      {province && (
         <FormField label="City">
           <Creatable
             isClearable
@@ -192,7 +225,7 @@ const CanadianPicker = ({onChange}) => {
             placeholder="Select a City"
           />
         </FormField>
-      }
+      )}
     </>
   );
 };
@@ -200,23 +233,26 @@ const CanadianPicker = ({onChange}) => {
 const MexicoPicker = ({onChange}) => {
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
-  const stateOptions = _sortBy(MexicanStates.states.map(state => {
-    return {label: state.name, value: state.name, state_id: state.id}
-  }), option => option.label);
-  const cityOptions =
-    MexicanCities.cities
-      .filter(city => city.state_id === state?.state_id)
-      .map(city => ({label: city.name, value: city.name}));
+  const stateOptions = _sortBy(
+    MexicanStates.states.map((state) => {
+      return {label: state.name, value: state.name, state_id: state.id};
+    }),
+    (option) => option.label
+  );
+  const cityOptions = MexicanCities.cities
+    .filter((city) => city.state_id === state?.state_id)
+    .map((city) => ({label: city.name, value: city.name}));
   return (
     <>
       <FormField label="National">
         <Checkbox
-          key='national'
+          key="national"
           onChange={(e) => {
             onChange('national', e.target.checked);
           }}
         >
-          check this field only if the org/service is able to help people located anywhere in the country.
+          check this field only if the org/service is able to help people
+          located anywhere in the country.
         </Checkbox>
       </FormField>
       <FormField label="State">
@@ -228,9 +264,10 @@ const MexicoPicker = ({onChange}) => {
             onChange('state', option?.value);
           }}
           value={state}
-          placeholder="Select a State" />
+          placeholder="Select a State"
+        />
       </FormField>
-      {state &&
+      {state && (
         <>
           <FormField label="City">
             <Creatable
@@ -241,10 +278,11 @@ const MexicoPicker = ({onChange}) => {
                 onChange('city', option?.value);
               }}
               value={city}
-              placeholder="Select a City" />
+              placeholder="Select a City"
+            />
           </FormField>
         </>
-      }
+      )}
     </>
   );
 };
@@ -255,20 +293,24 @@ const ServiceAreaForm = (props) => {
   const countryOptions = [
     {value: 'Canada', label: 'Canada'},
     {value: 'Mexico', label: 'Mexico'},
-    {value: 'United States', label: 'United States'}
+    {value: 'United States', label: 'United States'},
   ];
   let nextField = null;
-  if(country){
-    if(country.value === 'United States') {
+  if (country) {
+    if (country.value === 'United States') {
       nextField = <USPicker key="us-state-picker" onChange={onChange} />;
-    } else if(country.value === 'Canada'){
-      nextField = <CanadianPicker key="canadian-province-picker" onChange={onChange} />;
-    } else if(country.value === 'Mexico') {
-      nextField = <MexicoPicker key="mexican-state-picker" onChange={onChange} />;
+    } else if (country.value === 'Canada') {
+      nextField = (
+        <CanadianPicker key="canadian-province-picker" onChange={onChange} />
+      );
+    } else if (country.value === 'Mexico') {
+      nextField = (
+        <MexicoPicker key="mexican-state-picker" onChange={onChange} />
+      );
     }
   }
 
-  function onChangeCountry(option){
+  function onChangeCountry(option) {
     setCountry(option);
     onChange('country', option.value);
   }
@@ -278,46 +320,57 @@ const ServiceAreaForm = (props) => {
       <h1 data-test-id="coverage-form-area">New Coverage Area</h1>
       <FormField label="Country">
         <div data-test-id="coverage-form-select-country">
-        <Select 
-                options={countryOptions}
-                onChange={onChangeCountry}
-                value={country}
-                placeholder="Select a country" />
-          </div>
+          <Select
+            options={countryOptions}
+            onChange={onChangeCountry}
+            value={country}
+            placeholder="Select a country"
+          />
+        </div>
       </FormField>
       {nextField}
     </FormSection>
-  )
+  );
 };
 
-export function normalizeField(field){
+export function normalizeField(field) {
   return field.toLowerCase().replace(/ /g, '-');
 }
 
-function toProperties({ national, country, state, city, town, county }) {
+function toProperties({national, country, state, city, town, county}) {
   const properties = {};
   if (country && national) {
     properties[`service-national-${normalizeField(country)}`] = 'true';
   }
-  if(state){
+  if (state) {
     properties[`service-state-${normalizeField(state)}`] = 'true';
-    if(city){
-      properties[`service-city-${normalizeField(state)}-${normalizeField(city)}`] = 'true';
+    if (city) {
+      properties[
+        `service-city-${normalizeField(state)}-${normalizeField(city)}`
+      ] = 'true';
     }
-    if(town) {
-      properties[`service-town-${normalizeField(state)}-${normalizeField(town)}`] = 'true';
+    if (town) {
+      properties[
+        `service-town-${normalizeField(state)}-${normalizeField(town)}`
+      ] = 'true';
     }
-    if(county){
-      properties[`service-county-${normalizeField(state)}-${normalizeField(county)}`] = 'true';
+    if (county) {
+      properties[
+        `service-county-${normalizeField(state)}-${normalizeField(county)}`
+      ] = 'true';
     }
   }
   return properties;
 }
 
-const ExistingCoverageAreas = ({existingProperties, locationFields, updateProperties}) => {
-  const propertyKeys = Object.keys(existingProperties).filter((key) =>
-    key.includes('service-')
-  ).sort();
+const ExistingCoverageAreas = ({
+  existingProperties,
+  locationFields,
+  updateProperties,
+}) => {
+  const propertyKeys = Object.keys(existingProperties)
+    .filter((key) => key.includes('service-'))
+    .sort();
   const removeProperty = (property) => {
     const newProperties = _omit(existingProperties, [property]);
     updateProperties(newProperties);
@@ -337,89 +390,88 @@ const ExistingCoverageAreas = ({existingProperties, locationFields, updateProper
           </Checkbox>
         ))}
         {Object.keys(toProperties(locationFields))?.map((key) => (
-            <Checkbox
-              key={key}
-              colorScheme="green"
-              isChecked={true}
-              onChange={() => removeProperty(key)}
-            >
-              {key}
-            </Checkbox>
-          ))}
+          <Checkbox
+            key={key}
+            colorScheme="green"
+            isChecked={true}
+            onChange={() => removeProperty(key)}
+          >
+            {key}
+          </Checkbox>
+        ))}
       </CheckboxList>
     </FormSection>
   );
 };
 
-
 const FormCoverage = (props) => {
   const {properties: initialProperties = {}, updateField} = props;
-  const [existingProperties, setExistingProperties] = useState(initialProperties);
+  const [existingProperties, setExistingProperties] =
+    useState(initialProperties);
   const [locationFields, setLocationFields] = useState({});
 
-
-  function onChangeLocationFields(fields){
+  function onChangeLocationFields(fields) {
     updateField('properties', {...existingProperties, ...toProperties(fields)});
     setLocationFields(fields);
   }
 
-  function onChangeExistingProperties(value){
+  function onChangeExistingProperties(value) {
     updateField('properties', {...toProperties(locationFields), ...value});
     setExistingProperties(value);
   }
 
-  function onChange(name, value){
+  function onChange(name, value) {
     if (name === 'national') {
       if (!value) {
         onChangeLocationFields(_omit(locationFields, 'national'));
       } else {
         onChangeLocationFields({
           ...locationFields,
-          national: value
+          national: value,
         });
       }
     } else if (name === 'country') {
-      if(!value){
+      if (!value) {
         onChangeLocationFields(_omit(locationFields, 'country'));
       } else {
         onChangeLocationFields({
-          country: value
+          country: value,
         });
       }
-    } else if(name === 'state') {
-      if(!value){
+    } else if (name === 'state') {
+      if (!value) {
         onChangeLocationFields(_omit(locationFields, 'state'));
       } else {
         onChangeLocationFields({
           ...locationFields,
-          state: value
+          state: value,
         });
       }
-    } else if(name === 'city') {
-      if(!value){
+    } else if (name === 'city') {
+      if (!value) {
         onChangeLocationFields(_omit(locationFields, 'city'));
       } else {
         onChangeLocationFields({
           ...locationFields,
-          city: value
+          city: value,
         });
       }
-    } else if(name === 'county'){
-      if(!value){
+    } else if (name === 'county') {
+      if (!value) {
         onChangeLocationFields(_omit(locationFields, 'county'));
       } else {
         onChangeLocationFields({
           ...locationFields,
-          county: value
+          county: value,
         });
       }
-    } else if(name === 'town') {
-      if(!value){
+    } else if (name === 'town') {
+      if (!value) {
         onChangeLocationFields(_omit(locationFields, 'town'));
       } else {
         onChangeLocationFields({
           ...locationFields,
-          town: value
+          town: value,
         });
       }
     } else {
@@ -427,17 +479,16 @@ const FormCoverage = (props) => {
     }
   }
 
-  console.log("Location Fields", locationFields);
-
   return (
     <Stack space={4}>
       <ExistingCoverageAreas
-          existingProperties={existingProperties}
-          locationFields={locationFields}
-          updateProperties={onChangeExistingProperties} />
-      <ServiceAreaForm onChange={onChange}/>
+        existingProperties={existingProperties}
+        locationFields={locationFields}
+        updateProperties={onChangeExistingProperties}
+      />
+      <ServiceAreaForm onChange={onChange} />
     </Stack>
   );
-}
+};
 
 export default FormCoverage;

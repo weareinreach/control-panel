@@ -14,25 +14,15 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react';
-import {CATALOG_API_URL, scheduleHeaders} from '../utils';
-import config from '../utils/config';
-import {
-  formatOrgInput,
-  formatServiceInput,
-  removeWhitespace,
-} from '../utils/forms';
-import {delete as httpDelete, patch, post} from 'axios';
-import {useAPIGet} from '../utils/hooks';
-import {ContextApp} from '../components/ContextApp';
 import {ContextFormModal} from '../components/ContextFormModal';
 import {ListServiceArea} from '../components/ListProperties';
 import FormCoverage from '../components/FormCoverage';
-import {Container} from '../components/styles';
 import PropTypes from 'prop-types';
 import {SectionTitle} from './styles';
 import withOrganizations from './WithOrganizations';
 import OrganizationAutocomplete from './OrganizationAutocomplete';
 import {
+  areaCoverageProperties,
   additionalInformationProperties,
   communityProperties,
   costProperties,
@@ -44,12 +34,8 @@ import {useInputChange} from '../utils/hooks';
 import DateFieldPicker from './DateFieldPicker';
 import {useToggle} from '../utils/hooks';
 
-const buttonGroupProps = {
-  marginBottom: 4,
-  float: ' right',
-};
-
 const propertyList = [
+  areaCoverageProperties,
   additionalInformationProperties,
   communityProperties,
   costProperties,
@@ -108,11 +94,11 @@ const FiltersOrganizations = (props) => {
     organizations,
     orgSelection,
     orgQuery,
-    coverageAreaProperties,
   } = props;
 
   const [name, handleNameChange] = useState('');
-  const [serviceArea, handleServiceAreaChange] = useInputChange();
+  const [serviceArea, handleServiceAreaChange] = useState([]); //useInputChange();
+  const [coverageAreaProperties, setCoverageAreaProperties] = useState({});
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
@@ -130,103 +116,22 @@ const FiltersOrganizations = (props) => {
   const [isUpdatedDateRange, setIsUpdatedDateRange] = useToggle(false);
   const [isCreatedDateRange, setIsCreatedDateRange] = useToggle(false);
 
-  const nothing = () => {
-    console.log(coverageAreaProperties);
+  const updateCoverage = (ev) => {
+    handleServiceAreaChange(Object.keys(ev.values.properties));
+    setCoverageAreaProperties(ev.values.properties);
+    closeModal();
   };
 
-  /*
-  const {orgId} = props?.match?.params;
-  const orgPath = `/organizations/${orgId}`;
-  const {data: organization, loading} = useAPIGet(orgPath);
-
-  const {
-    _id,
-    alert_message,
-    created_at,
-    description,
-    emails,
-    is_published,
-    is_deleted,
-    locations,
-    orgname = 'Organization Name',
-    notes_log,
-    owners,
-    phones,
-    photos,
-    orgproperties,
-    schedules,
-    services,
-    slug,
-    social_media,
-    updated_at,
-    verified_at,
-    website,
-    website_ES,
-    description_ES,
-    alert_message_ES,
-    slug_ES,
-    venue_id,
-  } = organization || {};
-
-  const updateFields = ({
-    setLoading,
-    setSuccess,
-    setError,
-    setErrorMessage,
-    values,
-  }) => {
-    const url = `${CATALOG_API_URL}/organizations/${orgId}`;
-    removeWhitespace(values);
-    setLoading();
-    patch(url, values)
-      .then(({data}) => {
-        setSuccess();
-        window.location = `/organizations/${orgId}`;
-      })
-      .catch((err) => {
-        const {message} = err?.response?.data;
-        setError();
-        setErrorMessage(message ?? null);
-        console.log(err);
-      });
-  };
-  const updateListField =
-    (key, options) =>
-    ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
-      const {isDelete, isEdit} = options || {};
-      const newField = [...(organization?.[key] || [])];
-      const {_id, ...restValues} = values;
-      const itemIndex = newField.findIndex((item) => item._id === _id);
-      const isExistingItem = _id && itemIndex !== -1;
-      if (isEdit) {
-        if (isExistingItem) {
-          newField[itemIndex] = {...newField[itemIndex], ...restValues};
-        }
-      } else if (isDelete) {
-        if (isExistingItem) {
-          newField.splice(itemIndex, 1);
-        }
-      } else {
-        newField.push(restValues);
-      }
-
-      updateFields({
-        setLoading,
-        setSuccess,
-        setError,
-        setErrorMessage,
-        values: {[key]: newField},
-      });
-    };
-*/
-  const openCoverageEdit = () =>
+  const openCoverageSelect = () => {
+    const properties = coverageAreaProperties;
     openModal({
       children: FormCoverage,
-      childrenProps: {coverageAreaProperties},
-      header: 'Select Service Area',
+      childrenProps: {properties},
+      header: 'Select Coverage Area',
       onClose: closeModal,
-      onConfirm: nothing,
+      onConfirm: updateCoverage,
     });
+  };
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
   const handleSelect = (type) => (ev) => {
@@ -367,12 +272,11 @@ const FiltersOrganizations = (props) => {
 
         <div>
           <Button
-            onClick={openCoverageEdit}
+            onClick={openCoverageSelect}
             data-test-id="organization-edit-coverage-button"
           >
             Select Coverage Areas
           </Button>
-          {coverageAreaProperties}
           <ListServiceArea properties={coverageAreaProperties} />
         </div>
 

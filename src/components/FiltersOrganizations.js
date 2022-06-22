@@ -127,7 +127,11 @@ const FiltersOrganizations = (props) => {
     openModal({
       children: FormCoverage,
       childrenProps: {properties},
+<<<<<<< HEAD
       header: 'Select Service Areas',
+=======
+      header: 'Select Coverage Area',
+>>>>>>> 2f6a2175a8f486a4eea241eec81c5be98bc90bab
       onClose: closeModal,
       onConfirm: updateCoverage,
     });
@@ -284,7 +288,6 @@ const FiltersOrganizations = (props) => {
           </Button>
         </Flex>
         <ListServiceArea properties={coverageAreaProperties} />
-
         <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text data-test-id="filter-last-verified-label">

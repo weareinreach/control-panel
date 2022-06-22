@@ -127,11 +127,7 @@ const FiltersOrganizations = (props) => {
     openModal({
       children: FormCoverage,
       childrenProps: {properties},
-<<<<<<< HEAD
       header: 'Select Service Areas',
-=======
-      header: 'Select Coverage Area',
->>>>>>> 2f6a2175a8f486a4eea241eec81c5be98bc90bab
       onClose: closeModal,
       onConfirm: updateCoverage,
     });

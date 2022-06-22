@@ -278,7 +278,7 @@ const FiltersOrganizations = (props) => {
           <Spacer />
           <Button
             onClick={openCoverageSelect}
-            data-test-id="organization-edit-coverage-button"
+            data-test-id="filter-service-area-coverage-button"
           >
             Select Service Areas
           </Button>

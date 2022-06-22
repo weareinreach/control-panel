@@ -127,7 +127,7 @@ const FiltersOrganizations = (props) => {
     openModal({
       children: FormCoverage,
       childrenProps: {properties},
-      header: 'Select Coverage Area',
+      header: 'Select Service Areas',
       onClose: closeModal,
       onConfirm: updateCoverage,
     });
@@ -266,19 +266,24 @@ const FiltersOrganizations = (props) => {
           orgSelection={orgSelection}
           orgQuery={orgQuery}
         />
-        <Text data-test-id="filter-service-area-label">
-          Service Area Coverage:
-        </Text>
 
-        <div>
+        <Flex
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <Text data-test-id="filter-service-area-label">Service Areas:</Text>
+          <Spacer />
           <Button
             onClick={openCoverageSelect}
             data-test-id="organization-edit-coverage-button"
           >
-            Select Coverage Areas
+            Select Service Areas
           </Button>
-          <ListServiceArea properties={coverageAreaProperties} />
-        </div>
+        </Flex>
+        <ListServiceArea properties={coverageAreaProperties} />
 
         <Flex mt={[0, '2rem !important']}>
           <Box>

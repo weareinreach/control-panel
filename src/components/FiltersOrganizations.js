@@ -102,6 +102,7 @@ const FiltersOrganizations = (props) => {
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
+  const [isClaimed, setClaimedStatus] = useState(true);
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
   const [lastVerifiedStart, setLastVerifiedStart] = useState('');
@@ -134,6 +135,9 @@ const FiltersOrganizations = (props) => {
   };
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
+
+  const handleClaimChange = (ev) => setClaimedStatus(ev.target.checked);
+
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
 
@@ -176,12 +180,16 @@ const FiltersOrganizations = (props) => {
       createdAtEnd,
     };
 
-    if (serviceArea) {
+    if (serviceArea?.length > 0) {
       query.serviceArea = serviceArea;
     }
 
     if (!isPublished) {
       query.pending = 'true';
+    }
+
+    if (!isClaimed) {
+      query.pendingOwnership = 'true';
     }
 
     if (lastVerified) {
@@ -211,7 +219,6 @@ const FiltersOrganizations = (props) => {
     if (createdAtEnd) {
       query.createdAtEnd = new Date(createdAtEnd).toISOString();
     }
-
     updateQuery(query);
   };
 
@@ -283,7 +290,9 @@ const FiltersOrganizations = (props) => {
             Select Service Areas
           </Button>
         </Flex>
+        
         <ListServiceArea properties={coverageAreaProperties} />
+
         <Flex mt={[0, '2rem !important']}>
           <Box>
             <Text data-test-id="filter-last-verified-label">
@@ -509,20 +518,40 @@ const FiltersOrganizations = (props) => {
           </Flex>
         )}
 
-        <Text
-          mt={[0, '2rem !important']}
-          data-test-id="filter-publish-status-label"
-        >
-          Publish Status:
-        </Text>
-        <Checkbox
-          data-test-id="filter-publish-status-switch"
-          isChecked={isPublished}
-          onChange={handlePublishChange}
-          type="checkbox"
-        >
-          Published
-        </Checkbox>
+        <Flex mt={[0, '2rem !important']} alignItems="center" justifyContent="space-between">
+          <Text
+            data-test-id="filter-publish-status-label"
+          >
+            Publish Status:
+          </Text>
+          <Checkbox
+            data-test-id="filter-publish-status-switch"
+            isChecked={isPublished}
+            onChange={handlePublishChange}
+            type="checkbox"
+          >
+            Published
+          </Checkbox>
+        </Flex>
+
+        <Flex mt={[0, '2rem !important']} alignItems="center" justifyContent="space-between">
+          <Text
+            data-test-id="filter-claim-status-label"
+          >
+            Claimed Status:
+          </Text>
+          <Checkbox
+            data-test-id="filter-claim-status-switch"
+            isChecked={isClaimed}
+            onChange={handleClaimChange}
+            type="checkbox"
+          >
+            Claimed
+          </Checkbox>
+        </Flex>
+
+        <Spacer />
+
         <Text data-test-id="filter-properties-label">Properties:</Text>
         <Select
           data-test-id="filter-drop-down-property"

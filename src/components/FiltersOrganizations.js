@@ -62,7 +62,7 @@ const tagList = _reduce(
         if (Array.isArray(subCatagories) && subCatagories.length > 0) {
           countryResult = countryResult.concat(
             subCatagories.map((subCategory) => ({
-              label: subCategory,
+              label: `${name} - ${subCategory}`,
               value: `${name}.${subCategory}`,
             }))
           );

@@ -501,5 +501,73 @@
       "label": "Professional",
       "type": "checkbox"
     }
+  ],
+  "createNewRelease":[
+    {
+      "key":"inreach_catalog",
+      "label":"InReach App",
+      "type":"checkbox"
+    },
+    {
+      "key":"divider_1",
+      "type":"divider"
+    },
+    {
+      "key":"inreach_api",
+      "label":"InReach API",
+      "type":"checkbox"
+    },
+    {
+      "key":"divider_2",
+      "type":"divider"
+    },
+    {
+      "key":"control_panel",
+      "label":"Admin App",
+      "type":"checkbox"
+    },
+    {
+      "key":"inreach_source_branch",
+      "label":"InReach Source Branch",
+      "type":"select",
+      "description":"The branch the release branch will be cut from.",
+      "options":[
+        {
+          "label":"Select One",
+          "value":null
+        },
+        {
+          "label":"dev",
+          "value":"dev"
+        }
+      ]
+    },
+    {
+      "key":"inreach_target_ranch",
+      "label":"InReach Target Branch",
+      "type":"select",
+      "description":"The branch the merge request will target.",
+      "options":[
+        {
+          "label":"Select One",
+          "value":null
+        },
+        {
+          "label":"main",
+          "value":"main"
+
+        }
+      ]
+    },
+    {
+      "key":"inreach_release_branch",
+      "label":"Release Branch",
+      "placeholder":"release/2022.06.30"
+    },
+    {
+      "key":"inreach_pr_title",
+      "label":"Pull Request Title",
+      "placeholder":"June Release"
+    }
   ]
 }

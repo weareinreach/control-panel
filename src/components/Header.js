@@ -64,6 +64,11 @@ const Header = () => {
                     Admin
                   </ChakraLink>
                 )}
+                {user?.isAdminDeveloper && (
+                  <ChakraLink data-test-id="header-dashboard-link" as={Link} fontSize="xl" to="/dashboard" mr={3}>
+                    Dashboard
+                  </ChakraLink>
+                )}
                 <ChakraLink data-test-id="header-stats-link" as={Link} fontSize="xl" to="/stats">
                     Stats
                 </ChakraLink>

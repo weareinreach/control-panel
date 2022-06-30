@@ -5,6 +5,7 @@ import config from './config';
 export const CATALOG_API_URL = `${config.apiDomain}${config.apiBasePath}`;
 export const COOKIE_LOGIN = 'ac-cookie';
 export const USER_TYPE_ADMIN_DM = 'adminDataManager';
+export const USER_TYPE_ADMIN_DEV= 'adminDeveloper';
 export const USER_TYPE_DM = 'dataManager';
 export const USER_TYPE_LAWYER = 'lawyer';
 export const USER_TYPE_PROVIDER = 'provider';

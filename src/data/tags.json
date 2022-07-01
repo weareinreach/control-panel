@@ -1,5 +1,6 @@
 {
   "canada": {
+    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
     "Community Support": ["Cultural centres", "LGBTQ centres", "Reception services", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
@@ -31,7 +32,6 @@
       "Legal hotlines"
     ],
     "Medical": [
-      "Abortion services",
       "COVID-19 services",
       "Dental care",
       "HIV and sexual health",
@@ -56,6 +56,7 @@
     ]
   },
   "mexico": {
+    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
     "Community Support": ["Cultural centers", "LGBTQ centers", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
@@ -86,7 +87,6 @@
       "Name and gender change"
     ],
     "Medical": [
-      "Abortion services",
       "COVID-19 services",
       "Dental care",
       "HIV and sexual health",
@@ -111,6 +111,7 @@
     ]
   },
   "united_states": {
+    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
     "Community Support": ["Cultural centers", "LGBTQ centers", "Sponsors", "Spiritual Support"],
     "Computers and Internet": [],
     "Education and Employment": [
@@ -151,7 +152,6 @@
     ],
     "Mail": [],
     "Medical": [
-      "Abortion services",
       "COVID-19 services",
       "Dental care",
       "HIV and sexual health",

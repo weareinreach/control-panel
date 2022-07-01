@@ -199,6 +199,10 @@ const FiltersOrganizations = (props) => {
     if (lastUpdated) {
       query.lastUpdated = new Date(lastUpdated).toISOString();
     }
+    
+    if (lastUpdatedStart) {
+      query.lastUpdatedStart = new Date(lastUpdatedStart).toISOString();
+    }
 
     if (lastUpdatedEnd) {
       query.lastUpdatedEnd = new Date(lastUpdatedEnd).toISOString();
@@ -206,6 +210,10 @@ const FiltersOrganizations = (props) => {
 
     if (createdAt) {
       query.createdAt = new Date(createdAt).toISOString();
+    }
+
+    if (createdAtStart) {
+      query.createdAtStart = new Date(createdAtStart).toISOString();
     }
 
     if (createdAtEnd) {

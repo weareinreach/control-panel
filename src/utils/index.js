@@ -117,43 +117,84 @@ export const getOrgQueryUrls = (query) => {
     queryParam += '&verified=true';
   }
 
+  /*** lastVerified date values ***/
   if (lastVerified) {
     queryParam += `&lastVerified=${lastVerified}`;
   }
 
+  //if lastVerifiedStart date is specified, make sure lastVerifiedEnd date is also specified, if not, set it to the start date
   if (lastVerifiedStart) {
     queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+
+    if (lastVerifiedEnd) {
+    queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
+    }else{
+      queryParam += `&lastVerifiedEnd=${lastVerifiedStart}`;
+    }
   }
 
+  //if lastVerifiedEnd date is specified, make sure lastVerifiedStart date is also specified, if not, set it to the end date
   if (lastVerifiedEnd) {
     queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
+
+    if (lastVerifiedStart) {
+    queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+    }else{
+      queryParam += `&lastVerifiedStart=${lastVerifiedEnd}`;
+    }
   }
 
+  /*** lastUpdated date values ***/
   if (lastUpdated) {
     queryParam += `&lastUpdated=${lastUpdated}`;
   }
-
+  
+  //if lastUpdatedStart date is specified, make sure lastUpdatedEnd date is also specified, if not, set it to the start date
   if (lastUpdatedStart) {
     queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+      if (lastUpdatedEnd) {
+        queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
+      }else{
+        queryParam += `&lastUpdatedEnd=${lastUpdatedStart}`;
+      }
   }
 
+  //if lastUpdatedEnd date is specified, make sure lastUpdatedStart date is also specified, if not, set it to the end date
   if (lastUpdatedEnd) {
     queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
+     if (lastUpdatedStart) {
+        queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+     }else {
+        queryParam += `&lastUpdatedStart=${lastUpdatedEnd}`;
+     }
   }
 
+  /*** createdAt date values ***/
   if (createdAt) {
     queryParam += `&createdAt=${createdAt}`;
   }
 
+  //if createdAtStart date is specified, make sure createdAtEnd date is also specified, if not, set it to the start date
   if (createdAtStart) {
     queryParam += `&createdAtStart=${createdAtStart}`;
+    if (createdAtEnd) {
+      queryParam += `&createdAtEnd=${createdAtEnd}`;
+    }else{
+      queryParam += `&createdAtEnd=${createdAtStart}`
+    }
   }
 
+  //if createdAtEnd date is specified, make sure createdAtStart date is also specified, if not, set it to the end date
   if (createdAtEnd) {
     queryParam += `&createdAtEnd=${createdAtEnd}`;
+    if (createdAtStart) {
+      queryParam += `&createdAtStart=${createdAtStart}`;
+    }else{
+      queryParam += `&createdAtStart=${createdAtEnd}`;
+    }
   }
 
-  if (serviceArea) {
+  if (Array.isArray(serviceArea) && serviceArea.length > 0) {
     queryParam += `&serviceArea=${serviceArea}`;
   }
 

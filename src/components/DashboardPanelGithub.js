@@ -8,6 +8,7 @@ import { CATALOG_API_URL } from '../utils';
 import { useAPIGet } from '../utils/hooks';
 import { SectionTitle, Title } from './styles';
 import {createNewRelease} from '../data/fields.json'
+import { ContextApp } from '../components/ContextApp';
 
 
 
@@ -21,8 +22,12 @@ const DashboardPanelGithub = (props) =>{
     const appHallOfFame = useAPIGet('/dashboard/getContributors/inreach-catalog');
     const apiHallOfFame = useAPIGet('/dashboard/getContributors/inreach-api');
     const adminHallOfFame = useAPIGet('/dashboard/getContributors/control-panel');
+    const createReleaseEndpoint= `${CATALOG_API_URL}/dashboard/createRelease`;
+    const runStagingMigrationEndpoint = `${CATALOG_API_URL}/dashboard/runMigration/staging`;
+    const runProductionMigrationEndpoint = `${CATALOG_API_URL}/dashboard/runMigration/production`;
     const releasesLoading =  appReleases?.loading || apiReleases?.loading || adminReleases?.loading;
     const hallOfFameLoading = appHallOfFame?.loading || apiHallOfFame?.loading || adminHallOfFame?.loading; 
+    const {user} = useContext(ContextApp);
     
     const openRelease = (url) =>{
         var win = window.open(url,'_blank');
@@ -50,14 +55,15 @@ const DashboardPanelGithub = (props) =>{
             title:input.inreach_pr_title
         }
     }
-    const openCreateModal = () =>
+    const openCreateModal = (header,fields,endpoint,bodyConstructor) =>
     openModal({
-      form: {fields: createNewRelease},
-      header: 'Create Release',
+      form: {fields: fields},
+      header: header,
       onClose: closeModal,
       onConfirm: ({setLoading, setSuccess, setError, values}) => {
         setLoading();
-        post(`${CATALOG_API_URL}/dashboard/createRelease`, createReleaseBody({...values}))
+        let body = bodyConstructor === null ? {...values} : bodyConstructor({...values});
+        post(endpoint,body)
           .then(() => {
             window.location.reload();
             setSuccess();
@@ -76,6 +82,38 @@ const DashboardPanelGithub = (props) =>{
     }
     return (
     <>
+    {user?.isAdminDeveloper ? (
+ 
+ <Box float="center">
+    <Title>Admin</Title>
+ <Button
+   marginBottom={10}
+   marginRight={5}
+   data-test-id="admin-dashboard-new-release"
+   onClick={()=>openCreateModal('Create Release',createNewRelease,createReleaseEndpoint,createReleaseBody)}
+ >
+   Create New Release
+ </Button>
+ <Button
+   marginBottom={10}
+   marginRight={5}
+   marginLeft={5}
+   data-test-id="admin-dashboard-run-migration"
+   onClick={()=>openCreateModal('Run Staging Migration','',runStagingMigrationEndpoint,null)}
+ >
+   Run Staging Migration
+ </Button>
+ <Button
+   marginBottom={10}
+   marginLeft={5}
+   data-test-id="admin-dashboard-run-migration"
+   onClick={()=>openCreateModal('Run Production Migration','',runProductionMigrationEndpoint,null)}
+ >
+   Run Production Migration
+ </Button>
+</Box>
+    ): null}
+     
       <Title>Hall Of Fame</Title>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
       <Box>
@@ -159,14 +197,6 @@ const DashboardPanelGithub = (props) =>{
       </Grid>
       <br>
       </br>
-      <Box float="right">
-        <Button
-          data-test-id="admin-dashboard-new-release"
-          onClick={openCreateModal}
-        >
-          New Release
-        </Button>
-      </Box>
     <Title>Releases</Title>
     <Grid templateColumns="repeat(3, 1fr)" gap={4}>
         <Box>

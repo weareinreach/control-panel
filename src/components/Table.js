@@ -58,6 +58,7 @@ const ActioSpan = styled(Text)`
 
 const Table = (props) => {
   const {actions, getRowLink, headers, hideHeaders, isKeyValue, rows, tableDataTestId} = props;
+
   return (
     <StyledTable data-test-id={tableDataTestId}>
       {isKeyValue && (

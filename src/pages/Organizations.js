@@ -1,6 +1,6 @@
 import { post } from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Grid, Text } from '@chakra-ui/react';
+import { Box, Button, Grid, Text, Spacer } from '@chakra-ui/react';
 
 import { ContextFormModal } from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';
@@ -49,8 +49,6 @@ const Organizations = () => {
       onConfirm: ({ setLoading, setSuccess, setError, values }) => {
         const newOrg = formatOrgInput(values);
         const url = `${CATALOG_API_URL}/organizations`;
-
-        console.log('POST:', url);
 
         setLoading();
         post(url, newOrg)
@@ -111,15 +109,15 @@ const Organizations = () => {
                 </Container>
                 <Pagination
                   currentPage={query?.page}
+                  totalPages={count?.data?.pages}
                   getLastPage={getLastPage}
                   getNextPage={getNextPage}
                   renderAdditionalStats={() => (
                     <Text display="inline" marginLeft={2}>
                       {count?.data?.count} of {totalCount?.data?.count}{' '}
-                    organizations.
+                    organizations match the search criteria.
                     </Text>
                   )}
-                  totalPages={count?.data?.pages}
                 />
               </>
             )}

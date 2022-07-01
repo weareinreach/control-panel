@@ -11,6 +11,7 @@ const Pagination = (props) => {
     renderAdditionalStats,
     totalPages,
   } = props;
+
   const isFirstPage = currentPage <= 1;
   const isLastPage = currentPage >= totalPages;
 
@@ -32,7 +33,7 @@ const Pagination = (props) => {
       />
       {totalPages !== 0 && (
         <Text display="inline" data-test-id="pagination-page">
-          Page {currentPage} of {totalPages}.
+          Page {currentPage} of {totalPages}
         </Text>
       )}
       {renderAdditionalStats && renderAdditionalStats()}

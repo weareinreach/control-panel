@@ -82,7 +82,7 @@ const Organizations = () => {
       <Box float="right">
         <Button data-test-id="organization-new-button" onClick={openNewOrg}>New Organization</Button>
       </Box>
-      <Title data-test-id="organization-title">Organizations</Title>
+      <Title data-test-id="organization-title">Organizations ({count?.data?.count < totalCount?.data?.count ? count?.data?.count : totalCount?.data?.count})</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
         <Box>
           {loading ? (
@@ -107,18 +107,30 @@ const Organizations = () => {
                       )}
                   </Box>
                 </Container>
-                <Pagination
-                  currentPage={query?.page}
-                  totalPages={count?.data?.pages}
-                  getLastPage={getLastPage}
-                  getNextPage={getNextPage}
-                  renderAdditionalStats={() => (
-                    <Text display="inline" marginLeft={2}>
-                      {count?.data?.count} of {totalCount?.data?.count}{' '}
-                    organizations match the search criteria.
-                    </Text>
-                  )}
-                />
+                {count?.data?.count < totalCount?.data?.count ? (
+                  <Pagination
+                    currentPage={query?.page}
+                    totalPages={count?.data?.pages}
+                    getLastPage={getLastPage}
+                    getNextPage={getNextPage}
+                    renderAdditionalStats={() => (
+                      <Text display="inline" marginLeft={2}>
+                        ({count?.data?.count} of {totalCount?.data?.count}{' '}
+                      organizations match the search criteria)
+                      </Text>
+                    )}
+                  />) :<Pagination
+                          currentPage={query?.page}
+                          totalPages={count?.data?.pages}
+                          getLastPage={getLastPage}
+                          getNextPage={getNextPage}
+                          renderAdditionalStats={() => (
+                            <Text display="inline" marginLeft={2}>
+                              ({totalCount?.data?.count} total organizations)
+                            </Text>
+                          )}
+                        />
+                      }
               </>
             )}
         </Box>

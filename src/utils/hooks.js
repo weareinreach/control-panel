@@ -33,7 +33,6 @@ export const useAPIGet = (endpoint) => {
       setLoading(false);
     }
   }, [endpoint]);
-
   return {data, loading, fetchUrl};
 };
 

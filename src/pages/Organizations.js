@@ -1,6 +1,6 @@
 import { post } from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Grid, Text } from '@chakra-ui/react';
+import { Box, Button, Grid, Text, Spacer } from '@chakra-ui/react';
 
 import { ContextFormModal } from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';
@@ -50,8 +50,6 @@ const Organizations = () => {
         const newOrg = formatOrgInput(values);
         const url = `${CATALOG_API_URL}/organizations`;
 
-        console.log('POST:', url);
-
         setLoading();
         post(url, newOrg)
           .then(({ data }) => {
@@ -84,7 +82,7 @@ const Organizations = () => {
       <Box float="right">
         <Button data-test-id="organization-new-button" onClick={openNewOrg}>New Organization</Button>
       </Box>
-      <Title data-test-id="organization-title">Organizations</Title>
+      <Title data-test-id="organization-title">Organizations ({count?.data?.count < totalCount?.data?.count ? count?.data?.count : totalCount?.data?.count})</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
         <Box>
           {loading ? (
@@ -109,18 +107,30 @@ const Organizations = () => {
                       )}
                   </Box>
                 </Container>
-                <Pagination
-                  currentPage={query?.page}
-                  getLastPage={getLastPage}
-                  getNextPage={getNextPage}
-                  renderAdditionalStats={() => (
-                    <Text display="inline" marginLeft={2}>
-                      {count?.data?.count} of {totalCount?.data?.count}{' '}
-                    organizations.
-                    </Text>
-                  )}
-                  totalPages={count?.data?.pages}
-                />
+                {count?.data?.count < totalCount?.data?.count ? (
+                  <Pagination
+                    currentPage={query?.page}
+                    totalPages={count?.data?.pages}
+                    getLastPage={getLastPage}
+                    getNextPage={getNextPage}
+                    renderAdditionalStats={() => (
+                      <Text display="inline" marginLeft={2}>
+                        ({count?.data?.count} of {totalCount?.data?.count}{' '}
+                      organizations match the search criteria)
+                      </Text>
+                    )}
+                  />) :<Pagination
+                          currentPage={query?.page}
+                          totalPages={count?.data?.pages}
+                          getLastPage={getLastPage}
+                          getNextPage={getNextPage}
+                          renderAdditionalStats={() => (
+                            <Text display="inline" marginLeft={2}>
+                              ({totalCount?.data?.count} total organizations)
+                            </Text>
+                          )}
+                        />
+                      }
               </>
             )}
         </Box>

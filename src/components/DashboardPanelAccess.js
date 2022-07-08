@@ -1,9 +1,10 @@
+import {Text} from '@chakra-ui/react';
 
 const DashboardPanelAccess = (props) =>{
     
     return (
     <>
-    <p>Hello Access</p>
+    <Text>Coming Soon...</Text>
     </>
     )
 }

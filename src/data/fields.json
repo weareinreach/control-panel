@@ -502,6 +502,21 @@
       "type": "checkbox"
     }
   ],
+  "runStagingMigration":[
+    {
+      "key": "migration_files",
+      "label": "Migration Files",
+      "description":"Migration Files should be input here. Use full files names delimited by a coma",
+      "type": "textarea"
+    }
+  ],
+  "runProductionMigration":[
+    {
+      "key": "date_pattern",
+      "label": "Date Pattern",
+      "description":"Date Pattern, it would follow the format: 2022.07.31"
+    }
+  ],
   "createNewRelease":[
     {
       "key":"inreach_catalog",

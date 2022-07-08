@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import { CATALOG_API_URL } from '../utils';
 import { useAPIGet } from '../utils/hooks';
 import { SectionTitle, Title } from './styles';
-import {createNewRelease} from '../data/fields.json'
+import {createNewRelease,runStagingMigration,runProductionMigration} from '../data/fields.json'
 import { ContextApp } from '../components/ContextApp';
 
 
@@ -15,6 +15,8 @@ import { ContextApp } from '../components/ContextApp';
 
 const DashboardPanelGithub = (props) =>{
     
+    const PROD_MIGRATION_BRANCH = "main";
+    const STAGING_MIGRATION_BRANCH = "dev";
     const {closeModal, openModal} = useContext(ContextFormModal);
     const appReleases = useAPIGet('/dashboard/getRepoReleases/inreach-catalog');
     const apiReleases = useAPIGet('/dashboard/getRepoReleases/inreach-api');
@@ -42,6 +44,24 @@ const DashboardPanelGithub = (props) =>{
         {key:'username', label:'Username'},
         {key:'total_contributions', label:'Total Contributions'}
     ]
+    const createStagingMigrationBody = (input) =>{
+        return {
+            branch:STAGING_MIGRATION_BRANCH,
+            parameters:{
+                run_migration_stage: true,
+                files:input.migration_files
+            }
+        }
+    }
+    const createProductionMigrationBody = (input) =>{
+        return {
+            branch:PROD_MIGRATION_BRANCH,
+            parameters:{
+                run_migration_prod:true,
+                date_pattern:input.date_pattern
+            }
+        }
+    }
     const createReleaseBody = (input) =>{
         let repos = [];
         if (input.control_panel) repos.push("control-panel")
@@ -69,7 +89,7 @@ const DashboardPanelGithub = (props) =>{
             setSuccess();
           })
           .catch((err) => {
-            console.error('An error occured while creating Releases');
+            console.error('An error ocurred while creating Releases');
             console.error(err);
             setError();
           });
@@ -99,7 +119,7 @@ const DashboardPanelGithub = (props) =>{
    marginRight={5}
    marginLeft={5}
    data-test-id="admin-dashboard-run-migration"
-   onClick={()=>openCreateModal('Run Staging Migration','',runStagingMigrationEndpoint,null)}
+   onClick={()=>openCreateModal('Run Staging Migration',runStagingMigration,runStagingMigrationEndpoint,createStagingMigrationBody)}
  >
    Run Staging Migration
  </Button>
@@ -107,7 +127,7 @@ const DashboardPanelGithub = (props) =>{
    marginBottom={10}
    marginLeft={5}
    data-test-id="admin-dashboard-run-migration"
-   onClick={()=>openCreateModal('Run Production Migration','',runProductionMigrationEndpoint,null)}
+   onClick={()=>openCreateModal('Run Production Migration',runProductionMigration,runProductionMigrationEndpoint,createProductionMigrationBody)}
  >
    Run Production Migration
  </Button>
@@ -170,7 +190,7 @@ const DashboardPanelGithub = (props) =>{
         </Box>
         <Box>
                 <Container>
-                    <Text fontSize='lg' align={"center"}>API App</Text>
+                    <Text fontSize='lg' align={"center"}>API Backend</Text>
                     <Box>
                     {apiHallOfFame?.data?.data?.length > 0 ? (
                         <Table
@@ -253,7 +273,7 @@ const DashboardPanelGithub = (props) =>{
         </Box>
         <Box>
                 <Container>
-                  <Text fontSize='lg' align={"center"}>API App</Text>
+                  <Text fontSize='lg' align={"center"}>API Backend</Text>
                     <Box>
                     {apiReleases?.data?.data?.length > 0 ? (
                          <Table

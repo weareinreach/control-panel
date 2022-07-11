@@ -444,8 +444,7 @@
       "label": "Url",
       "type": "url",
       "isRequired": true,
-      "placeholder": "https://social-media-option.com/sample-organization",
-      "helpText":"Must be 8-20 characters and cannot contain special characters.",
+      "placeholder": "https://social-media-option.com/sample-organization"
     }
   ],
   "userDetailsFields": [

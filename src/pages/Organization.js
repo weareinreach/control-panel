@@ -425,7 +425,7 @@ const Organization = (props) => {
     // only allow social_media fields that are not already selected
     let indexArr = []
     _map(socialMediaFields[0].options, (option) => {
-        _forEach(organization.social_media, function(key){
+        _forEach(organization?.social_media, function(key){
           let index = socialMediaFields[0].options.indexOf(option)
           if (key.name == option.value) {
             indexArr.push(index)
@@ -437,7 +437,7 @@ const Organization = (props) => {
       socialMediaFields[0].options.splice(indexArr.pop(), 1);
     }
 
-    //now create the social_media form
+    //now open the social_media form
     return openModal({
       form: {
         fields: isDelete ? null : socialMediaFields,
@@ -751,7 +751,7 @@ const Organization = (props) => {
                 <Container>
                   <Box {...buttonGroupProps}>
                     <Button
-                      disabled={organization.social_media.length >= socialMediaFields[0].options.length}
+                      disabled={organization?.social_media?.length >= socialMediaFields[0].options.length}
                       onClick={() => openSocialMediaForm({})}
                       data-test-id="organization-new-social-media-button"
                     >

@@ -73,6 +73,7 @@ const FormModal = (props) => {
       />
     );
   });
+
   const displayMessage = (message) => {
     return <Text data-test-id="modal-message-custom">{message}</Text>;
   };

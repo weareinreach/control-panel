@@ -11,14 +11,12 @@ import helpText from '../data/helpText.json';
 const FormTags = (props) => {
   const {country, formik} = props;
   const categories = tagList[country] || '';
-console.log(helpText['Mental Health'])
   return (
     <Stack space={4}>
       {_map(categories, (subcategories, category, tagIndex) => (
         <Fragment key={category}>
           <Text marginTop={4}>
             <strong>{category}</strong>
-            {console.log(helpText[category])}
             {helpText[category] ? <p><i>{helpText[category]}</i></p> : null}
           </Text>
           <Divider marginBottom={4} />

@@ -17,6 +17,9 @@ import {Container, SectionTitle, Title} from '../components/styles';
 import FormPhotos from '../components/FormPhotos';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 import {Text} from '@chakra-ui/react';
+import _map from 'lodash/map';
+import _forEach from 'lodash/forEach';
+
 
 import {
   emailFields,
@@ -419,6 +422,22 @@ const Organization = (props) => {
     isDelete = false,
     profile = {},
   }) => {
+    // only allow social_media fields that are not already selected
+    let indexArr = []
+    _map(socialMediaFields[0].options, (option) => {
+        _forEach(organization.social_media, function(key){
+          let index = socialMediaFields[0].options.indexOf(option)
+          if (key.name == option.value) {
+            indexArr.push(index)
+          }
+        })
+      })
+    
+    while(indexArr.length) {
+      socialMediaFields[0].options.splice(indexArr.pop(), 1);
+    }
+
+    //now create the social_media form
     return openModal({
       form: {
         fields: isDelete ? null : socialMediaFields,
@@ -732,6 +751,7 @@ const Organization = (props) => {
                 <Container>
                   <Box {...buttonGroupProps}>
                     <Button
+                      disabled={organization.social_media.length >= socialMediaFields[0].options.length}
                       onClick={() => openSocialMediaForm({})}
                       data-test-id="organization-new-social-media-button"
                     >

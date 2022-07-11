@@ -123,6 +123,7 @@ const FormModal = (props) => {
           </Button>
           {onConfirm && (
             <Button
+              disabled={onVerify}
               data-test-id="modal-save-button"
               onClick={formik.handleSubmit}
               colorScheme={isAlert ? 'red' : 'blue'}

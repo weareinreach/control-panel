@@ -1,7 +1,7 @@
 import { post } from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, Text, Spacer } from '@chakra-ui/react';
-
+import { ExportToCsv } from 'export-to-csv';
 import { ContextFormModal } from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';
 import Helmet from '../components/Helmet';
@@ -75,6 +75,48 @@ const Organizations = () => {
   if (!organizations?.data && loading) {
     return <Loading />;
   }
+  const csvOptions = { 
+    filename: 'organizations-results',
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: false, 
+    showTitle: false,
+    title: 'Organizations',
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: headers,
+  };
+
+  const handleCSV = () => {
+    let resultsQuery = query
+    resultsQuery.page=-1
+    const resultsDataUrls = getOrgQueryUrls(resultsQuery);
+    //console.log(resultsQuery)
+    const resultsData = useAPIGet(resultsDataUrls.organizations);
+
+    console.log(resultsData)
+    
+    //const filteredOrganizationsData = []
+    //make the data array
+    
+    //console.log(resultsDataUrls)
+
+    const csvExporter = new ExportToCsv(csvOptions);
+    let finalData = []
+    let filtersApplied = []
+    //apply filters if used
+
+    if(filtersApplied.length > 0) {
+      filtersApplied.unshift({color: 'Filters Applied', name: '', species: ''})
+      filtersApplied = filtersApplied.concat({color: '', name: '', species: ''})
+    }
+    filtersApplied = filtersApplied.concat({color: 'Results', name: '', species: ''})
+    //finalData = filtersApplied.concat(data)
+    finalData = filtersApplied
+    csvExporter.generateCsv(finalData);
+  }
 
   return (
     <>
@@ -91,6 +133,7 @@ const Organizations = () => {
               <>
                 <Container>
                   <Box>
+                  <Button onClick={handleCSV}>Export to CSV</Button>
                     {organizations?.data?.organizations?.length > 0 ? (
                       <Table
                         actions={[{ label: 'View', onClick: goToOrgPage }]}

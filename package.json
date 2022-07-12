@@ -2,7 +2,7 @@
   "name": "asylum-connect-admin-control-panel",
   "private": true,
   "scripts": {
-    "local": "REACT_APP_APP_ENV=TEST npm run start",
+    "local": "Set REACT_APP_APP_ENV=TEST&& npm run start",
     "local-background": "REACT_APP_APP_ENV=TEST pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",
@@ -29,6 +29,7 @@
     "babel-plugin-react-remove-properties": "^0.3.0",
     "customize-cra": "^1.0.0",
     "emotion-theming": "^10.0.27",
+    "export-to-csv": "^0.2.1",
     "express": "^4.17.1",
     "formik": "^2.1.4",
     "framer-motion": "^4.1.17",

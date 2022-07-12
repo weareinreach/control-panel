@@ -1,0 +1,152 @@
+{
+	"name": "Surprisingly Unique Org Name",
+	"name_es":"Same name in spanish",
+	"description": "Test organizations Description",
+	"description_es":"Test organizations Description in spanish",
+	"slug": "surprisingly-unique-org-name",
+	"slug_es":"surprisingly-unique-org-name-es",
+	"website": "https://google.com",
+	"website_es":"https://google-es.com",
+	"alert_message":"Alert Message!!",
+	"alert_message_es":"Alert Message en espanol",
+	"notes":"This are the notes for the organization",
+	"is_deleted":false,
+	"social_media":[
+		{
+			"name":"facebook",
+			"url":"https://facebook.com/sample-organization"
+		},
+		{
+			"name":"instagram",
+			"url":"https://instagram.com/sample-organization"
+		},
+		{
+			"name":"youtube",
+			"url":"https://youtube.com/sample-organization"
+		},
+		{
+			"name":"twitter",
+			"url":"https://twitter.com/sample-organization"
+		}
+	],
+	"phones":[
+		{
+			"phone_type":"Office Phone Number",
+			"phone_type_ES":"Office Phone Number en ES",
+			"digits":"234-567-7892"
+		}
+	],
+	"emails":[
+		{
+			"email":"orgemail@organization.com",
+			"first_name":"Organization First",
+			"last_name":"Organization Last",
+			"title":"Primary Email Address",
+			"title_ES":"Email Addresses en espanol"
+		}
+	],
+	"services":[
+		{
+			"name":"New Service Added",
+			"name_ES":"New Service en Espanol",
+			"slug":"new-service-added",
+			"slug_ES":"new-service-added-es",
+			"description":"Test organizations Description",
+			"description_ES":"Test organizations Description en espanol",
+			"is_deleted":false,
+			"access_instructions":[
+				{
+					"access_type":"phone",
+					"access_value":"123-543-9900",
+					"access_value_ES":"123-543-9900",
+					"instructions":"Call for an appointment",
+					"instructions_ES":"Call for an appointment ES"
+				}
+			]
+		},
+		{
+			"name":"New Service Added 2",
+			"name_ES":"New Service en Espanol2",
+			"slug":"new-service-added-2",
+			"slug_ES":"new-service-added-es-2",
+			"description":"Test organizations Description 2",
+			"description_ES":"Test organizations Description en espanol 2",
+			"is_deleted":false,
+			"access_instructions":[
+				{
+					"access_type":"phone",
+					"access_value":"123-543-9900",
+					"access_value_ES":"123-543-9900",
+					"instructions":"Call for an appointment",
+					"instructions_ES":"Call for an appointment ES"
+				}
+			]
+		}
+	],
+	"locations":[
+		{
+			"name":"Name of location",
+			"name_ES":"name of location ES",
+			"unit":"Unit",
+			"address":"123 Random Street",
+			"city":"City Far Away",
+			"city_ES":"Ciudade Lejos",
+			"state_ES":"WY",
+			"country":"United States",
+			"country_ES":"Estados Unidos",
+			"is_primary":false,
+			"state":"WY",
+			"zip_code":"82901",
+			"lat":"37.776",
+			"long":"-122.423",
+			"show_on_organization":true,
+			"geolocation":{
+				"type":"Point",
+				"coordinates":[
+					"-122.423",
+					"37.776"
+				]
+			}
+		}
+	],
+	"schedules":[
+		{
+			"name":"Clinic Week Hours",
+			"note":"Clinic hours for the weekdays. Monday through Friday",
+			"timezone":"MDT",
+			"monday_start":"09:00",
+			"monday_end":"16:00",
+			"tuesday_start":"09:00",
+			"tuesday_end":"16:00",
+			"wednesday_start":"09:00",
+			"wednesday_end":"16:00",
+			"thursday_start":"09:00",
+			"thursday_end":"16:00",
+			"friday_start":"09:00",
+			"friday_end":"16:00",
+			"saturday_start":"",
+			"saturday_end":"",
+			"sunday_start":"",
+			"sunday_end":""
+		},
+		{
+			"name":"Clinic Weekend Hours",
+			"note":"Clinic hours for the weekend. Saturday and Sunday Hours",
+			"timezone":"MDT",
+			"monday_start":"",
+			"monday_end":"",
+			"tuesday_start":"",
+			"tuesday_end":"",
+			"wednesday_start":"",
+			"wednesday_end":"",
+			"thursday_start":"",
+			"thursday_end":"",
+			"friday_start":"",
+			"friday_end":"",
+			"saturday_start":"10:00",
+			"saturday_end":"15:00",
+			"sunday_start":"10:00",
+			"sunday_end":"15:00"
+		}
+	]
+}

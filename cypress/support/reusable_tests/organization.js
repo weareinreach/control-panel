@@ -791,12 +791,96 @@ Cypress.Commands.add('testAddingOrganizationNotes',(viewport,creds,organization)
 
 })
 
-Cypress.Commands.add('testAddingOrganizationSocialMediaDisabled',(viewport,creds,organization)=>{
+Cypress.Commands.add('testOrganizationSocialMediaDisabled',(viewport,creds,organization)=>{
     cy.viewport(viewport);
     cy.login(creds.email,creds.password);
 
     //Add Org
     cy.addOrganization(organization);
+        //Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Social Media Profile');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Platform');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.social_media[0].name);
+        });
+    });
+    cy.getElementByTestId('url').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Url');
+        cy.wrap($element.children()[1]).type(organization.social_media[0].url);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+    cy.reload()
+        //Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Social Media Profile');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Platform');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.social_media[1].name);
+        });
+    });
+    cy.getElementByTestId('url').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Url');
+        cy.wrap($element.children()[1]).type(organization.social_media[1].url);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+    cy.reload()
+        //Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Social Media Profile');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Platform');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.social_media[2].name);
+        });
+    });
+    cy.getElementByTestId('url').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Url');
+        cy.wrap($element.children()[1]).type(organization.social_media[2].url);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+    cy.reload()
+        //Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').click();
+    cy.getElementByTestId('modal-header').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('New Social Media Profile');
+    });
+    cy.getElementByTestId('name').then($element=>{
+        expect($element).to.be.visible;
+        expect($element).contain('Platform');
+        cy.wrap($element.children()[1]).then($childElement=>{
+            cy.wrap($childElement.children()[0]).select(organization.social_media[3].name);
+        });
+    });
+    cy.getElementByTestId('url').then($element=>{
+        expect($element).to.be.visible;
+        expect($element.children()[0]).contain('Url');
+        cy.wrap($element.children()[1]).type(organization.social_media[3].url);
+    });
+    //save
+    cy.getElementByTestId('modal-save-button').click();
+    cy.reload()
 
     //Try to Add Social Media
     cy.getElementByTestId('organization-new-social-media-button').should('be.disabled');

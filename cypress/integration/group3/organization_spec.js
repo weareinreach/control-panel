@@ -103,7 +103,7 @@ describe('Organization Form Tests', () => {
                 cy.get('@user_good').then(user=>{
                     cy.addUser(user).then(()=>{
                         cy.get('@organizationSocial').then(org=>{
-                             cy.testAddingOrganizationSocialMediaDisabled(viewport,user,org);
+                             cy.testOrganizationSocialMediaDisabled(viewport,user,org);
                          });
                      });
                  });

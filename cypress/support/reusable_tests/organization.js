@@ -790,3 +790,15 @@ Cypress.Commands.add('testAddingOrganizationNotes',(viewport,creds,organization)
     cy.getElementByTestId('modal-save-button').click();
 
 })
+
+Cypress.Commands.add('testAddingOrganizationSocialMediaDisabled',(viewport,creds,organization)=>{
+    cy.viewport(viewport);
+    cy.login(creds.email,creds.password);
+
+    //Add Org
+    cy.addOrganization(organization);
+
+    //Try to Add Social Media
+    cy.getElementByTestId('organization-new-social-media-button').should('be.disabled');
+
+});

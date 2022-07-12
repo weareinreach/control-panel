@@ -13,6 +13,7 @@ describe('Organization Form Tests', () => {
         cy.visit(Cypress.env('baseUrl'));
         cy.fixture('user_new.json').as('user_good');
         cy.fixture('organization.json').as('organization');
+        cy.fixture('organization_social.json').as('organizationSocial');
     });
     afterEach(() => {
         cy.deleteUsersIfExist();
@@ -94,6 +95,15 @@ describe('Organization Form Tests', () => {
                     cy.addUser(user).then(()=>{
                         cy.get('@organization').then(org=>{
                              cy.testAddingOrganizationSocialMedia(viewport,user,org);
+                         });
+                     });
+                 });
+            });
+            it('Testing Adding Social Media Disabled',()=>{
+                cy.get('@user_good').then(user=>{
+                    cy.addUser(user).then(()=>{
+                        cy.get('@organizationSocial').then(org=>{
+                             cy.testAddingOrganizationSocialMediaDisabled(viewport,user,org);
                          });
                      });
                  });

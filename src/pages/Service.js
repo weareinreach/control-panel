@@ -11,6 +11,8 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Spacer,
+  Flex
 } from '@chakra-ui/react';
 
 import NotFound from './NotFound';
@@ -497,9 +499,15 @@ const Service = (props) => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack space={4}>
-              <Box {...buttonGroupProps} float="none" textAlign="right">
+              <Flex>
+              <Box>
+              Before adding a community property to a service, ask yourself: ‘Does this organization/service have expertise and experience in serving this particular community?’ (Note: ‘We serve everyone’ does not count as demonstrated expertise for our purposes at InReach.)
+              </Box>
+              <Spacer />
+              <Box {...buttonGroupProps} float='none' textAlign="right">
                 <Button onClick={openEditProperties} data-test-id="service-edit-properties-button">Edit Properties</Button>
               </Box>
+              </Flex>
               <Container>
                 <SectionTitle data-test-id="service-cost-properties-title">Cost Properties</SectionTitle>
                 <ListProperties list={costProperties} properties={properties} />
@@ -538,10 +546,6 @@ const Service = (props) => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
-              <Container>
-                <p>What <b>“tag(s)”</b> you choose affect(s) when this organization appears in the search results of our free App. For example, if you add a “LGBTQ Centers” tag to a service page, the organization will appear for a user who searches for “Community Support - LGBTQ Centers” in the App. Please try to consider the user’s perspective when entering tag(s).</p>
-                <p><b>*Note:</b> Please also make sure to separate an organization's services into unique service pages. This is especially true for legal services. For example, if an organization offers both gender/name change legal services and asylum legal services, these should actually be separate service pages in the data portal (each service page should then have its own distinct, relevant tag). Similarly, if you are using two very different tag types (e.g. transportation and legal), you should likely instead create two different service pages (each with their own distinct tag). Please post in the #community-outreach channel in Slack with any questions.</p>
-              </Container>
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button onClick={openEditTags('united_states')} data-test-id="service-us-tags-button">

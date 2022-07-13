@@ -1,13 +1,13 @@
 import { post } from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, Text, Spacer } from '@chakra-ui/react';
-import { ExportToCsv } from 'export-to-csv';
 import { ContextFormModal } from '../components/ContextFormModal';
 import Filters from '../components/FiltersOrganizations';
 import Helmet from '../components/Helmet';
 import Loading from '../components/Loading';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
+import ExportToCSVButton from '../components/ExportToCSVButton';
 import { Container, SectionTitle, Title } from '../components/styles';
 import { CATALOG_API_URL, getOrgQueryUrls } from '../utils';
 import { formatOrgInput } from '../utils/forms';
@@ -75,54 +75,15 @@ const Organizations = () => {
   if (!organizations?.data && loading) {
     return <Loading />;
   }
-  const csvOptions = { 
-    filename: 'organizations-results',
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalSeparator: '.',
-    showLabels: false, 
-    showTitle: false,
-    title: 'Organizations',
-    useTextFile: false,
-    useBom: true,
-    useKeysAsHeaders: false,
-    headers: headers,
-  };
-
-  const handleCSV = () => {
-    let resultsQuery = query
-    resultsQuery.page=-1
-    const resultsDataUrls = getOrgQueryUrls(resultsQuery);
-    //console.log(resultsQuery)
-    const resultsData = useAPIGet(resultsDataUrls.organizations);
-
-    console.log(resultsData)
-    
-    //const filteredOrganizationsData = []
-    //make the data array
-    
-    //console.log(resultsDataUrls)
-
-    const csvExporter = new ExportToCsv(csvOptions);
-    let finalData = []
-    let filtersApplied = []
-    //apply filters if used
-
-    if(filtersApplied.length > 0) {
-      filtersApplied.unshift({color: 'Filters Applied', name: '', species: ''})
-      filtersApplied = filtersApplied.concat({color: '', name: '', species: ''})
-    }
-    filtersApplied = filtersApplied.concat({color: 'Results', name: '', species: ''})
-    //finalData = filtersApplied.concat(data)
-    finalData = filtersApplied
-    csvExporter.generateCsv(finalData);
-  }
 
   return (
     <>
       <Helmet title="Organizations" />
       <Box float="right">
         <Button data-test-id="organization-new-button" onClick={openNewOrg}>New Organization</Button>
+        <ExportToCSVButton 
+        margin='8px'
+        query={query} />
       </Box>
       <Title data-test-id="organization-title">Organizations ({count?.data?.count < totalCount?.data?.count ? count?.data?.count : totalCount?.data?.count})</Title>
       <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
@@ -133,7 +94,6 @@ const Organizations = () => {
               <>
                 <Container>
                   <Box>
-                  <Button onClick={handleCSV}>Export to CSV</Button>
                     {organizations?.data?.organizations?.length > 0 ? (
                       <Table
                         actions={[{ label: 'View', onClick: goToOrgPage }]}

@@ -39,7 +39,6 @@
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.8",
     "react-autosuggest": "^10.0.4",
-    "react-csv": "^2.2.2",
     "react-datepicker": "^3.4.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^5.2.1",

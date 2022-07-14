@@ -3291,13 +3291,13 @@
     {
       "key": "community-asylee",
       "label": "community-asylee",
-      "description": "Opportunities that serve asylees (those who have been granted asylum status)",
+      "description": "Opportunities that serve asylees (those who have been granted asylum status",
       "type": "checkbox"
     },
     {
       "key": "community-citizens",
       "label": "community-citizens",
-      "description": "Citizens of a specifed country",
+      "description": "Citizens of a specified country",
       "type": "checkbox"
     },
     {

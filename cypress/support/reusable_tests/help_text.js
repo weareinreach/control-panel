@@ -11,7 +11,6 @@ Cypress.Commands.add('testHelpText', (viewport, creds) => {
 
     //----How do get 'creds' variable to work? Unrecognized?----
     cy.viewport(viewport);
-    //cy.login(creds.email, creds.password);
     cy.visit('http://localhost:3000/')
     cy.get('[data-test-id="login-form-email-input"]').type('allisoneclay@yahoo.com')
     cy.get('[placeholder="Password"]').type('A4yQyW7Ed32ig9z@')

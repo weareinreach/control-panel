@@ -1,7 +1,7 @@
-import {delete as httpDelete, patch, post} from 'axios';
+import { delete as httpDelete, patch, post } from 'axios';
 import _memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Button,
@@ -18,8 +18,8 @@ import {
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
 import Breadcrumbs from '../components/Breadcrumbs';
-import {ContextApp} from '../components/ContextApp';
-import {ContextFormModal} from '../components/ContextFormModal';
+import { ContextApp } from '../components/ContextApp';
+import { ContextFormModal } from '../components/ContextFormModal';
 import DropdownButton from '../components/DropdownButton';
 import FormCoverage from '../components/FormCoverage';
 import FormOrganizationInfo from '../components/FormOrganizationInfo';
@@ -31,8 +31,8 @@ import ListProperties, {
   ListTags,
 } from '../components/ListProperties';
 import Loading from '../components/Loading';
-import Table, {KeyValueTable} from '../components/Table';
-import {Container, SectionTitle, Title} from '../components/styles';
+import Table, { KeyValueTable } from '../components/Table';
+import { Container, SectionTitle, Title } from '../components/styles';
 import {
   accessInstructionFields,
   emailFields,
@@ -47,13 +47,13 @@ import {
   eligibilityRequirementProperties,
   languageProperties,
 } from '../data/properties.json';
-import {CATALOG_API_URL, scheduleHeaders} from '../utils';
+import { CATALOG_API_URL, scheduleHeaders } from '../utils';
 import config from '../utils/config';
-import {formatServiceInput, formatTags, removeWhitespace} from '../utils/forms';
-import {useAPIGet} from '../utils/hooks';
+import { formatServiceInput, formatTags, removeWhitespace } from '../utils/forms';
+import { useAPIGet } from '../utils/hooks';
 import { Text } from '@chakra-ui/react';
 
-const {catalogUrl} = config;
+const { catalogUrl } = config;
 
 const buttonGroupProps = {
   marginBottom: 4,
@@ -71,11 +71,11 @@ const findItem = _memoize(
 );
 
 const Service = (props) => {
-  const {user} = useContext(ContextApp);
-  const {closeModal, openModal} = useContext(ContextFormModal);
-  const {orgId, serviceId} = props?.match?.params;
+  const { user } = useContext(ContextApp);
+  const { closeModal, openModal } = useContext(ContextFormModal);
+  const { orgId, serviceId } = props?.match?.params;
   const servicePath = `/organizations/${orgId}/services/${serviceId}`;
-  const {data: service, loading} = useAPIGet(servicePath);
+  const { data: service, loading } = useAPIGet(servicePath);
   const {
     _id,
     access_instructions,
@@ -102,17 +102,17 @@ const Service = (props) => {
   const location = findItem(organization?.locations, location_id);
   const phone = findItem(organization?.phones, phone_id);
   const schedule = findItem(organization?.schedules, schedule_id);
-  const updateFields = ({setLoading, setSuccess, setError, values}) => {
+  const updateFields = ({ setLoading, setSuccess, setError, values }) => {
     const serviceUrl = `${CATALOG_API_URL}${servicePath}`;
     const orgUrl = `${CATALOG_API_URL}/organizations/${orgId}`;
 
-    const updatedService = formatServiceInput({...service, ...values});
+    const updatedService = formatServiceInput({ ...service, ...values });
 
     removeWhitespace(updatedService);
     setLoading();
     patch(serviceUrl, updatedService)
-      .then(({data}) => {
-        patch(orgUrl, {verified_at: Date.now()}).then(() => {
+      .then(({ data }) => {
+        patch(orgUrl, { verified_at: Date.now() }).then(() => {
           setSuccess();
           window.location = servicePath;
         });
@@ -128,15 +128,15 @@ const Service = (props) => {
     setError,
     values,
   }) => {
-    const {isDelete, isEdit} = options || {};
+    const { isDelete, isEdit } = options || {};
     const newField = [...(service?.[key] || [])];
-    const {_id, ...restValues} = values;
+    const { _id, ...restValues } = values;
     const itemIndex = newField.findIndex((item) => item._id === _id);
     const isExistingItem = _id && itemIndex !== -1;
 
     if (isEdit) {
       if (isExistingItem) {
-        newField[itemIndex] = {...newField[itemIndex], ...restValues};
+        newField[itemIndex] = { ...newField[itemIndex], ...restValues };
       }
     } else if (isDelete) {
       if (isExistingItem) {
@@ -146,34 +146,34 @@ const Service = (props) => {
       newField.push(restValues);
     }
 
-    updateFields({setLoading, setSuccess, setError, values: {[key]: newField}});
+    updateFields({ setLoading, setSuccess, setError, values: { [key]: newField } });
   };
   const openOrgVerify = () =>
     openModal({
       header: `Verify Information for ${name}?`,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({ setLoading, setSuccess, setError, values }) => {
         // const values = {verified_at: Date.now()};
 
-        updateFields({setLoading, setSuccess, setError, values});
+        updateFields({ setLoading, setSuccess, setError, values });
       },
-      onVerify: ({setLoading, setSuccess, setError, values}) => {
-        values = {...values, verified_at: Date.now()};
+      onVerify: ({ setLoading, setSuccess, setError, values }) => {
+        values = { ...values, verified_at: Date.now() };
 
-        updateFields({setLoading, setSuccess, setError, values});
+        updateFields({ setLoading, setSuccess, setError, values });
       },
     });
   const openCoverageEdit = () =>
     openModal({
       children: FormCoverage,
-      childrenProps: {properties},
+      childrenProps: { properties },
       header: 'Edit Coverage',
       onClose: closeModal,
       onConfirm: updateFields,
     });
   const openDetailsEdit = () =>
     openModal({
-      form: {fields: serviceDetailsFields, initialValues: service},
+      form: { fields: serviceDetailsFields, initialValues: service },
       header: 'Edit Details',
       onClose: closeModal,
       onConfirm: openOrgVerify
@@ -183,47 +183,47 @@ const Service = (props) => {
       header: `Delete ${name}`,
       isAlert: true,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError}) => {
+      onConfirm: ({ setLoading, setSuccess, setError }) => {
         const url = `${CATALOG_API_URL}${servicePath}`;
 
         setLoading();
         //If Data Manager and Not Admin Soft delete
-        if(user.isDataManager && !user.isAdminDataManager){
-          patch(url,{is_deleted:true}).then(() => {
+        if (user.isDataManager && !user.isAdminDataManager) {
+          patch(url, { is_deleted: true }).then(() => {
             setSuccess();
             window.location = `/organizations/${orgId}`;
           })
-          .catch((err) => {
-            setError();
-            console.error(err);
-          });
+            .catch((err) => {
+              setError();
+              console.error(err);
+            });
         }
         //If Admin Perma Delete
-        if(user.isAdminDataManager){
+        if (user.isAdminDataManager) {
           httpDelete(url)
-          .then(() => {
-            setSuccess();
-            window.location = `/organizations/${orgId}`;
-          })
-          .catch((err) => {
-            setError();
-            console.error(err);
-          });
+            .then(() => {
+              setSuccess();
+              window.location = `/organizations/${orgId}`;
+            })
+            .catch((err) => {
+              setError();
+              console.error(err);
+            });
         }
-        
+
       },
     });
   const openServiceDuplicate = () => {
-    const {_id, name, ...restService} = service;
+    const { _id, name, ...restService } = service;
 
     openModal({
       form: {
-        fields: [{key: 'name', label: 'name'}],
+        fields: [{ key: 'name', label: 'name' }],
         initialValues: restService,
       },
       header: 'Duplicate Service',
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, values}) => {
+      onConfirm: ({ setLoading, setSuccess, setError, values }) => {
         const url = `${CATALOG_API_URL}/organizations/${orgId}/services`;
 
         setLoading();
@@ -239,33 +239,33 @@ const Service = (props) => {
       },
     });
   };
-  const openEditOrgField = (field, list , name) => () =>
+  const openEditOrgField = (field, list, name) => () =>
     openModal({
       children: FormOrganizationInfo,
-      childrenProps: {field, fieldValue: service[field], list},
+      childrenProps: { field, fieldValue: service[field], list },
       header: name,
       onClose: closeModal,
       onConfirm: updateFields,
     });
-  const openAccessForm = ({isDelete, isDuplicate, isEdit} = {}) => (
+  const openAccessForm = ({ isDelete, isDuplicate, isEdit } = {}) => (
     instruction
   ) => {
     if (isDelete) {
       return openModal({
-        form: {initialValues: instruction},
+        form: { initialValues: instruction },
         header: 'Delete Access Information',
         isAlert: true,
         onClose: closeModal,
-        onConfirm: updateListField('access_instructions', {isDelete: true}),
+        onConfirm: updateListField('access_instructions', { isDelete: true }),
       });
     }
 
     if (isEdit) {
       return openModal({
-        form: {fields: accessInstructionFields, initialValues: instruction},
+        form: { fields: accessInstructionFields, initialValues: instruction },
         header: 'Edit Access Information',
         onClose: closeModal,
-        onConfirm: updateListField('access_instructions', {isEdit: true}),
+        onConfirm: updateListField('access_instructions', { isEdit: true }),
       });
     }
 
@@ -282,7 +282,7 @@ const Service = (props) => {
   const openEditProperties = () =>
     openModal({
       children: FormProperties,
-      form: {initialValues: {properties}},
+      form: { initialValues: { properties } },
       header: 'Edit Properties',
       onClose: closeModal,
       onConfirm: updateFields,
@@ -290,38 +290,38 @@ const Service = (props) => {
   const openEditTags = (country) => () =>
     openModal({
       children: FormTags,
-      childrenProps: {country},
-      form: {initialValues: {tags: formatTags(serviceTags)}},
+      childrenProps: { country },
+      form: { initialValues: { tags: formatTags(serviceTags) } },
       header: `Edit ${countryLabels[country]} Tags`,
       onClose: closeModal,
       onConfirm: updateFields,
     });
-        
+
   const openNotesForm =
     (isDelete = false) =>
-    (note) => {
-      if(isDelete){
+      (note) => {
+        if (isDelete) {
+          return openModal({
+            form: { initialValues: note },
+            header: 'Delete Note',
+            isAlert: true,
+            onClose: closeModal,
+            onConfirm: updateListField('notes_log', { isDelete: true })
+          });
+        }
+
         return openModal({
-          form: {initialValues: note},
-          header: 'Delete Note',
-          isAlert: true,
+          form: {
+            fields: [{ key: 'note', label: 'Note', type: 'textarea' }]
+          },
+          header: 'New Note',
           onClose: closeModal,
-          onConfirm: updateListField('notes_log', {isDelete: true})
+          onConfirm: ({ setLoading, setSuccess, setError, values }) => {
+            const notes_data = { ...values, created_at: Date.now() };
+            updateListField('notes_log')({ setLoading, setSuccess, setError, values: notes_data });
+          }
         });
       }
-
-      return openModal({
-        form: {
-          fields: [{key: 'note', label: 'Note', type: 'textarea'}]
-        },
-        header: 'New Note',
-        onClose: closeModal,
-        onConfirm: ({setLoading, setSuccess, setError, values}) => {
-          const notes_data = {...values, created_at: Date.now()};
-          updateListField('notes_log')({setLoading, setSuccess, setError, values: notes_data});
-        }
-      });
-    }
 
   const openOnCatalog = () => {
     const url = `${catalogUrl}/en_US/resource/${organization.slug}/service/${slug}`;
@@ -351,9 +351,9 @@ const Service = (props) => {
         <DropdownButton
           buttonText="More"
           items={[
-            {onClick: openServiceDuplicate, text: 'Duplicate'},
+            { onClick: openServiceDuplicate, text: 'Duplicate' },
             ...(user.isDataManager
-              ? [{onClick: openServiceDelete, text: 'Delete'}]
+              ? [{ onClick: openServiceDelete, text: 'Delete' }]
               : []),
           ]}
         />
@@ -376,19 +376,19 @@ const Service = (props) => {
                 <SectionTitle data-test-id="service-detail-title">Service Details</SectionTitle>
                 <KeyValueTable
                   rows={[
-                    {key: 'ID', value: _id},
-                    {key: 'Name', value: name},
-                    {key: 'Name_ES', value: name_ES},
-                    {key: 'Description', value: description},
-                    {key: 'Description_ES', value: description_ES},
-                    {key: 'Slug', value: slug},
-                    {key: 'Slug_ES', value: slug_ES},
+                    { key: 'ID', value: _id },
+                    { key: 'Name', value: name },
+                    { key: 'Name_ES', value: name_ES },
+                    { key: 'Description', value: description },
+                    { key: 'Description_ES', value: description_ES },
+                    { key: 'Slug', value: slug },
+                    { key: 'Slug_ES', value: slug_ES },
                     // TODO: Temporarily comment out is_published functionality for services
                     // Add back into fields.json to make it editable again
                     // {key: 'Is Published', value: is_published},
-                    {key: 'Updated At', value: updated_at},
-                    {key: 'Created At', value: created_at},
-                    {key: 'Is Deleted', value: is_deleted},
+                    { key: 'Updated At', value: updated_at },
+                    { key: 'Created At', value: created_at },
+                    { key: 'Is Deleted', value: is_deleted },
                   ]}
                 />
               </Container>
@@ -401,14 +401,14 @@ const Service = (props) => {
                   headers={accessInstructionFields}
                   rows={access_instructions}
                   actions={[
-                    {label: 'Edit', onClick: openAccessForm({isEdit: true})},
+                    { label: 'Edit', onClick: openAccessForm({ isEdit: true }) },
                     {
                       label: 'Duplicate',
-                      onClick: openAccessForm({isDuplicate: true}),
+                      onClick: openAccessForm({ isDuplicate: true }),
                     },
                     {
                       label: 'Delete',
-                      onClick: openAccessForm({isDelete: true}),
+                      onClick: openAccessForm({ isDelete: true }),
                     },
                   ]}
                 />
@@ -452,7 +452,7 @@ const Service = (props) => {
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('email_id', organization?.emails,'Edit Emails')}
+                    onClick={openEditOrgField('email_id', organization?.emails, 'Edit Emails')}
                     data-test-id="service-new-email-button">
                     Edit Email
                   </Button>
@@ -463,9 +463,9 @@ const Service = (props) => {
               <Container>
                 <Box {...buttonGroupProps}>
                   <Button
-                    onClick={openEditOrgField('phone_id', organization?.phones,'Edit Phones')}
-                   data-test-id="service-new-phone-button"
-                   >
+                    onClick={openEditOrgField('phone_id', organization?.phones, 'Edit Phones')}
+                    data-test-id="service-new-phone-button"
+                  >
                     Edit Phone
                   </Button>
                 </Box>
@@ -487,7 +487,7 @@ const Service = (props) => {
                 <Table
                   headers={[
                     { "key": "note", "label": "Note" },
-                    {  "key": "created_at", "label": "Created At" }
+                    { "key": "created_at", "label": "Created At" }
                   ]}
                   rows={notes_log}
                   actions={[
@@ -500,13 +500,13 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack space={4}>
               <Flex>
-              <Box>
-              Before adding a community property to a service, ask yourself: ‘Does this organization/service have expertise and experience in serving this particular community?’ (Note: ‘We serve everyone’ does not count as demonstrated expertise for our purposes at InReach.)
-              </Box>
-              <Spacer />
-              <Box {...buttonGroupProps} float='none' textAlign="right">
-                <Button onClick={openEditProperties} data-test-id="service-edit-properties-button">Edit Properties</Button>
-              </Box>
+                <Box>
+                  Before adding a community property to a service, ask yourself: ‘Does this organization/service have expertise and experience in serving this particular community?’ (Note: ‘We serve everyone’ does not count as demonstrated expertise for our purposes at InReach.)
+                </Box>
+                <Spacer />
+                <Box {...buttonGroupProps} float='none' textAlign="right">
+                  <Button onClick={openEditProperties} data-test-id="service-edit-properties-button">Edit Properties</Button>
+                </Box>
               </Flex>
               <Container>
                 <SectionTitle data-test-id="service-cost-properties-title">Cost Properties</SectionTitle>
@@ -546,15 +546,11 @@ const Service = (props) => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
-<<<<<<< 57852c3b2e6110002161aa1e77c1df02ca006626
               <Container data-test-id="service-tags-help-text-container">
                 <p>What <b>“tag(s)”</b> you choose affect(s) when this organization appears in the search results of our free App. For example, if you add a “LGBTQ Centers” tag to a service page, the organization will appear for a user who searches for “Community Support - LGBTQ Centers” in the App. Please try to consider the user’s perspective when entering tag(s).</p>
                 <p><b>*Note:</b> Please also make sure to separate an organization's services into unique service pages. This is especially true for legal services. For example, if an organization offers both gender/name change legal services and asylum legal services, these should actually be separate service pages in the data portal (each service page should then have its own distinct, relevant tag). Similarly, if you are using two very different tag types (e.g. transportation and legal), you should likely instead create two different service pages (each with their own distinct tag). Please post in the #community-outreach channel in Slack with any questions.</p>
               </Container>
               <Container data-test-id="service-tags-us-container">
-=======
-              <Container>
->>>>>>> Added help text
                 <Box {...buttonGroupProps}>
                   <Button onClick={openEditTags('united_states')} data-test-id="service-us-tags-button">
                     Edit Tags

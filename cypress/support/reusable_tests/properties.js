@@ -1,6 +1,6 @@
-Cypress.Commands.add('testingServicesPropertiesTabElements',(viewport,creds,organization)=>{
+Cypress.Commands.add('testingServicesPropertiesTabElements', (viewport, creds, organization) => {
     cy.viewport(viewport);
-    cy.login(creds.email,creds.password);
+    cy.login(creds.email, creds.password);
 
     //Add Org
     cy.addOrganization(organization);
@@ -10,7 +10,7 @@ Cypress.Commands.add('testingServicesPropertiesTabElements',(viewport,creds,orga
     cy.getElementByTestId('table-row-text-0-name').click();
 
     //Go to the Properites Tab
-    cy.getElementByTestId('service-tab-properties').then($element=>{
+    cy.getElementByTestId('service-tab-properties').then($element => {
         expect($element).to.be.visible;
         expect($element).contain('Properties');
     });

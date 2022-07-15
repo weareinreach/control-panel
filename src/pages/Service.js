@@ -500,7 +500,7 @@ const Service = (props) => {
           <TabPanel marginTop={2}>
             <Stack space={4}>
               <Flex>
-                <Box>
+                <Box data-test-id="service-properties-help-text-container">
                   Before adding a community property to a service, ask yourself: ‘Does this organization/service have expertise and experience in serving this particular community?’ (Note: ‘We serve everyone’ does not count as demonstrated expertise for our purposes at InReach.)
                 </Box>
                 <Spacer />

@@ -21,22 +21,37 @@ Cypress.Commands.add('testingServicesPropertiesTabElements', (viewport, creds, o
         expect($element).contain("Before adding a community property to a service, ask yourself:");
     })
     //look for the Cost Properties container
-
+    cy.getElementByTestId('service-cost-properties-title').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain("Cost Properties");
+    })
     //based on the fixture data - make sure the correct properties appear in this section
 
     //look for the Community Properties container
-
+    cy.getElementByTestId('service-community-title').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain("Community Properties");
+    })
     //based on the fixture data - make sure the correct properties appear in this section
 
     //look for the Eligibility / Requirement Properties container
-
+    cy.getElementByTestId('service-requirements-title').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain("Eligibility / Requirement Properties");
+    })
     //based on the fixture data - make sure the correct properties appear in this section
 
     //look for the Language Properties Properties container
-
+    cy.getElementByTestId('service-language-title').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain("Language Properties");
+    })
     //based on the fixture data - make sure the correct properties appear in this section
 
     //look for the Additional Information Properties container
-
+    cy.getElementByTestId('service-additional-title').then($element => {
+        expect($element).to.be.visible;
+        expect($element).contain("Additional Information Properties");
+    })
     //based on the fixture data - make sure the correct properties appear in this section   
 });

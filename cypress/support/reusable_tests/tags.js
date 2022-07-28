@@ -33,16 +33,39 @@ Cypress.Commands.add('testingServicesTagsTabElements', (viewport, creds, organiz
     });
 
     //based on the fixture data (should have US data for a service)- make sure the correct tags appear
+    cy.getElementByTestId('service-us-tags-button').click();
+    cy.contains('Financial Assistance').click();
+    cy.contains('Save Changes').click()
+    cy.wait(500);
+    cy.getElementByTestId('service-tab-tags').click();
+    cy.getElementByTestId('service-tags-us-container').then($element => {
+        expect($element).contain('Financial Assistance')
+    })
 
     //look for the Canada Tags container
     cy.getElementByTestId('service-tags-canada-container').then($element => {
         expect($element).to.be.visible;
     });
     //based on the fixture data (should have Canada data for a service)- make sure the correct tags appear
-
+    cy.getElementByTestId('service-canada-tags-button').click();
+    cy.contains('Travel Assistance').click();
+    cy.contains('Save Changes').click()
+    cy.wait(500);
+    cy.getElementByTestId('service-tab-tags').click();
+    cy.getElementByTestId('service-tags-canada-container').then($element => {
+        expect($element).contain('Travel Assistance')
+    })
     //look for the Mexico Tags container
     cy.getElementByTestId('service-tags-mexico-container').then($element => {
         expect($element).to.be.visible;
     });
     //based on the fixture data (should have Mexico data for a service)- make sure the correct tags appear
+    cy.getElementByTestId('service-mexico-tags-button').click();
+    cy.contains('Mental Health Support').click();
+    cy.contains('Save Changes').click()
+    cy.wait(500);
+    cy.getElementByTestId('service-tab-tags').click();
+    cy.getElementByTestId('service-tags-mexico-container').then($element => {
+        expect($element).contain('Mental Health Support')
+    })
 });

@@ -3331,8 +3331,8 @@
       "type": "checkbox"
     },
     {
-      "key": "community-latino",
-      "label": "community-latino",
+      "key": "community-latinx",
+      "label": "community-latinx",
       "description": "Opportunities that serve the Latinx community",
       "type": "checkbox"
     },
@@ -3355,8 +3355,8 @@
       "type": "checkbox"
     },
     {
-      "key": "community-native-american",
-      "label": "community-native-american",
+      "key": "community-native-american-two-spirit",
+      "label": "community-native-american-two-spirit",
       "description": "Opportunities that serve the Native American community",
       "type": "checkbox"
     },

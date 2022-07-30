@@ -2,7 +2,7 @@
   "name": "asylum-connect-admin-control-panel",
   "private": true,
   "scripts": {
-    "local": "Set REACT_APP_APP_ENV=TEST&& npm run start",
+    "local": "REACT_APP_APP_ENV=TEST npm run start",
     "local-background": "REACT_APP_APP_ENV=TEST pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",

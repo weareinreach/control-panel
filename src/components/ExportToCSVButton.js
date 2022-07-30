@@ -18,7 +18,6 @@ const csvOptions = {
 };
 
 const ExportToCSVButton = ({ margin = '0px', query }) => {
-  console.log(query);
   //make a deep copy of query (will not change the original)
   let resultsQuery = JSON.parse(JSON.stringify(query));
   //change page to -1 to indicate we want to get all data from getOrgQueryUrls (non-paginated)
@@ -57,13 +56,13 @@ const ExportToCSVButton = ({ margin = '0px', query }) => {
     let filtersApplied = [];
     let someString = '';
     //apply filters if used
-    console.log(query);
+
     //Name
     if (query.name) {
       filtersApplied = filtersApplied.concat({ name: 'Name', lastUpdated: query.name, link: '' });
     }
     //Properties
-    if (Object.keys(query.properties).length !== 0) {
+    if (query.properties && Object.keys(query.properties).length !== 0) {
       for (var prop in query.properties) {
         if (someString === '') {
           someString = someString.concat(prop);
@@ -109,7 +108,6 @@ const ExportToCSVButton = ({ margin = '0px', query }) => {
       if (query.tags && query.tags.length > 0) {
         tagString = tagString.concat(" - ");
         for (let i = 0; i < query.tags.length; i++) {
-          //console.log(query.tags)
           if (i === 0) {
             if (query.tags[i].includes(".")) {
               tagString = tagString.concat(query.tags[i].split(".")[1]);
@@ -165,7 +163,7 @@ const ExportToCSVButton = ({ margin = '0px', query }) => {
     }
 
     if (filtersApplied.length > 0) {
-      filtersApplied.unshift({ name: 'FILTERS APPLIED', lastUpdated: '', link: '' });
+      filtersApplied.unshift({ name: 'SEARCH FILTERS APPLIED', lastUpdated: '', link: '' });
       filtersApplied = filtersApplied.concat({ name: '', lastUpdated: '', link: '' });
     }
     filtersApplied = filtersApplied.concat({ name: `RESULTS [${resultsData.data.organizations.length}]`, lastUpdated: '', link: '' });

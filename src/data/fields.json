@@ -443,7 +443,8 @@
       "key": "url",
       "label": "Url",
       "type": "url",
-      "isRequired": true
+      "isRequired": true,
+      "placeholder": "https://social-media-option.com/sample-organization"
     }
   ],
   "userDetailsFields": [

@@ -538,7 +538,11 @@ const Service = (props) => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack spacing={4}>
-              <Container>
+              <Container data-test-id="service-tags-help-text-container">
+                <p>What <b>“tag(s)”</b> you choose affect(s) when this organization appears in the search results of our free App. For example, if you add a “LGBTQ Centers” tag to a service page, the organization will appear for a user who searches for “Community Support - LGBTQ Centers” in the App. Please try to consider the user’s perspective when entering tag(s).</p>
+                <p><b>*Note:</b> Please also make sure to separate an organization's services into unique service pages. This is especially true for legal services. For example, if an organization offers both gender/name change legal services and asylum legal services, these should actually be separate service pages in the data portal (each service page should then have its own distinct, relevant tag). Similarly, if you are using two very different tag types (e.g. transportation and legal), you should likely instead create two different service pages (each with their own distinct tag). Please post in the #community-outreach channel in Slack with any questions.</p>
+              </Container>
+              <Container data-test-id="service-tags-us-container">
                 <Box {...buttonGroupProps}>
                   <Button onClick={openEditTags('united_states')} data-test-id="service-us-tags-button">
                     Edit Tags
@@ -549,7 +553,7 @@ const Service = (props) => {
                   <ListTags items={serviceTags.united_states} />
                 ) : null}
               </Container>
-              <Container>
+              <Container data-test-id="service-tags-canada-container">
                 <Box {...buttonGroupProps}>
                   <Button onClick={openEditTags('canada')} data-test-id="service-canada-tags-button">Edit Tags</Button>
                 </Box>
@@ -558,7 +562,7 @@ const Service = (props) => {
                   <ListTags items={serviceTags.canada} />
                 ) : null}
               </Container>
-              <Container>
+              <Container data-test-id="service-tags-mexico-container">
                 <Box {...buttonGroupProps}>
                   <Button onClick={openEditTags('mexico')} data-test-id="service-mexico-tags-button">Edit Tags</Button>
                 </Box>

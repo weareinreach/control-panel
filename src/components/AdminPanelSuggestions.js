@@ -15,18 +15,40 @@ const initialUrls = getOrgQueryUrls(initialQuery);
 
 const AdminPanelSuggestions = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
+  
+  /*** Pending Owners ***/
   const orgOwners = useAPIGet(`/organizations?pendingOwnership=true`);
+  const orgOwnersCount = useAPIGet(`/organizations/count?pendingOwnership=true`);
+  const [queryOrgOwn, setQueryOrgOwn] = useState({page: 1});
+  const getLastPageOrgOwner = () => {
+    setQueryOrgOwn({ ...queryOrgOwn, page: queryOrgOwn.page - 1 });
+  };
+  const getNextPageOrgOwner = () => {
+    setQueryOrgOwn({ ...queryOrgOwn, page: queryOrgOwn.page + 1 });
+  };
+  
+
+  /*** Suggested Orgs ***/
   const suggestedOrgs = useAPIGet(initialUrls.organizations);
-  const count = useAPIGet(initialUrls.count);
+  const suggestedOrgsCount = useAPIGet(initialUrls.count);
   const [query, setQuery] = useState(initialQuery);
-
-  const suggestions = useAPIGet(`/suggestions`);
-
-  const getLastPage = () => {
+  const getLastPageSugOrg = () => {
     setQuery({ ...query, page: query.page - 1 });
   };
-  const getNextPage = () => {
+  const getNextPageSugOrg = () => {
     setQuery({ ...query, page: query.page + 1 });
+  };
+  
+  /*** suggestions ***/
+  const suggestions = useAPIGet(`/suggestions`);
+  const suggestionsCount = useAPIGet(`/suggestions/count`);
+  const [querySug, setQuerySug] = useState({page: 1});
+  
+  const getLastPageSug = () => {
+    setQuerySug({ ...querySug, page: querySug.page - 1 });
+  };
+  const getNextPageSug = () => {
+    setQuerySug({ ...querySug, page: querySug.page + 1 });
   };
 
   const openOrganization = (id, serviceId) => {
@@ -147,7 +169,7 @@ const AdminPanelSuggestions = (props) => {
   useEffect(() => {
     const urls = getOrgQueryUrls(query);
     suggestedOrgs.fetchUrl(urls.organizations);
-    count.fetchUrl(urls.count);
+    suggestedOrgsCount.fetchUrl(urls.count);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
@@ -160,7 +182,7 @@ const AdminPanelSuggestions = (props) => {
       <Title>Suggestions</Title>
       <Stack spacing={4}>
         <Container>
-          <SectionTitle>Pending Affiliates</SectionTitle>
+          <SectionTitle>Pending Affiliates ({orgOwnersCount?.data?.count})</SectionTitle>
           {pendingOwners?.length > 0 ? (
             <Table
               tableDataTestId='pending-affiliates-table'
@@ -192,9 +214,15 @@ const AdminPanelSuggestions = (props) => {
           ) : (
             <Text data-test-id='pending-affiliates-text' >No pending affiliates at this time</Text>
           )}
+            <Pagination
+              currentPage={queryOrgOwn?.page}
+              getLastPage={getLastPageOrgOwner}
+              getNextPage={getNextPageOrgOwner}
+              totalPages={orgOwnersCount?.data?.pages}
+            />
         </Container>
         <Container>
-          <SectionTitle>Suggested Edits</SectionTitle>
+          <SectionTitle>Suggested Edits ({suggestionsCount?.data?.count})</SectionTitle>
           {suggestions?.data?.length > 0 ? (
             <Table
             tableDataTestId='suggested-edits-table'
@@ -222,9 +250,15 @@ const AdminPanelSuggestions = (props) => {
           ) : (
             <Text data-test-id="suggested-edits-text">No suggested edits at this time</Text>
           )}
+            <Pagination
+              currentPage={querySug?.page}
+              getLastPage={getLastPageSug}
+              getNextPage={getNextPageSug}
+              totalPages={suggestionsCount?.data?.pages}
+            />
         </Container>
         <Container>
-          <SectionTitle>Suggested Organizations ({count?.data?.count})</SectionTitle>
+          <SectionTitle>Suggested Organizations ({suggestedOrgsCount?.data?.count})</SectionTitle>
           {suggestedOrgs?.data?.organizations?.length > 0 ? (
             <Table
               tableDataTestId='suggested-organizations-table'
@@ -239,9 +273,9 @@ const AdminPanelSuggestions = (props) => {
           )}
             <Pagination
               currentPage={query?.page}
-              getLastPage={getLastPage}
-              getNextPage={getNextPage}
-              totalPages={count?.data?.pages}
+              getLastPage={getLastPageSugOrg}
+              getNextPage={getNextPageSugOrg}
+              totalPages={suggestedOrgsCount?.data?.pages}
             />
         </Container>
       </Stack>

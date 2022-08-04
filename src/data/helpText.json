@@ -1,0 +1,4 @@
+{
+	"Mental Health": ["Which mental health tag should I use? If a support group advertises itself for trans women of color then we would want to use multiple tags: \"Trans support groups\" and \"BIPOC support groups\". However, if a support group just broadly describes itself as open to \"any member of the LGBTQ+ community\" (ie. without any perceived expertise in trans or BIPOC issues/clients) then we will just want to use the \"support groups\" tag."],
+	"Legal": ["Please make sure to separate an organization's different legal service offerings into unique service pages in the data portal. For example, if an organization offers both name and gender change legal services and asylum legal services, these should be entered as separate service pages in the data portal (each service page should then have its own distinct, relevant tag)."]
+}

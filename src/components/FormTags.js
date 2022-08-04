@@ -5,17 +5,19 @@ import {Divider, Stack, Text} from '@chakra-ui/react';
 
 import FormField from './FormField';
 import tagList from '../data/tags.json';
+import helpText from '../data/helpText.json';
+
 
 const FormTags = (props) => {
   const {country, formik} = props;
   const categories = tagList[country] || '';
-
   return (
     <Stack space={4}>
       {_map(categories, (subcategories, category, tagIndex) => (
         <Fragment key={category}>
           <Text marginTop={4}>
             <strong>{category}</strong>
+            {helpText[category] ? <p><i>{helpText[category]}</i></p> : null}
           </Text>
           <Divider marginBottom={4} />
           <Stack space={4}>

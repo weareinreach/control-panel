@@ -66,10 +66,6 @@ const Header = () => {
                       Admin
                     </ChakraLink>
                   )}
-                  <ChakraLink data-test-id="header-stats-link" as={Link} fontSize="xl" to="/stats">
-                      Stats
-                  </ChakraLink>
-                )}
                   <ChakraLink data-test-id="header-dashboard-link" as={Link} fontSize="xl" to="/dashboard" mr={3}>
                     Dashboard
                   </ChakraLink>
@@ -92,6 +88,7 @@ const Header = () => {
                   ]}
                 />
               </Box>
+            </Grid>
             </>
           ) : (
             <Text>Login</Text>

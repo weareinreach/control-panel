@@ -498,6 +498,11 @@
       "type": "checkbox"
     },
     {
+      "key": "isAdminDeveloper",
+      "label": "Admin Developer",
+      "type": "checkbox"
+    },
+    {
       "key": "isProfessional",
       "label": "Professional",
       "type": "checkbox"

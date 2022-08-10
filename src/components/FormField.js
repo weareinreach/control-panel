@@ -11,7 +11,8 @@ import {
   Select,
   Text,
   Textarea,
-  Tooltip,
+  Tooltip, 
+  Divider
 } from '@chakra-ui/react';
 
 import PasswordInput from './PasswordInput';
@@ -28,6 +29,7 @@ const FormField = (props) => {
     type,
     ...rest
   } = props;
+  let isDivider = false;
   let InputComponent = null;
   let isCheckBox = false;
   let isSelect = false;
@@ -44,6 +46,10 @@ const FormField = (props) => {
       isSelect = true;
       InputComponent = Select;
       break;
+    case 'divider':
+      isDivider = true;
+      InputComponent = Divider;
+    break;
     case 'textarea':
       InputComponent = Textarea;
       break;
@@ -80,6 +86,9 @@ const FormField = (props) => {
               <FormLabel htmlFor={fieldKey}>{label}</FormLabel> {toolTipIcon}
             </>
           )}
+          {isDivider ? (
+             <InputComponent {...inputProps} size={inputProps.size}/>
+          ): null}
           {isSelect ? (
             <InputComponent {...inputProps}>
               {options.map(({label, value}) => (

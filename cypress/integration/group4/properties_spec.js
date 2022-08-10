@@ -19,13 +19,13 @@ describe('Service Properties Tab Tests', () => {
         cy.deleteOrgsIfExist();
     });
 
-    viewports.forEach(viewport=>{
-        context(`Testing the ${viewport} Version of the application`,()=>{
-            it('Testing Services Properties Tab Elements',()=>{
-                cy.get('@user_good').then(user=>{
-                    cy.addUser(user).then(()=>{
-                        cy.get('@organization').then(org=>{
-                            cy.testingServicesPropertiesTabElements(viewport,user,org);
+    viewports.forEach(viewport => {
+        context(`Testing the ${viewport} Version of the application`, () => {
+            it('Testing Services Properties Tab Elements', () => {
+                cy.get('@user_good').then(user => {
+                    cy.addUser(user).then(() => {
+                        cy.get('@organization').then(org => {
+                            cy.testingServicesPropertiesTabElements(viewport, user, org);
                         });
                     });
                 });

@@ -499,15 +499,14 @@ const Service = (props) => {
           </TabPanel>
           <TabPanel marginTop={2}>
             <Stack space={4}>
-              <Flex>
-                <Box data-test-id="service-properties-help-text-container">
-                  Before adding a community property to a service, ask yourself: ‘Does this organization/service have expertise and experience in serving this particular community?’ (Note: ‘We serve everyone’ does not count as demonstrated expertise for our purposes at InReach.)
-                </Box>
+              <Container data-test-id="service-properties-help-text-container">
+                <p>Before adding a community property to a service, ask yourself: "Does this organization/service have expertise and experience in serving this particular community?"</p>
+                <p><b>*Note:</b> <em>"We serve everyone"</em> does not count as demonstrated expertise for our purposes at InReach.</p>
+               </Container>
                 <Spacer />
                 <Box {...buttonGroupProps} float='none' textAlign="right">
                   <Button onClick={openEditProperties} data-test-id="service-edit-properties-button">Edit Properties</Button>
                 </Box>
-              </Flex>
               <Container>
                 <SectionTitle data-test-id="service-cost-properties-title">Cost Properties</SectionTitle>
                 <ListProperties list={costProperties} properties={properties} />

@@ -66,26 +66,29 @@ const Header = () => {
                       Admin
                     </ChakraLink>
                   )}
-                  <ChakraLink data-test-id="header-stats-link" as={Link} fontSize="xl" to="/stats">
-                      Stats
+                  <ChakraLink data-test-id="header-dashboard-link" as={Link} fontSize="xl" to="/dashboard" mr={3}>
+                    Dashboard
                   </ChakraLink>
-                </Box>
-                <Box float="right" data-test-id="header-profile-box" textAlign="right" width="25%">
-                  <DropdownButton
-                    data-test-
-                    buttonProps={{
-                      color: 'white',
-                      backgroundColor: 'blue.500',
-                      _hover: {bg: 'blue.400'},
-                    }}
-                    buttonText={user?.name || user?.email}
-                    items={[
-                      {onClick: openPasswordModal, text: 'Change Password'},
-                      {onClick: logOutUser, text: 'Log Out'},
-                    ]}
-                  />
-                </Box>
-              </Grid>
+                <ChakraLink data-test-id="header-stats-link" as={Link} fontSize="xl" to="/stats">
+                    Stats
+                </ChakraLink>
+              </Box>
+              <Box display="inline-block" data-test-id="header-profile-box" textAlign="right" width="25%">
+                <DropdownButton
+                  data-test-
+                  buttonProps={{
+                    color: 'white',
+                    backgroundColor: 'blue.500',
+                    _hover: {bg: 'blue.400'},
+                  }}
+                  buttonText={user?.name || user?.email}
+                  items={[
+                    {onClick: openPasswordModal, text: 'Change Password'},
+                    {onClick: logOutUser, text: 'Log Out'},
+                  ]}
+                />
+              </Box>
+            </Grid>
             </>
           ) : (
             <Text>Login</Text>

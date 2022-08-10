@@ -3296,9 +3296,21 @@
       "type": "checkbox"
     },
     {
+      "key": "community-asylum-seeker",
+      "label": "community-asylum-seeker",
+      "description": "Opportunities that serve an Asylum seeker of a country",
+      "type": "checkbox"
+    },
+    {
       "key": "community-asylee",
       "label": "community-asylee",
-      "description": "Opportunities that serve asylees (those who have been granted asylum status)",
+      "description": "Opportunities that serve Asylees (those who have been granted asylum status)",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-citizens",
+      "label": "community-citizens",
+      "description": "Citizens of a specified country",
       "type": "checkbox"
     },
     {
@@ -3442,7 +3454,13 @@
     {
       "key": "community-refugee",
       "label": "community-refugee ",
-      "description": "Opportunities that serve refugees",
+      "description": "Opportunities that serve Refugees",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-residents-green-card-holders",
+      "label": "community-residents-green-card-holders ",
+      "description": "Opportunities that serve Residents of countries who are green card holders",
       "type": "checkbox"
     },
     {

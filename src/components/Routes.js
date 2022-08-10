@@ -7,6 +7,7 @@ import Loading from './Loading';
 import UnauthorizedPage from './UnauthorizedPage';
 import {Layout} from './styles';
 import Admin from '../pages/Admin';
+import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 import Organization from '../pages/Organization';
 import Organizations from '../pages/Organizations';
@@ -46,6 +47,7 @@ const Routes = () => {
           component={Service}
         />
         <Route exact path="/admin" component={Admin} />
+        <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/stats" component={Stats} />
         <Route component={NotFound} />
       </Switch>

@@ -3277,15 +3277,64 @@
       "type": "checkbox"
     },
     {
+      "key": "community-arabic-speakers",
+      "label": "community-arabic-speakers",
+      "description": "Opportunities that serve Arabic speakers",
+      "type": "checkbox"
+    },
+
+    {
+      "key": "community-asexual",
+      "label": "community-asexual",
+      "description": "Opportunities that serve the Asexual Community",
+      "type": "checkbox"
+    },
+    {
       "key": "community-asia-immigrant",
       "label": "community-asia-immigrant",
       "description": "Opportunities that serve those from Asian countries",
       "type": "checkbox"
     },
     {
+      "key": "community-asylum-seeker",
+      "label": "community-asylum-seeker",
+      "description": "Opportunities that serve an Asylum seeker of a country",
+      "type": "checkbox"
+    },
+    {
       "key": "community-asylee",
       "label": "community-asylee",
-      "description": "Opportunities that serve asylees (those who have been granted asylum status)",
+      "description": "Opportunities that serve Asylees (those who have been granted asylum status)",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-citizens",
+      "label": "community-citizens",
+      "description": "Citizens of a specified country",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-bipoc",
+      "label": "community-bipoc",
+      "description": "Opportunities that serve Black, Indigenous, and People of Color",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-bisexual",
+      "label": "community-bisexual",
+      "description": "Opportunities that serve the Bisexual Community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-black",
+      "label": "community-black",
+      "description": "Opportunities that serve the Black Community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-conversion-therapy-survivors",
+      "label": "community-conversion-therapy-survivors",
+      "description": "Opportunities that serve Conversion Therapy Survivors",
       "type": "checkbox"
     },
     {
@@ -3307,6 +3356,24 @@
       "type": "checkbox"
     },
     {
+      "key": "community-french-speakers",
+      "label": "community-french-speakers",
+      "description": "Opportunities that serve French speakers",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-gay",
+      "label": "community-gay",
+      "description": "Opportunities that serve the Gay Community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-gender-nonconforming",
+      "label": "community-gender-nonconforming",
+      "description": "Opportunities that serve the Gender nonconforming community",
+      "type": "checkbox"
+    },
+    {
       "key": "community-hiv-aids",
       "label": "community-hiv-aids",
       "description": "Opportunities that serve the HIV+ and at-risk community",
@@ -3325,6 +3392,12 @@
       "type": "checkbox"
     },
     {
+      "key": "community-intersex",
+      "label": "community-intersex",
+      "description": "Opportunities that serve the Intersex Community",
+      "type": "checkbox"
+    },
+    {
       "key": "community-latin-america-immigrant",
       "label": "community-latin-america-immigrant",
       "description": "Opportunities that serve those from Latin America",
@@ -3334,6 +3407,12 @@
       "key": "community-latino",
       "label": "community-latino",
       "description": "Opportunities that serve the Latinx community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-lesbian",
+      "label": "community-lesbian",
+      "description": "Opportunities that serve the Lesbian Community",
       "type": "checkbox"
     },
     {
@@ -3361,9 +3440,27 @@
       "type": "checkbox"
     },
     {
+      "key": "community-nonbinary",
+      "label": "community-nonbinary",
+      "description": "Opportunities that serve the Nonbinary community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-queer",
+      "label": "community-queer",
+      "description": "Opportunities that serve the Queer Community",
+      "type": "checkbox"
+    },
+    {
       "key": "community-refugee",
       "label": "community-refugee ",
-      "description": "Opportunities that serve refugees",
+      "description": "Opportunities that serve Refugees",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-residents-green-card-holders",
+      "label": "community-residents-green-card-holders ",
+      "description": "Opportunities that serve Residents of countries who are green card holders",
       "type": "checkbox"
     },
     {
@@ -3373,9 +3470,21 @@
       "type": "checkbox"
     },
     {
+      "key": "community-russian-speakers",
+      "label": "community-russian-speakers",
+      "description": "Opportunities that serve Russian speakers",
+      "type": "checkbox"
+    },
+    {
       "key": "community-seniors",
       "label": "community-seniors",
       "description": "\"senior\" defined as 65 years or older",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-spanish-speakers",
+      "label": "community-spanish-speakers",
+      "description": "Opportunities that serve Spanish speakers",
       "type": "checkbox"
     },
     {
@@ -3385,9 +3494,33 @@
       "type": "checkbox"
     },
     {
+      "key": "community-transfeminine",
+      "label": "community-transfeminine",
+      "description": "Opportunities that serve the Transfeminine Community",
+      "type": "checkbox"
+    },
+    {
       "key": "community-transgender",
       "label": "community-transgender",
       "description": "Opportunities that serve the trans/gender nonconforming/nonbinary community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-transmasculine",
+      "label": "community-transmasculine",
+      "description": "Opportunities that serve the Trasmasculine Community",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-trans-youth",
+      "label": "community-trans-youth",
+      "description": "Opportunities that serve Trans youth",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-trans-youth-caregivers",
+      "label": "community-trans-youth-caregivers",
+      "description": "Opportunities that serve Caregivers of Trans youth",
       "type": "checkbox"
     },
     {

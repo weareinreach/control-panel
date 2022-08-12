@@ -12,10 +12,11 @@
     ],
     "Food": [],
     "Housing": [
-      "Short-term housing",
-      "Housing information and referrals",
+      "Drop-in centres for LGBTQ youth",
       "Emergency housing",
-      "Drop-in centres for LGBTQ youth"
+      "Housing information and referrals",
+      "Short-term housing",
+      "Trans housing"
     ],
     "Hygiene and Clothing": [
       "Gender-neutral washrooms",
@@ -41,12 +42,14 @@
       "Trans health"
     ],
     "Mental Health": [
+      "BIPOC support groups",
       "Hotlines",
-      "Support groups",
-      "Trans support groups",
       "Private therapy and counseling",
       "Psychological evaluations for refugee claim",
-      "Substance use"
+      "Substance use",
+      "Support for conversion therapy survivors",
+      "Support groups",
+      "Trans support groups"
     ],
     "Sports and Entertainment": [],
     "Translation and Interpretation": [],
@@ -70,7 +73,8 @@
     "Housing": [
       "Drop-in centers for LGBTQ youth",
       "Emergency housing",
-      "Housing information and referrals"
+      "Housing information and referrals",
+      "Trans housing"
     ],
     "Hygiene and Clothing": [
       "Clothes",
@@ -96,10 +100,12 @@
       "Trans health"
     ],
     "Mental Health": [
+      "BIPOC support groups",
       "Hotlines",
       "Private therapy and counseling",
       "Psychological evaluations for asylum claim",
       "Substance use",
+      "Support for conversion therapy survivors",
       "Support groups",
       "Trans support groups"
     ],
@@ -123,10 +129,11 @@
     ],
     "Food": [],
     "Housing": [
-      "Short-term housing",
       "Drop-in centers for LGBTQ youth",
       "Emergency housing",
-      "Housing information and referrals"
+      "Housing information and referrals",
+      "Short-term housing",
+      "Trans housing"
     ],
     "Hygiene and Clothing": [
       "Clothes",
@@ -161,10 +168,12 @@
       "Trans health"
     ],
     "Mental Health": [
+      "BIPOC support groups",
       "Hotlines",
       "Private therapy and counseling",
       "Psychological evaluations for asylum claim",
       "Substance use",
+      "Support for conversion therapy survivors",
       "Support groups",
       "Trans support groups"
     ],

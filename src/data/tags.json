@@ -15,7 +15,8 @@
       "Drop-in centres for LGBTQ youth",
       "Emergency housing",
       "Housing information and referrals",
-      "Short-term housing"
+      "Short-term housing",
+      "Trans housing"
     ],
     "Hygiene and Clothing": [
       "Gender-neutral washrooms",
@@ -41,10 +42,12 @@
       "Trans health"
     ],
     "Mental Health": [
+      "BIPOC support groups",
       "Hotlines",
       "Private therapy and counseling",
       "Psychological evaluations for refugee claim",
       "Substance use",
+      "Support for conversion therapy survivors",
       "Support groups",
       "Trans support groups"
     ],
@@ -71,6 +74,7 @@
       "Drop-in centers for LGBTQ youth",
       "Emergency housing",
       "Housing information and referrals"
+      "Trans housing"
     ],
     "Hygiene and Clothing": [
       "Clothes",
@@ -96,10 +100,12 @@
       "Trans health"
     ],
     "Mental Health": [
+      "BIPOC support groups",
       "Hotlines",
       "Private therapy and counseling",
       "Psychological evaluations for asylum claim",
       "Substance use",
+      "Support for conversion therapy survivors",
       "Support groups",
       "Trans support groups"
     ],

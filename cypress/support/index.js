@@ -25,6 +25,8 @@ import './reusable_tests/admin_suggestions';
 import './reusable_tests/admin_trash_bin';
 import './reusable_tests/organization';
 import './reusable_tests/service';
+import './reusable_tests/properties';
+import './reusable_tests/tags';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

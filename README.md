@@ -39,3 +39,9 @@ Technologies
 Code Standards
 
 In order to enforce code standards we use [eslint](https://eslint.org/) and [prettier](https://prettier.io/). Setting up eslint in your code editor is the easiest way to adhere to guidlines while programming but we also lint and prettify code during the commit process using [lint-staged](https://github.com/okonet/lint-staged).
+
+## For Mac Users
+ 
+Connecting to the local DB
+
+If you are trying to connect to your local, you may need to change the local script on the package.json to 'REACT_APP_APP_ENV=TEST npm run start'

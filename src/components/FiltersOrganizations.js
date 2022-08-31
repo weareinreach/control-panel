@@ -631,6 +631,9 @@ const FiltersOrganizations = (props) => {
             Search
           </Button>
         </Box>
+        <Text fontSize="xs">
+          Any organization that has been 'soft deleted' will not appear in this list. They can be seen in the 'Trash Bin' of the Admin view.
+        </Text>
       </Stack>
     </form>
   );

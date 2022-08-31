@@ -8,6 +8,8 @@ import {
   Checkbox,
   Flex,
   Input,
+  Radio,
+  RadioGroup,
   Select,
   Spacer,
   Stack,
@@ -102,7 +104,7 @@ const FiltersOrganizations = (props) => {
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
-  const [isClaimed, setClaimedStatus] = useState(true);
+  const [claimedStatus, setClaimedStatus] = useState('all');
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
   const [lastVerifiedStart, setLastVerifiedStart] = useState('');
@@ -136,7 +138,9 @@ const FiltersOrganizations = (props) => {
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
 
-  const handleClaimChange = (ev) => setClaimedStatus(ev.target.checked);
+  const handleClaimChange = (ev) => {
+    setClaimedStatus(ev.target.value);
+  }
 
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -188,8 +192,8 @@ const FiltersOrganizations = (props) => {
       query.pending = 'true';
     }
 
-    if (!isClaimed) {
-      query.pendingOwnership = 'true';
+    if (claimedStatus) {
+      query.claimedStatus = claimedStatus;
     }
 
     if (lastVerified) {
@@ -548,15 +552,15 @@ const FiltersOrganizations = (props) => {
           >
             Claimed Status:
           </Text>
-          <Checkbox
-            data-test-id="filter-claim-status-switch"
-            isChecked={isClaimed}
-            onChange={handleClaimChange}
-            type="checkbox"
-          >
-            Claimed
-          </Checkbox>
         </Flex>
+          <RadioGroup onChange={setClaimedStatus} value={claimedStatus}>
+            <Stack direction='row'>
+              <Radio value='claimed'><Text fontSize="xs">Claimed</Text></Radio>
+              <Radio value='notClaimed'><Text fontSize="xs">Not Claimed</Text></Radio>
+              <Radio value='pending'><Text fontSize="xs">Pending</Text></Radio>
+              <Radio value='all'><Text fontSize="xs">All</Text></Radio>
+            </Stack>
+          </RadioGroup>
 
         <Spacer />
 

@@ -192,7 +192,7 @@ const FiltersOrganizations = (props) => {
       query.pending = 'true';
     }
 
-    if (claimedStatus) {
+    if (claimedStatus && claimedStatus != 'all') {
       query.claimedStatus = claimedStatus;
     }
 

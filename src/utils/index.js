@@ -116,6 +116,10 @@ export const getOrgQueryUrls = (query) => {
     queryParam += '&pending=true';
   }
 
+  if (pendingOwnership) {
+    queryParam += '&pendingOwnership=true';
+  }
+
   if (claimedStatus) {
     queryParam += `&claimedStatus=${claimedStatus}`;
   }

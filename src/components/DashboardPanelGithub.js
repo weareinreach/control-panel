@@ -25,8 +25,8 @@ const DashboardPanelGithub = (props) =>{
     const apiHallOfFame = useAPIGet('/dashboard/getContributors/inreach-api');
     const adminHallOfFame = useAPIGet('/dashboard/getContributors/control-panel');
     const createReleaseEndpoint= `${CATALOG_API_URL}/dashboard/createRelease`;
-    const runStagingMigrationEndpoint = `${CATALOG_API_URL}/dashboard/runMigration/staging`;
-    const runProductionMigrationEndpoint = `${CATALOG_API_URL}/dashboard/runMigration/production`;
+    const runStagingMigrationEndpoint = `${CATALOG_API_URL}/dashboard/triggerStagingMigration`;
+    const runProductionMigrationEndpoint = `${CATALOG_API_URL}/dashboard/triggerProductionMigration`;
     const releasesLoading =  appReleases?.loading || apiReleases?.loading || adminReleases?.loading;
     const hallOfFameLoading = appHallOfFame?.loading || apiHallOfFame?.loading || adminHallOfFame?.loading; 
     const {user} = useContext(ContextApp);

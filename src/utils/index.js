@@ -5,6 +5,7 @@ import config from './config';
 export const CATALOG_API_URL = `${config.apiDomain}${config.apiBasePath}`;
 export const COOKIE_LOGIN = 'ac-cookie';
 export const USER_TYPE_ADMIN_DM = 'adminDataManager';
+export const USER_TYPE_ADMIN_DEV= 'adminDeveloper';
 export const USER_TYPE_DM = 'dataManager';
 export const USER_TYPE_LAWYER = 'lawyer';
 export const USER_TYPE_PROVIDER = 'provider';
@@ -84,6 +85,7 @@ export const getOrgQueryUrls = (query) => {
     page,
     pending,
     pendingOwnership,
+    claimedStatus,
     properties,
     serviceArea,
     tags,
@@ -118,47 +120,92 @@ export const getOrgQueryUrls = (query) => {
     queryParam += '&pendingOwnership=true';
   }
 
+  if (claimedStatus) {
+    queryParam += `&claimedStatus=${claimedStatus}`;
+  }
+
   if (verified) {
     queryParam += '&verified=true';
   }
 
+  /*** lastVerified date values ***/
   if (lastVerified) {
     queryParam += `&lastVerified=${lastVerified}`;
   }
 
+  //if lastVerifiedStart date is specified, make sure lastVerifiedEnd date is also specified, if not, set it to the start date
   if (lastVerifiedStart) {
     queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+
+    if (lastVerifiedEnd) {
+    queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
+    }else{
+      queryParam += `&lastVerifiedEnd=${lastVerifiedStart}`;
+    }
   }
 
+  //if lastVerifiedEnd date is specified, make sure lastVerifiedStart date is also specified, if not, set it to the end date
   if (lastVerifiedEnd) {
     queryParam += `&lastVerifiedEnd=${lastVerifiedEnd}`;
+
+    if (lastVerifiedStart) {
+    queryParam += `&lastVerifiedStart=${lastVerifiedStart}`;
+    }else{
+      queryParam += `&lastVerifiedStart=${lastVerifiedEnd}`;
+    }
   }
 
+  /*** lastUpdated date values ***/
   if (lastUpdated) {
     queryParam += `&lastUpdated=${lastUpdated}`;
   }
-
+  
+  //if lastUpdatedStart date is specified, make sure lastUpdatedEnd date is also specified, if not, set it to the start date
   if (lastUpdatedStart) {
     queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+      if (lastUpdatedEnd) {
+        queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
+      }else{
+        queryParam += `&lastUpdatedEnd=${lastUpdatedStart}`;
+      }
   }
 
+  //if lastUpdatedEnd date is specified, make sure lastUpdatedStart date is also specified, if not, set it to the end date
   if (lastUpdatedEnd) {
     queryParam += `&lastUpdatedEnd=${lastUpdatedEnd}`;
+     if (lastUpdatedStart) {
+        queryParam += `&lastUpdatedStart=${lastUpdatedStart}`;
+     }else {
+        queryParam += `&lastUpdatedStart=${lastUpdatedEnd}`;
+     }
   }
 
+  /*** createdAt date values ***/
   if (createdAt) {
     queryParam += `&createdAt=${createdAt}`;
   }
 
+  //if createdAtStart date is specified, make sure createdAtEnd date is also specified, if not, set it to the start date
   if (createdAtStart) {
     queryParam += `&createdAtStart=${createdAtStart}`;
+    if (createdAtEnd) {
+      queryParam += `&createdAtEnd=${createdAtEnd}`;
+    }else{
+      queryParam += `&createdAtEnd=${createdAtStart}`
+    }
   }
 
+  //if createdAtEnd date is specified, make sure createdAtStart date is also specified, if not, set it to the end date
   if (createdAtEnd) {
     queryParam += `&createdAtEnd=${createdAtEnd}`;
+    if (createdAtStart) {
+      queryParam += `&createdAtStart=${createdAtStart}`;
+    }else{
+      queryParam += `&createdAtStart=${createdAtEnd}`;
+    }
   }
 
-  if (serviceArea) {
+  if (Array.isArray(serviceArea) && serviceArea.length > 0) {
     queryParam += `&serviceArea=${serviceArea}`;
   }
 

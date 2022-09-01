@@ -8,6 +8,8 @@ import {
   Checkbox,
   Flex,
   Input,
+  Radio,
+  RadioGroup,
   Select,
   Spacer,
   Stack,
@@ -102,7 +104,7 @@ const FiltersOrganizations = (props) => {
   const [tagLocale, setTagLocale] = useInputChange('united_states');
   const [properties, setProperties] = useState({});
   const [isPublished, setPublishedStatus] = useState(true);
-  const [isClaimed, setClaimedStatus] = useState(true);
+  const [claimedStatus, setClaimedStatus] = useState('all');
   const [tags, setTags] = useState([]);
   const [lastVerified, setLastVerified] = useState('');
   const [lastVerifiedStart, setLastVerifiedStart] = useState('');
@@ -136,7 +138,9 @@ const FiltersOrganizations = (props) => {
 
   const handlePublishChange = (ev) => setPublishedStatus(ev.target.checked);
 
-  const handleClaimChange = (ev) => setClaimedStatus(ev.target.checked);
+  const handleClaimChange = (ev) => {
+    setClaimedStatus(ev.target.value);
+  }
 
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -188,8 +192,8 @@ const FiltersOrganizations = (props) => {
       query.pending = 'true';
     }
 
-    if (!isClaimed) {
-      query.pendingOwnership = 'true';
+    if (claimedStatus && claimedStatus != 'all') {
+      query.claimedStatus = claimedStatus;
     }
 
     if (lastVerified) {
@@ -207,6 +211,10 @@ const FiltersOrganizations = (props) => {
     if (lastUpdated) {
       query.lastUpdated = new Date(lastUpdated).toISOString();
     }
+    
+    if (lastUpdatedStart) {
+      query.lastUpdatedStart = new Date(lastUpdatedStart).toISOString();
+    }
 
     if (lastUpdatedEnd) {
       query.lastUpdatedEnd = new Date(lastUpdatedEnd).toISOString();
@@ -214,6 +222,10 @@ const FiltersOrganizations = (props) => {
 
     if (createdAt) {
       query.createdAt = new Date(createdAt).toISOString();
+    }
+
+    if (createdAtStart) {
+      query.createdAtStart = new Date(createdAtStart).toISOString();
     }
 
     if (createdAtEnd) {
@@ -540,15 +552,15 @@ const FiltersOrganizations = (props) => {
           >
             Claimed Status:
           </Text>
-          <Checkbox
-            data-test-id="filter-claim-status-switch"
-            isChecked={isClaimed}
-            onChange={handleClaimChange}
-            type="checkbox"
-          >
-            Claimed
-          </Checkbox>
         </Flex>
+          <RadioGroup onChange={setClaimedStatus} value={claimedStatus}>
+            <Stack direction='row'>
+              <Radio value='claimed'><Text fontSize="xs">Claimed</Text></Radio>
+              <Radio value='notClaimed'><Text fontSize="xs">Not Claimed</Text></Radio>
+              <Radio value='pending'><Text fontSize="xs">Pending</Text></Radio>
+              <Radio value='all'><Text fontSize="xs">All</Text></Radio>
+            </Stack>
+          </RadioGroup>
 
         <Spacer />
 
@@ -619,6 +631,9 @@ const FiltersOrganizations = (props) => {
             Search
           </Button>
         </Box>
+        <Text fontSize="xs">
+          Any organization that has been 'soft deleted' will not appear in this list. They can be seen in the 'Trash Bin' of the Admin view.
+        </Text>
       </Stack>
     </form>
   );

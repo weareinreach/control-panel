@@ -85,6 +85,7 @@ export const getOrgQueryUrls = (query) => {
     page,
     pending,
     pendingOwnership,
+    claimedStatus,
     properties,
     serviceArea,
     tags,
@@ -117,6 +118,10 @@ export const getOrgQueryUrls = (query) => {
 
   if (pendingOwnership) {
     queryParam += '&pendingOwnership=true';
+  }
+
+  if (claimedStatus) {
+    queryParam += `&claimedStatus=${claimedStatus}`;
   }
 
   if (verified) {

@@ -3418,13 +3418,13 @@
     {
       "key": "community-lgbtq-youth",
       "label": "community-lgbtq-youth",
-      "description": "Opportunities that serve LGBTQ youth",
+      "description": "Opportunities that serve LGBTQ+ youth",
       "type": "checkbox"
     },
     {
       "key": "community-lgbtq-youth-caregivers",
       "label": "community-lgbtq-youth-caregivers",
-      "description": "Opportunities that serve Caregivers of Trans youth",
+      "description": "Opportunities that serve Caregivers of LGBTQ+ youth",
       "type": "checkbox"
     },
     {

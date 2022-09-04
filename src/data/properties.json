@@ -3418,7 +3418,13 @@
     {
       "key": "community-lgbtq-youth",
       "label": "community-lgbtq-youth",
-      "description": "Opportunities that serve LGBTQ youth",
+      "description": "Opportunities that serve LGBTQ+ youth",
+      "type": "checkbox"
+    },
+    {
+      "key": "community-lgbtq-youth-caregivers",
+      "label": "community-lgbtq-youth-caregivers",
+      "description": "Opportunities that serve Caregivers of LGBTQ+ youth",
       "type": "checkbox"
     },
     {
@@ -3502,7 +3508,7 @@
     {
       "key": "community-transgender",
       "label": "community-transgender",
-      "description": "Opportunities that serve the trans/gender nonconforming/nonbinary community",
+      "description": "Opportunities that serve the transgender community (for non-conforming or non-binary communities, use the gender-nonconforming or nonbinary properties)",
       "type": "checkbox"
     },
     {

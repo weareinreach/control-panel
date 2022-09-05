@@ -213,7 +213,7 @@ const AdminPanelUsers = (props) => {
         //   console.log(selectedManager);
         // },
       });
-    
+
     const queryType = query?.type;
     const queryTypeLabel = queryType ? queryType[0].toUpperCase()+queryType.substring(1)+'s': 'All Users'
     const tableActions = [

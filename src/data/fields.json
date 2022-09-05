@@ -509,7 +509,7 @@
     },
     {
       "key": "isReviewerApproved",
-      "label": "Reviewer",
+      "label": "Reviewer Approved",
       "type": "checkbox"
     }
   ],

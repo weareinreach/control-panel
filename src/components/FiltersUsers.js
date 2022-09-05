@@ -9,6 +9,7 @@ import {
   USER_TYPE_LAWYER,
   USER_TYPE_PROVIDER,
   USER_TYPE_SEEKER,
+  USER_TYPE_REVIEWER,
 } from '../utils';
 import {useInputChange} from '../utils/hooks';
 
@@ -17,6 +18,7 @@ const userTypes = [
   {label: 'Data Manager', value: USER_TYPE_DM},
   {label: 'Lawyer', value: USER_TYPE_LAWYER},
   {label: 'Provider', value: USER_TYPE_PROVIDER},
+  {label: 'Reviewer', value: USER_TYPE_REVIEWER},
   {label: 'Seeker', value: USER_TYPE_SEEKER},
 ];
 

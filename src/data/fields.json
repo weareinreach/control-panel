@@ -506,6 +506,26 @@
       "key": "isProfessional",
       "label": "Professional",
       "type": "checkbox"
+    },
+    {
+      "key": "isReviewerApproved",
+      "label": "Reviewer",
+      "type": "checkbox"
+    }
+  ],
+  "reviewerFields": [
+    {
+      "key": "name",
+      "label": "Name"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "isReviewerApproved",
+      "label": "Reviewer Approved",
+      "type": "checkbox"
     }
   ],
   "runStagingMigration":[

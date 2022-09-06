@@ -8,7 +8,7 @@ import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
-import {adminFields, userDetailsFields, reviewerFields} from '../data/fields.json';
+import {adminFields, userDetailsFields, reviewerFields, userDetailsFieldsReviewer} from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -214,6 +214,42 @@ const AdminPanelUsers = (props) => {
         // },
       });
 
+    const openDetailModalReviewer = (selectedManager) =>
+      openModal({
+        form: {
+          fields: userDetailsFieldsReviewer,
+          initialValues: {
+            name: selectedManager?.name,
+            email: selectedManager?.email,
+            currentLocation: selectedManager?.currentLocation,
+            verifyAnswer: selectedManager?.verifyAnswer,
+            timeCommitAnswer: selectedManager?.timeCommitAnswer,
+            specifiedTimeCommit: selectedManager?.specifiedTimeCommit,
+            auditAnswer: selectedManager?.auditAnswer,
+            suggestionsAnswer: selectedManager?.suggestionsAnswer,
+            reviewsAnswer: selectedManager?.reviewsAnswer,
+            payAnswer: selectedManager?.payAnswer,
+            specifiedOtherInfo: selectedManager?.specifiedOtherInfo,
+            age: selectedManager?.age,
+            countryOfOrigin: selectedManager?.countryOfOrigin,
+            ethnicityRace: selectedManager?.ethnicityRace,
+            immigrationStatus: selectedManager?.immigrationStatus,
+            sogIdentity: selectedManager?.sogIdentity,
+            orgType: selectedManager?.orgType,
+            catalogType: selectedManager?.catalogType,
+            updatedAt: selectedManager?.updated_at,
+            isAdminDataManager: selectedManager?.isAdminDataManager,
+            isProfessional: selectedManager?.isProfessional,
+            isReviewerApproved: selectedManager?.isReviewerApproved,
+          },
+        },
+        header: 'Local Community Reviewer User Details',
+        onClose: closeModal,
+        // onConfirm: () => {
+        //   console.log(selectedManager);
+        // },
+      });
+
     const queryType = query?.type;
     const queryTypeLabel = queryType ? queryType[0].toUpperCase()+queryType.substring(1)+'s': 'All Users'
     const tableActions = [
@@ -221,17 +257,19 @@ const AdminPanelUsers = (props) => {
         ? [
             {label: 'Edit', onClick: openEditModal},
             {label: 'Revoke', onClick: openRemoveModal},
+            {label: 'View', onClick: openDetailModal},
           ]
         : []),
-      ...(queryType === USER_TYPE_LAWYER ? [] : []),
-      ...(queryType === USER_TYPE_PROVIDER ? [] : []),
-      ...(queryType === USER_TYPE_SEEKER ? [] : []),
+      ...(queryType === USER_TYPE_LAWYER ? [      {label: 'View', onClick: openDetailModal},] : []),
+      ...(queryType === USER_TYPE_PROVIDER ? [      {label: 'View', onClick: openDetailModal},] : []),
+      ...(queryType === USER_TYPE_SEEKER ? [      {label: 'View', onClick: openDetailModal},] : []),
       ...(queryType === USER_TYPE_REVIEWER 
         ? [
             {label: 'Edit', onClick: openEditModalReviewer},
-            {label: 'Revoke', onClick: openRemoveModalReviewer}
+            {label: 'Revoke', onClick: openRemoveModalReviewer},
+            {label: 'View', onClick: openDetailModalReviewer},
           ] : []),
-      {label: 'View', onClick: openDetailModal},
+      ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),
       {label: 'Delete', onClick: openDeleteModal},
     ];
     const tableHeaders = [

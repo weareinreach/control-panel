@@ -178,12 +178,12 @@
     {
       "key": "slug",
       "label": "Slug",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "slug_ES",
       "label": "Slug_ES",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "website",
@@ -402,12 +402,12 @@
     {
       "key": "slug",
       "label": "Slug",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "slug_ES",
       "label": "Slug_ES",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "description",
@@ -537,7 +537,7 @@
     },
     {
       "key": "specifiedTimeCommit",
-      "label": "Time Committment if above is 'No'"
+      "label": "Time Committment answer if above is 'No'"
     },
     {
       "key": "auditAnswer",

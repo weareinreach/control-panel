@@ -13,12 +13,23 @@ import {useAPIGet} from '../utils/hooks';
 const initialQuery = { page: 1, pending: true };
 const initialUrls = getOrgQueryUrls(initialQuery);
 
-// THIS PAGE IS A PLACEHOLDER FOR REVIEWS AND REVIEWERS PENDING APPROVALS
+// THIS PAGE IS A PLACEHOLDER FOR REVIEWERS PENDING APPROVALS AND REVIEWS PENDING APPROVALS
 
 const AdminPanelReviews = (props) => {
   const {closeModal, openModal} = useContext(ContextFormModal);
   
   /*** Pending Reviewers ***/
+  const pendingReviewers = {}
+  const pendingReviewersCount = {}
+  const user = {}
+  /*** end of Pedning Reviewers ***/
+
+  /*** Pending Reviewers ***/
+  const pendingReviews = {}
+  const pendingReviewsCount = {}
+  const review = {}
+  /*** end of Pedning Reviewers ***/
+
   const orgOwners = useAPIGet(`/organizations?pendingOwnership=true`);
   const orgOwnersCount = useAPIGet(`/organizations/count?pendingOwnership=true`);
   const [queryOrgOwn, setQueryOrgOwn] = useState({page: 1});
@@ -181,40 +192,41 @@ const AdminPanelReviews = (props) => {
 
   return (
     <>
-      <Title>THIS PAGE IS A PLACEHOLDER FOR REVIEWS AND REVIEWERS PENDING APPROVALS</Title>
+      <Title>THIS PAGE IS UNDER CONSTRUCTION</Title>
       <Stack spacing={4}>
         <Container>
-          <SectionTitle>Pending Reviewers ({orgOwnersCount?.data?.count})</SectionTitle>
-          {pendingOwners?.length > 0 ? (
+          <SectionTitle>Reviewers Pending Approval ({pendingReviewersCount?.data?.count})</SectionTitle>
+          {pendingReviewers?.length > 0 ? (
             <Table
               tableDataTestId='pending-affiliates-table'
               actions={[
                 {
-                  label: 'View Organization',
-                  onClick: (owner) =>
-                    openOrganization(owner?.organization?._id),
+                  label: 'View User Details',
+                  onClick: (user) =>
+                    openOrganization(user?._id),
                 },
                 {
                   label: 'Approve',
-                  onClick: (owner) => openModalApprovalOwner(owner),
+                  onClick: (user) => openModalApprovalOwner(user),
                 },
                 {
                   label: 'Decline',
-                  onClick: (owner) => openModalDeclineOwner(owner),
+                  onClick: (user) => openModalDeclineOwner(user),
                 },
               ]}
               headers={[
+                {key: 'name', label: 'Name'},
                 {key: 'email', label: 'Email'},
                 {
-                  key: 'org.name',
-                  label: 'Organization Name',
-                  getValue: (owner) => owner?.organization?.name,
+                  key: 'user.currentLocation',
+                  label: 'User Location',
+                  getValue: (owner) => user?.currentLocation,
                 },
               ]}
-              rows={pendingOwners}
+              rows={pendingReviewers}
             />
           ) : (
-            <Text data-test-id='pending-affiliates-text' >No pending affiliates at this time</Text>
+            <Text data-test-id='pending-affiliates-text' >No pending Reviewers at this time</Text>
           )}
             <Pagination
               currentPage={queryOrgOwn?.page}
@@ -224,33 +236,33 @@ const AdminPanelReviews = (props) => {
             />
         </Container>
         <Container>
-          <SectionTitle>Reviews Pending Approval ({suggestionsCount?.data?.count})</SectionTitle>
-          {suggestions?.data?.length > 0 ? (
+          <SectionTitle>Reviews Pending Approval ({pendingReviewsCount?.data?.count})</SectionTitle>
+          {pendingReviews?.data?.length > 0 ? (
             <Table
             tableDataTestId='suggested-edits-table'
               actions={[
                 {
-                  label: 'View Organization',
-                  onClick: (suggestion) =>
+                  label: 'View Review',
+                  onClick: (review) =>
                     openOrganization(
-                      suggestion.organizationId,
-                      suggestion.serviceId
+                      review.organizationId,
+                      review.serviceId
                     ),
                 },
                 {
                   label: 'Decline',
-                  onClick: (suggestion) => openModalDeclineEdit(suggestion),
+                  onClick: (review) => openModalDeclineEdit(review),
                 },
               ]}
               headers={[
-                {key: 'userEmail', label: 'Suggested By'},
-                {key: 'field', label: 'Field'},
-                {key: 'value', label: 'Value'},
+                {key: 'userEmail', label: 'Reviewed By'},
+                {key: 'currentLocation', label: 'Location'},
+                {key: 'organization?.name', label: 'Organization Name'},
               ]}
-              rows={suggestions.data}
+              rows={pendingReviews}
             />
           ) : (
-            <Text data-test-id="suggested-edits-text">No suggested edits at this time</Text>
+            <Text data-test-id="suggested-edits-text">No Pending Reviews at this time</Text>
           )}
             <Pagination
               currentPage={querySug?.page}

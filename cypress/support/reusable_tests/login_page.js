@@ -91,7 +91,7 @@ Cypress.Commands.add('testLogOut',(viewport,username,password)=>{
     cy.getElementByTestId('drop-down-button-container').click().then(()=>{
         cy.getElementByTestId('drop-down-item').then($element=>{
             //second item on the dropdown
-            cy.wrap($element[1]).click();
+            cy.wrap($element[1]).click({force:true})
         });
     });
     cy.wait(1000)

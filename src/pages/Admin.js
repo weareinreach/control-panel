@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 
 import AdminPanelSuggestions from '../components/AdminPanelSuggestions';
+import AdminPanelReviews from '../components/AdminPanelReviews';
 import AdminPanelTrashBin from '../components/AdminPanelTrashBin';
 import AdminPanelUsers from '../components/AdminPanelUsers';
 import {ContextApp} from '../components/ContextApp';
@@ -22,6 +23,7 @@ const Admin = () => {
         <TabList marginBottom={4}>
           <Tab data-test-id="admin-tab-users">Users</Tab>
           <Tab data-test-id="admin-tab-suggestions">Suggestions</Tab>
+          <Tab data-test-id="admin-tab-reviews">Reviews</Tab>
           <Tab data-test-id="admin-tab-trash-bin">Trash Bin</Tab>
         </TabList>
         <TabPanels>
@@ -30,6 +32,9 @@ const Admin = () => {
           </TabPanel>
           <TabPanel>
             <AdminPanelSuggestions />
+          </TabPanel>
+           <TabPanel>
+          <AdminPanelReviews />
           </TabPanel>
           <TabPanel>
             <AdminPanelTrashBin />

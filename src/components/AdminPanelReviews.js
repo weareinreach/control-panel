@@ -198,7 +198,7 @@ const AdminPanelReviews = (props) => {
           <SectionTitle>Reviewers Pending Approval ({pendingReviewersCount?.data?.count})</SectionTitle>
           {pendingReviewers?.length > 0 ? (
             <Table
-              tableDataTestId='pending-affiliates-table'
+              tableDataTestId='pending-reviewers-table'
               actions={[
                 {
                   label: 'View User Details',
@@ -226,7 +226,7 @@ const AdminPanelReviews = (props) => {
               rows={pendingReviewers}
             />
           ) : (
-            <Text data-test-id='pending-affiliates-text' >No pending Reviewers at this time</Text>
+            <Text data-test-id='pending-reviewers-text' >No pending Reviewers at this time</Text>
           )}
             <Pagination
               currentPage={queryOrgOwn?.page}
@@ -239,7 +239,7 @@ const AdminPanelReviews = (props) => {
           <SectionTitle>Reviews Pending Approval ({pendingReviewsCount?.data?.count})</SectionTitle>
           {pendingReviews?.data?.length > 0 ? (
             <Table
-            tableDataTestId='suggested-edits-table'
+            tableDataTestId='reviews-approval-table'
               actions={[
                 {
                   label: 'View Review',
@@ -262,7 +262,7 @@ const AdminPanelReviews = (props) => {
               rows={pendingReviews}
             />
           ) : (
-            <Text data-test-id="suggested-edits-text">No Pending Reviews at this time</Text>
+            <Text data-test-id="reviews-approval-text">No Pending Reviews at this time</Text>
           )}
             <Pagination
               currentPage={querySug?.page}

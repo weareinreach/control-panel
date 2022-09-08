@@ -23,7 +23,7 @@ const Admin = () => {
         <TabList marginBottom={4}>
           <Tab data-test-id="admin-tab-users">Users</Tab>
           <Tab data-test-id="admin-tab-suggestions">Suggestions</Tab>
-          <Tab data-test-id="admin-tab-suggestions">Reviews</Tab>
+          <Tab data-test-id="admin-tab-reviews">Reviews</Tab>
           <Tab data-test-id="admin-tab-trash-bin">Trash Bin</Tab>
         </TabList>
         <TabPanels>

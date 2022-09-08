@@ -553,7 +553,7 @@ const FiltersOrganizations = (props) => {
             Claimed Status:
           </Text>
         </Flex>
-          <RadioGroup onChange={setClaimedStatus} value={claimedStatus}>
+          <RadioGroup onChange={setClaimedStatus} value={claimedStatus} data-test-id="filter-claim-status-switch">
             <Stack direction='row'>
               <Radio value='claimed'><Text fontSize="xs">Claimed</Text></Radio>
               <Radio value='notClaimed'><Text fontSize="xs">Not Claimed</Text></Radio>

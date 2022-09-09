@@ -26,7 +26,7 @@ describe('Home Page Login Form Tests', () => {
                });
             });
            });
-           it('Test States Tabs',()=>{
+           it('Test Stats Tabs',()=>{
             cy.get('@user_good').then(user => {
                 cy.addUser(user).then(()=>{
                     cy.testStatsTabs(viewport,user);

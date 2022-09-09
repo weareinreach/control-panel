@@ -178,12 +178,12 @@
     {
       "key": "slug",
       "label": "Slug",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "slug_ES",
       "label": "Slug_ES",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "website",
@@ -402,12 +402,12 @@
     {
       "key": "slug",
       "label": "Slug",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "slug_ES",
       "label": "Slug_ES",
-      "description": "Please be cautious editing this at it can result in broken links."
+      "description": "Please be cautious editing this as it can result in broken links."
     },
     {
       "key": "description",
@@ -505,6 +505,125 @@
     {
       "key": "isProfessional",
       "label": "Professional",
+      "type": "checkbox"
+    },
+    {
+      "key": "isReviewerApproved",
+      "label": "Reviewer Approved",
+      "type": "checkbox"
+    }
+  ],
+
+  "userDetailsFieldsReviewer": [
+    {
+      "key": "name",
+      "label": "Name"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "currentLocation",
+      "label": "Current Location"
+    },
+    {
+      "key": "verifyAnswer",
+      "label": "Verified Answer"
+    },
+    {
+      "key": "timeCommitAnswer",
+      "label": "Time Committment Answer"
+    },
+    {
+      "key": "specifiedTimeCommit",
+      "label": "Time Committment answer if above is 'No'"
+    },
+    {
+      "key": "auditAnswer",
+      "label": "Audit Committment Answer"
+    },
+    {
+      "key": "suggestionsAnswer",
+      "label": "Suggestions Committment Answer"
+    },
+    {
+      "key": "reviewsAnswer",
+      "label": "Reviews Committment Answer"
+    },
+    {
+      "key": "payAnswer",
+      "label": "Understanding of 'Pay' Answer"
+    },
+    {
+      "key": "specifiedOtherInfo",
+      "label": "Other Information provided by the user"
+    },
+    {
+      "key": "age",
+      "label": "Age"
+    },
+    {
+      "key": "countryOfOrigin",
+      "label": "Country of Origin"
+    },
+    {
+      "key": "ethnicityRace",
+      "label": "Ethnicity"
+    },
+    {
+      "key": "immigrationStatus",
+      "label": "Immigration Status"
+    },
+    {
+      "key": "sogIdentity",
+      "label": "Identity"
+    },
+    {
+      "key": "orgType",
+      "label": "Organization Type"
+    },
+    {
+      "key": "catalogType",
+      "label": "Catalog Type"
+    },
+    {
+      "key": "updatedAt",
+      "label": "Last Updated"
+    },
+    {
+      "key": "isAdminDataManager",
+      "label": "Admin Data Manager",
+      "type": "checkbox"
+    },
+    {
+      "key": "isAdminDeveloper",
+      "label": "Admin Developer",
+      "type": "checkbox"
+    },
+    {
+      "key": "isProfessional",
+      "label": "Professional",
+      "type": "checkbox"
+    },
+    {
+      "key": "isReviewerApproved",
+      "label": "Reviewer Approved",
+      "type": "checkbox"
+    }
+  ],
+  "reviewerFields": [
+    {
+      "key": "name",
+      "label": "Name"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "isReviewerApproved",
+      "label": "Reviewer Approved",
       "type": "checkbox"
     }
   ],

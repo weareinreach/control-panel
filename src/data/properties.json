@@ -3428,12 +3428,6 @@
       "type": "checkbox"
     },
     {
-      "key": "community-lgbtq-youth-caregivers",
-      "label": "community-lgbtq-youth-caregivers",
-      "description": "Opportunities that serve Caregivers of Trans youth",
-      "type": "checkbox"
-    },
-    {
       "key": "community-middle-east-immigrant",
       "label": "community-middle-east-immigrant",
       "description": "Opportunities that serve those from the Middle East",

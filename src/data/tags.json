@@ -1,7 +1,19 @@
 {
   "canada": {
-    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
-    "Community Support": ["Cultural centres", "LGBTQ centres", "Reception services", "Spiritual Support"],
+    "Abortion Care": [
+      "Abortion Providers",
+      "Financial Assistance",
+      "Lodging Assistance",
+      "Mail Order Services",
+      "Mental Health Support",
+      "Travel Assistance"
+    ],
+    "Community Support": [
+      "Cultural centres",
+      "LGBTQ centres",
+      "Reception services",
+      "Spiritual Support"
+    ],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",
@@ -59,8 +71,19 @@
     ]
   },
   "mexico": {
-    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
-    "Community Support": ["Cultural centers", "LGBTQ centers", "Spiritual Support"],
+    "Abortion Care": [
+      "Abortion Providers",
+      "Financial Assistance",
+      "Lodging Assistance",
+      "Mail Order Services",
+      "Mental Health Support",
+      "Travel Assistance"
+    ],
+    "Community Support": [
+      "Cultural centers",
+      "LGBTQ centers",
+      "Spiritual Support"
+    ],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",
@@ -80,6 +103,7 @@
       "Clothes",
       "Gender-affirming items",
       "Gender-neutral bathrooms",
+      "Haircuts and stylists",
       "Hygiene"
     ],
     "Legal": [
@@ -117,8 +141,20 @@
     ]
   },
   "united_states": {
-    "Abortion Care":["Abortion Providers", "Financial Assistance", "Lodging Assistance", "Mail Order Services", "Mental Health Support",  "Travel Assistance"],
-    "Community Support": ["Cultural centers", "LGBTQ centers", "Sponsors", "Spiritual Support"],
+    "Abortion Care": [
+      "Abortion Providers",
+      "Financial Assistance",
+      "Lodging Assistance",
+      "Mail Order Services",
+      "Mental Health Support",
+      "Travel Assistance"
+    ],
+    "Community Support": [
+      "Cultural centers",
+      "LGBTQ centers",
+      "Sponsors",
+      "Spiritual Support"
+    ],
     "Computers and Internet": [],
     "Education and Employment": [
       "Career counseling",

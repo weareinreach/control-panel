@@ -18,6 +18,13 @@ Cypress.Commands.add('testAdminPageElements', (viewport, creds) => {
         expect($element).contain('Suggestions');
     });
 
+    cy.getElementByTestId('admin-tab-reviews').then($element => {
+        expect($element).to.be.visible;
+        expect($element).to.have.attr('type', 'button');
+        expect($element).to.have.attr('data-index', '2');
+        expect($element).contain('Reviews');
+    });
+
     cy.getElementByTestId('admin-users-new-manager').then($element => {
         expect($element).to.be.visible;
         expect($element).to.have.attr('type', 'button');
@@ -26,7 +33,7 @@ Cypress.Commands.add('testAdminPageElements', (viewport, creds) => {
 
     cy.getElementByTestId('admin-users-title').then($element => {
         expect($element).to.be.visible;
-        expect($element).contain('Data Managers');
+        expect($element).contain('All Users');
     });
 
     cy.getElementByTestId('filter-users-title').then($element => {

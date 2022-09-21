@@ -27,6 +27,7 @@ const DashboardPanelGithub = (props) =>{
     const createReleaseEndpoint= `${CATALOG_API_URL}/dashboard/createRelease`;
     const runStagingMigrationEndpoint = `${CATALOG_API_URL}/dashboard/triggerStagingMigration`;
     const runProductionMigrationEndpoint = `${CATALOG_API_URL}/dashboard/triggerProductionMigration`;
+    const runProductionsDBReplicationEndpoint = `${CATALOG_API_URL}/dashboard/triggerBackUpAndRestore`;
     const releasesLoading =  appReleases?.loading || apiReleases?.loading || adminReleases?.loading;
     const hallOfFameLoading = appHallOfFame?.loading || apiHallOfFame?.loading || adminHallOfFame?.loading; 
     const {user} = useContext(ContextApp);
@@ -59,6 +60,13 @@ const DashboardPanelGithub = (props) =>{
             parameters:{
                 run_migration_prod:true,
                 date_pattern:input.date_pattern
+            }
+        }
+    }
+    const createProductionDBReplicationBody = () =>{
+        return {
+            parameters:{
+                backup_and_restore:true
             }
         }
     }
@@ -126,10 +134,19 @@ const DashboardPanelGithub = (props) =>{
  <Button
    marginBottom={10}
    marginLeft={5}
+   marginRight={5}
    data-test-id="admin-dashboard-run-migration"
    onClick={()=>openCreateModal('Run Production Migration',runProductionMigration,runProductionMigrationEndpoint,createProductionMigrationBody)}
  >
    Run Production Migration
+ </Button>
+ <Button
+   marginBottom={10}
+   marginLeft={5}
+   data-test-id="admin-dashboard-trigger-db-backup"
+   onClick={()=>openCreateModal('Click Save Changes to Run Production DB Replication',null,runProductionsDBReplicationEndpoint,createProductionDBReplicationBody)}
+ >
+   Run Production DB Replication
  </Button>
 </Box>
     ): null}

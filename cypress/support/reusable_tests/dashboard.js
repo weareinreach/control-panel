@@ -128,8 +128,8 @@ Cypress.Commands.add('testDashboardElements',(viewport, creds)=>{
 
         cy.getElementByTestId('filter-claim-status-switch').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.have.attr('type','checkbox');
-        expect($element.children()).contain('Claimed');
+        expect($element).to.have.attr('role','radiogroup');
+        expect($element.children()).contain('All');
     });
 
     cy.getElementByTestId('filter-properties-label').then($element=>{

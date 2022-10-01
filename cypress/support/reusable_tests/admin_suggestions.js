@@ -90,7 +90,7 @@ Cypress.Commands.add('testAdminSuggestionElements',(viewport,creds)=>{
     
     cy.getElementByTestId('section-title').then($element=>{
         expect($element).to.be.visible;
-        expect($element).to.be.lengthOf(3);
+        expect($element).to.be.lengthOf(5);
         expect($element[0]).contain('Pending Affiliates');
         expect($element[1]).contain('Suggested Edits');
         expect($element[2]).contain('Suggested Organizations');

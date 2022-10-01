@@ -10,6 +10,7 @@ export const USER_TYPE_DM = 'dataManager';
 export const USER_TYPE_LAWYER = 'lawyer';
 export const USER_TYPE_PROVIDER = 'provider';
 export const USER_TYPE_SEEKER = 'seeker';
+export const USER_TYPE_REVIEWER = 'reviewer';
 
 export const getSchedule = (start, end) => {
   if (start || end) {

@@ -156,6 +156,11 @@
       "isRequired": true
     },
     {
+      "key": "lat-long-btn",
+      "label": "Fetch Latitute & Longitude",
+      "type": "latlonbtn"
+    },
+    {
       "key": "is_primary",
       "label": "Is Primary",
       "type": "checkbox"
@@ -627,91 +632,90 @@
       "type": "checkbox"
     }
   ],
-  "runStagingMigration":[
+  "runStagingMigration": [
     {
       "key": "migration_files",
       "label": "Migration Files",
-      "description":"Migration Files should be input here. Use full files names delimited by a coma",
+      "description": "Migration Files should be input here. Use full files names delimited by a coma",
       "type": "textarea"
     }
   ],
-  "runProductionMigration":[
+  "runProductionMigration": [
     {
       "key": "date_pattern",
       "label": "Date Pattern",
-      "description":"Date Pattern, it would follow the format: 2022.07.31"
+      "description": "Date Pattern, it would follow the format: 2022.07.31"
     }
   ],
-  "createNewRelease":[
+  "createNewRelease": [
     {
-      "key":"inreach_catalog",
-      "label":"InReach App",
-      "type":"checkbox"
+      "key": "inreach_catalog",
+      "label": "InReach App",
+      "type": "checkbox"
     },
     {
-      "key":"divider_1",
-      "type":"divider"
+      "key": "divider_1",
+      "type": "divider"
     },
     {
-      "key":"inreach_api",
-      "label":"InReach API",
-      "type":"checkbox"
+      "key": "inreach_api",
+      "label": "InReach API",
+      "type": "checkbox"
     },
     {
-      "key":"divider_2",
-      "type":"divider"
+      "key": "divider_2",
+      "type": "divider"
     },
     {
-      "key":"control_panel",
-      "label":"Admin App",
-      "type":"checkbox"
+      "key": "control_panel",
+      "label": "Admin App",
+      "type": "checkbox"
     },
     {
-      "key":"divider_3",
-      "type":"divider"
+      "key": "divider_3",
+      "type": "divider"
     },
     {
-      "key":"inreach_source_branch",
-      "label":"InReach Source Branch",
-      "type":"select",
-      "description":"The branch the release branch will be cut from.",
-      "options":[
+      "key": "inreach_source_branch",
+      "label": "InReach Source Branch",
+      "type": "select",
+      "description": "The branch the release branch will be cut from.",
+      "options": [
         {
-          "label":"Select One",
-          "value":null
+          "label": "Select One",
+          "value": null
         },
         {
-          "label":"dev",
-          "value":"dev"
+          "label": "dev",
+          "value": "dev"
         }
       ]
     },
     {
-      "key":"inreach_target_ranch",
-      "label":"InReach Target Branch",
-      "type":"select",
-      "description":"The branch the merge request will target.",
-      "options":[
+      "key": "inreach_target_ranch",
+      "label": "InReach Target Branch",
+      "type": "select",
+      "description": "The branch the merge request will target.",
+      "options": [
         {
-          "label":"Select One",
-          "value":null
+          "label": "Select One",
+          "value": null
         },
         {
-          "label":"main",
-          "value":"main"
-
+          "label": "main",
+          "value": "main"
         }
       ]
     },
     {
-      "key":"inreach_release_branch",
-      "label":"Release Branch",
-      "placeholder":"release/2022.06.30"
+      "key": "inreach_release_branch",
+      "label": "Release Branch",
+      "placeholder": "release/2022.06.30"
     },
     {
-      "key":"inreach_pr_title",
-      "label":"Pull Request Title",
-      "placeholder":"June Release"
+      "key": "inreach_pr_title",
+      "label": "Pull Request Title",
+      "placeholder": "June Release"
     }
   ]
 }

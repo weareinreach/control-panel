@@ -11,9 +11,10 @@ import {
   Select,
   Text,
   Textarea,
-  Tooltip, 
-  Divider
+  Tooltip,
+  Divider,
 } from '@chakra-ui/react';
+import {FetchLatLongBtn} from './ButtonFetchLatLong';
 
 import PasswordInput from './PasswordInput';
 
@@ -33,6 +34,7 @@ const FormField = (props) => {
   let InputComponent = null;
   let isCheckBox = false;
   let isSelect = false;
+  let isButton = false;
 
   switch (type) {
     case 'checkbox':
@@ -49,9 +51,13 @@ const FormField = (props) => {
     case 'divider':
       isDivider = true;
       InputComponent = Divider;
-    break;
+      break;
     case 'textarea':
       InputComponent = Textarea;
+      break;
+    case 'latlonbtn':
+      isButton = true;
+      InputComponent = FetchLatLongBtn;
       break;
     default:
       InputComponent = Input;
@@ -87,8 +93,8 @@ const FormField = (props) => {
             </>
           )}
           {isDivider ? (
-             <InputComponent {...inputProps} size={inputProps.size}/>
-          ): null}
+            <InputComponent {...inputProps} size={inputProps.size} />
+          ) : null}
           {isSelect ? (
             <InputComponent {...inputProps}>
               {options.map(({label, value}) => (
@@ -97,6 +103,8 @@ const FormField = (props) => {
                 </option>
               ))}
             </InputComponent>
+          ) : isButton ? (
+            <InputComponent formik={formik} />
           ) : (
             <InputComponent {...inputProps} />
           )}

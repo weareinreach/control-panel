@@ -61,5 +61,5 @@ export const FetchLatLongBtn = ({formik}) => {
 };
 
 FetchLatLongBtn.propTypes = {
-  formik: PropTypes.object(),
+  formik: PropTypes.any,
 };

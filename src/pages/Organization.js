@@ -50,31 +50,51 @@ const Organization = (props) => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data: organization, loading} = useAPIGet(orgPath);
-  let servicePath = ''
-
-  let serviceIdArr = []
-  serviceIdArr = organization?.services.map((service) => service._id)
-
+  const[orgComments, setOrgComments] = useState([])
   const[serviceComments, setServiceComments] = useState([])
+
+  const getOrgComments = () => {
+    if(!loading){
+     let servicePath = `${CATALOG_API_URL}${orgPath}/comments`
+     get(servicePath)
+      .then(({data}) => {
+        if(data.comments.length > 0){
+          data.comments.forEach(comment => {
+            setOrgComments(prev => [...prev, comment])
+          })
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+
+    }
+  }
 
   const getServiceComments = () => {
     if(!loading){
-      serviceIdArr.forEach(i=>{
-         servicePath = `${CATALOG_API_URL}${orgPath}/services/${i}/comments`
-         get(servicePath)
-          .then(({data}) => {
-            if(data.comments.length > 0){ 
-              setServiceComments(prev => [...prev, data.comments[0]])
-            }
-          })
-          .catch((err) => {
-            throw new Error(err);
-          });
+      services.forEach(i => {
+       let servicePath = `${CATALOG_API_URL}${orgPath}/services/${i._id}/comments`
+       get(servicePath)
+        .then(({data}) => {
+          if(data.comments.length > 0){
+            data.comments.forEach(comment => {
+              let thing = services.find((service) => service._id == i)
+              comment.serviceName = i.name
+              comment.serviceId = i._id
+              setServiceComments(prev => [...prev, comment])
+            })
+          }
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
       })
     }
   }
 
   useEffect(() => {
+    getOrgComments()
     getServiceComments()
   }, [loading])
 
@@ -525,6 +545,9 @@ const Organization = (props) => {
     return <NotFound />;
   }
 
+  // console.log(orgComments)
+  // console.log(serviceComments)
+
   return (
     <>
       <Helmet title={name} />
@@ -868,11 +891,26 @@ const Organization = (props) => {
               <div>
                 <Container>
                   <SectionTitle data-test-id="organization-services-title">
-                    Reviews
+                    Reviews for this Organization
                   </SectionTitle>
                   <Table
                     headers={[
                       {key: 'comment', label: 'Review'},
+                      {key: 'userId', label: 'User ID'},
+                      {key: 'created_at', label: 'Submitted'},
+                    ]}
+                    rows={orgComments}
+                  />
+                </Container>
+                <Container>
+                  <SectionTitle data-test-id="organization-services-title">
+                    Reviews for the Services of this Organization
+                  </SectionTitle>
+                  <Table
+                    headers={[
+                      {key: 'serviceName', label: 'Service'},
+                      {key: 'comment', label: 'Review'},
+                      {key: 'userId', label: 'User ID'},
                       {key: 'created_at', label: 'Submitted'},
                     ]}
                     rows={serviceComments}

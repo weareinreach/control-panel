@@ -915,6 +915,7 @@ const Organization = (props) => {
                   <SectionTitle data-test-id="organization-services-title">
                     Reviews for this Organization
                   </SectionTitle>
+                  {orgComments.length > 0 ? (
                   <Table
                     headers={[
                       {key: 'comment', label: 'Review'},
@@ -924,11 +925,13 @@ const Organization = (props) => {
                     ]}
                     rows={orgComments}
                   />
+                  ) : 'There are no reviews for this Organization'}
                 </Container>
                 <Container>
                   <SectionTitle data-test-id="organization-services-title">
                     Reviews for the Services of this Organization
                   </SectionTitle>
+                  {serviceComments.length > 0 ? (
                   <Table
                     headers={[
                       {key: 'serviceName', label: 'Service Title'},
@@ -939,6 +942,7 @@ const Organization = (props) => {
                     ]}
                     rows={serviceComments}
                   />
+                  ): 'There are no Service reviews for this Organization'}
                 </Container>
               </div>
             </TabPanel>

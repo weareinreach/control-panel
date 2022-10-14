@@ -1,6 +1,6 @@
-import {delete as httpDelete, patch, post} from 'axios';
+import {delete as httpDelete, patch, post, get} from 'axios';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Stack} from '@chakra-ui/react';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -19,7 +19,6 @@ import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 import {Text} from '@chakra-ui/react';
 import _map from 'lodash/map';
 import _forEach from 'lodash/forEach';
-
 
 import {
   emailFields,
@@ -51,6 +50,33 @@ const Organization = (props) => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data: organization, loading} = useAPIGet(orgPath);
+  let servicePath = ''
+
+  let serviceIdArr = []
+  serviceIdArr = organization?.services.map((service) => service._id)
+
+  const[serviceComments, setServiceComments] = useState([])
+
+  const getServiceComments = () => {
+    if(!loading){
+      serviceIdArr.forEach(i=>{
+         servicePath = `${CATALOG_API_URL}${orgPath}/services/${i}/comments`
+         get(servicePath)
+          .then(({data}) => {
+            if(data.comments.length > 0){ 
+              setServiceComments(prev => [...prev, data.comments[0]])
+            }
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
+      })
+    }
+  }
+
+  useEffect(() => {
+    getServiceComments()
+  }, [loading])
 
   const {
     _id,
@@ -80,6 +106,7 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
+  
   const updateFields = ({
     setLoading,
     setSuccess,
@@ -564,6 +591,12 @@ const Organization = (props) => {
             >
               Photos
             </Tab>
+            <Tab
+              data-test-id="organization-tab-reviews"
+              style={{boxShadow: 'none'}}
+            >
+              Reviews
+            </Tab>
           </TabList>
           <TabPanels>
             <TabPanel mt={5}>
@@ -830,6 +863,22 @@ const Organization = (props) => {
                   venue_id={venue_id}
                 />
               </Box>
+            </TabPanel>
+            <TabPanel mt={5}>
+              <div>
+                <Container>
+                  <SectionTitle data-test-id="organization-services-title">
+                    Reviews
+                  </SectionTitle>
+                  <Table
+                    headers={[
+                      {key: 'comment', label: 'Review'},
+                      {key: 'created_at', label: 'Submitted'},
+                    ]}
+                    rows={serviceComments}
+                  />
+                </Container>
+              </div>
             </TabPanel>
           </TabPanels>
         </Tabs>

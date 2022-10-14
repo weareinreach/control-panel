@@ -50,8 +50,21 @@ const Organization = (props) => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data: organization, loading} = useAPIGet(orgPath);
-  const[orgComments, setOrgComments] = useState([])
-  const[serviceComments, setServiceComments] = useState([])
+  const [orgComments, setOrgComments] = useState([]);
+  const [serviceComments, setServiceComments] = useState([]);
+
+
+  async function getUsers(userId) {
+    try{
+      let userPath = `${CATALOG_API_URL}/users/${userId}`;
+      const response = await get(userPath)
+      return response
+      }
+    catch(err) {
+      throw err;
+      console.log(err);
+    }
+  }
 
   const getOrgComments = () => {
     if(!loading){
@@ -60,7 +73,13 @@ const Organization = (props) => {
       .then(({data}) => {
         if(data.comments.length > 0){
           data.comments.forEach(comment => {
-            setOrgComments(prev => [...prev, comment])
+            getUsers(comment.userId)
+              .then(({data}) =>{
+                comment.userId = comment.userId
+                comment.userName = data.name
+                comment.userEmail = data.email
+                setOrgComments(prev => [...prev, comment])
+              })
           })
         }
       })
@@ -79,10 +98,15 @@ const Organization = (props) => {
         .then(({data}) => {
           if(data.comments.length > 0){
             data.comments.forEach(comment => {
-              let thing = services.find((service) => service._id == i)
-              comment.serviceName = i.name
-              comment.serviceId = i._id
-              setServiceComments(prev => [...prev, comment])
+              getUsers(comment.userId)
+                .then(({data}) =>{
+                  comment.userId = comment.userId
+                  comment.userName = data.name
+                  comment.userEmail = data.email
+                  comment.serviceName = i.name
+                  comment.serviceId = i._id
+                  setServiceComments(prev => [...prev, comment])
+                })
             })
           }
         })
@@ -92,6 +116,7 @@ const Organization = (props) => {
       })
     }
   }
+
 
   useEffect(() => {
     getOrgComments()
@@ -545,9 +570,6 @@ const Organization = (props) => {
     return <NotFound />;
   }
 
-  // console.log(orgComments)
-  // console.log(serviceComments)
-
   return (
     <>
       <Helmet title={name} />
@@ -896,7 +918,8 @@ const Organization = (props) => {
                   <Table
                     headers={[
                       {key: 'comment', label: 'Review'},
-                      {key: 'userId', label: 'User ID'},
+                      {key: 'userName', label: 'Reviewer Name'},
+                      {key: 'userEmail', label: 'Reviewer Email'},
                       {key: 'created_at', label: 'Submitted'},
                     ]}
                     rows={orgComments}
@@ -908,9 +931,10 @@ const Organization = (props) => {
                   </SectionTitle>
                   <Table
                     headers={[
-                      {key: 'serviceName', label: 'Service'},
+                      {key: 'serviceName', label: 'Service Title'},
                       {key: 'comment', label: 'Review'},
-                      {key: 'userId', label: 'User ID'},
+                      {key: 'userName', label: 'Reviewer Name'},
+                      {key: 'userEmail', label: 'Reviewer Email'},
                       {key: 'created_at', label: 'Submitted'},
                     ]}
                     rows={serviceComments}

@@ -52,7 +52,19 @@ const Organization = (props) => {
   const {data: organization, loading} = useAPIGet(orgPath);
   const [orgComments, setOrgComments] = useState([]);
   const [serviceComments, setServiceComments] = useState([]);
-
+    //re-structure the service comments array
+  let servicesWithComments  = [...new Set(serviceComments.map((comment) => comment.serviceId))]
+  let thing = []
+  
+  servicesWithComments.forEach((id) => {
+   thing.push({'serviceId': id, 'comments':[]})
+   serviceComments.forEach((sId) => {
+    if(id == sId.serviceId){
+      thing[thing.findIndex(x => x.serviceId === sId.serviceId)].comments.push(sId)
+    }
+   })
+  })
+  servicesWithComments = thing
 
   async function getUsers(userId) {
     try{
@@ -912,9 +924,9 @@ const Organization = (props) => {
             <TabPanel mt={5}>
               <div>
                 <Container>
-                  <SectionTitle data-test-id="organization-services-title">
+                  <Title data-test-id="organization-services-title">
                     Reviews for this Organization
-                  </SectionTitle>
+                  </Title>
                   {orgComments.length > 0 ? (
                   <Table
                     headers={[
@@ -928,21 +940,30 @@ const Organization = (props) => {
                   ) : 'There are no reviews for this Organization'}
                 </Container>
                 <Container>
-                  <SectionTitle data-test-id="organization-services-title">
+                  <Title data-test-id="organization-services-title">
                     Reviews for the Services of this Organization
-                  </SectionTitle>
+                  </Title>                  
                   {serviceComments.length > 0 ? (
-                  <Table
-                    headers={[
-                      {key: 'serviceName', label: 'Service Title'},
-                      {key: 'comment', label: 'Review'},
-                      {key: 'userName', label: 'Reviewer Name'},
-                      {key: 'userEmail', label: 'Reviewer Email'},
-                      {key: 'created_at', label: 'Submitted'},
-                    ]}
-                    rows={serviceComments}
-                  />
-                  ): 'There are no Service reviews for this Organization'}
+                    servicesWithComments.map((service) => {                 
+                      return(
+                        <>
+                          <SectionTitle>
+                          Service Name: {service.comments[0].serviceName} 
+                          </SectionTitle>
+                          <Table
+                            actions={[{label: 'Hide Review', onClick: openOrgDelete}]}
+                            headers={[
+                              {key: 'comment', label: 'Review'},
+                              {key: 'userName', label: 'Reviewer Name'},
+                              {key: 'userEmail', label: 'Reviewer Email'},
+                              {key: 'created_at', label: 'Submitted'},
+                            ]}
+                            rows={service.comments}
+                          />
+                       </>
+                      )
+                    })
+                  ): 'There are no Service reviews for this Organization'}                
                 </Container>
               </div>
             </TabPanel>

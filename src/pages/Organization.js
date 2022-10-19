@@ -500,7 +500,6 @@ const Organization = (props) => {
         onConfirm: updateListField('schedules'),
       });
     };
-
   const openSocialMediaForm = ({
     isEdit = false,
     isDelete = false,
@@ -573,6 +572,54 @@ const Organization = (props) => {
         },
       });
     };
+
+  const openDeleteReviewForm =
+    ({isDelete} = {}) =>
+    (comment) => {
+
+      let updatedComment = comment
+      let header = ''
+      let other = ''
+      if(comment.isDeleted){
+        updatedComment.isDeleted = false
+        header = 'Re-publish this comment?'
+        other = 'This action will allow this review to be displayed in the InReach App for this organization'
+      } else{
+        updatedComment.isDeleted = true
+        header = 'Delete this comment?'
+        other = 'This action means this review will NOT be displayed in the InReach App for this organization'
+      } 
+
+      if (isDelete) {
+        return  openModal({
+          header: header,
+          isAlert: true,
+          isOther: other,
+          onClose: closeModal,
+          onConfirm: ({setLoading, setSuccess, setError, setErrorMessage}) => {
+            let url = `${CATALOG_API_URL}${orgPath}`;
+            comment.serviceId ?
+              url += `/services/${comment.serviceId}/comments/${comment._id}`
+                :
+              url += `/comments/${comment._id}`
+          
+            setLoading();
+            patch(url, updatedComment)
+              .then(() => {
+                setSuccess();
+                window.location = `/organizations/${orgId}`;
+              })
+              .catch((err) => {
+                const {message} = err?.response?.data;
+                setError();
+                setErrorMessage(message ?? null);
+                console.log(err);
+              });
+          },
+        });
+      }
+
+    }
 
   if (loading) {
     return <Loading />;
@@ -929,11 +976,18 @@ const Organization = (props) => {
                   </Title>
                   {orgComments.length > 0 ? (
                   <Table
+                    actions={[{
+                      label: 'Toggle Delete',
+                      onClick: openDeleteReviewForm({isDelete: 'toggle'}),
+                      },
+                    ]}
                     headers={[
                       {key: 'comment', label: 'Review'},
                       {key: 'userName', label: 'Reviewer Name'},
                       {key: 'userEmail', label: 'Reviewer Email'},
+                      {key: 'isDeleted', label: 'Is Deleted'},
                       {key: 'created_at', label: 'Submitted'},
+                      {key: 'updated_at', label: 'Updated'},
                     ]}
                     rows={orgComments}
                   />
@@ -951,12 +1005,18 @@ const Organization = (props) => {
                           Service Name: {service.comments[0].serviceName} 
                           </SectionTitle>
                           <Table
-                            actions={[{label: 'Hide Review', onClick: openOrgDelete}]}
+                            actions={[{
+                              label: 'Toggle Delete',
+                              onClick: openDeleteReviewForm({isDelete: 'toggle'}),
+                              },
+                            ]}
                             headers={[
                               {key: 'comment', label: 'Review'},
                               {key: 'userName', label: 'Reviewer Name'},
                               {key: 'userEmail', label: 'Reviewer Email'},
+                              {key: 'isDeleted', label: 'Is Deleted'},
                               {key: 'created_at', label: 'Submitted'},
+                              {key: 'update_at', label: 'Updated'},
                             ]}
                             rows={service.comments}
                           />

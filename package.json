@@ -58,7 +58,7 @@
     "cypress": "^7.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
-    "mochawesome": "^6.2.2",
+    "mochawesome": "^7.0.0",
     "mochawesome-merge": "^4.2.0",
     "nyc": "^15.1.0",
     "prettier": "^2.0.5"

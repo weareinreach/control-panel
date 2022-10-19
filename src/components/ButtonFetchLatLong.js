@@ -7,13 +7,11 @@ import config from '../utils/config';
 export const url = `${config.apiDomain}${config.apiBasePath}/getCoords`;
 
 const fetchCoords = async (query) => {
-  console.log('fetch!');
   const {data} = await axios.get(url, {
     params: {
       text: query,
     },
   });
-  console.log(data);
   return data;
 };
 
@@ -21,7 +19,15 @@ export const FetchLatLongBtn = ({formik}) => {
   console.log(formik);
   const {values, setFieldValue} = formik;
   const [loading, setLoading] = useState(false);
-  const addressQuery = `${values.address}, ${values.city}, ${values.state}, ${values.zip_code}, ${values.country}`;
+  const addressQuery = [
+    values.address,
+    values.city,
+    values.state,
+    values.zip_code,
+    values.country,
+  ]
+    .filter((x) => x)
+    .join(',');
 
   const checkUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURI(
     addressQuery

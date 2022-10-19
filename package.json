@@ -57,6 +57,7 @@
     "@testing-library/user-event": "^10.0.2",
     "cypress": "^7.1.0",
     "husky": "^4.2.5",
+    "istanbul-lib-coverage": "^3.2.0",
     "lint-staged": "^10.1.7",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",

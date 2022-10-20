@@ -54,11 +54,14 @@ jobs:
       - checkout:
           path: control-panel
       - run:
+          name: Install OS dependencies
+          command: apt-get update && apt-get install curl git gpg unzip -y
+      - run:
           name: Add Nodesource repo
           command: curl -fsSL https://deb.nodesource.com/setup_18.x | bash
       - run:
-          name: Install OS dependencies
-          command: apt-get update && apt-get install curl git gpg unzip nodejs -y
+          name: Install latest Node16
+          command: apt-get update && apt-get install nodejs -y
       # - run:
       #     name: Install fnm for node version management
       #     command: curl -fsSL https://fnm.vercel.app/install | bash

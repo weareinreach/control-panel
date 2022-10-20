@@ -480,8 +480,8 @@ Cypress.Commands.add(
     cy.addOrganization(organization);
 
     // Register intercepts
-    cy.intercept({method: 'GET', url: '*/v1/organizations/*'}).as('loadOrg');
-    cy.intercept({method: 'PATCH', url: '*/v1/organizations/*'}).as(
+    cy.intercept({method: 'GET', url: '/v1/organizations/*'}).as('loadOrg');
+    cy.intercept({method: 'PATCH', url: '/v1/organizations/*'}).as(
       'saveSchedule'
     );
 

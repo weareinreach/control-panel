@@ -53,7 +53,7 @@ describe('Organization Form Tests', () => {
           });
         });
       });
-      it.only('Testing Adding Organization Addresses', () => {
+      it('Testing Adding Organization Addresses', () => {
         cy.get('@user_good').then((user) => {
           cy.addUser(user).then(() => {
             cy.get('@organization').then((org) => {

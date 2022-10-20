@@ -42,7 +42,7 @@ jobs:
       GROUP_NAME: << parameters.group_name >>
     docker:
       # - image: cypress/base:16.17.1
-      - image: cimg/node:16.18.0
+      - image: cypress/included:7.7.0
         environment:
           TERM: xterm
       ## MongoDB
@@ -54,9 +54,9 @@ jobs:
     steps:
       - checkout:
           path: control-panel
-      # - run:
-      #     name: Install OS dependencies
-      #     command: apt-get update && apt-get install curl git gpg unzip -y
+      - run:
+          name: Install OS dependencies
+          command: apt-get update && apt-get install curl git gpg unzip -y
       - jq/install
       - run:
           name: Check Node Version

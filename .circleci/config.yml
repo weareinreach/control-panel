@@ -14,20 +14,25 @@ jobs:
     working_directory: ~/control-panel
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - control-panel-{{ checksum "yarn.lock" }}
       - run:
           name: Check Node Version
           command: node --version
       - run:
           name: Install Packages
-          command: yarn install
-      #save cache for use next tests
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Compile Binary
           command: yarn build
+      #save cache for use next tests
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: control-panel-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
   e2e:
     parameters:
@@ -53,6 +58,10 @@ jobs:
     steps:
       - checkout:
           path: control-panel
+      - restore_cache:
+          name: Restore Cache
+          keys:
+            - control-panel-{{ checksum "yarn.lock" }}
       - run:
           name: Install OS dependencies
           command: apt-get update && apt-get install curl git gpg unzip -y
@@ -85,13 +94,13 @@ jobs:
             EOF
       - run:
           name: Install API Packages
-          command: cd inreach-api && yarn install
+          command: cd inreach-api && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: 'Seed Docker DB'
           command: cd inreach-api && yarn seed-docker-db
       - run:
           name: Install Control Panel Packages
-          command: cd control-panel && yarn install
+          command: cd control-panel && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Instantiate API And Run E2E tests
           command: (cd inreach-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
@@ -109,6 +118,11 @@ jobs:
       - store_artifacts:
           path: ./control-panel/lcov<< parameters.group >>/lcov.info
           destination: lcov<< parameters.group >>.info
+      - save_cache:
+          name: Save Cache
+          key: control-panel-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache
 
   sonar:
     docker:

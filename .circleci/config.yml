@@ -58,10 +58,6 @@ jobs:
     steps:
       - checkout:
           path: control-panel
-      - restore_cache:
-          name: Restore Cache
-          keys:
-            - control-panel-{{ checksum "yarn.lock" }}
       - run:
           name: Install OS dependencies
           command: apt-get update && apt-get install curl git gpg unzip -y
@@ -81,6 +77,10 @@ jobs:
       - run:
           name: Pull API code
           command: git clone --branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) https://github.com/weareinreach/inreach-api.git
+      - restore_cache:
+          name: Restore Cache
+          keys:
+            - control-panel-{{ checksum "control-panel/yarn.lock" }}-{{ checksum "inreach-api/yarn.lock" }}
       - run:
           name: Create API Env File
           command: |
@@ -120,7 +120,7 @@ jobs:
           destination: lcov<< parameters.group >>.info
       - save_cache:
           name: Save Cache
-          key: control-panel-{{ checksum "yarn.lock" }}
+          key: control-panel-{{ checksum "control-panel/yarn.lock" }}-{{ checksum "inreach-api/yarn.lock" }}
           paths:
             - ~/.cache
 

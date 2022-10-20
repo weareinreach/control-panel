@@ -62,12 +62,6 @@ jobs:
       - run:
           name: Install latest Node16
           command: apt-get update && apt-get install nodejs -y
-      # - run:
-      #     name: Install fnm for node version management
-      #     command: curl -fsSL https://fnm.vercel.app/install | bash
-      # - run:
-      #     name: Install latest Node 16
-      #     command: /root/.fnm/fnm env && /root/.fnm/fnm install 16 && /root/.fnm/fnm use 16
       - jq/install
       - run:
           name: Check Node Version

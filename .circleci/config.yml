@@ -61,7 +61,7 @@ jobs:
           command: curl -fsSL https://fnm.vercel.app/install | bash
       - run:
           name: Install latest Node 16
-          command: /root/.fnm/fnm install 16 && /root/.fnm/fnm use 16
+          command: /root/.fnm/fnm env && /root/.fnm/fnm install 16 && /root/.fnm/fnm use 16
       - jq/install
       - run:
           name: Check Node Version

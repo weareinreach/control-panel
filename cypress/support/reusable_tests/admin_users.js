@@ -100,7 +100,7 @@ Cypress.Commands.add('testAdminFilterUsers', (viewport, creds) => {
     cy.getElementByTestId('header-admin-link').click();
     cy.getElementByTestId('filter-users-search').select(type);
     //Intercept Results
-    cy.intercept(`/v1/users/count?&page=1&type=*`, (req) => {
+    cy.intercept(`/v1/users/count?&page=1&type=${type}`, (req) => {
       delete req.headers['if-none-match'];
     }).as('usersCount');
 

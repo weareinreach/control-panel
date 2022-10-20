@@ -41,8 +41,7 @@ jobs:
       GROUP: << parameters.group >>
       GROUP_NAME: << parameters.group_name >>
     docker:
-      # - image: cypress/base:16.17.1
-      - image: cypress/included:7.7.0
+      - image: cypress/base:16.17.1
         environment:
           TERM: xterm
       ## MongoDB
@@ -57,6 +56,12 @@ jobs:
       - run:
           name: Install OS dependencies
           command: apt-get update && apt-get install curl git gpg unzip -y
+      - run:
+          name: Install fnm for node version management
+          command: curl -fsSL https://fnm.vercel.app/install | bash
+      - run:
+          name: Install latest Node 16
+          command: fnm install 16 && fnm use 16
       - jq/install
       - run:
           name: Check Node Version

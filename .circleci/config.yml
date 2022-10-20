@@ -54,14 +54,17 @@ jobs:
       - checkout:
           path: control-panel
       - run:
+          name: Add Nodesource repo
+          command: curl -fsSL https://deb.nodesource.com/setup_18.x | bash
+      - run:
           name: Install OS dependencies
-          command: apt-get update && apt-get install curl git gpg unzip -y
-      - run:
-          name: Install fnm for node version management
-          command: curl -fsSL https://fnm.vercel.app/install | bash
-      - run:
-          name: Install latest Node 16
-          command: /root/.fnm/fnm env && /root/.fnm/fnm install 16 && /root/.fnm/fnm use 16
+          command: apt-get update && apt-get install curl git gpg unzip nodejs -y
+      # - run:
+      #     name: Install fnm for node version management
+      #     command: curl -fsSL https://fnm.vercel.app/install | bash
+      # - run:
+      #     name: Install latest Node 16
+      #     command: /root/.fnm/fnm env && /root/.fnm/fnm install 16 && /root/.fnm/fnm use 16
       - jq/install
       - run:
           name: Check Node Version

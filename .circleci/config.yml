@@ -58,7 +58,7 @@ jobs:
           command: apt-get update && apt-get install curl git gpg unzip -y
       - run:
           name: Add Nodesource repo
-          command: curl -fsSL https://deb.nodesource.com/setup_18.x | bash
+          command: curl -fsSL https://deb.nodesource.com/setup_16.x | bash
       - run:
           name: Install latest Node16
           command: apt-get update && apt-get install nodejs -y

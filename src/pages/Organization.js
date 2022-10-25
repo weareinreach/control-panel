@@ -1,6 +1,6 @@
-import {delete as httpDelete, patch, post} from 'axios';
+import {delete as httpDelete, patch, post, get} from 'axios';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Stack} from '@chakra-ui/react';
 import NotFound from './NotFound';
 import Alert from '../components/Alert';
@@ -19,7 +19,6 @@ import {Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react';
 import {Text} from '@chakra-ui/react';
 import _map from 'lodash/map';
 import _forEach from 'lodash/forEach';
-
 
 import {
   emailFields,
@@ -51,6 +50,90 @@ const Organization = (props) => {
   const {orgId} = props?.match?.params;
   const orgPath = `/organizations/${orgId}`;
   const {data: organization, loading} = useAPIGet(orgPath);
+  const [orgComments, setOrgComments] = useState([]);
+  const [serviceComments, setServiceComments] = useState([]);
+    //re-structure the service comments array
+  let servicesWithComments  = [...new Set(serviceComments.map((comment) => comment.serviceId))]
+  let thing = []
+  
+  servicesWithComments.forEach((id) => {
+   thing.push({'serviceId': id, 'comments':[]})
+   serviceComments.forEach((sId) => {
+    if(id == sId.serviceId){
+      thing[thing.findIndex(x => x.serviceId === sId.serviceId)].comments.push(sId)
+    }
+   })
+  })
+  servicesWithComments = thing
+
+  async function getUsers(userId) {
+    try{
+      let userPath = `${CATALOG_API_URL}/users/${userId}`;
+      const response = await get(userPath)
+      return response
+      }
+    catch(err) {
+      throw err;
+      console.log(err);
+    }
+  }
+
+  const getOrgComments = () => {
+    if(!loading){
+     let servicePath = `${CATALOG_API_URL}${orgPath}/comments`
+     get(servicePath)
+      .then(({data}) => {
+        if(data.comments.length > 0){
+          data.comments.forEach(comment => {
+            getUsers(comment.userId)
+              .then(({data}) =>{
+                comment.userId = comment.userId
+                comment.userName = data.name
+                comment.userEmail = data.email
+                setOrgComments(prev => [...prev, comment])
+              })
+          })
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+
+    }
+  }
+
+  const getServiceComments = () => {
+    if(!loading){
+      services.forEach(i => {
+       let servicePath = `${CATALOG_API_URL}${orgPath}/services/${i._id}/comments`
+       get(servicePath)
+        .then(({data}) => {
+          if(data.comments.length > 0){
+            data.comments.forEach(comment => {
+              getUsers(comment.userId)
+                .then(({data}) =>{
+                  comment.userId = comment.userId
+                  comment.userName = data.name
+                  comment.userEmail = data.email
+                  comment.serviceName = i.name
+                  comment.serviceId = i._id
+                  setServiceComments(prev => [...prev, comment])
+                })
+            })
+          }
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+      })
+    }
+  }
+
+
+  useEffect(() => {
+    getOrgComments()
+    getServiceComments()
+  }, [loading])
 
   const {
     _id,
@@ -80,6 +163,7 @@ const Organization = (props) => {
     slug_ES,
     venue_id,
   } = organization || {};
+  
   const updateFields = ({
     setLoading,
     setSuccess,
@@ -416,7 +500,6 @@ const Organization = (props) => {
         onConfirm: updateListField('schedules'),
       });
     };
-
   const openSocialMediaForm = ({
     isEdit = false,
     isDelete = false,
@@ -489,6 +572,54 @@ const Organization = (props) => {
         },
       });
     };
+
+  const openDeleteReviewForm =
+    ({isDelete} = {}) =>
+    (comment) => {
+
+      let updatedComment = comment
+      let header = ''
+      let other = ''
+      if(comment.isDeleted){
+        updatedComment.isDeleted = false
+        header = 'Re-publish this comment?'
+        other = 'This action will allow this review to be displayed in the InReach App for this organization'
+      } else{
+        updatedComment.isDeleted = true
+        header = 'Delete this comment?'
+        other = 'This action means this review will NOT be displayed in the InReach App for this organization'
+      } 
+
+      if (isDelete) {
+        return  openModal({
+          header: header,
+          isAlert: true,
+          isOther: other,
+          onClose: closeModal,
+          onConfirm: ({setLoading, setSuccess, setError, setErrorMessage}) => {
+            let url = `${CATALOG_API_URL}${orgPath}`;
+            comment.serviceId ?
+              url += `/services/${comment.serviceId}/comments/${comment._id}`
+                :
+              url += `/comments/${comment._id}`
+          
+            setLoading();
+            patch(url, updatedComment)
+              .then(() => {
+                setSuccess();
+                window.location = `/organizations/${orgId}`;
+              })
+              .catch((err) => {
+                const {message} = err?.response?.data;
+                setError();
+                setErrorMessage(message ?? null);
+                console.log(err);
+              });
+          },
+        });
+      }
+
+    }
 
   if (loading) {
     return <Loading />;
@@ -563,6 +694,12 @@ const Organization = (props) => {
               style={{boxShadow: 'none'}}
             >
               Photos
+            </Tab>
+            <Tab
+              data-test-id="organization-tab-reviews"
+              style={{boxShadow: 'none'}}
+            >
+              Reviews
             </Tab>
           </TabList>
           <TabPanels>
@@ -830,6 +967,65 @@ const Organization = (props) => {
                   venue_id={venue_id}
                 />
               </Box>
+            </TabPanel>
+            <TabPanel mt={5}>
+              <div>
+                <Container>
+                  <Title data-test-id="organization-services-title">
+                    Reviews for this Organization
+                  </Title>
+                  {orgComments.length > 0 ? (
+                  <Table
+                    actions={[{
+                      label: 'Toggle Delete',
+                      onClick: openDeleteReviewForm({isDelete: 'toggle'}),
+                      },
+                    ]}
+                    headers={[
+                      {key: 'comment', label: 'Review'},
+                      {key: 'userName', label: 'Reviewer Name'},
+                      {key: 'userEmail', label: 'Reviewer Email'},
+                      {key: 'isDeleted', label: 'Is Deleted'},
+                      {key: 'created_at', label: 'Submitted'},
+                      {key: 'updated_at', label: 'Updated'},
+                    ]}
+                    rows={orgComments}
+                  />
+                  ) : 'There are no reviews for this Organization'}
+                </Container>
+                <Container>
+                  <Title data-test-id="organization-services-title">
+                    Reviews for the Services of this Organization
+                  </Title>                  
+                  {serviceComments.length > 0 ? (
+                    servicesWithComments.map((service) => {                 
+                      return(
+                        <>
+                          <SectionTitle>
+                          Service Name: {service.comments[0].serviceName} 
+                          </SectionTitle>
+                          <Table
+                            actions={[{
+                              label: 'Toggle Delete',
+                              onClick: openDeleteReviewForm({isDelete: 'toggle'}),
+                              },
+                            ]}
+                            headers={[
+                              {key: 'comment', label: 'Review'},
+                              {key: 'userName', label: 'Reviewer Name'},
+                              {key: 'userEmail', label: 'Reviewer Email'},
+                              {key: 'isDeleted', label: 'Is Deleted'},
+                              {key: 'created_at', label: 'Submitted'},
+                              {key: 'update_at', label: 'Updated'},
+                            ]}
+                            rows={service.comments}
+                          />
+                       </>
+                      )
+                    })
+                  ): 'There are no Service reviews for this Organization'}                
+                </Container>
+              </div>
             </TabPanel>
           </TabPanels>
         </Tabs>

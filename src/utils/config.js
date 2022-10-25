@@ -15,10 +15,23 @@ const prod = {
   catalogUrl: 'https://inreach-catalog.herokuapp.com',
 };
 
+const vercelProd = {
+  apiDomain: 'https://inreach-api-v1.vercel.app',
+  catalogUrl: 'https://inreach-v1.vercel.app',
+};
+const vercelPreview = {
+  apiDomain: 'https://inreach-api-v1-git-dev-in-reach.vercel.app/',
+  catalogUrl: 'https://inreach-v1-git-dev-in-reach.vercel.app/',
+};
+
 const env = process.env.REACT_APP_APP_ENV;
-console.log( `Environment Selected: ${env}`)
-export default {
+console.log(`Environment Selected: ${env}`);
+const urlInfo = {
   ...base,
   ...(env === 'TEST' ? local : {}),
   ...(env === 'production' ? prod : {}),
+  ...(process.env.REACT_APP_VERCEL_ENV === 'production' ? vercelProd : {}),
+  ...(process.env.REACT_APP_VERCEL_ENV === 'preview' ? vercelPreview : {}),
 };
+
+export default urlInfo;

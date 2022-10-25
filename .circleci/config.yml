@@ -159,6 +159,7 @@ jobs:
   sonar:
     docker:
       - image: cimg/node:16.18-browsers
+    working_directory: /mnt/ramdisk/control-panel
     steps:
       - attach_workspace:
           at: /mnt/ramdisk

@@ -20,8 +20,8 @@ const vercelProd = {
   catalogUrl: 'https://inreach-v1.vercel.app',
 };
 const vercelPreview = {
-  apiDomain: 'https://inreach-api-v1-git-dev-in-reach.vercel.app/',
-  catalogUrl: 'https://inreach-v1-git-dev-in-reach.vercel.app/',
+  apiDomain: 'https://inreach-api-v1-git-dev-in-reach.vercel.app',
+  catalogUrl: 'https://inreach-v1-git-dev-in-reach.vercel.app',
 };
 
 const env = process.env.REACT_APP_APP_ENV;

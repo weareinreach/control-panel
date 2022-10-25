@@ -13,6 +13,24 @@ import Organization from '../pages/Organization';
 import Organizations from '../pages/Organizations';
 import Service from '../pages/Service';
 import Stats from '../pages/Stats';
+import {ReactComponent as Vercel} from '../assets/vectors/vercel.svg';
+import {Flex} from '@chakra-ui/react';
+
+const VercelBanner = () => {
+  if (!process.env.REACT_APP_VERCEL_ENV) return null;
+
+  return (
+    <Flex pt={4} justifyContent="end">
+      <a
+        href="https://vercel.com/?utm_source=in-reach&utm_campaign=oss"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Vercel />
+      </a>
+    </Flex>
+  );
+};
 
 const Routes = () => {
   const {loading, hasUser, user} = useContext(ContextApp);
@@ -51,6 +69,7 @@ const Routes = () => {
         <Route exact path="/stats" component={Stats} />
         <Route component={NotFound} />
       </Switch>
+      <VercelBanner />
     </Layout>
   );
 };

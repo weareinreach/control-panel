@@ -34,115 +34,139 @@ jobs:
           paths:
             - ~/.cache/yarn
 
-  e2e:
-    parameters:
-      group:
-        type: integer
-        default: 1
-      group_name:
-        type: string
-        default: group
-    environment:
-      GROUP: << parameters.group >>
-      GROUP_NAME: << parameters.group_name >>
+  e2eprepare:
     docker:
-      - image: cypress/base:16.17.1
+      - image: cimg/node:16.18-browsers
         environment:
+          ## this enables colors in the output
+          TERM: xterm
+    working_directory: /mnt/ramdisk/control-panel
+    environment:
+      CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+    steps:
+      - checkout
+      - jq/install
+      - restore_cache:
+          name: Restore Cache
+          keys:
+            - control-panel-deps-{{ checksum "yarn.lock" }}
+            - control-panel-deps
+      - run:
+          name: Install Packages
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - run:
+          name: Print API branch
+          command: echo "Pulling branch $(jq -r '.api_ci_branch' /mnt/ramdisk/control-panel/cypress.env.json) from inreach-api"
+      - run:
+          name: Pull API code
+          command: git clone --branch $(jq -r '.api_ci_branch' /mnt/ramdisk/control-panel/cypress.env.json) https://github.com/weareinreach/inreach-api.git /mnt/ramdisk/inreach-api
+      - run:
+          name: Create API Env File
+          command: |
+            cat \<< EOF > /mnt/ramdisk/inreach-api/.env
+            MAILGUN_API_KEY=$MAILGUN_API_KEY
+            MAILGUN_DOMAIN=$MAILGUN_DOMAIN
+            DB_URI=mongodb://localhost:27017/InReach
+            ENV=TEST
+            SHEETS_API_KEY=$SHEETS_API_KEY
+            TEST_DB_URI=mongodb://localhost:27017/InReach
+            EOF
+      - run:
+          name: Install API Packages
+          command: |
+            cd /mnt/ramdisk/inreach-api
+            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - save_cache:
+          paths:
+            - ~/.cache
+          key: control-panel-deps-{{ checksum "yarn.lock" }}
+      - persist_to_workspace:
+          root: /mnt/ramdisk
+          paths:
+            - control-panel
+            - inreach-api
+
+  e2e:
+    environment:
+      CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+    working_directory: /mnt/ramdisk/control-panel
+    parallelism: 6
+    resource_class: large
+    docker:
+      - image: cimg/node:16.18-browsers
+        environment:
+          ## this enables colors in the output
           TERM: xterm
       ## MongoDB
       - image: mongo:4.4.17
         environment:
-          MONGO_INITDB_ROOT_USERNAME: user
-          MONGO_INITDB_ROOT_PASSWORD: password
-          MONGO_INITDB_DATABASE: asylum-connect
+          MONGO_INITDB_DATABASE: InReach
     steps:
-      - checkout:
-          path: control-panel
+      - attach_workspace:
+          at: /mnt/ramdisk
       - run:
-          name: Install OS dependencies
-          command: apt-get update && apt-get install curl git gpg unzip -y
-      - run:
-          name: Add Nodesource repo
-          command: curl -fsSL https://deb.nodesource.com/setup_16.x | bash
-      - run:
-          name: Install latest Node16
-          command: apt-get update && apt-get install nodejs -y
-      - jq/install
-      - run:
-          name: Check Node Version
-          command: node --version
-      - run:
-          name: Print API branch
-          command: echo "Pulling branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) from inreach-api"
-      - run:
-          name: Pull API code
-          command: git clone --branch $(jq -r '.api_ci_branch' control-panel/cypress.env.json) https://github.com/weareinreach/inreach-api.git
+          name: Launch API
+          command: |
+            cd /mnt/ramdisk/inreach-api
+            yarn dev
+          background: true
       - restore_cache:
           name: Restore Cache
           keys:
-            - control-panel-{{ checksum "control-panel/yarn.lock" }}-{{ checksum "inreach-api/yarn.lock" }}
+            - control-panel-deps-{{ checksum "yarn.lock" }}
+            - control-panel-deps
+
       - run:
-          name: Create API Env File
+          name: Seed DB
           command: |
-            cd inreach-api && cat \<< EOF > ./.env
-            MAILGUN_API_KEY=$MAILGUN_API_KEY
-            MAILGUN_DOMAIN=$MAILGUN_DOMAIN
-            DB_URI=$DB_URI_STAGING
-            ENV=TEST
-            SHEETS_API_KEY=$SHEETS_API_KEY
-            TEST_DB_URI=$TEST_DB_URI
-            EOF
+            cd /mnt/ramdisk/inreach-api
+            yarn seed-docker-db
       - run:
-          name: Install API Packages
-          command: cd inreach-api && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-      - run:
-          name: 'Seed Docker DB'
-          command: cd inreach-api && yarn seed-docker-db
-      - run:
-          name: Install Control Panel Packages
-          command: cd control-panel && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-      - run:
-          name: Instantiate API And Run E2E tests
-          command: (cd inreach-api && yarn dev-background) && (cd control-panel && yarn test:pre-e2e && yarn test:e2e:ci:local)
+          name: Run E2E tests
+          command: |
+            cd /mnt/ramdisk/control-panel
+            yarn test:pre-e2e
+            yarn test:e2e:ci:parallel
       - run:
           name: 'Show Coverage'
-          command: 'cd control-panel && yarn show-coverage'
+          command: yarn show-coverage
       - codecov/upload:
           file: 'control-panel/cypressCoverage/coverage-final.json'
-          flags: Integration-${GROUP}
+          flags: Integration-${CIRCLE_NODE_INDEX}
       - run:
           environment:
-            GROUP: << parameters.group >>
+            GROUP: ${CIRCLE_NODE_INDEX}
           name: 'Generate Report'
-          command: 'cd control-panel && yarn report:lcov'
-      - store_artifacts:
-          path: ./control-panel/lcov<< parameters.group >>/lcov.info
-          destination: lcov<< parameters.group >>.info
-      - save_cache:
-          name: Save Cache
-          key: control-panel-{{ checksum "control-panel/yarn.lock" }}-{{ checksum "inreach-api/yarn.lock" }}
+          command: 'yarn report:lcov'
+      - run:
+          name: Move reports to instance folders
+          command: |
+            cd /mnt/ramdisk/control-panel
+            mkdir cypressCoverage/${CIRCLE_NODE_INDEX}
+            mkdir mochawesome-report/${CIRCLE_NODE_INDEX}
+            cd /mnt/ramdisk/control-panel/cypressCoverage
+            find . ! -name . -prune ! -name ${CIRCLE_NODE_INDEX} -exec mv {} ${CIRCLE_NODE_INDEX}/ \;
+            cd /mnt/ramdisk/control-panel/mochawesome-report
+            find . ! -name . -prune ! -name ${CIRCLE_NODE_INDEX} -exec mv {} ${CIRCLE_NODE_INDEX}/ \;
+            cd /mnt/ramdisk/control-panel
+      - store_test_results:
+          path: /mnt/ramdisk/control-panel/results
+      - persist_to_workspace:
+          root: /mnt/ramdisk
           paths:
-            - ~/.cache
+            - control-panel
 
   sonar:
     docker:
-      - image: cypress/base:16.17.1
+      - image: cimg/node:16.18-browsers
+    working_directory: /mnt/ramdisk/control-panel
+    resource_class: large
     steps:
-      - checkout
-      #Install dependencies
-      - run:
-          name: Install OS dependencies
-          command: apt-get update && apt-get install curl git gpg unzip -y
-      - run:
-          name: 'Install dependencies'
-          command: yarn add lcov-result-merger axios --dev
-      #Download artifacts
-      - run:
-          name: 'Download reports'
-          command: cd .circleci && node getLcovReports.js
+      - attach_workspace:
+          at: /mnt/ramdisk
       - run:
           name: 'Merge Records'
-          command: ./node_modules/.bin/lcov-result-merger 'lcov-*.info' 'merged-lcov.info'
+          command: npx lcov-result-merger 'lcov-*.info' 'merged-lcov.info'
       - sonarcloud/scan
 
 workflows:
@@ -153,41 +177,20 @@ workflows:
           filters:
             branches:
               only: dev
-      - e2e:
-          name: e2e-1
-          group: 1
-          group_name: group1
+      - e2eprepare:
           filters:
             branches:
               only: dev
       - e2e:
-          name: e2e-2
-          group: 2
-          group_name: group2
-          filters:
-            branches:
-              only: dev
-      - e2e:
-          name: e2e-3
-          group: 3
-          group_name: group3
-          filters:
-            branches:
-              only: dev
-      - e2e:
-          name: e2e-4
-          group: 4
-          group_name: group4
+          requires:
+            - e2eprepare
           filters:
             branches:
               only: dev
       - sonar:
           context: SonarCloud
           requires:
-            - e2e-1
-            - e2e-2
-            - e2e-3
-            - e2e-4
+            - e2e
           filters:
             branches:
               only: dev
@@ -198,41 +201,20 @@ workflows:
           filters:
             branches:
               ignore: [main, dev]
-      - e2e:
-          name: e2e-1
-          group: 1
-          group_name: group1
+      - e2eprepare:
           filters:
             branches:
               ignore: [main, dev]
       - e2e:
-          name: e2e-2
-          group: 2
-          group_name: group2
-          filters:
-            branches:
-              ignore: [main, dev]
-      - e2e:
-          name: e2e-3
-          group: 3
-          group_name: group3
-          filters:
-            branches:
-              ignore: [main, dev]
-      - e2e:
-          name: e2e-4
-          group: 4
-          group_name: group4
+          requires:
+            - e2eprepare
           filters:
             branches:
               ignore: [main, dev]
       - sonar:
           context: SonarCloud
           requires:
-            - e2e-1
-            - e2e-2
-            - e2e-3
-            - e2e-4
+            - e2e
           filters:
             branches:
               ignore: [main, dev]

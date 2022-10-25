@@ -32,6 +32,7 @@ const FormModal = (props) => {
     onConfirm,
     onVerify,
     size = 'lg',
+    isOther
   } = props;
 
   const {
@@ -100,9 +101,14 @@ const FormModal = (props) => {
                 type="error"
               />
             )}
-            {isAlert && (
+            {isAlert & !isOther && (
               <Text data-test-id="modal-message">
                 Are you sure? You can't undo this action afterwards.
+              </Text>
+            )}
+            {isOther && (
+              <Text data-test-id="modal-message">
+                {isOther}
               </Text>
             )}
             {displayMessage(message)}

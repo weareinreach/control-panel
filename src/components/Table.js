@@ -28,6 +28,7 @@ const cellCSS = ({theme}) => css`
 const StyledTable = styled('table')`
   width: 100%;
   max-width: 100%;
+  margin-bottom: 30px;
 
   thead {
     th {

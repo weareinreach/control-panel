@@ -90,7 +90,7 @@ jobs:
     environment:
       CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
     working_directory: /mnt/ramdisk/control-panel
-    parallelism: 8
+    parallelism: 6
     resource_class: large
     docker:
       - image: cimg/node:16.18-browsers

@@ -160,6 +160,7 @@ jobs:
     docker:
       - image: cimg/node:16.18-browsers
     working_directory: /mnt/ramdisk/control-panel
+    resource_class: large
     steps:
       - attach_workspace:
           at: /mnt/ramdisk

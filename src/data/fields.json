@@ -491,7 +491,7 @@
     },
     {
       "key": "catalogType",
-      "label": "Catalog Type"
+      "label": "InReach App User Type"
     },
     {
       "key": "updatedAt",
@@ -590,7 +590,7 @@
     },
     {
       "key": "catalogType",
-      "label": "Catalog Type"
+      "label": "InReach App User Type"
     },
     {
       "key": "updatedAt",

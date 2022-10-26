@@ -39,3 +39,5 @@ Technologies
 Code Standards
 
 In order to enforce code standards we use [eslint](https://eslint.org/) and [prettier](https://prettier.io/). Setting up eslint in your code editor is the easiest way to adhere to guidlines while programming but we also lint and prettify code during the commit process using [lint-staged](https://github.com/okonet/lint-staged).
+
+[![Powered by Vercel](src/assets/vectors/vercel.svg)](https://vercel.com/?utm_source=in-reach&utm_campaign=oss)

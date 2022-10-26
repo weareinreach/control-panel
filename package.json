@@ -6,6 +6,7 @@
     "local-background": "REACT_APP_APP_ENV=TEST pm2 --name Control-Panel start npm -- start",
     "prod": "REACT_APP_APP_ENV=production npm start",
     "dev": "npm run start",
+    "dev:vercel": "REACT_APP_VERCEL_ENV='preview' yarn start",
     "start": "react-app-rewired -r @cypress/instrument-cra start",
     "build": "CI=false react-app-rewired build",
     "test": "react-app-rewired test",

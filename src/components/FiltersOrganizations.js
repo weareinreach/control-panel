@@ -140,7 +140,7 @@ const FiltersOrganizations = (props) => {
 
   const handleClaimChange = (ev) => {
     setClaimedStatus(ev.target.value);
-  }
+  };
 
   const handleSelect = (type) => (ev) => {
     const value = ev.target.value;
@@ -211,7 +211,7 @@ const FiltersOrganizations = (props) => {
     if (lastUpdated) {
       query.lastUpdated = new Date(lastUpdated).toISOString();
     }
-    
+
     if (lastUpdatedStart) {
       query.lastUpdatedStart = new Date(lastUpdatedStart).toISOString();
     }
@@ -235,12 +235,16 @@ const FiltersOrganizations = (props) => {
   };
 
   useEffect(() => {
-    handleNameChange(`${orgSelection?.name}` || '');
-  }, [orgSelection]);
-
-  useEffect(() => {
-    handleNameChange(`${orgQuery}` || '');
-  }, [orgQuery]);
+    switch (true) {
+      case typeof orgSelection?.name === 'string':
+        handleNameChange(`${orgSelection.name}`);
+        break;
+      case typeof orgQuery === 'string':
+        handleNameChange(`${orgQuery}`);
+        break;
+      default:
+    }
+  }, [orgSelection, orgQuery]);
 
   const tagsNames = tags.map((tag) => {
     const [category, subCategory] = tag.split('.');
@@ -302,7 +306,7 @@ const FiltersOrganizations = (props) => {
             Select Service Areas
           </Button>
         </Flex>
-        
+
         <ListServiceArea properties={coverageAreaProperties} />
 
         <Flex mt={[0, '2rem !important']}>
@@ -530,10 +534,12 @@ const FiltersOrganizations = (props) => {
           </Flex>
         )}
 
-        <Flex mt={[0, '2rem !important']} alignItems="center" justifyContent="space-between">
-          <Text
-            data-test-id="filter-publish-status-label"
-          >
+        <Flex
+          mt={[0, '2rem !important']}
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Text data-test-id="filter-publish-status-label">
             Publish Status:
           </Text>
           <Checkbox
@@ -546,21 +552,33 @@ const FiltersOrganizations = (props) => {
           </Checkbox>
         </Flex>
 
-        <Flex mt={[0, '2rem !important']} alignItems="center" justifyContent="space-between">
-          <Text
-            data-test-id="filter-claim-status-label"
-          >
-            Claimed Status:
-          </Text>
+        <Flex
+          mt={[0, '2rem !important']}
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Text data-test-id="filter-claim-status-label">Claimed Status:</Text>
         </Flex>
-          <RadioGroup onChange={setClaimedStatus} value={claimedStatus} data-test-id="filter-claim-status-switch">
-            <Stack direction='row'>
-              <Radio value='claimed'><Text fontSize="xs">Claimed</Text></Radio>
-              <Radio value='notClaimed'><Text fontSize="xs">Not Claimed</Text></Radio>
-              <Radio value='pending'><Text fontSize="xs">Pending</Text></Radio>
-              <Radio value='all'><Text fontSize="xs">All</Text></Radio>
-            </Stack>
-          </RadioGroup>
+        <RadioGroup
+          onChange={setClaimedStatus}
+          value={claimedStatus}
+          data-test-id="filter-claim-status-switch"
+        >
+          <Stack direction="row">
+            <Radio value="claimed">
+              <Text fontSize="xs">Claimed</Text>
+            </Radio>
+            <Radio value="notClaimed">
+              <Text fontSize="xs">Not Claimed</Text>
+            </Radio>
+            <Radio value="pending">
+              <Text fontSize="xs">Pending</Text>
+            </Radio>
+            <Radio value="all">
+              <Text fontSize="xs">All</Text>
+            </Radio>
+          </Stack>
+        </RadioGroup>
 
         <Spacer />
 
@@ -632,7 +650,8 @@ const FiltersOrganizations = (props) => {
           </Button>
         </Box>
         <Text fontSize="xs">
-          Any organization that has been 'soft deleted' will not appear in this list. They can be seen in the 'Trash Bin' of the Admin view.
+          Any organization that has been 'soft deleted' will not appear in this
+          list. They can be seen in the 'Trash Bin' of the Admin view.
         </Text>
       </Stack>
     </form>

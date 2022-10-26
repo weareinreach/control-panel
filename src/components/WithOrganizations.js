@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {get} from 'axios';
 import {CATALOG_API_URL} from '../utils/index';
+import {debounce} from 'lodash';
 
 const withOrganizations = (WrappedComponent) => {
   class withOrganizations extends Component {
@@ -23,6 +24,7 @@ const withOrganizations = (WrappedComponent) => {
         )
       );
     };
+
     setOrgQuery = (e, {newValue}) => {
       this.setState((prevState) => ({...prevState, orgQuery: newValue}));
     };
@@ -43,10 +45,10 @@ const withOrganizations = (WrappedComponent) => {
         }));
       }
     };
-    onOrgFetchRequested = () => {
+    onOrgFetchRequested = debounce(() => {
       this.setState((prevState) => ({...prevState, orgSelection: null}));
       this.loadOrganizations();
-    };
+    }, 200);
     onQueryClearRequested = () => {
       this.setState((prevState) => ({
         ...prevState,
@@ -55,15 +57,15 @@ const withOrganizations = (WrappedComponent) => {
     };
     render() {
       return (
-          <WrappedComponent
-            setOrgSelection={this.setOrgSelection}
-            setOrgQuery={this.setOrgQuery}
-            onOrgFetchRequested={this.onOrgFetchRequested}
-            onQueryClearRequested={this.onQueryClearRequested}
-            handleBlurOrganizations={this.handleBlurOrganizations}
-            {...this.props}
-            {...this.state}
-          />
+        <WrappedComponent
+          setOrgSelection={this.setOrgSelection}
+          setOrgQuery={this.setOrgQuery}
+          onOrgFetchRequested={this.onOrgFetchRequested}
+          onQueryClearRequested={this.onQueryClearRequested}
+          handleBlurOrganizations={this.handleBlurOrganizations}
+          {...this.props}
+          {...this.state}
+        />
       );
     }
   }

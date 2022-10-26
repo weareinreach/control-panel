@@ -276,7 +276,7 @@ Cypress.Commands.add('testAdminViewUserDetails', (viewport, creds) => {
         .scrollIntoView()
         .then(($element) => {
           expect($element).to.be.visible;
-          expect($element).contain('Catalog Type');
+          expect($element).contain('InReach App User Type');
         });
       cy.getElementByTestId('updatedAt').then(($element) => {
         expect($element).to.be.visible;

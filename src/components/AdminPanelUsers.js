@@ -104,10 +104,15 @@ const AdminPanelUsers = (props) => {
         onClose: closeModal,
         onConfirm: ({setLoading, setSuccess, setError, values}) => {
           const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
+          const userUrl = `${CATALOG_API_URL}/comments/${selectedManager._id}`;
 
           setLoading();
           patch(url, values)
             .then(() => {
+              get(userUrl)
+              .then((data) => {
+                console.log(JSON.stringify(data))
+              })
               window.location.reload();
               setSuccess();
             })

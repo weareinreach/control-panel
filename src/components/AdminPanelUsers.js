@@ -8,7 +8,7 @@ import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
-import {adminFields, userDetailsFields, reviewerFields, userDetailsFieldsReviewer} from '../data/fields.json';
+import {adminFields, userDetailsFields, reviewerFields, userDetailsFieldsReviewer, reviewFields} from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -263,6 +263,35 @@ const AdminPanelUsers = (props) => {
       // },
     });
 
+  const openUserReviewsModal = (selectedManager) => {
+    const userCommentsUrl = `${CATALOG_API_URL}/comments/${selectedManager._id}`;
+    let userComments = []
+    const openModal1 =(body) => {
+      openModal({
+          header: `Reviews from: ${selectedManager?.name}`,
+          isTable: {headers:reviewFields, rows:body},
+          onClose: closeModal,
+        });
+    }
+
+    get(userCommentsUrl)
+      .then((data) => {
+        //transform the comments
+        data.data.comments.forEach((comment) => {
+          let userComment = {}
+          userComment.comment = comment.comments.comment
+          userComment.isUserApproved = comment.comments.isUserApproved
+          userComment.isDeleted = comment.comments.isDeleted
+          userComment.created_at = comment.comments.created_at
+          userComment.organizationId = comment.organizationId
+          userComment.serviceId = comment.serviceId
+          userComments.push(userComment)
+        })
+        openModal1(userComments)
+      })
+
+  }
+
   const queryType = query?.type;
   const queryTypeLabel = queryType ? queryType[0].toUpperCase()+queryType.substring(1)+'s': 'All Users'
   const tableActions = [
@@ -279,8 +308,8 @@ const AdminPanelUsers = (props) => {
     ...(queryType === USER_TYPE_REVIEWER 
       ? [
           {label: 'Edit', onClick: openEditModalReviewer},
-          // {label: 'Revoke', onClick: openRemoveModalReviewer},
           {label: 'View', onClick: openDetailModalReviewer},
+          {label: 'List Reviews', onClick: openUserReviewsModal}
         ] : []),
     ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),
     {label: 'Delete', onClick: openDeleteModal},

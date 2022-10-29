@@ -632,6 +632,34 @@
       "type": "checkbox"
     }
   ],
+  "reviewFields":[
+    {
+      "key": "organizationId",
+      "label": "organization"
+    },
+    {
+      "key": "serviceId",
+      "label": "service"
+    },
+    {
+      "key": "comment",
+      "label": "comment"
+    },
+    {
+      "key": "isUserApproved",
+      "label": "Approved Reviewer",
+      "type": "checkbox"
+    },
+    {
+      "key": "isDeleted",
+      "label": "Is Deleted",
+      "type": "checkbox"
+    },
+    {
+      "key": "created_at",
+      "label": "Submitted"
+    }
+  ],
   "runStagingMigration": [
     {
       "key": "migration_files",

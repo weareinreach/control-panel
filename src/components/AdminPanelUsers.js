@@ -279,7 +279,7 @@ const AdminPanelUsers = (props) => {
     ...(queryType === USER_TYPE_REVIEWER 
       ? [
           {label: 'Edit', onClick: openEditModalReviewer},
-          {label: 'Revoke', onClick: openRemoveModalReviewer},
+          // {label: 'Revoke', onClick: openRemoveModalReviewer},
           {label: 'View', onClick: openDetailModalReviewer},
         ] : []),
     ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),

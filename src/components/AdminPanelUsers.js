@@ -117,8 +117,8 @@ const AdminPanelUsers = (props) => {
                   comment.serviceId
                     ? (url += `/services/${comment.serviceId}/comments/${comment.comments._id}`)
                     : (url += `/comments/${comment.comments._id}`);
-                  let updatedComment = comment;
-                  updatedComment.comments.isUserApproved = true
+                  let updatedComment = comment.comments;
+                  values.isReviewerApproved ? updatedComment.isUserApproved = true : updatedComment.isUserApproved = comment.comments.isUserApproved
                   patch(url, updatedComment)
                 })
               })

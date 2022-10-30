@@ -266,28 +266,56 @@ const AdminPanelUsers = (props) => {
   const openUserReviewsModal = (selectedManager) => {
     const userCommentsUrl = `${CATALOG_API_URL}/comments/${selectedManager._id}`;
     let userComments = []
-    const openModal1 =(body) => {
+    const openModal1 =(headers, body) => {
       openModal({
           header: `Reviews from: ${selectedManager?.name}`,
-          isTable: {headers:reviewFields, rows:body},
+          isTable: {headers:headers, rows:body},
           onClose: closeModal,
         });
+    }
+
+    const getNames = async (comment, userComment) => {
+      let orgUrl = `${CATALOG_API_URL}/organizations/${comment.organizationId}`
+      let serviceUrl = orgUrl + `/services/${comment.serviceId}`
+
+      userComment.organizationId = comment.organizationId;
+      userComment.organizationName = await get(orgUrl)
+        .then((org) => {
+          return(org.data.name)
+        })
+      userComment.serviceId = comment?.serviceId ? comment.serviceId : '';
+      userComment.serviceName = comment?.serviceId ? await get(serviceUrl)
+        .then((service) => {
+          return(service.data.name)
+        }) : 'N/A'
+
+      getTheRest(comment, userComment)
+      userComments.push(userComment)
+    }
+
+    const getTheRest = (comment, userComment) => {
+      userComment.comment = comment.comments.comment
+      userComment.isUserApproved = comment.comments.isUserApproved
+      userComment.isDeleted = comment.comments.isDeleted
+      userComment.created_at = comment.comments.created_at
+      userComment.commentId = comment.comments._id
     }
 
     get(userCommentsUrl)
       .then((data) => {
         //transform the comments
-        data.data.comments.forEach((comment) => {
-          let userComment = {}
-          userComment.comment = comment.comments.comment
-          userComment.isUserApproved = comment.comments.isUserApproved
-          userComment.isDeleted = comment.comments.isDeleted
-          userComment.created_at = comment.comments.created_at
-          userComment.organizationId = comment.organizationId
-          userComment.serviceId = comment.serviceId
-          userComments.push(userComment)
-        })
-        openModal1(userComments)
+        data.data.comments.length > 0 ? 
+          data.data.comments.forEach(async(comment) => {
+            let userComment = {}
+            getNames(comment, userComment)
+            .then(() => 
+              {openModal1(reviewFields, userComments.sort((a,b) => 
+                a.organizationName.localeCompare(b.organizationName)))}
+              )
+          })
+        : 
+        openModal1(reviewFields, [{"organizationName":"There are no reviews"}])
+
       })
 
   }

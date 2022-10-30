@@ -36,7 +36,6 @@ const FormModal = (props) => {
     isOther,
     isTable,
   } = props;
-
   const {
     isError,
     isLoading,
@@ -115,8 +114,8 @@ const FormModal = (props) => {
             )}
             {isTable && (
               <Table data-test-id="modal-message"
-                headers={isTable.headers}
-                rows={isTable.rows}
+                headers={isTable?.headers}
+                rows={isTable?.rows}
                 />
             )}
             {displayMessage(message)}

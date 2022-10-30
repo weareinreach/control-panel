@@ -634,11 +634,11 @@
   ],
   "reviewFields":[
     {
-      "key": "organizationId",
+      "key": "organizationName",
       "label": "organization"
     },
     {
-      "key": "serviceId",
+      "key": "serviceName",
       "label": "service"
     },
     {
@@ -658,6 +658,10 @@
     {
       "key": "created_at",
       "label": "Submitted"
+    },
+    {
+      "key": "status",
+      "label": ""
     }
   ],
   "runStagingMigration": [

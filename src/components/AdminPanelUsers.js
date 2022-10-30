@@ -337,9 +337,9 @@ const AdminPanelUsers = (props) => {
       ? [
           {label: 'Edit', onClick: openEditModalReviewer},
           {label: 'View', onClick: openDetailModalReviewer},
-          {label: 'List Reviews', onClick: openUserReviewsModal}
         ] : []),
     ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),
+    {label: 'List Reviews', onClick: openUserReviewsModal},
     {label: 'Delete', onClick: openDeleteModal},
   ];
   const tableHeaders = [

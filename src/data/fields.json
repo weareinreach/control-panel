@@ -629,6 +629,7 @@
     {
       "key": "isReviewerApproved",
       "label": "Reviewer Approved",
+      "description": "If this is toggled on (checked), then any comments this user left prior to having been approved, will also be set to Approved. All Future comments will also be set to Approved. (isUserApproved: true). This action means any comments left by this user which appear in the InReach App will have the 'verified community reviewer' badge. -------- If this is toggled off (unchecked) no changes to prior comments will be made but all future comments will be set to UnApproved (isUserApproved: false). This action means any future comments left by this user which appear in the InReach App will NOT have the 'verified community reviewer' badge.",
       "type": "checkbox"
     }
   ],
@@ -658,10 +659,6 @@
     {
       "key": "created_at",
       "label": "Submitted"
-    },
-    {
-      "key": "status",
-      "label": ""
     }
   ],
   "runStagingMigration": [

@@ -98,7 +98,7 @@ const AdminPanelUsers = (props) => {
           initialValues: {
             name: selectedManager?.name,
             email: selectedManager?.email,
-            isReviewerApproved: selectedManager?.isReviewerApproved,
+            isReviewerApproved: selectedManager?.isReviewerApproved
           },
         },
         header: 'Edit Reviewer',

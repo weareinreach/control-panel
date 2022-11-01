@@ -14,6 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import Table from './Table';
 import Alert from './Alert';
 import FormField from './FormField';
 import {buildForm} from '../utils/forms';
@@ -32,9 +33,9 @@ const FormModal = (props) => {
     onConfirm,
     onVerify,
     size = 'lg',
-    isOther
+    isOther,
+    isTable,
   } = props;
-
   const {
     isError,
     isLoading,
@@ -81,7 +82,7 @@ const FormModal = (props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW={isTable ? "fit-content" : "512px"}>
         <ModalHeader data-test-id="modal-header">{header}</ModalHeader>
         <ModalCloseButton data-test-id="modal-close-button" />
         <ModalBody>
@@ -110,6 +111,12 @@ const FormModal = (props) => {
               <Text data-test-id="modal-message">
                 {isOther}
               </Text>
+            )}
+            {isTable && (
+              <Table data-test-id="modal-message"
+                headers={isTable?.headers}
+                rows={isTable?.rows}
+                />
             )}
             {displayMessage(message)}
             {children && children({...childrenProps, formik, updateField})}

@@ -8,7 +8,7 @@ import Loading from './Loading';
 import Pagination from './Pagination';
 import Table from './Table';
 import {Container, SectionTitle, Title} from './styles';
-import {adminFields, userDetailsFields, reviewerFields, userDetailsFieldsReviewer} from '../data/fields.json';
+import {adminFields, userDetailsFields, reviewerFields, userDetailsFieldsReviewer, reviewFields} from '../data/fields.json';
 import {
   CATALOG_API_URL,
   USER_TYPE_ADMIN_DM,
@@ -61,6 +61,7 @@ const AdminPanelUsers = (props) => {
           });
       },
     });
+  
   const openEditModal = (selectedManager) =>
     openModal({
       form: {
@@ -97,17 +98,30 @@ const AdminPanelUsers = (props) => {
           initialValues: {
             name: selectedManager?.name,
             email: selectedManager?.email,
-            isReviewerApproved: selectedManager?.isReviewerApproved,
+            isReviewerApproved: selectedManager?.isReviewerApproved
           },
         },
         header: 'Edit Reviewer',
         onClose: closeModal,
         onConfirm: ({setLoading, setSuccess, setError, values}) => {
-          const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
+          const usrUrl = `${CATALOG_API_URL}/users/${selectedManager._id}`;
+          const userCommentsUrl = `${CATALOG_API_URL}/comments/${selectedManager._id}`;
 
           setLoading();
-          patch(url, values)
+          patch(usrUrl, values)
             .then(() => {
+              get(userCommentsUrl)
+              .then((data) => {
+                data.data.comments.forEach(comment => {
+                  let url = `${CATALOG_API_URL}/organizations/${comment.organizationId}`;
+                  comment.serviceId
+                    ? (url += `/services/${comment.serviceId}/comments/${comment.comments._id}`)
+                    : (url += `/comments/${comment.comments._id}`);
+                  let updatedComment = comment.comments;
+                  values.isReviewerApproved ? updatedComment.isUserApproved = true : updatedComment.isUserApproved = comment.comments.isUserApproved
+                  patch(url, updatedComment)
+                })
+              })
               window.location.reload();
               setSuccess();
             })
@@ -118,248 +132,304 @@ const AdminPanelUsers = (props) => {
             });
         },
       });
-    
+      
+  const openDeleteModal = (selectedUser) =>
+    openModal({
+      header: `Delete User: ${selectedUser?.name || selectedUser?.email}`,
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${CATALOG_API_URL}/users/${selectedUser._id}`;
 
-    const openDeleteModal = (selectedUser) =>
-      openModal({
-        header: `Delete User: ${selectedUser?.name || selectedUser?.email}`,
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: ({setLoading, setSuccess, setError}) => {
-          const url = `${CATALOG_API_URL}/users/${selectedUser._id}`;
+        setLoading();
+        httpDelete(url)
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while deleting the user');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+ 
+  const openRemoveModal = (selectedManager) =>
+    openModal({
+      header: 'Remove Data Manager',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
 
-          setLoading();
-          httpDelete(url)
-            .then(() => {
-              window.location.reload();
-              setSuccess();
-            })
-            .catch((err) => {
-              console.error('An error occured while deleting the user');
-              console.error(err);
-              setError();
-            });
+        setLoading();
+        patch(url, {isDataManager: false, isAdminDataManager: false})
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while updating the users');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+  
+  const openRemoveModalReviewer = (selectedManager) =>
+    openModal({
+      header: 'Remove Reviewer Approval',
+      isAlert: true,
+      onClose: closeModal,
+      onConfirm: ({setLoading, setSuccess, setError}) => {
+        const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
+
+        setLoading();
+        patch(url, {isReviewerApproved: false})
+          .then(() => {
+            window.location.reload();
+            setSuccess();
+          })
+          .catch((err) => {
+            console.error('An error occured while updating the users');
+            console.error(err);
+            setError();
+          });
+      },
+    });
+  
+  const openDetailModal = (selectedManager) =>
+    openModal({
+      form: {
+        fields: userDetailsFields,
+        initialValues: {
+          name: selectedManager?.name,
+          email: selectedManager?.email,
+          age: selectedManager?.age,
+          countryOfOrigin: selectedManager?.countryOfOrigin,
+          currentLocation: selectedManager?.currentLocation,
+          ethnicityRace: selectedManager?.ethnicityRace,
+          immigrationStatus: selectedManager?.immigrationStatus,
+          sogIdentity: selectedManager?.sogIdentity,
+          orgType: selectedManager?.orgType,
+          catalogType: selectedManager?.catalogType,
+          updatedAt: selectedManager?.updated_at,
+          isAdminDataManager: selectedManager?.isAdminDataManager,
+          isProfessional: selectedManager?.isProfessional,
+          isReviewerApproved: selectedManager?.isReviewerApproved,
         },
-      });
-   
-    const openRemoveModal = (selectedManager) =>
-      openModal({
-        header: 'Remove Data Manager',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: ({setLoading, setSuccess, setError}) => {
-          const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
+      },
+      header: 'Data Manager Details',
+      onClose: closeModal,
+      // onConfirm: () => {
+      //   console.log(selectedManager);
+      // },
+    });
 
-          setLoading();
-          patch(url, {isDataManager: false, isAdminDataManager: false})
-            .then(() => {
-              window.location.reload();
-              setSuccess();
-            })
-            .catch((err) => {
-              console.error('An error occured while updating the users');
-              console.error(err);
-              setError();
-            });
+  const openDetailModalReviewer = (selectedManager) =>
+    openModal({
+      form: {
+        fields: userDetailsFieldsReviewer,
+        initialValues: {
+          name: selectedManager?.name,
+          email: selectedManager?.email,
+          currentLocation: selectedManager?.currentLocation,
+          verifyAnswer: selectedManager?.reviewerQuestions?.verifyAnswer === true ? 'Yes' : 'No',
+          timeCommitAnswer: selectedManager?.reviewerQuestions?.timeCommitAnswer === true ? 'Yes' : 'No',
+          specifiedTimeCommit: selectedManager?.reviewerQuestions?.specifiedTimeCommit,
+          auditAnswer: selectedManager?.reviewerQuestions?.auditAnswer === true ? 'Yes' : 'No',
+          suggestionsAnswer: selectedManager?.reviewerQuestions?.suggestionsAnswer === true ? 'Yes' : 'No',
+          reviewsAnswer: selectedManager?.reviewerQuestions?.reviewsAnswer === true ? 'Yes' : 'No',
+          payAnswer: selectedManager?.reviewerQuestions?.payAnswer === true ? 'Yes' : 'No',
+          specifiedOtherInfo: selectedManager?.reviewerQuestions?.specifiedOtherInfo,
+          age: selectedManager?.age,
+          countryOfOrigin: selectedManager?.countryOfOrigin,
+          ethnicityRace: selectedManager?.ethnicityRace,
+          immigrationStatus: selectedManager?.immigrationStatus,
+          sogIdentity: selectedManager?.sogIdentity,
+          orgType: selectedManager?.orgType,
+          catalogType: selectedManager?.catalogType,
+          updatedAt: selectedManager?.updated_at,
+          isAdminDataManager: selectedManager?.isAdminDataManager,
+          isProfessional: selectedManager?.isProfessional,
+          isReviewerApproved: selectedManager?.isReviewerApproved,
         },
-      });
-    
-    const openRemoveModalReviewer = (selectedManager) =>
+      },
+      header: 'Local Community Reviewer User Details',
+      onClose: closeModal,
+      // onConfirm: () => {
+      //   console.log(selectedManager);
+      // },
+    });
+
+  const openUserReviewsModal = (selectedManager) => {
+    const userCommentsUrl = `${CATALOG_API_URL}/comments/${selectedManager._id}`;
+    let userComments = []
+    const openModal1 =(headers, body) => {
       openModal({
-        header: 'Remove Reviewer Approval',
-        isAlert: true,
-        onClose: closeModal,
-        onConfirm: ({setLoading, setSuccess, setError}) => {
-          const url = `${CATALOG_API_URL}/users/${selectedManager._id}`;
-
-          setLoading();
-          patch(url, {isReviewerApproved: false})
-            .then(() => {
-              window.location.reload();
-              setSuccess();
-            })
-            .catch((err) => {
-              console.error('An error occured while updating the users');
-              console.error(err);
-              setError();
-            });
-        },
-      });
-    
-    const openDetailModal = (selectedManager) =>
-      openModal({
-        form: {
-          fields: userDetailsFields,
-          initialValues: {
-            name: selectedManager?.name,
-            email: selectedManager?.email,
-            age: selectedManager?.age,
-            countryOfOrigin: selectedManager?.countryOfOrigin,
-            currentLocation: selectedManager?.currentLocation,
-            ethnicityRace: selectedManager?.ethnicityRace,
-            immigrationStatus: selectedManager?.immigrationStatus,
-            sogIdentity: selectedManager?.sogIdentity,
-            orgType: selectedManager?.orgType,
-            catalogType: selectedManager?.catalogType,
-            updatedAt: selectedManager?.updated_at,
-            isAdminDataManager: selectedManager?.isAdminDataManager,
-            isProfessional: selectedManager?.isProfessional,
-            isReviewerApproved: selectedManager?.isReviewerApproved,
-          },
-        },
-        header: 'Data Manager Details',
-        onClose: closeModal,
-        // onConfirm: () => {
-        //   console.log(selectedManager);
-        // },
-      });
-
-    const openDetailModalReviewer = (selectedManager) =>
-      openModal({
-        form: {
-          fields: userDetailsFieldsReviewer,
-          initialValues: {
-            name: selectedManager?.name,
-            email: selectedManager?.email,
-            currentLocation: selectedManager?.currentLocation,
-            verifyAnswer: selectedManager?.reviewerQuestions?.verifyAnswer === true ? 'Yes' : 'No',
-            timeCommitAnswer: selectedManager?.reviewerQuestions?.timeCommitAnswer === true ? 'Yes' : 'No',
-            specifiedTimeCommit: selectedManager?.reviewerQuestions?.specifiedTimeCommit,
-            auditAnswer: selectedManager?.reviewerQuestions?.auditAnswer === true ? 'Yes' : 'No',
-            suggestionsAnswer: selectedManager?.reviewerQuestions?.suggestionsAnswer === true ? 'Yes' : 'No',
-            reviewsAnswer: selectedManager?.reviewerQuestions?.reviewsAnswer === true ? 'Yes' : 'No',
-            payAnswer: selectedManager?.reviewerQuestions?.payAnswer === true ? 'Yes' : 'No',
-            specifiedOtherInfo: selectedManager?.reviewerQuestions?.specifiedOtherInfo,
-            age: selectedManager?.age,
-            countryOfOrigin: selectedManager?.countryOfOrigin,
-            ethnicityRace: selectedManager?.ethnicityRace,
-            immigrationStatus: selectedManager?.immigrationStatus,
-            sogIdentity: selectedManager?.sogIdentity,
-            orgType: selectedManager?.orgType,
-            catalogType: selectedManager?.catalogType,
-            updatedAt: selectedManager?.updated_at,
-            isAdminDataManager: selectedManager?.isAdminDataManager,
-            isProfessional: selectedManager?.isProfessional,
-            isReviewerApproved: selectedManager?.isReviewerApproved,
-          },
-        },
-        header: 'Local Community Reviewer User Details',
-        onClose: closeModal,
-        // onConfirm: () => {
-        //   console.log(selectedManager);
-        // },
-      });
-
-    const queryType = query?.type;
-    const queryTypeLabel = queryType ? queryType[0].toUpperCase()+queryType.substring(1)+'s': 'All Users'
-    const tableActions = [
-      ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
-        ? [
-            {label: 'Edit', onClick: openEditModal},
-            {label: 'Revoke', onClick: openRemoveModal},
-            {label: 'View', onClick: openDetailModal},
-          ]
-        : []),
-      ...(queryType === USER_TYPE_LAWYER ? [      {label: 'View', onClick: openDetailModal},] : []),
-      ...(queryType === USER_TYPE_PROVIDER ? [      {label: 'View', onClick: openDetailModal},] : []),
-      ...(queryType === USER_TYPE_SEEKER ? [      {label: 'View', onClick: openDetailModal},] : []),
-      ...(queryType === USER_TYPE_REVIEWER 
-        ? [
-            {label: 'Edit', onClick: openEditModalReviewer},
-            {label: 'Revoke', onClick: openRemoveModalReviewer},
-            {label: 'View', onClick: openDetailModalReviewer},
-          ] : []),
-      ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),
-      {label: 'Delete', onClick: openDeleteModal},
-    ];
-    const tableHeaders = [
-      {key: 'name', label: 'Name'},
-      {key: 'email', label: 'Email'},
-      ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
-        ? [
-            {
-              key: 'isAdminDataManager',
-              label: 'Is Admin',
-              type: 'boolean',
-            },
-          ]
-        : []),
-      ...(queryType === USER_TYPE_REVIEWER ? [
-            {
-              key: 'isReviewerApproved',
-              label: 'Is Reviewer Approved',
-              type: 'boolean',
-            },
-          ] : []),
-      ...(queryType === USER_TYPE_LAWYER ? [] : []),
-      ...(queryType === USER_TYPE_PROVIDER ? [] : []),
-      ...(queryType === USER_TYPE_SEEKER ? [] : []),
-    ];
-
-    useEffect(() => {
-      const urls = getUserQueryUrls(query);
-      users.fetchUrl(urls.users);
-      count.fetchUrl(urls.count);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query]);
-
-    if (!users?.data && loading) {
-      return <Loading />;
+          header: `Reviews from: ${selectedManager?.name}`,
+          isTable: {headers:headers, rows:body},
+          onClose: closeModal,
+        });
     }
 
-    return (
-      <>
-        <Box float="right">
-          <Button
-            data-test-id="admin-users-new-manager"
-            onClick={openCreateModal}
-          >
-            New Manager
-          </Button>
+    const getNames = async (comment, userComment) => {
+      let orgUrl = `${CATALOG_API_URL}/organizations/${comment.organizationId}`
+      let serviceUrl = orgUrl + `/services/${comment.serviceId}`
+
+      userComment.organizationId = comment.organizationId;
+      userComment.organizationName = await get(orgUrl)
+        .then((org) => {
+          return(org.data.name)
+        })
+      userComment.serviceId = comment?.serviceId ? comment.serviceId : '';
+      userComment.serviceName = comment?.serviceId ? await get(serviceUrl)
+        .then((service) => {
+          return(service.data.name)
+        }) : 'N/A'
+
+      getTheRest(comment, userComment)
+      userComments.push(userComment)
+    }
+
+    const getTheRest = (comment, userComment) => {
+      userComment.comment = comment.comments.comment
+      userComment.isUserApproved = comment.comments.isUserApproved
+      userComment.isDeleted = comment.comments.isDeleted
+      userComment.created_at = comment.comments.created_at
+      userComment.commentId = comment.comments._id
+    }
+
+    get(userCommentsUrl)
+      .then((data) => {
+        //transform the comments
+        data.data.comments.length > 0 ? 
+          data.data.comments.forEach(async(comment) => {
+            let userComment = {}
+            getNames(comment, userComment)
+            .then(() => 
+              {openModal1(reviewFields, userComments.sort((a,b) => 
+                a.organizationName.localeCompare(b.organizationName)))}
+              )
+          })
+        : 
+        openModal1(reviewFields, [{"organizationName":"There are no reviews"}])
+
+      })
+
+  }
+
+  const queryType = query?.type;
+  const queryTypeLabel = queryType ? queryType[0].toUpperCase()+queryType.substring(1)+'s': 'All Users'
+  const tableActions = [
+    ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
+      ? [
+          {label: 'Edit', onClick: openEditModal},
+          {label: 'Revoke', onClick: openRemoveModal},
+          {label: 'View', onClick: openDetailModal},
+        ]
+      : []),
+    ...(queryType === USER_TYPE_LAWYER ? [      {label: 'View', onClick: openDetailModal},] : []),
+    ...(queryType === USER_TYPE_PROVIDER ? [      {label: 'View', onClick: openDetailModal},] : []),
+    ...(queryType === USER_TYPE_SEEKER ? [      {label: 'View', onClick: openDetailModal},] : []),
+    ...(queryType === USER_TYPE_REVIEWER 
+      ? [
+          {label: 'Edit', onClick: openEditModalReviewer},
+          {label: 'View', onClick: openDetailModalReviewer},
+        ] : []),
+    ...(!queryType ? [      {label: 'View', onClick: openDetailModal},] : []),
+    {label: 'List Reviews', onClick: openUserReviewsModal},
+    {label: 'Delete', onClick: openDeleteModal},
+  ];
+  const tableHeaders = [
+    {key: 'name', label: 'Name'},
+    {key: 'email', label: 'Email'},
+    ...(queryType === USER_TYPE_ADMIN_DM || queryType === USER_TYPE_DM
+      ? [
+          {
+            key: 'isAdminDataManager',
+            label: 'Is Admin',
+            type: 'boolean',
+          },
+        ]
+      : []),
+    ...(queryType === USER_TYPE_REVIEWER ? [
+          {
+            key: 'isReviewerApproved',
+            label: 'Is Reviewer Approved',
+            type: 'boolean',
+          },
+        ] : []),
+    ...(queryType === USER_TYPE_LAWYER ? [] : []),
+    ...(queryType === USER_TYPE_PROVIDER ? [] : []),
+    ...(queryType === USER_TYPE_SEEKER ? [] : []),
+  ];
+
+  useEffect(() => {
+    const urls = getUserQueryUrls(query);
+    users.fetchUrl(urls.users);
+    count.fetchUrl(urls.count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  if (!users?.data && loading) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      <Box float="right">
+        <Button
+          data-test-id="admin-users-new-manager"
+          onClick={openCreateModal}
+        >
+          New Manager
+        </Button>
+      </Box>
+      <Title data-test-id="admin-users-title">{queryTypeLabel}</Title>
+      <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
+        <Box>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Container>
+                <Box>
+                  {users?.data?.users?.length > 0 ? (
+                    <Table
+                      tableDataTestId="admin-users-table"
+                      actions={tableActions}
+                      headers={tableHeaders}
+                      rows={users?.data?.users}
+                    />
+                  ) : (
+                    <Box textAlign="center" padding={4}>
+                      <SectionTitle data-test-id="admin-search-not-found-title">
+                        No results found.
+                      </SectionTitle>
+                      <Text data-test-id="admin-search-not-found-body">
+                        Please refine your search
+                      </Text>
+                    </Box>
+                  )}
+                </Box>
+              </Container>
+              <Pagination
+                currentPage={query?.page}
+                getLastPage={getLastPage}
+                getNextPage={getNextPage}
+                totalPages={count?.data?.pages}
+              />
+            </>
+          )}
         </Box>
-        <Title data-test-id="admin-users-title">{queryTypeLabel}</Title>
-        <Grid minwidth={'500px'} templateColumns="1fr 350px" gap={4}>
-          <Box>
-            {loading ? (
-              <Loading />
-            ) : (
-              <>
-                <Container>
-                  <Box>
-                    {users?.data?.users?.length > 0 ? (
-                      <Table
-                        tableDataTestId="admin-users-table"
-                        actions={tableActions}
-                        headers={tableHeaders}
-                        rows={users?.data?.users}
-                      />
-                    ) : (
-                      <Box textAlign="center" padding={4}>
-                        <SectionTitle data-test-id="admin-search-not-found-title">
-                          No results found.
-                        </SectionTitle>
-                        <Text data-test-id="admin-search-not-found-body">
-                          Please refine your search
-                        </Text>
-                      </Box>
-                    )}
-                  </Box>
-                </Container>
-                <Pagination
-                  currentPage={query?.page}
-                  getLastPage={getLastPage}
-                  getNextPage={getNextPage}
-                  totalPages={count?.data?.pages}
-                />
-              </>
-            )}
-          </Box>
-          <Container height="fit-content">
-            <FiltersUsers query={query} updateQuery={newQuery} />
-          </Container>
-        </Grid>
-      </>
-    );
-  };
+        <Container height="fit-content">
+          <FiltersUsers query={query} updateQuery={newQuery} />
+        </Container>
+      </Grid>
+    </>
+  );
+};
 
 export default AdminPanelUsers;

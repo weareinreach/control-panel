@@ -532,22 +532,7 @@ const Organization = (props) => {
         : `New Social Media Profile`,
       isAlert: isDelete,
       onClose: closeModal,
-      onConfirm: ({setLoading, setSuccess, setError, setErrorMessage, values}) => {
-        const social_data = {...values};
-        if(!values.name || !values.url) {
-          setErrorMessage('Please specify a Social Media Platform and a Valid URL');
-          setError()
-        }else{
-          updateListField('social_media')({
-            setLoading,
-            setSuccess,
-            setError,
-            values: social_data,
-            isEdit,
-            isDelete
-          });
-        }
-      },
+      onConfirm: updateListField('social_media', {isEdit, isDelete}),
     });
   };
 

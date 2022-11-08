@@ -648,8 +648,12 @@
       "label": "comment"
     },
     {
+      "key": "userLocation",
+      "label": "User Location"
+    },
+    {
       "key": "isUserApproved",
-      "label": "Approved Reviewer",
+      "label": "Show Verified Badge",
       "type": "checkbox"
     },
     {

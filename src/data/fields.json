@@ -648,6 +648,10 @@
       "label": "comment"
     },
     {
+      "key": "rating",
+      "label": "Rating"
+    },
+    {
       "key": "userLocation",
       "label": "User Location"
     },

@@ -984,6 +984,7 @@ const Organization = (props) => {
                         },
                       ]}
                       headers={[
+                        {key: 'rating', label: 'Rating'},
                         {key: 'comment', label: 'Review'},
                         {key: 'userName', label: 'Reviewer Name'},
                         {key: 'userEmail', label: 'Reviewer Email'},
@@ -1020,6 +1021,7 @@ const Organization = (props) => {
                                 },
                               ]}
                               headers={[
+                                {key: 'rating', label: 'Rating'},
                                 {key: 'comment', label: 'Review'},
                                 {key: 'userName', label: 'Reviewer Name'},
                                 {key: 'userEmail', label: 'Reviewer Email'},

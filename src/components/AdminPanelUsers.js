@@ -284,6 +284,7 @@ const AdminPanelUsers = (props) => {
       userComment.created_at = comment.comments.created_at;
       userComment.commentId = comment.comments._id;
       userComment.userLocation = comment.comments.userLocation;
+      userComment.rating = comment.comments.rating;
       
       userComments.push(userComment);
     }

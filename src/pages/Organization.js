@@ -984,10 +984,12 @@ const Organization = (props) => {
                         },
                       ]}
                       headers={[
+                        {key: 'rating', label: 'Rating'},
                         {key: 'comment', label: 'Review'},
                         {key: 'userName', label: 'Reviewer Name'},
                         {key: 'userEmail', label: 'Reviewer Email'},
-                        {key: 'isUserApproved', label: 'Is User Approved Reviewer'},
+                        {key: 'isUserApproved', label: 'Show Verified Badge'},
+                        {key: 'userLocation', label: 'User Location'},
                         {key: 'isDeleted', label: 'Is Deleted'},
                         {key: 'created_at', label: 'Submitted'},
                         {key: 'updated_at', label: 'Updated'},
@@ -1019,10 +1021,12 @@ const Organization = (props) => {
                                 },
                               ]}
                               headers={[
+                                {key: 'rating', label: 'Rating'},
                                 {key: 'comment', label: 'Review'},
                                 {key: 'userName', label: 'Reviewer Name'},
                                 {key: 'userEmail', label: 'Reviewer Email'},
-                                {key: 'isUserApproved', label: 'Is User Approved Reviewer'},
+                                {key: 'isUserApproved', label: 'Show Verified Badge'},
+                                {key: 'userLocation', label: 'User Location'},
                                 {key: 'isDeleted', label: 'Is Deleted'},
                                 {key: 'created_at', label: 'Submitted'},
                                 {key: 'update_at', label: 'Updated'},

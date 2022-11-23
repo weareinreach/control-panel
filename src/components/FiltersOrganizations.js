@@ -184,6 +184,10 @@ const FiltersOrganizations = (props) => {
       createdAtEnd,
     };
 
+    if(name.length > 0){
+      query.name = encodeURIComponent(name)
+    }
+
     if (serviceArea?.length > 0) {
       query.serviceArea = serviceArea;
     }
@@ -231,6 +235,7 @@ const FiltersOrganizations = (props) => {
     if (createdAtEnd) {
       query.createdAtEnd = new Date(createdAtEnd).toISOString();
     }
+
     updateQuery(query);
   };
 

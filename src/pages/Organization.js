@@ -587,7 +587,7 @@ const Organization = (props) => {
         updatedComment.isDeleted = true;
         header = 'Delete this comment?';
         other =
-          'This action means this review will NOT be displayed in the InReach App for this organization';
+          'This action means this review will NOT be displayed in the InReach App for this organization or it\'s services';
       }
 
       if (isDelete) {
@@ -984,9 +984,12 @@ const Organization = (props) => {
                         },
                       ]}
                       headers={[
+                        {key: 'rating', label: 'Rating'},
                         {key: 'comment', label: 'Review'},
                         {key: 'userName', label: 'Reviewer Name'},
                         {key: 'userEmail', label: 'Reviewer Email'},
+                        {key: 'isUserApproved', label: 'Show Verified Badge'},
+                        {key: 'userLocation', label: 'User Location'},
                         {key: 'isDeleted', label: 'Is Deleted'},
                         {key: 'created_at', label: 'Submitted'},
                         {key: 'updated_at', label: 'Updated'},
@@ -1006,7 +1009,7 @@ const Organization = (props) => {
                         return (
                           <>
                             <SectionTitle>
-                              Service Name: {service.comments[0].serviceName}
+                              {service.comments[0].serviceName}
                             </SectionTitle>
                             <Table
                               actions={[
@@ -1018,9 +1021,12 @@ const Organization = (props) => {
                                 },
                               ]}
                               headers={[
+                                {key: 'rating', label: 'Rating'},
                                 {key: 'comment', label: 'Review'},
                                 {key: 'userName', label: 'Reviewer Name'},
                                 {key: 'userEmail', label: 'Reviewer Email'},
+                                {key: 'isUserApproved', label: 'Show Verified Badge'},
+                                {key: 'userLocation', label: 'User Location'},
                                 {key: 'isDeleted', label: 'Is Deleted'},
                                 {key: 'created_at', label: 'Submitted'},
                                 {key: 'update_at', label: 'Updated'},

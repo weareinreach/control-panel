@@ -31,7 +31,7 @@
     "babel-plugin-react-remove-properties": "0.3.0",
     "customize-cra": "1.0.0",
     "emotion-theming": "10.0.27",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "formik": "2.2.8",
     "framer-motion": "4.1.17",
     "js-cookie": "2.2.1",

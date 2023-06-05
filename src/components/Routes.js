@@ -39,7 +39,7 @@ const Routes = () => {
     return <Loading />;
   }
 
-  if (hasUser && !user.isAdminDataManager && !user.isDataManager) {
+  if (hasUser && !user.isAdminDataManager /*&& !user.isDataManager*/) {
     return <UnauthorizedPage />;
   }
   return (

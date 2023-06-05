@@ -11,14 +11,8 @@ import {useStatus, useInputChange} from '../utils/hooks';
 
 const Login = () => {
   const [email, setEmail] = useInputChange('');
-  const {
-    isError,
-    isLoading,
-    isSuccess,
-    setError,
-    setLoading,
-    setSuccess,
-  } = useStatus();
+  const {isError, isLoading, isSuccess, setError, setLoading, setSuccess} =
+    useStatus();
   const [password, setPassword] = useInputChange('');
   const loginUser = () => {
     const url = `${CATALOG_API_URL}/auth`;
@@ -66,7 +60,15 @@ const Login = () => {
               type="error"
             />
           )}
-          <Input data-test-id="login-form-email-input" placeholder="Email" onChange={setEmail} value={email} />
+          <h2>
+            Access to the data portal is currently <strong>SUSPENDED</strong>.
+          </h2>
+          <Input
+            data-test-id="login-form-email-input"
+            placeholder="Email"
+            onChange={setEmail}
+            value={email}
+          />
           <PasswordInput
             placeholder="Password"
             onChange={setPassword}
